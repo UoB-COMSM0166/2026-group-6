@@ -27,12 +27,15 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 
 GROUP PHOTO. Add a group photo here.
 
-- Group member 1, name, email, role
-- Group member 2, name, email, role
-- Group member 3, name, email, role
-- Group member 4, name, email, role
-- Group member 5, name, email, role
-- Group member 6, name, email, role
+| Name | Username | Email | Role |
+|------|----------|-------|------|
+| Qizhou Lu | qizhoul888-crypto | ah25177@bristol.ac.uk | Role |
+| Yifei Niu | yifeiniu0925 | sa25269@bristol.ac.uk | Role |
+| Mengzhou Gao | mengzhou168 | ti25314@bristol.ac.uk | Role |
+| Ruomu Lu | n-wind-ddd | co25180@bristol.ac.uk | Role |
+| Hang Su | chaofengming123 | 2717681@bristol.ac.uk | Role |
+| Jiaying Wang | jiaying2000wang | zb25795@bristol.ac.uk | Role |
+
 
 ## Project Report
 
