@@ -1,3 +1,5 @@
-Idea1 
+# Idea1 
 
-Idea2
+---
+
+# Idea2
