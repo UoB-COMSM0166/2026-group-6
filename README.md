@@ -2,7 +2,7 @@
 2026 COMSM0166 group 6
 
 # COMSM0166 Project Template
-A project template for the Software Engineering Discipline and Practice module (COMSM0166).
+A project template for the Software Engineering Discipline and Practice module (COMSM0166)
 
 ## Info
 
