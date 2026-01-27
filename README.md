@@ -33,7 +33,7 @@ GROUP PHOTO. Add a group photo here.
 | Yifei Niu | yifeiniu0925 | sa25269@bristol.ac.uk | Role |
 | Mengzhou Gao | mengzhou168 | ti25314@bristol.ac.uk | Role |
 | Ruomu Lu | n-wind-ddd | co25180@bristol.ac.uk | Role |
-| Hang Su | chaofengming123 | 2717681@bristol.ac.uk | Role |
+| Hang Su | chaofengming123 | fy25078@bristol.ac.uk | Role |
 | Jiaying Wang | jiaying2000wang | zb25795@bristol.ac.uk | Role |
 
 
