@@ -16,7 +16,16 @@
 
 
 # 1 Adventure puzzle-solving
- Limbo
+## Inspiration:
+Limbo
+## Core Features:
+Side-scrolling camera. The map environment will gradually become visible as the player progresses.
+Time-based dream collapse system. As time goes by, each level will become increasingly unstable. Platforms may collapse, disappear or become unsafe.
+Key collection and exit system. Players must collect key in each level to unlock the exit and escape the dream.
+Chase sequences. In some levels, there will be some monsters appearing and chasing the players.
+## Optional Features:
+Environmental storytelling. The changes in the environment reflect the changes in dreams.
+Difficulty scaling between levels. More complex chase sections in later levels.
 
 
 ---
