@@ -5,7 +5,7 @@
  - [2. Social Reasoning-like Puzzle Solving](#2-Social-Reasoning-like-Puzzle-Solving)
  - [3. ROGUE(Rogue-lite)](#3-ROGUE-Rogue-lite)
  - [4. Simulation](#4-Simulation)
- - [5. Puzzle RPG]
+ - [5. Puzzle RPG](#5-Puzzle)
  - [6. Pixel-style horror puzzle game](#6-Puzzle)
 
 ---
