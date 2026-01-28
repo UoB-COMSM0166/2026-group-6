@@ -64,6 +64,8 @@ note: To implement the interaction of kitchen items using a **physics engine**, 
 # 5 Puzzle RPG
 Tower of the Sorcerer
 
+---
+
 # 6 Pixel-style horror puzzle game
 
 ## Inspriation
