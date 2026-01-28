@@ -1,21 +1,21 @@
 
 # Game List 
 
-## [1.Adventure puzzle-solving](#1.Adventure%20puzzle-solving) 
+## [1. Adventure Puzzle-Solving](#1-adventure-puzzle-solving)
 
-## [2.Social reasoning-like puzzle solving](#2.Social%20reasoning-like%20puzzle%20solving) 
+## [2. Social Reasoning-like Puzzle Solving](#2-social-reasoning-like-puzzle-solving)
 
-## [3.ROGUE](#3.ROGUE（Rogue-lite）) 
+## [3. ROGUE(Rogue-lite)](#3-rogue-rogue-lite)
 
-## [4.simulation](#4.simulation)  
+## [4. Simulation](#4-simulation)
 
-## [5.puzzle rpg](#5.puzzle%20rpg) 
+## [5. Puzzle RPG](#5-puzzle-rpg)
 
 
 ---
 
 
-# 1 Adventure puzzle-solving
+# 1 Adventure Puzzle-Solving
 ## Inspiration:
 Limbo
 ## Core Features:
@@ -35,17 +35,17 @@ Limbo
 
 ---
 
-# 2 Social reasoning-like puzzle solving
+# 2 Social Reasoning-like Puzzle Solving
 Among Us
 
 ---
 
-# 3 ROGUE（Rogue-lite）
+# 3 ROGUE(Rogue-lite)
 Brotato
 
 ---
 
-# 4 simulation
+# 4 Simulation
 
 ## Inspiration
 
@@ -62,6 +62,6 @@ note: To implement the interaction of kitchen items using a **physics engine**, 
 
 ---
 
-# 5 puzzle rpg
+# 5 Puzzle RPG
 Tower of the Sorcerer
 
