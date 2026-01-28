@@ -1,11 +1,11 @@
 
 # Game List 
 
- - [1. Adventure Puzzle-Solving](#1%20Adventure%20Puzzle-Solving)
- - [2. Social Reasoning-like Puzzle Solving](#2%20Social%20Reasoning-like%20Puzzle%20Solving)
- - [3. ROGUE(Rogue-lite)](#3%20ROGUE(Rogue-lite))
- - [4. Simulation](#4%20Simulation)
- - [5. Puzzle RPG](#5%20Puzzle%20RPG)
+ - [1. Adventure Puzzle-Solving](#1-Adventure-Puzzle-Solving)
+ - [2. Social Reasoning-like Puzzle Solving](#2-Social-Reasoning-like-Puzzle-Solving)
+ - [3. ROGUE(Rogue-lite)](#3-ROGUE-Rogue-lite)
+ - [4. Simulation](#4-Simulation)
+ - [5. Puzzle RPG](#5-Puzzle-RPG)
 
 ---
 
