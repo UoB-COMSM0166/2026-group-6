@@ -1,16 +1,10 @@
 
 # Game List 
-
 ## [1. Adventure Puzzle-Solving](#1-adventure-puzzle-solving)
-
 ## [2. Social Reasoning-like Puzzle Solving](#2-social-reasoning-like-puzzle-solving)
-
-## [3. ROGUE(Rogue-lite)](#3-rogue-rogue-lite)
-
+## [3. ROGUE (Rogue-lite)](#3-rogue-rogue-lite)
 ## [4. Simulation](#4-simulation)
-
 ## [5. Puzzle RPG](#5-puzzle-rpg)
-
 
 ---
 
@@ -40,7 +34,7 @@ Among Us
 
 ---
 
-# 3 ROGUE(Rogue-lite)
+# 3 ROGUE (Rogue-lite)
 Brotato
 
 ---
