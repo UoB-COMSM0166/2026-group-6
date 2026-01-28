@@ -5,8 +5,8 @@
  - [2. Social Reasoning-like Puzzle Solving](#2-Social-Reasoning-like-Puzzle-Solving)
  - [3. ROGUE(Rogue-lite)](#3-ROGUE-Rogue-lite)
  - [4. Simulation](#4-Simulation)
- - [5. Puzzle RPG](#5-Puzzle)
- - [6. Pixel-style horror puzzle game](#6-Puzzle)
+ - [5. Puzzle RPG](#5-Puzzle-RPG)
+ - [6. Pixel-style horror puzzle game](#6-Pixel-style-horror-puzzle-game)
 
 ---
 
@@ -48,12 +48,15 @@ Brotato
 ### city building & business simulation & strategy game
 
 - example: city skyline
+
 note: **AI controls** citizens' actions to bring a sense of accomplishment to players in city construction. How to make game AI always operate correctly and reasonably in a complex environment is a challenge. The design of diverse and multi-functional facilities brings **freedom and freshness** to the game.
 
 - example: frostpunk
+
 note: Reasonably allocate **limited resources and funds** in a harsh environment to meet the needs of citizens with maximum efficiency and achieve growth and development. It is very challenging to rationally design the overall complex system of map resources, facilities, and various policy options.
 
 - example:Overcooked
+
 note: To implement the interaction of kitchen items using a **physics engine**, it is necessary to precisely set the collision volume of cookware, the trajectory of ingredient throwing, and the judgment of falling. **Data structure design and AI generation** design for management systems such as **order generation and timeout.**
 
 ---
