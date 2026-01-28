@@ -5,7 +5,8 @@
  - [2. Social Reasoning-like Puzzle Solving](#2-Social-Reasoning-like-Puzzle-Solving)
  - [3. ROGUE(Rogue-lite)](#3-ROGUE-Rogue-lite)
  - [4. Simulation](#4-Simulation)
- - [5. Puzzle RPG](#5-Puzzle-RPG)
+ - [5. Puzzle RPG]
+ - [6. Pixel-style horror puzzle game](#6-Puzzle)
 
 ---
 
@@ -59,4 +60,27 @@ note: To implement the interaction of kitchen items using a **physics engine**, 
 
 # 5 Puzzle RPG
 Tower of the Sorcerer
+
+# 6 Pixel-style horror puzzle game
+
+## Inspriation
+Rust Lake, the Stanley Parable, "Solomen Grundy"
+## Style 
+2D, pixel, room, single game, puzzle game
+## Player Action
+- move(up/down/left/right)
+- collect memory/ interact with objects/ avoid traps and monsters/ solve the puzzle to next level
+## Core Design
+- Maps including seven levels,means 7 days of the life enjoury. If everytime goes correct, the map changes to the next level, until level seven is over, go back to level 1, meaning hopeless circle.
+- Player has the right to name themselves however we still give the possibility to remain empty name as an signal of freedom, making player feels that they are full of choices at the beginning.
+## Seven days and seven levels
+-Monday: just name and show in the level 1 and using videos/words/music to introduce the game and rules.
+- Tuesday: [objects system]colloct objects and interact with them.
+- Wednesday: [add choices model]different sequences but same items will cause different outcomes. This emphasizes the importance of making right and good choices, fully instills a sense of rule awareness to all the players.
+- Thursday: [add traps and monsters] Set up traps and monsters to force players to collect the necessary items for moving to the next level through only one path and avoid all the monsters. The actual purpose is to ensure that players will step on the traps and automatically advance to the next level. Hard level: 1. A non-touchable item will start appearing from this level but cannot be obtained.
+- Friday: same as Thursday but more difficult to pass to level six. Hard level 2.
+- Saturday: same, Hard level 3. Unable to aviod death.
+- Sunday: non-touchable item appearing again but can only be obtained until second play time. The entire cycle is actually a person's entire life. So, sometimes it's not that making the right choice will bring about a change. However, we hope to never lose the courage and determination to do what you want, even though life has only one destination but the journey might have so different and fancy memories, slight change means the possiblity of big changes.
+
+
 
