@@ -74,7 +74,7 @@ Rust Lake, the Stanley Parable, "Solomen Grundy"
 - Maps including seven levels,means 7 days of the life enjoury. If everytime goes correct, the map changes to the next level, until level seven is over, go back to level 1, meaning hopeless circle.
 - Player has the right to name themselves however we still give the possibility to remain empty name as an signal of freedom, making player feels that they are full of choices at the beginning.
 ## Seven days and seven levels
--Monday: just name and show in the level 1 and using videos/words/music to introduce the game and rules.
+- Monday: just name and show in the level 1 and using videos/words/music to introduce the game and rules.
 - Tuesday: [objects system]colloct objects and interact with them.
 - Wednesday: [add choices model]different sequences but same items will cause different outcomes. This emphasizes the importance of making right and good choices, fully instills a sense of rule awareness to all the players.
 - Thursday: [add traps and monsters] Set up traps and monsters to force players to collect the necessary items for moving to the next level through only one path and avoid all the monsters. The actual purpose is to ensure that players will step on the traps and automatically advance to the next level. Hard level: 1. A non-touchable item will start appearing from this level but cannot be obtained.
