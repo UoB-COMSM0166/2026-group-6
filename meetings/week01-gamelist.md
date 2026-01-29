@@ -37,7 +37,25 @@ Among Us
 ---
 
 # 3 ROGUE (Rogue-lite)
-Brotato
+Inspiration:
+- Brotato
+- Vampire Survivors
+
+Fundamentals:
+- Top-down 2D movement
+- Random enemy spawning
+- Enemies move towards the player (melee damage)
+- Auto-aim and auto-shoot nearest enemy
+- 2 difficulty modes (easy / hard)
+- 2 ranged weapons (SMG, Shotgun)
+- Health system (damage, death, game over)
+- Fixed total stat points (speed, HP, damage, fire-rate)
+
+Nice to haves:
+- Bullet modifiers (piercing, bouncing)
+- Ranged enemies (hard mode)
+- Random trees / destructible objects with healing
+- Difficulty scaling over time
 
 ---
 
