@@ -37,11 +37,11 @@ Among Us
 ---
 
 # 3 ROGUE (Rogue-lite)
-Inspiration:
+## Inspiration:
 - Brotato
 - Vampire Survivors
 
-Fundamentals:
+## Core Features:
 - Top-down 2D movement
 - Random enemy spawning
 - Enemies move towards the player (melee damage)
@@ -51,7 +51,7 @@ Fundamentals:
 - Health system (damage, death, game over)
 - Fixed total stat points (speed, HP, damage, fire-rate)
 
-Nice to haves:
+## Optional Features:
 - Bullet modifiers (piercing, bouncing)
 - Ranged enemies (hard mode)
 - Random trees / destructible objects with healing
