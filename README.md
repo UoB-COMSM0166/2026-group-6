@@ -25,9 +25,11 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 
 ## Your Group
 
-GROUP PHOTO. Add a group photo here
+<p align="center">
+  <img src="resources/images/group_photo.jpg" width="400">
+</p>
 
-| Name | Username | Email | Role |
+| Name | Github-Username | Email | Role |
 |------|----------|-------|------|
 | Qizhou Lu | qizhoul888-crypto | ah25177@bristol.ac.uk | Role |
 | Yifei Niu | yifeiniu0925 | sa25269@bristol.ac.uk | Role |
