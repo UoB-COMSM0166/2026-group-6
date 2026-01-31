@@ -2,7 +2,7 @@
 # Game List 
 
  - [1. Adventure Puzzle-Solving](#1-Adventure-Puzzle-Solving)
- - [2. Top-down Exploration Puzzle Game](#2-Top-down Exploration Puzzle Game)
+ - [2. Top-down Exploration Puzzle Game](#2-top-down-exploration-puzzle-game)
  - [3. ROGUE(Rogue-lite)](#3-ROGUE-Rogue-lite)
  - [4. Simulation](#4-Simulation)
  - [5. Puzzle RPG](#5-Puzzle-RPG)
