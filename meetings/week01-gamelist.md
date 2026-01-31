@@ -32,11 +32,11 @@ Limbo
 ---
 
 # 2 Top-down Exploration Puzzle Game
-## Inspiration
+## Inspiration：
 - Among Us
 - Goose Goose Duck
 
-## Core Features
+## Core Features：
 #### Top-down navigation
 Players control a character moving through interconnected rooms and corridors from a top-down perspective.
 #### Limited visibility (Fog of War)
@@ -48,7 +48,7 @@ Players must locate a key within the level before returning to the locked exit t
 #### Resource-aware exploration (Sustainability Theme)
 Visibility or movement is treated as a limited resource, encouraging players to plan efficient routes and avoid unnecessary exploration.
 
-## Optional Features
+## Optional Features：
 #### Energy system
 Movement or exploration consumes energy, reducing visibility when resources are low.
 #### Scoring system
