@@ -4,7 +4,8 @@
 
 Base: Inspired by Limbo, Tower of the Sorcerer, and Among Us
 Twist: The player explores a procedurally generated map with limited visibility, first locating a key and then returning to the exit to unlock and complete the level.
-Image:<img width="1920" height="1080" alt="000" src="https://github.com/user-attachments/assets/889cf7e1-501d-4af2-be02-641f9cd3bdb3" />
+Image:![001](https://github.com/user-attachments/assets/c61ced3b-a724-4199-9774-25e2b6b3eed0)
+<img width="1920" height="1080" alt="000" src="https://github.com/user-attachments/assets/889cf7e1-501d-4af2-be02-641f9cd3bdb3" />
 
 
 ---
