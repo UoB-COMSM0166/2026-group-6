@@ -45,7 +45,7 @@ The map is initially hidden. Only areas near the player gradually become visible
 Each level layout is randomly generated to encourage replayability and exploration.
 #### Key collection and exit system
 Players must locate a key within the level before returning to the locked exit to complete the stage.
-#### Resource-aware exploration (sustainability theme)
+#### Resource-aware exploration (Sustainability Theme)
 Visibility or movement is treated as a limited resource, encouraging players to plan efficient routes and avoid unnecessary exploration.
 
 ## Optional Features
