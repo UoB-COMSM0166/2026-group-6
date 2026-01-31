@@ -32,9 +32,33 @@ Limbo
 ---
 
 # 2 Social Reasoning-like Puzzle Solving
+## Inspiration:
 Among Us
+Goose Goose Duck
 
+## Core Features：
+-Top-down navigation
+Players control a character moving through interconnected rooms and corridors from a top-down perspective.
+-Limited visibility (Fog of War)
+The map is initially hidden. Only areas near the player gradually become visible as they explore.
+-Procedurally generated maps
+Each level layout is randomly generated to encourage replayability and exploration.
+-Key collection and exit system
+Players must locate a key within the level before returning to the locked exit to complete the stage.
+-Resource-aware exploration (sustainability theme)
+Visibility or movement is treated as a limited resource, encouraging players to plan efficient routes and avoid unnecessary exploration.
+
+## Optional Features:
+-Energy system
+Movement or exploration consumes energy, reducing visibility when resources are low.
+-Scoring system
+Players are rewarded for completing levels using fewer steps or less energy.
+-Environmental storytelling
+Lighting, power systems, or environmental details visually reflect resource scarcity and sustainability themes.
 ---
+
+
+
 
 # 3 ROGUE (Rogue-lite)
 ## Inspiration:
