@@ -3,11 +3,13 @@
 ## RPG puzzle-solving level-breaking game
 
 Base: Inspired by Limbo, Tower of the Sorcerer, and Among Us
+
 Twist: The player explores a procedurally generated map with limited visibility, first locating a key and then returning to the exit to unlock and complete the level.
+
 Image:
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c61ced3b-a724-4199-9774-25e2b6b3eed0" width="49%" alt="Gameplay View">
   <img src="https://github.com/user-attachments/assets/889cf7e1-501d-4af2-be02-641f9cd3bdb3" width="49%" alt="Map Layout">
+  <img src="https://github.com/user-attachments/assets/c61ced3b-a724-4199-9774-25e2b6b3eed0" width="49%" alt="Gameplay View">
 </p>
 
 
