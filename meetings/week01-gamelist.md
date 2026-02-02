@@ -89,7 +89,7 @@ Lighting, power systems, or environmental details visually reflect resource scar
 
 ### city building & business simulation & strategy game
 
-- example: city skyline
+- example: cities skylines
 
 note: **AI controls** citizens' actions to bring a sense of accomplishment to players in city construction. How to make game AI always operate correctly and reasonably in a complex environment is a challenge. The design of diverse and multi-functional facilities brings **freedom and freshness** to the game.
 
