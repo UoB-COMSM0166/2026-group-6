@@ -104,7 +104,16 @@ note: To implement the interaction of kitchen items using a **physics engine**, 
 ---
 
 # 5 Puzzle RPG
+## Inspriation
 Tower of the Sorcerer
+## This process:
+​Starting point: The player is placed in a corner of a completely random grid map.
+​Objective: Find the exit to the next level.
+​Obstacles: There are several monsters and wall obstacles on the map. The map is initially dark (with "war fog"), and the player must move to illuminate the surrounding vision.
+## ​Turn mechanism:
+​You move the enemy, the enemy moves: This is a key mechanism. If you don't use the keyboard, the world is static. When you move one step, all the monsters also move one step according to the algorithm. This gives the player time to think.
+​Combat: Moving towards the monster is considered an attack.
+​Upgrading/Looping: After entering the exit, enter Level 2. The map becomes larger, the number of monsters increases, until the player's health reaches zero (Game Over).
 
 ---
 
