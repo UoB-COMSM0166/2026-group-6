@@ -1,5 +1,5 @@
 
-'Pollution purification' horizontal plate jumping puzzle game
+# 'Pollution purification' horizontal plate jumping puzzle game
 
 An action-based, puzzle-solving, non-linear map, lightweight RPG level-breaking game
 
