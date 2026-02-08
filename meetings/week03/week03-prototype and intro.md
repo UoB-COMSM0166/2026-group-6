@@ -1,9 +1,8 @@
-
 # 'Pollution purification' horizontal plate jumping puzzle game
 
 An action-based, puzzle-solving, non-linear map, lightweight RPG level-breaking game
 
-
+![](game2.gif)
 # Background
 
 Aliens on a polluted and nearly destroyed planet have entered hibernation pods waiting to escape the planet. Players will take on the role of an advanced artificial intelligence robot that collects fuel from various places deep within the planet to return to the spaceship. The robot is equipped with two rope-like tools made of special materials (which can have different props installed on its head) and stored cleaning energy (which can purify pollution and explore the map). However, in the process of searching for fuel and incidentally purifying pollution, the planet is unknowingly getting better. Before boarding the spaceship to depart, there may eventually be different choices and endings.
