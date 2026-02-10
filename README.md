@@ -47,7 +47,8 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 ### Introduction
 
 - 5% ~250 words 
-- Describe your game, what is based on, what makes it novel? (what's the "twist"?) 
+- Describe your game, what is based on, what makes it novel? (what's the "twist"?)
+- Describe of the game: This game is based on the concept of evolution and purification. At the end of this century, the envoriment of the Earth starting to change rapidly which is not suitable for human beings to survive so we have to move to another planet in the universe. However, we always remeber the time we spent on the old original home, so after years of persistent efforts and in-depth researches, finally scientists discovered an energy source that can purify soil, ocean, river, atomosphere, almost anything in the world. But you need to discovr the old home first since you lost connection with base, so good luck for you! What new stories are waiting? Let's explore...
 
 ### Requirements 
 
