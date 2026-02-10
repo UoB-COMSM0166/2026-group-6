@@ -8,7 +8,8 @@
 - Tester
 
 ## Epics
-To gain the idea of protect surrounding enviroment, to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside but still have the connection with the reality.
+### Given Core Gameplay Experience
+To gain the idea of protect surrounding enviroment, to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside but still have the connection with the reality. After loads of burden in the reality the potential players may want to relax themselves but 
 
 ## For player
 - Enviromental Purification System
