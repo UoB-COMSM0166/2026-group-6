@@ -46,10 +46,13 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 
 ### Introduction
 
-- 5% ~250 words 
-- Describe your game, what is based on, what makes it novel? (what's the "twist"?)
-- Describe of the game: This game is based on the concept of evolution and purification. At the end of this century, the envoriment of the Earth starting to change rapidly which is not suitable for human beings to survive so we have to move to another planet in the universe. However, we always remeber the time we spent on the old original home, so after years of persistent efforts and in-depth researches, finally scientists discovered an energy source that can purify soil, ocean, river, atomosphere, almost anything in the world. But you need to discovr the old home with barely no help first since you lost connection with base, so hummm...Hope good luck for you! What new stories are waiting now? Let's explore...
-- What makes it novel? What's the "twist"?: The player started with no super power and no help so has to wait and avoid any monsters, while after your journey going on, suddenly you have the chance to communicate with base. Congraduations! Let's try your new super power to beat the monsters and purify the envoriment. Oh, wait, why you have two lines now, how should you control they to help you, maybe you need to try several times and hold on! Possiblely you are the one kindled the slight fire of hope of the lost epic dream: humanity could return to Earth, the motherland of our ancestor born.
+- 5% ~250 words
+  
+- Describe of the game:
+- This game is based on the concept of evolution and purification. At the end of this century, the envoriment of the Earth starting to change rapidly because of long-term pollution which is not suitable for human beings to survive so we have to move to another planet in the universe. However, we always remeber the times we spent on the old original home, and that was a question arising from the depths of the soul, a longing for home, can't we go back? Back to our home? After years of persistent efforts and in-depth researches, finally scientists discovered an energy source that can purify soil, ocean, river, atomosphere, even monsters, so almost anything in the world. But you need to discovr the old home with barely no help first since you lost connection with base, so hummm...Hope good luck for you! What new stories are waiting now? Let's explore...
+
+- What makes it novel? What's the "twist"?
+- The player started with no super power and no help so has to wait and avoid any monsters, while after your journey going on, suddenly you have the chance to communicate with base. Congraduations! Let's try your new super power to beat the monsters and purify the envoriment. Oh, wait, why you have two lines now, and why sometimes they disppeared? How should you control they to help you as you want, maybe you need to try several times and hold on! Possiblely you are the hero who will be memoried of all our offsprings since you are the one who kindles the slight fire of hope of the lost epic dream: humanity could return to Earth, the motherland of our ancestor born.
 
 ### Requirements 
 
