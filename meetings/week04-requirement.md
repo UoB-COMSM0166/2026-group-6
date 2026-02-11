@@ -9,7 +9,7 @@
 
 ## Epics
 ### Given Core Gameplay Experience
-To gain the idea of protect surrounding enviroment, to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside but still have the connection with the reality. After loads of burden in the reality the potential players may want to relax themselves but 
+To gain the idea of protect surrounding enviroment, to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside the real world but still have sone connections with the reality, at least of the basic mathmatical and physical working methods. After loads of burden in the reality, the potential players may want to relax themselves but don't want to way beyond to consuming more energy to devote themselves to understand and embrake one total and completely fantastical journey. Especially for the players who don't want to download the games requiring conditions of computer configuration, just want to relax and stop at anytime they want.
 
 ## For player
 - Enviromental Purification System
