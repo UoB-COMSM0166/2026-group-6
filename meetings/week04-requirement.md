@@ -1,4 +1,4 @@
-## Identify the stakeholders of your game
+# 1. Identify the stakeholders of your game
 - Developer
 - Player
 - Game Designer
@@ -7,8 +7,8 @@
 - Maintainer
 - Tester
 
-## Epics
-### Given Core Gameplay Experience (for player and all the designers)
+# 2.Epics
+## Given Core Gameplay Experience (for player and all the designers)
 To gain the idea of protect surrounding enviroment, to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside the real world but still have sone connections with the reality, at least of the basic mathmatical and physical working methods. 
 After loads of burden in the reality, the potential players may want to relax themselves but don't want to way beyond to consuming more energy to devote themselves to understand and embrake one total and completely fantastical journey. Especially for the players who don't want to download the games requiring conditions of computer configuration, just want to relax and stop enjoying at anytime they want. Nowadays, peeple are all struggling to deal with the hard part of their study or work, must have a way to release the pressure and have the possiblity to stop and begain to handle various unexpected situations in real life at the same time. And also we are too exhausted, no much time to think, so we don't want to teach our player what they need to do by boring talking, but we want them to receive the thoughts to against pollution by themselves after getting what they really want--relaxing by a small game, the basic rule of designing is to make the target costumers to accept and approve it, all the other ideas are our team's special enhancements for the game.
 
@@ -21,14 +21,14 @@ After loads of burden in the reality, the potential players may want to relax th
 ### Physical and Mathematical Real Model Calculation System
 ### Rope-based Puzzle Interaction
 
-## Write epics and users stories for your game from the stakeholders' perspective( at least 2 stories per team member), make sure to wirte down acceptance criteria as well.
+# 3. Write epics and users stories for your game from the stakeholders' perspective( at least 2 stories per team member), make sure to wirte down acceptance criteria as well.
 
-### User Story 1: As a player, I want to play a game which can stop at anytime because you know sometimes I will be interupted by some suddent situations like phone calls or delivery's arrive, easy to stop and easy to back again.
+## User Story 1: As a player, I want to play a game which can stop at anytime because you know sometimes I will be interupted by some suddent situations like phone calls or delivery's arrive, easy to stop and easy to back again.
 We will design a [### Progress Saving System] let players have the right to stop at anytime they want but we might prefer to access it by designing a spcial point of saving to realise, beacuse we don't want our player missing any wonderful stories and explores after stopping a long time, but we will try to put more saving points as much as possible at just one map, so we can catch the goal of easy stop and easy to back.
 
-### User Story 2: As a player, I want to play a game which can bring new things all the time, don't want to feel boring.
+## User Story 2: As a player, I want to play a game which can bring new things all the time, don't want to feel boring.
 
-### User Story 3: As a player, I want to play such a hard game which makes me feel even more pressure.
+## User Story 3: As a player, I want to play such a hard game which makes me feel even more pressure.
 We will add the [###Enviromental Purification System], so the player can purify polluted monsters so that I can reduce the area’s pollution and progress further.The player gradually unlocks new purification abilities that change how they interact with the world as well, so wouldn't be too difficult to play and lose patient to continue.
 
 
