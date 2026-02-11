@@ -13,21 +13,21 @@ To gain the idea of protect surrounding enviroment, to give a possible perspecti
 After loads of burden in the reality, the potential players may want to relax themselves but don't want to way beyond to consuming more energy to devote themselves to understand and embrake one total and completely fantastical journey. Especially for the players who don't want to download the games requiring conditions of computer configuration, just want to relax and stop enjoying at anytime they want. Nowadays, peeple are all struggling to deal with the hard part of their study or work, must have a way to release the pressure and have the possiblity to stop and begain to handle various unexpected situations in real life at the same time. And also we are too exhausted, no much time to think, so we don't want to teach our player what they need to do by boring talking, but we want them to receive the thoughts to against pollution by themselves after getting what they really want--relaxing by a small game, the basic rule of designing is to make the target costumers to accept and approve it, all the other ideas are our team's special enhancements for the game.
 
 ## For player
-- Enviromental Purification System
+### Enviromental Purification System
   The player gradually unlocks new purification abilities that change how they interact with the world.
   
-- Progressive Area Unlocking
+### Progressive Area Unlocking
 
-- Player Power Evolution System
+### Player Power Evolution System
   
 
 ## For Game Designer
-- Numbers of Lifes System
-- Progress Saving System
-- Physical and Mathematical Real Model Calculation System
+### Numbers of Lifes System
+### Progress Saving System
+### Physical and Mathematical Real Model Calculation System
   
 ## For Level Designer
- - Rope-based Puzzle Interaction
+### Rope-based Puzzle Interaction
 
 ## Write epics and users stories for your game from the stakeholders' perspective( at least 2 stories per team member), make sure to wirte down acceptance criteria as well.
 User Story 1
