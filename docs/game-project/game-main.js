@@ -16,9 +16,8 @@ let camY = 0;
 let gameStatus = "PLAY";
 
 function preload() {
-   console.log("loading:", "./../map/map-area4.ldtk");
-   ldtkData = loadJSON('2026-group-6/map/map-area4.ldtk');
-   tilesetImage = loadImage('2026-group-6/resources/images/map_image/test_allgrid_8px.png');
+   ldtkData = loadJSON('map/map-area4.ldtk');
+   tilesetImage = loadImage('resources/images/map_image/test_allgrid_8px.png');
 }
 
 function setup() {
