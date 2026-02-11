@@ -8,18 +8,20 @@
 - Tester
 
 # 2.Epics
-## Given Core Gameplay Experience (for player and all the designers)
-To gain the idea of protect surrounding enviroment, to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside the real world but still have sone connections with the reality, at least of the basic mathmatical and physical working methods. 
-After loads of burden in the reality, the potential players may want to relax themselves but don't want to way beyond to consuming more energy to devote themselves to understand and embrake one total and completely fantastical journey. Especially for the players who don't want to download the games requiring conditions of computer configuration, just want to relax and stop enjoying at anytime they want. Nowadays, peeple are all struggling to deal with the hard part of their study or work, must have a way to release the pressure and have the possiblity to stop and begain to handle various unexpected situations in real life at the same time. And also we are too exhausted, no much time to think, so we don't want to teach our player what they need to do by boring talking, but we want them to receive the thoughts to against pollution by themselves after getting what they really want--relaxing by a small game, the basic rule of designing is to make the target costumers to accept and approve it, all the other ideas are our team's special enhancements for the game.
+## Gain The Idea Of Protect Surrounding Enviroment
+- to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside the real world but still have sone connections with the reality, at least of the basic mathmatical and physical working methods. And also we are too exhausted, no much time to think, so we don't want to teach our player what they need to do by boring talking, but we want them to receive the thoughts to against pollution by themselves after getting what they really want--relaxing by a small game, the basic rule of designing is to make the target costumers to accept and approve it, all the other ideas are our team's special enhancements for the game.
 
-## The systems we want to design
-### Enviromental Purification System
-### Progressive Area Unlocking
-### Player Power Evolution System
-### Numbers of Lifes System
-### Progress Saving System
-### Physical and Mathematical Real Model Calculation System
-### Rope-based Puzzle Interaction
+ ## Core Gameplay Experience For Player
+After loads of burden in the reality, the potential players may want to relax themselves but don't want to way beyond to consuming more energy to devote themselves to understand and embrake one total and completely fantastical journey. Especially for the players who don't want to download the games requiring conditions of computer configuration, just want to relax and stop enjoying at anytime they want. Nowadays, peeple are all struggling to deal with the hard part of their study or work, must have a way to release the pressure and have the possiblity to stop and begain to handle various unexpected situations in real life at the same time. 
+
+# The systems we want to design
+-Enviromental Purification System
+-Progressive Area Unlocking
+-Player Power Evolution System
+-Numbers of Lifes System
+-Progress Saving System
+-Physical and Mathematical Real Model Calculation System
+-Rope-based Puzzle Interaction
 
 # 3. Write epics and users stories for your game from the stakeholders' perspective( at least 2 stories per team member), make sure to wirte down acceptance criteria as well.
 
@@ -34,6 +36,7 @@ After loads of burden in the reality, the potential players may want to relax th
 
 ## User Story 4: As a player, I want to play such a hard game which makes me feel even more pressure, some games are too easy to die and don't want to continue eventhough the design are good.
 - We will add the **Enviromental Purification System**, so the player can purify polluted monsters so that I can reduce the area’s pollution and progress further.The player gradually unlocks new purification abilities that change how they interact with the world as well, so wouldn't be too difficult to play and lose patient to continue. Given all key monsters in an area are purified, when the pollution core is activated, then the area pollution index decreases.
+- Making **Numbers of Lifes System**, the player will have more chances to explore and no need to worry about too easy to die and have to do it over and over again.
 
 ## User Story 5: As a developer, I want to make players not so boring and losing interests to play but I should not add too much things at the begining as well.
 ## User Story 6: As a game designer, I want to make players not so easy to pass, and also not so easy to quit my game. Not let players to do all the same things on and on and on.
@@ -51,6 +54,11 @@ After loads of burden in the reality, the potential players may want to relax th
 ## User Story 10: As a game designer, I want UI to show different when the player being attacked by the monsters or fogs.
 - UI should add filters to our **Risk, Death, and Feedback Systems**. The game provides clear feedback about danger, pollution, and player status. When the player observes one or more monsters, a visible pollution meter will shown above the monsters, evertime the player is attacked or touching any polluted entities like fogs, a UI indicator updates immediately.
 
+## User Story 11: As a game designer, I don't want to design anything is far beyond the comprehension of users. Even if it could be more creative, I still hope to have some connection with the real world, such as the most basic operating rules.
+-We design the game based on **Physical and Mathematical Real Model Calculation System**, so the player wouldn't be too difficult to understand but also we can add some new things which are more fancy than reality.
+
+## User Story 12: As a game designer, I don't want users to use traditional weapons. It feels boring and doesn't showcase our creativity.
+- We chose to use **a rope-based puzzle interaction method**, although it includes the traditional monster-killing and level-up template mode, this interaction experience is more interesting.
 
 # Choose one user story and break it down into task
 
