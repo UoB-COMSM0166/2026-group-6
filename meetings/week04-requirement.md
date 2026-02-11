@@ -23,18 +23,21 @@ After loads of burden in the reality, the potential players may want to relax th
 
 # 3. Write epics and users stories for your game from the stakeholders' perspective( at least 2 stories per team member), make sure to wirte down acceptance criteria as well.
 
-## User Story 1: As a player, I want to play a game which can stop at anytime because you know sometimes I will be interupted by some suddent situations like phone calls or delivery's arrive, easy to stop and easy to back again.
-We will design a [### Progress Saving System] let players have the right to stop at anytime they want but we might prefer to access it by designing a spcial point of saving to realise, beacuse we don't want our player missing any wonderful stories and explores after stopping a long time, but we will try to put more saving points as much as possible at just one map, so we can catch the goal of easy stop and easy to back.
+## User Story 1: As a player, I want to play a game which can stop at anytime because you know sometimes I will be interupted by some suddent situations like phone calls or delivery's arrive, easy to stop and easy to back again. At least I don't want to start all over again after I stop or leave at once.
+- We will design a **Progress Saving System** let players have the right to stop at anytime they want but we might prefer to access it by designing a spcial point of saving to realise, beacuse we don't want our player missing any wonderful stories and explores after stopping a long time, but we will try to put more saving points as much as possible at just one map, so we can catch the goal of easy stop and easy to back.
 
-## User Story 2: As a player, I want to play a game which can bring new things all the time, don't want to feel boring.
+## User Story 2: As a player, I want to play a game which can bring new things all the time, don't want to feel boring. New things will appear by I don't know maybe every 5 minutes?
+- we will add **Enviromental Purification System** so that everything around the player will have the possiblity to change, player will continuously receiving stimulations from new things makes they feel not boring at all.
+- we will also add **Progressive Area Unlocking** to the map so the player will find new map after they doing some actions, so they feel enjoyable to continue, having the interest to unlock all the maps according to the inherent curiosity and exploration desire in human nature regarding unknown things.
 
-## User Story 3: As a player, I want to play such a hard game which makes me feel even more pressure.
-We will add the [###Enviromental Purification System], so the player can purify polluted monsters so that I can reduce the area’s pollution and progress further.The player gradually unlocks new purification abilities that change how they interact with the world as well, so wouldn't be too difficult to play and lose patient to continue.
+## User Story 3: As a player, I want to play such a hard game which makes me feel even more pressure, some games are too easy to die and don't want to continue eventhough the design are good.
+- We will add the **Enviromental Purification System**, so the player can purify polluted monsters so that I can reduce the area’s pollution and progress further.The player gradually unlocks new purification abilities that change how they interact with the world as well, so wouldn't be too difficult to play and lose patient to continue. Given all key monsters in an area are purified, when the pollution core is activated, then the area pollution index decreases.
+
+## User Story 4: As a developer, I want to make players not so boring and losing interests to play but I should not add too much things at the begining as well.
+## User Story 5: As a game designer, I want to make players not so easy to pass, and also not so easy to quit my game. Not let players to do all the same things on and on and on.
+- we consider about the **Player Power Evolution System** which makes they feel they are powerful to control the current game and have the ability to influence the environment. Given a polluted monster is present, when the player uses the purification ability, then the monster’s pollution level is visibly reduced.
 
 
-Given a polluted monster is present, when the player uses the purification ability, then the monster’s pollution level is visibly reduced.
-
-Given all key monsters in an area are purified, when the pollution core is activated, then the area pollution index decreases.
 
 User Story 2
 As a player, I want my purification ability to evolve so that I can interact with new types of obstacles.
