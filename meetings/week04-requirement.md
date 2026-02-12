@@ -14,7 +14,7 @@
  ## Core Gameplay Experience For Player
 After loads of burden in the reality, the potential players may want to relax themselves but don't want to way beyond to consuming more energy to devote themselves to understand and embrake one total and completely fantastical journey. Especially for the players who don't want to download the games requiring conditions of computer configuration, just want to relax and stop enjoying at anytime they want. Nowadays, peeple are all struggling to deal with the hard part of their study or work, must have a way to release the pressure and have the possiblity to stop and begain to handle various unexpected situations in real life at the same time. 
 
-# The systems we want to design
+## The systems we want to design
 -Enviromental Purification System
 -Progressive Area Unlocking
 -Player Power Evolution System
