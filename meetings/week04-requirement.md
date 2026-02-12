@@ -30,7 +30,7 @@ After loads of burden in the reality, the potential players may want to relax th
 - We will design a **Progress Saving System** let players have the right to stop at anytime they want but we might prefer to access it by designing a spcial point of saving to realise, beacuse we don't want our player missing any wonderful stories and explores after stopping a long time, but we will try to put more saving points as much as possible at just one map, so we can catch the goal of easy stop and easy to back.
 - Given the player’s corruption reaches the maximum, when they die, then they respawn at the last purification point. Given abilities have been unlocked, when the player respawns, then unlocked abilities are retained.
 
-## User Story 3: As a player, I want to play a game which can bring new things all the time, don't want to feel boring. Will new elements gradually appear throughout the gameplay?
+## User Story 3: As a player, I want to play a game which can bring new things all the time, don't want to feel boring. New things will appear by I don't know maybe every 5 minutes?
 - we will add **Enviromental Purification System** so that everything around the player will have the possiblity to change, player will continuously receiving stimulations from new things makes they feel not boring at all.
 - we will also add **Progressive Area Unlocking** to the map so the player will find new map after they doing some actions, so they feel enjoyable to continue, having the interest to unlock all the maps according to the inherent curiosity and exploration desire in human nature regarding unknown things.
 
