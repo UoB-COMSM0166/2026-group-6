@@ -9,6 +9,7 @@
 ## Epic 1：Purification-based Core Gameplay & Progression
 #### User Story 1: 
 As a player, I want to quit the game at any time without losing major progress, so that I can deal with real-life interruptions.
+
 Acceptance Criteria:
 Given the player quits the game or dies,when the game is resumed, then the player respawns at the latest purification checkpoint with unlocked abilities retained.
 
