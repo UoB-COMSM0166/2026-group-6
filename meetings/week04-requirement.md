@@ -19,18 +19,11 @@ Given the player has previously purified areas or unlocked abilities,
 when the player respawns,
 then purified areas remain purified and unlocked abilities are retained.
 
-
 #### User Story 2: Limited purification energy creates meaningful decisions
 As a player, I want purification energy to be limited, so that I must make meaningful decisions about when and where to purify the environment.
 
 #### Acceptance Criteria:
 Given purification actions and rope-based abilities consume purification energy, when the player uses these abilities repeatedly, then the available purification energy is reduced, and the player must choose between purifying, exploring further, or retreating to recover resources.
-
-#### User Story 3: Non-lethal failure states preserve player progress
-As a player, I want to experience non-lethal failure states, so that mistakes create tension without immediately ending my progress.
-
-#### Acceptance Criteria:  
-Given the player accumulates high corruption or runs out of purification energy,when continuing exploration then the player is forced to retreat, reroute, or recover and progress is not reset through immediate death.
 
 ## Epic 2：Rope Tools and Environmental Interaction
 #### User Story 4: Unlock purification and rope-based abilities over time
