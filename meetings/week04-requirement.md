@@ -7,10 +7,10 @@
 
 # 2. Epics & User Stories
 ## Epic 1：Purification-based Core Gameplay and Progression
-#### User Story 1: 
+#### User Story 1: Quit or die without losing critical progress
 As a player, I want to be able to quit the game or die without losing critical progress, so that I can handle real-life interruptions and feel encouraged to retry challenges.
 
-Acceptance Criteria:
+Acceptance Criteria: 
 Given the player quits the game or dies, when the game is resumed or reloaded, then the player respawns at the most recent purification checkpoint, and all previously purified areas remain purified, and all unlocked abilities are retained.
 
 #### User Story 2:
