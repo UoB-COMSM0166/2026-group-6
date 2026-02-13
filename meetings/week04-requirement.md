@@ -78,7 +78,7 @@ Acceptance Criteria:
 Given the player interacts with the environment, when an action is performed, then the outcome follows consistent and understandable rules.
 
 ## Epic 6: Assessment, Documentation and Course Requirements
-#### User Story 12
+#### User Story 12:
 As a course instructor, I want the project requirements and outcomes to be clearly documented, so that the game can be assessed fairly and consistently.
 
 Acceptance Criteria:
