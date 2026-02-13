@@ -14,18 +14,21 @@ Given the player quits the game or dies,when the game is resumed, then the playe
 
 #### User Story 2: 
 As a player, I want death to be punishing but fair, so that I am willing to retry instead of quitting.
+
 Acceptance Criteria:
 Given the player dies due to corruption or damage, when the player respawns,
 then previously purified areas and unlocked abilities remain unchanged.
 
 #### User Story 3: 
 As a player, I want the game to be challenging but manageable, so that difficulty motivates me instead of frustrating me.
+
 Acceptance Criteria: 
 Given the player quits the game or dies,when the game is resumed, then the player respawns at the latest purification checkpoint with unlocked abilities retained.
 
 ## Epic 2：Rope Tools and Environmental Interaction
 #### User Story 4:
 As a game designer, I want players to feel their power growing, so that they stay engaged throughout the game.
+
 Acceptance Criteria:
 Given the player purifies the pollution core in Area A, when the purification is completed, then a new purification or rope-related ability is unlocked
 
