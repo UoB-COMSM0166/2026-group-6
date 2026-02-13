@@ -5,57 +5,68 @@
 - Tester
 - Course instructor
 
-# 2. Epics
-## 1.Purification-based Core Gameplay
-## 2.Rope Tools and Environmental Interaction
-## 3.Exploration, Progression and Area Unlocking
-## 4.Feedback, Scoring and Multiple Endings
-## 5.Code Quality, Reliability and Course Requirements
-
-# 3. User Stories
-## Epic 1: Purification-based Core Gameplay
-As a player, I want to use purification energy to cleanse polluted monsters and pollution cores, so that I can reduce environmental pollution and progress through the game.
+# 2. Epics & User Stories
+## Epic 1：Purification-based Core Gameplay & Progression
+#### User Story 1: 
+As a player, I want to quit the game at any time without losing major progress, so that I can deal with real-life interruptions.
 Acceptance Criteria:
-Given a polluted monster or pollution core exists in the environment,
-When the player applies purification energy,
-Then the target is purified and the area pollution level decreases.
+Given the player quits the game or dies,when the game is resumed, then the player respawns at the latest purification checkpoint with unlocked abilities retained.
 
-# 3. Write epics and users stories for your game from the stakeholders' perspective( at least 2 stories per team member), make sure to wirte down acceptance criteria as well.
+#### User Story 2: 
+As a player, I want death to be punishing but fair, so that I am willing to retry instead of quitting.
+Acceptance Criteria:
+Given the player dies due to corruption or damage, when the player respawns,
+then previously purified areas and unlocked abilities remain unchanged.
 
-## User Story 1: As a player, I want to play a game which can stop at anytime because you know sometimes I will be interupted by some suddent situations like phone calls or delivery's arrive, easy to stop and easy to back again. At least I don't want to start all over again after I stop or leave at once.
-## User Story 2: As a player, I want death to be punishing but fair so that I am encouraged to retry but don't want to start all over again.
-- We will design a **Progress Saving System** let players have the right to stop at anytime they want but we might prefer to access it by designing a spcial point of saving to realise, beacuse we don't want our player missing any wonderful stories and explores after stopping a long time, but we will try to put more saving points as much as possible at just one map, so we can catch the goal of easy stop and easy to back.
-- Given the player’s corruption reaches the maximum, when they die, then they respawn at the last purification point. Given abilities have been unlocked, when the player respawns, then unlocked abilities are retained.
+#### User Story 3: 
+As a player, I want the game to be challenging but manageable, so that difficulty motivates me instead of frustrating me.
+Acceptance Criteria: 
+Given the player quits the game or dies,when the game is resumed, then the player respawns at the latest purification checkpoint with unlocked abilities retained.
 
-## User Story 3: As a player, I want to play a game which can bring new things all the time, don't want to feel boring. New things will appear by I don't know maybe every 5 minutes?
-- we will add **Enviromental Purification System** so that everything around the player will have the possiblity to change, player will continuously receiving stimulations from new things makes they feel not boring at all.
-- we will also add **Progressive Area Unlocking** to the map so the player will find new map after they doing some actions, so they feel enjoyable to continue, having the interest to unlock all the maps according to the inherent curiosity and exploration desire in human nature regarding unknown things.
+## Epic 2：Rope Tools and Environmental Interaction
+#### User Story 4:
+As a game designer, I want players to feel their power growing, so that they stay engaged throughout the game.
+Acceptance Criteria:
+Given the player purifies the pollution core in Area A, when the purification is completed, then a new purification or rope-related ability is unlocked
 
-## User Story 4: As a player, I want to play such a hard game which makes me feel even more pressure, some games are too easy to die and don't want to continue eventhough the design are good.
-- We will add the **Enviromental Purification System**, so the player can purify polluted monsters so that I can reduce the area’s pollution and progress further.The player gradually unlocks new purification abilities that change how they interact with the world as well, so wouldn't be too difficult to play and lose patient to continue. Given all key monsters in an area are purified, when the pollution core is activated, then the area pollution index decreases.
-- Making **Numbers of Lifes System**, the player will have more chances to explore and no need to worry about too easy to die and have to do it over and over again.
+#### User Story 5:
+As a game designer, I want players to use rope-based mechanics instead of traditional weapons, so that gameplay feels creative.
+Acceptance Criteria： 
+Given the player uses rope tools, when interacting with polluted enemies or environmental objects, then purification, movement, or puzzle-solving can be performed without traditional weapons.
 
-## User Story 5: As a developer, I want to make players not so boring and losing interests to play but I should not add too much things at the begining as well.
-## User Story 6: As a game designer, I want to make players not so easy to pass, and also not so easy to quit my game. Not let players to do all the same things on and on and on.
-- we consider about the **Player Power Evolution System** which makes they feel they are powerful to control the current game and have the ability to influence the environment. Given a polluted monster is present, when the player uses the purification ability, then the monster’s pollution level is visibly reduced. Purification ability to evolve so they can interact with new types of obstacles. Given the player clears Area A, when the pollution core is purified, then Ability Level 2 is unlocked. Given Ability Level 2 is unlocked, when the player encounters polluted fog or walls, then those obstacles can be cleared.
+## Epic 3：Exploration and Area Unlocking
+#### User Story 6:
+As a player, I want to see locked areas early, so that I know there is more to explore later.
+Acceptance Criteria:
+Given the player views the world map, when Areas B and C are shown, then they are visible but inaccessible
 
-## User Story 7: As a player, I want to see blocked areas early so that I understand there is more to explore later.
-- Given the player is in Area A, when they view the map, then Areas B and C are visible but partially inaccessible. After the player lacks the required ability, when they approach polluted terrain, then access is blocked with visual feedback.
+#### User Story 7:
+As a level designer, I want to control exploration through abilities, so that the world feels structured and rewarding.
+Acceptance Criteria：
+Given the player lacks a required ability, when approaching a gated or polluted area, then access is blocked with clear visual feedback.
 
-## User Story 8: As a player, I want my actions to visibly change the environment so that I feel my progress matters.
-- Given the area pollution index decreases, when the environment updates, then visual changes (lighter fog, cracks, cleaner colors) appear will give clear feedback to player. And the decisions or percentage of locking purifried areas will leads to different ends like bad end if nothing changed(to reach the basic line to the end of the story just 60% areas are locked), good end(over 80%), perfect end(at least 95% to nearly 100%), truth end(100%).
+## Epic 4：Feedback, World State and Multiple Endings
+#### User Story 8:
+As a player, I want the game to continuously introduce new changes, so that exploration does not feel boring.
+Acceptance Criteria:
+Given the player reduces an area’s pollution level, when purification progress is made, then environmental elements change to reflect the new state.
 
-## User Story 9: As a level designer, I don't want to show everything at the beginning which makes my design a kind of boring and no fun.
-- **Environment-Based Gated Exploration**, The world is divided into interconnected regions that are visible but inaccessible until the correct abilities are obtained.
+#### User Story 9:
+As a player, I want my actions to visibly affect the environment, so that my progress feels meaningful.
+Acceptance Criteria：
+Given the area pollution index decreases, when the environment updates, then visual feedback such as reduced fog or cleaner colors is shown.
 
-## User Story 10: As a game designer, I want UI to show different when the player being attacked by the monsters or fogs.
-- UI should add filters to our **Risk, Death, and Feedback Systems**. The game provides clear feedback about danger, pollution, and player status. When the player observes one or more monsters, a visible pollution meter will shown above the monsters, evertime the player is attacked or touching any polluted entities like fogs, a UI indicator updates immediately.
+#### User Story 10:
+As a game designer, I want the UI to clearly show danger, so that players can react in time.
+Acceptance Criteria：
+Given the player is attacked or contacts polluted entities, when danger occurs, then UI indicators update immediately to reflect risk or contamination.
 
-## User Story 11: As a game designer, I don't want to design anything is far beyond the comprehension of users. Even if it could be more creative, I still hope to have some connection with the real world, such as the most basic operating rules.
--We design the game based on **Physical and Mathematical Real Model Calculation System**, so the player wouldn't be too difficult to understand but also we can add some new things which are more fancy than reality.
+## Epic 5：Technical Quality & Course Requirements
+#### User Story 11:
+As a developer, I want to introduce mechanics gradually, so that players are not overwhelmed at the beginning.
+Acceptance Criteria:
+Given the player starts a new game, when the early gameplay begins, then only basic movement and purification mechanics are available.
 
-## User Story 12: As a game designer, I don't want users to use traditional weapons. It feels boring and doesn't showcase our creativity.
-- We chose to use **a rope-based puzzle interaction method**, although it includes the traditional monster-killing and level-up template mode, this interaction experience is more interesting.
-
-# Choose one user story and break it down into task
-
+#### User Story 12:
+As a game designer, I want mechanics to be easy to understand, so that players can learn naturally.
+Acceptance Criteria: Given the player interacts with the environment, when actions follow logical or physical rules,then the outcomes are predictable and understandable.
