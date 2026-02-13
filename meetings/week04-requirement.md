@@ -47,7 +47,7 @@ Acceptance Criteria:
 Given the player views the world map, when Areas B and C are shown, then they are visible but inaccessible
 
 #### User Story 7:
-As a level designer, I want to control exploration through abilities, so that the world feels structured and rewarding.
+As a game designer, I want to control exploration through abilities, so that the world feels structured and rewarding.
 
 Acceptance Criteria：
 Given the player lacks a required ability, when approaching a gated or polluted area, then access is blocked with clear visual feedback.
@@ -73,7 +73,7 @@ Given the player is attacked or contacts polluted entities, when danger occurs, 
 
 ## Epic 5：Technical Quality & Course Requirements
 #### User Story 11:
-As a developer, I want to introduce mechanics gradually, so that players are not overwhelmed at the beginning.
+As a game developer, I want to introduce mechanics gradually, so that players are not overwhelmed at the beginning.
 
 Acceptance Criteria:
 Given the player starts a new game, when the early gameplay begins, then only basic movement and purification mechanics are available.
