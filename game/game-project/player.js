@@ -1,5 +1,6 @@
 class Player {
    constructor(x, y) {
+      this.hp = 20;
       // 初始位置 x,y是相对左上角的坐标
       this.x = x; this.y = y;
       // 玩家的长宽
