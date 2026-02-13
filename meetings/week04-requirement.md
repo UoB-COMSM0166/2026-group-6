@@ -6,32 +6,37 @@
 - Course instructor
 
 # 2. Epics & User Stories
-## Epic 1：Purification-based Core Gameplay & Progression
+## Epic 1：Purification-based Core Gameplay and Progression
 #### User Story 1: 
-As a player, I want to quit the game at any time without losing major progress, so that I can deal with real-life interruptions.
+As a player, I want to be able to quit the game or die without losing critical progress, so that I can handle real-life interruptions and feel encouraged to retry challenges.
 
 Acceptance Criteria:
-Given the player quits the game or dies,when the game is resumed, then the player respawns at the latest purification checkpoint with unlocked abilities retained.
+Given the player quits the game or dies, when the game is resumed or reloaded, then the player respawns at the most recent purification checkpoint, and all previously purified areas remain purified, and all unlocked abilities are retained.
 
-#### User Story 2: 
-As a player, I want death to be punishing but fair, so that I am willing to retry instead of quitting.
+#### User Story 2:
+As a player, I want purification energy to be limited, so that I must make meaningful decisions about when and where to purify the environment.
 
 Acceptance Criteria:
-Given the player dies due to corruption or damage, when the player respawns,
-then previously purified areas and unlocked abilities remain unchanged.
+Given purification actions and rope-based abilities consume purification energy, when the player uses these abilities repeatedly, then the available purification energy is reduced, and the player must choose between purifying, exploring further, or retreating to recover resources.
+
+#### User Story 3:
+As a player, I want to experience non-lethal failure states, so that mistakes create tension without immediately ending my progress.
+
+Acceptance Criteria:
+Given the player accumulates high corruption or runs out of purification energy,when continuing exploration then the player is forced to retreat, reroute, or recover and progress is not reset through immediate death.
 
 ## Epic 2：Rope Tools and Environmental Interaction
 #### User Story 3:
-As a game designer, I want players to feel their power growing, so that they stay engaged throughout the game.
+As a game designer, I want players to unlock new purification or rope-related abilities over time, so that they feel a clear sense of progression throughout the game.
 
 Acceptance Criteria:
-Given the player purifies the pollution core in Area A, when the purification is completed, then a new purification or rope-related ability is unlocked
+Given the player purifies a pollution core in an area, when purification is completed, then a new purification-related or rope-based ability is unlocked.
 
 #### User Story 4:
-As a game designer, I want players to use rope-based mechanics instead of traditional weapons, so that gameplay feels creative.
+As a game designer, I want rope-based mechanics to replace traditional weapons, so that core gameplay feels creative and non-violent.
 
-Acceptance Criteria： 
-Given the player uses rope tools, when interacting with polluted enemies or environmental objects, then purification, movement, or puzzle-solving can be performed without traditional weapons.
+Acceptance Criteria:
+Given the player uses rope tools, when interacting with polluted enemies or environmental objects, then purification, traversal, or puzzle-solving can be performed without using traditional weapons.
 
 ## Epic 3：Exploration and Area Unlocking
 #### User Story 5:
@@ -48,22 +53,16 @@ Given the player lacks a required ability, when approaching a gated or polluted 
 
 ## Epic 4：Feedback, World State and Multiple Endings
 #### User Story 7:
-As a player, I want the game to continuously introduce new changes, so that exploration does not feel boring.
+As a player, I want purification progress to continuously change the environment and provide clear feedback, so that exploration feels fresh and my actions feel meaningful.
 
 Acceptance Criteria:
-Given the player reduces an area’s pollution level, when purification progress is made, then environmental elements change to reflect the new state.
+Given an area’s pollution level decreases, when purification progress is made, then environmental elements change to reflect the new world state, and visual feedback is clearly presented (e.g. reduced fog, cleaner colors, restored visibility).
 
 #### User Story 8:
-As a player, I want my actions to visibly affect the environment, so that my progress feels meaningful.
+As a player, I want the overall level of world purification and the amount of collected fuel to affect the game’s ending and final score, so that my approach to exploration feels meaningful.
 
-Acceptance Criteria：
-Given the area pollution index decreases, when the environment updates, then visual feedback such as reduced fog or cleaner colors is shown.
-
-#### User Story 9:
-As a game designer, I want the UI to clearly show danger, so that players can react in time.
-
-Acceptance Criteria：
-Given the player is attacked or contacts polluted entities, when danger occurs, then UI indicators update immediately to reflect risk or contamination.
+Acceptance Criteria:
+Given different levels of total world purification and fuel collected, when the player returns to the ship or completes the final objective, then the game’s ending reflects the player’s purification progress, and the final score is calculated based on the amount of fuel collected.
 
 ## Epic 5: System Consistency and Testability
 #### User Story 10:
@@ -76,8 +75,7 @@ Given a core gameplay system is modified, when changes are applied, then other u
 As a tester, I want mechanics to follow understandable rules, so that player actions produce predictable outcomes.
 
 Acceptance Criteria: 
-Given the player interacts with the environment, when an action is performed,
-then the outcome follows consistent and understandable rules.
+Given the player interacts with the environment, when an action is performed, then the outcome follows consistent and understandable rules.
 
 ## Epic 6: Assessment, Documentation and Course Requirements
 #### User Story 12
