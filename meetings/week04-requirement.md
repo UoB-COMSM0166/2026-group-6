@@ -8,10 +8,17 @@
 # 2. Epics & User Stories
 ## Epic 1：Purification-based Core Gameplay and Progression
 #### User Story 1: Quit or die without losing critical progress
-As a player, I want to be able to quit the game or die without losing critical progress, so that I can handle real-life interruptions and feel encouraged to retry challenges.
+As a player, I want to be able to quit the game or experience a lethal death without losing critical progress,so that I can handle real-life interruptions and feel encouraged to retry challenges.
 
 #### Acceptance Criteria:  
-Given the player quits the game or dies, when the game is resumed or reloaded, then the player respawns at the most recent purification checkpoint, and all previously purified areas remain purified, and all unlocked abilities are retained.
+Given the player quits the game or experiences a lethal death,
+when the game is resumed or reloaded,
+then the player respawns at the most recent purification checkpoint.
+
+Given the player has previously purified areas or unlocked abilities,
+when the player respawns,
+then purified areas remain purified and unlocked abilities are retained.
+
 
 #### User Story 2: Limited purification energy creates meaningful decisions
 As a player, I want purification energy to be limited, so that I must make meaningful decisions about when and where to purify the environment.
