@@ -1,27 +1,24 @@
-# 1. Identify the stakeholders of your game
-- Developer
+# 1. Stakeholders
 - Player
 - Game Designer
-- Level Designer
-- Course Instructor
-- Maintainer
+- Game Developer
 - Tester
+- Course instructor
 
-# 2.Epics
-## Gain The Idea Of Protect Surrounding Enviroment
-- to give a possible perspective of future about what we might face if continue to pollute. We design this game for all the potential player who are interested in playing a light web page game outside the real world but still have sone connections with the reality, at least of the basic mathmatical and physical working methods. And also the players who faces so much pressure are too exhausted, no much time to think, so we don't want to teach our player what they need to do through just boring talking or changing pictures, what we want them to do is to receive the thoughts to against pollution mostly by themselves after getting what they really want--relaxing by playing a small game, the basic rule of designing is to make the target costumers to accept and approve our game, all the other ideas are our team's special enhancements for the game.
+# 2. Epics
+## 1.Purification-based Core Gameplay
+## 2.Rope Tools and Environmental Interaction
+## 3.Exploration, Progression and Area Unlocking
+## 4.Feedback, Scoring and Multiple Endings
+## 5.Code Quality, Reliability and Course Requirements
 
- ## Core Gameplay Experience For Player
-After loads of burden in the reality, the potential players may want to relax themselves but don't want to way beyond to consuming more energy to devote themselves to understand and embrake one total and completely fantastical journey. Especially for the players who don't want to download the games requiring conditions of computer configuration, just want to relax and stop enjoying at anytime they want. Nowadays, peeple are all struggling to deal with the hard part of their study or work, must have a way to release the pressure and have the possiblity to stop and begain to handle various unexpected situations in real life at the same time. 
-
-## The systems we want to design
--Enviromental Purification System
--Progressive Area Unlocking
--Player Power Evolution System
--Numbers of Lifes System
--Progress Saving System
--Physical and Mathematical Real Model Calculation System
--Rope-based Puzzle Interaction
+# 3. User Stories
+## Epic 1: Purification-based Core Gameplay
+As a player, I want to use purification energy to cleanse polluted monsters and pollution cores, so that I can reduce environmental pollution and progress through the game.
+Acceptance Criteria:
+Given a polluted monster or pollution core exists in the environment,
+When the player applies purification energy,
+Then the target is purified and the area pollution level decreases.
 
 # 3. Write epics and users stories for your game from the stakeholders' perspective( at least 2 stories per team member), make sure to wirte down acceptance criteria as well.
 
