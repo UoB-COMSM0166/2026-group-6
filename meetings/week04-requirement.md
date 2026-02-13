@@ -38,7 +38,7 @@ Given the player uses rope tools, when interacting with polluted enemies or envi
 As a player, I want to see locked areas early, so that I know there is more to explore later.
 
 Acceptance Criteria:
-Given the player views the world map, when Areas B and C are shown, then they are visible but inaccessible
+Given the player is in Area A, when the player opens the world map, then Areas B and C are visible but marked as inaccessible.
 
 #### User Story 6:
 As a game designer, I want to control exploration through abilities, so that the world feels structured and rewarding.
@@ -65,7 +65,7 @@ As a game designer, I want the UI to clearly show danger, so that players can re
 Acceptance Criteria：
 Given the player is attacked or contacts polluted entities, when danger occurs, then UI indicators update immediately to reflect risk or contamination.
 
-## Epic 5：System Consistency and Testability
+## Epic 5: System Consistency and Testability
 #### User Story 10:
 As a game developer, I want core gameplay systems to be modular and loosely coupled, so that features can be implemented, tested, and modified without affecting unrelated systems.
 
