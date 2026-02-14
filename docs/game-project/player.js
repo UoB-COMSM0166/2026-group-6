@@ -83,8 +83,8 @@ class Player {
       // 1. 初始化
       this.grounded = false; // 默认设为"未着地"状态，后面检测到了再设为 true
 
-      // 2. 收集所有"固体"障碍物
-      let allColliders = [...platforms]; // 首先加入地图所有的平台/墙壁
+      // 2. 收集所有障碍物
+      let allColliders = [...solidPlatforms]; // 首先加入地图所有的平台/墙壁
 
       // 特殊逻辑：硬绳子（HARD）如果处于摆动状态，也视为固体（像墙或地板一样）
       // 左绳
@@ -96,7 +96,7 @@ class Player {
          allColliders = allColliders.concat(this.ropeR.getCollisionBoxes());
       }
 
-      // 3. 遍历所有障碍物进行检测
+      // 遍历所有平台进行检测
       for (let p of allColliders) {
          // 第一步：粗略检测，看两个矩形是否相交
          if (Physics.rectIntersect(this.x, this.y, this.w, this.h, p.x, p.y, p.w, p.h)) {

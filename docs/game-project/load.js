@@ -4,7 +4,7 @@ function loadLevel(index) {
    let level = ldtkData.levels[index];
    let requiredWidth = level.pxWid * GAME_SCALE;
    let requiredHeight = level.pxHei * GAME_SCALE;
- 
+
    // 取最小值：如果地图很小，就用地图大小；如果地图超大，就限制在最大尺寸
    let finalWidth = min(requiredWidth, MAX_CANVAS_WIDTH);
    let finalHeight = min(requiredHeight, MAX_CANVAS_HEIGHT);
@@ -40,14 +40,26 @@ function parseCollisionLayer(layer) {
    let gridSize = layer.__gridSize;
    let cols = layer.__cWid;
    let csv = layer.intGridCsv;
-   //有碰撞体积的collision对应的id
-   const SOLID_IDS = [1, 4, 5];
+   let lookup = getIntGridLookup(ldtkData, "Collisions");
+   let SOLID_TYPES = GameConfig.World.COLLISIONTYPE;
    for (let i = 0; i < csv.length; i++) {
       let tileId = csv[i];
-      if (SOLID_IDS.includes(tileId)) {
+
+      // 如果是 0，代表空，直接跳过
+      if (tileId !== 0) {
+         // 如果查不到（比如未定义），就给个默认值 "Unknown"
          let px = (i % cols) * gridSize + layer.__pxTotalOffsetX;
          let py = Math.floor(i / cols) * gridSize + layer.__pxTotalOffsetY;
-         platforms.push(new Platform(px, py, gridSize, gridSize));
+         let typeName = lookup[tileId] || "Unknown";
+         let p = new Platform(px, py, gridSize, gridSize, typeName);
+
+         // 1. 无论是什么，都要加入 solidPlatforms 用于绘制 (draw)
+         platforms.push(p);
+
+         // 2. 【核心优化】如果是实体，额外加入 solidPlatforms 用于物理
+         if (SOLID_TYPES.includes(typeName)) {
+            solidPlatforms.push(p);
+         }
       }
    }
 }
@@ -93,3 +105,25 @@ function drawLayerTiles(layer) {
 }
 
 function hexToRgb(hex) { return color(hex); }
+
+
+// 获取 IntGrid 的 ID 到 Name 的映射表（字典）
+function getIntGridLookup(ldtkData, layerName) {
+   let lookup = {};
+
+   // 1. 在 defs 里找到对应的层定义
+   let layerDef = ldtkData.defs.layers.find(l => l.identifier === layerName);
+
+   if (!layerDef) {
+      console.error(`找不到名为 ${layerName} 的图层定义`);
+      return lookup;
+   }
+
+   // 2. 遍历该层的 intGridValues 生成字典
+   // 结构通常是: [{ value: 1, identifier: "Ground", color: "#..." }, ...]
+   for (let valDef of layerDef.intGridValues) {
+      lookup[valDef.value] = valDef.identifier;
+   }
+
+   return lookup;
+}

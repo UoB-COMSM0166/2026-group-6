@@ -14,6 +14,7 @@ let player;
 let platforms = [];
 let enemies = [];
 let particles = [];
+let solidPlatforms = [];
 let camX = 0;
 let camY = 0;
 let gameStatus = "PLAY";
@@ -269,9 +270,23 @@ function keyPressed() {
 
 // 粒子效果
 class Particle {
-   constructor(x, y, t) { this.x = x; this.y = y; this.vx = random(-2, 2); this.vy = random(-2, 2); this.life = 255; }
-   update() { this.x += this.vx; this.y += this.vy; this.life -= 15; }
-   display() { fill(0, 255, 255, this.life); noStroke(); ellipse(this.x, this.y, 2, 2); }
+   constructor(x, y, t) {
+      this.x = x;
+      this.y = y;
+      this.vx = random(-2, 2);
+      this.vy = random(-2, 2);
+      this.life = 255;
+   }
+   update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life -= 15;
+   }
+   display() {
+      fill(0, 255, 255, this.life);
+      noStroke();
+      ellipse(this.x, this.y, 2, 2);
+   }
 }
 
 // 粒子生成

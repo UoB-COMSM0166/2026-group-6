@@ -131,7 +131,7 @@ class Rope {
    rayCastPlatforms(x1, y1, x2, y2) {
       let closestHit = null;
       let minDst = Infinity;
-      for (let p of platforms) {
+      for (let p of solidPlatforms) {
          let hit = Physics.lineRectIntersect(x1, y1, x2, y2, p.x, p.y, p.w, p.h);
          if (hit) {
             let d = dist(x1, y1, hit.x, hit.y);
@@ -152,7 +152,7 @@ class Rope {
          let vx = (node.x - node.oldx) * 0.98; let vy = (node.y - node.oldy) * 0.98;
          let tempX = node.x; let tempY = node.y;
          node.x += vx; node.y += vy + 0.5;
-         for (let p of platforms) {
+         for (let p of solidPlatforms) {
             if (Physics.pointRect(node.x, node.y, p.x, p.y, p.w, p.h)) { node.x = tempX; node.y = tempY; }
          }
          node.oldx = tempX; node.oldy = tempY;
