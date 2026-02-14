@@ -16,6 +16,8 @@ const GameConfig = {
         CLIMB_SPEED: 0.05,  // 爬绳速度系数
         WINCH_FORCE: 0.3,    // 绞盘力度
         JUMPFORCE: 5,
+        InvulInterval: 30, // 受伤时间间隔
+        KnockInterval: 15, // 击退间隔
     },
 
     // === 敌人设置 ===

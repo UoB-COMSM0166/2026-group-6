@@ -1,9 +1,10 @@
 class Enemy {
-   constructor(x, y, hp) {
+   constructor(x, y, hp ,damage) {
       this.x = x;
       this.y = y;
       this.w = GRID_SIZE;
       this.h = GRID_SIZE;
+      this.damage = damage;
       this.jumpTime = 0;
       this.maxHp = hp;
       this.hp = hp;
@@ -31,7 +32,7 @@ class Enemy {
    checkCollision(targetX, targetY) {
       let margin = 0.1;
       for (let p of platforms) {
-         if (rectIntersect(
+         if (Physics.rectIntersect(
             targetX + margin, targetY + margin,
             this.w - margin * 2, this.h - margin * 2,
             p.x, p.y, p.w, p.h
@@ -61,7 +62,7 @@ class Enemy {
       let hitY = false;
       for (let p of platforms) {
          // 缩小一点认定x轴碰撞体积，避免相交时误判为已经接触
-         if (rectIntersect(this.x + 0.1, nextY, this.w - 0.2, this.h, p.x, p.y, p.w, p.h)) {
+         if (Physics.rectIntersect(this.x + 0.1, nextY, this.w - 0.2, this.h, p.x, p.y, p.w, p.h)) {
             hitY = true;
             if (this.vy > 0) {
                // 下落撞地
@@ -99,7 +100,7 @@ class Enemy {
 
       for (let p of platforms) {
          // 撞墙检测
-         if (rectIntersect(nextX, this.y, this.w, this.h, p.x, p.y, p.w, p.h)) {
+         if (Physics.rectIntersect(nextX, this.y, this.w, this.h, p.x, p.y, p.w, p.h)) {
             hitWall = true;
          }
          if (probeX >= p.x - 2 && probeX <= p.x + p.w + 2) {
