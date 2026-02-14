@@ -80,32 +80,6 @@ function parseEntityLayer(layer) {
    }
 }
 
-function drawLayerTiles(layer) {
-   let gridSize = layer.__gridSize;
-   let allTiles = [];
-   if (layer.autoLayerTiles) allTiles = allTiles.concat(layer.autoLayerTiles);
-   if (layer.gridTiles) allTiles = allTiles.concat(layer.gridTiles);
-
-   for (let tile of allTiles) {
-      let destX = tile.px[0] + layer.__pxTotalOffsetX;
-      let destY = tile.px[1] + layer.__pxTotalOffsetY;
-      let srcX = tile.src[0];
-      let srcY = tile.src[1];
-
-      if (tile.f === 0) {
-         image(tilesetImage, destX, destY, gridSize, gridSize, srcX, srcY, gridSize, gridSize);
-      } else {
-         push();
-         translate(destX + gridSize / 2, destY + gridSize / 2);
-         scale((tile.f === 1 || tile.f === 3) ? -1 : 1, (tile.f === 2 || tile.f === 3) ? -1 : 1);
-         image(tilesetImage, -gridSize / 2, -gridSize / 2, gridSize, gridSize, srcX, srcY, gridSize, gridSize);
-         pop();
-      }
-   }
-}
-
-function hexToRgb(hex) { return color(hex); }
-
 
 // 获取 IntGrid 的 ID 到 Name 的映射表（字典）
 function getIntGridLookup(ldtkData, layerName) {
