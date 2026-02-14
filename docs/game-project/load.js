@@ -2,7 +2,14 @@
 
 function loadLevel(index) {
    let level = ldtkData.levels[index];
+   let requiredWidth = level.pxWid * GAME_SCALE;
+   let requiredHeight = level.pxHei * GAME_SCALE;
+ 
+   // 取最小值：如果地图很小，就用地图大小；如果地图超大，就限制在最大尺寸
+   let finalWidth = min(requiredWidth, MAX_CANVAS_WIDTH);
+   let finalHeight = min(requiredHeight, MAX_CANVAS_HEIGHT);
 
+   resizeCanvas(finalWidth, finalHeight);
    platforms = [];
    enemies = [];
    particles = [];
@@ -54,7 +61,9 @@ function parseEntityLayer(layer) {
          let hp = 3;
          let field = entity.fieldInstances.find(f => f.__identifier === "hp");
          if (field) hp = field.__value;
-         enemies.push(new Enemy(x, y, hp));
+         field = entity.fieldInstances.find(f => f.__identifier === "damage");
+         if (field) damage = field.__value;
+         enemies.push(new Enemy(x, y, hp, damage));
       }
    }
 }

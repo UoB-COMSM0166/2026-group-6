@@ -176,7 +176,7 @@ function drawUI() {
 
    // 底部总操作提示
    textAlign(CENTER); fill(150); textSize(12);
-   text("[SPACE] Jump   [Q/Z] Left Winch   [E/C] Right Winch", width / 2, height - 10);
+   text("[SPACE] Jump   [Q/Z] Left Winch   [E/C] Right Winch", width / 2, height - 16);
 }
 
 function drawWinScreen() {

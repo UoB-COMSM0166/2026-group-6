@@ -132,7 +132,7 @@ class Rope {
       let closestHit = null;
       let minDst = Infinity;
       for (let p of platforms) {
-         let hit = lineRectIntersect(x1, y1, x2, y2, p.x, p.y, p.w, p.h);
+         let hit = Physics.lineRectIntersect(x1, y1, x2, y2, p.x, p.y, p.w, p.h);
          if (hit) {
             let d = dist(x1, y1, hit.x, hit.y);
             if (d < minDst) { minDst = d; closestHit = hit; }
@@ -153,14 +153,15 @@ class Rope {
          let tempX = node.x; let tempY = node.y;
          node.x += vx; node.y += vy + 0.5;
          for (let p of platforms) {
-            if (pointRect(node.x, node.y, p.x, p.y, p.w, p.h)) { node.x = tempX; node.y = tempY; }
+            if (Physics.pointRect(node.x, node.y, p.x, p.y, p.w, p.h)) { node.x = tempX; node.y = tempY; }
          }
          node.oldx = tempX; node.oldy = tempY;
       }
 
       // 增加约束迭代次数，会让绳子的每一个节点都紧紧咬合
+      let iterations = GameConfig.Rope.STIFFNESS;
       // 极大减少因为重力导致的视觉拉伸
-      for (let k = 0; k < 16; k++) {
+      for (let k = 0; k < iterations; k++) {
          for (let i = 0; i < this.nodes.length - 1; i++) {
             let A = this.nodes[i]; let B = this.nodes[i + 1];
             let dx = B.x - A.x; let dy = B.y - A.y;

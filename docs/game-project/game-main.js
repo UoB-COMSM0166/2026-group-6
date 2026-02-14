@@ -1,10 +1,13 @@
 // 配置地图大小和角色大小
 const GAME_SCALE = 3; // 画面放大倍数
-const GRID_SIZE = 16; // 地图intgrid大小
+const GRID_SIZE = GameConfig.World.GRID_SIZE; // 地图intgrid大小
+const MAX_CANVAS_WIDTH = 1000;  // 画布最大不超过 1280
+const MAX_CANVAS_HEIGHT = 700;  // 画布最大不超过 720
+let isLoading = false;
 
 let ldtkData;
 let tilesetImage;
-const FIXED_LEVEL_INDEX = 4; //关卡编号 0-?
+const FIXED_LEVEL_INDEX = GameConfig.level.startLevel; //关卡编号 0-?
 
 // 游戏核心对象
 let player;
@@ -83,6 +86,10 @@ function draw() {
 
    if (gameStatus === "WIN") drawWinScreen();
    else if (gameStatus === "GAMEOVER") drawGameOverScreen();
+   if (player) {
+      fill(255);
+      text("HP: " + player.hp, 25, 10);
+   }
 }
 
 // UI
@@ -169,7 +176,7 @@ function drawUI() {
 
    // 底部总操作提示
    textAlign(CENTER); fill(150); textSize(12);
-   text("[SPACE] Jump   [Q/Z] Left Winch   [E/C] Right Winch", width / 2, height - 10);
+   text("[SPACE] Jump   [Q/Z] Left Winch   [E/C] Right Winch", width / 2, height - 16);
 }
 
 function drawWinScreen() {
@@ -230,7 +237,8 @@ function updateGameLogic() {
 
    // 胜负判定(乱写的)
    if (player.x > mapW - 16) gameStatus = "WIN";
-   if (player.y > mapH + 32) gameStatus = "GAMEOVER";
+   if (player.y > mapH + 32) player.die();
+   if (player.hp <= 0) player.die();
 }
 
 // 输入处理
