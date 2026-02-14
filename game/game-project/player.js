@@ -1,6 +1,6 @@
 class Player {
    constructor(x, y) {
-      this.hp = 20;
+      this.hp = GameConfig.Player.MAX_HP;
       // 初始位置 x,y是相对左上角的坐标
       this.x = x; this.y = y;
       // 玩家的长宽
@@ -15,13 +15,13 @@ class Player {
 
    update() {
       //移动速度
-      let moveForce = this.grounded ? 0.5 : 0.4;
+      let moveForce = this.grounded ? GameConfig.Player.SPEED : GameConfig.Player.SPEED * 0.7;
       if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.vx -= moveForce;
       if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) this.vx += moveForce;
       // 拉伸绳子速度
-      let climbSpeed = GRID_SIZE * 0.05;
+      let climbSpeed = GRID_SIZE * GameConfig.Player.CLIMB_SPEED;
       // player 拽绳子的力度（抵抗重力this.vy的作用）
-      let winchForce = 0.3;
+      let winchForce = GameConfig.Player.WINCH_FORCE;
 
       if (this.ropeL.state === "SWINGING") {
          if (keyIsDown(81)) {
@@ -47,7 +47,7 @@ class Player {
       // 调节横竖轴变化速度
       this.vx *= 0.85;
       // 自由落体速度（重力）
-      this.vy += 0.35;
+      this.vy += GameConfig.World.GRAVITY;
 
       this.ropeL.update(this); this.ropeR.update(this);
       this.ropeL.applyPhysics(this); this.ropeR.applyPhysics(this);
@@ -115,7 +115,7 @@ class Player {
    }
 
    jump() {
-      let jumpForce = -5;
+      let jumpForce = -1 * GameConfig.Player.JUMPFORCE;
       if (this.grounded) {
          this.vy = jumpForce;
       }
@@ -124,8 +124,23 @@ class Player {
          this.vy = jumpForce * 0.5;
          this.vx *= 1.2;
       }
-      
+
    }
+
+   die() {
+      gameStatus = "GAMEOVER";
+   }
+
+   // checkEnemyCollision() {
+   //    if (this.invulnerableTimer > 0) return;
+   //    for (let enemy of enemies) {
+   //       if (Math.abs(this.x - enemy.x) < (this.width / 2 + enemy.width / 2) &&
+   //          Math.abs(this.y - enemy.y) < (this.height / 2 + enemy.height / 2)) {
+   //          this.takeDamage(enemy);
+   //          break;
+   //       }
+   //    }
+   // }
 
    display() {
       noStroke(); fill(255); rect(this.x, this.y, this.w, this.h);

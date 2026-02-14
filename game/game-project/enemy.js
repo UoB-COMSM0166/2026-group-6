@@ -12,12 +12,12 @@ class Enemy {
 
       // 移动参数
       this.dir = 1;
-      this.speed = 0.5;
+      this.speed = GameConfig.Enemy.SPEED;
       this.vy = 0;
       this.grounded = false;
 
       // 跳跃力度
-      this.jumpForce = -3.5;
+      this.jumpForce = -1 * GameConfig.Enemy.JUMPFORCE;
 
       // 如果出生时卡在墙体里，就向上循环移动，直到没有重叠为止
       let safetyLoop = 100; // 防止死循环
@@ -93,7 +93,7 @@ class Enemy {
 
       // maxDropY: 允许下坠的最大深度 (这里设为 3 个格子)
       let feetY = this.y + this.h;
-      let maxDropY = feetY + GRID_SIZE * 3;
+      let maxDropY = feetY + GRID_SIZE * GameConfig.Enemy.DROP_DEPTH_TILES;
 
       let safeToDrop = false; // 默认为"不安全/悬崖"
 

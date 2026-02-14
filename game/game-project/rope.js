@@ -159,8 +159,9 @@ class Rope {
       }
 
       // 增加约束迭代次数，会让绳子的每一个节点都紧紧咬合
+      let iterations = GameConfig.Rope.STIFFNESS;
       // 极大减少因为重力导致的视觉拉伸
-      for (let k = 0; k < 16; k++) {
+      for (let k = 0; k < iterations; k++) {
          for (let i = 0; i < this.nodes.length - 1; i++) {
             let A = this.nodes[i]; let B = this.nodes[i + 1];
             let dx = B.x - A.x; let dy = B.y - A.y;
