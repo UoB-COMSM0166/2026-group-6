@@ -127,7 +127,7 @@ class Rope {
       }
    }
 
-   // rope 和 platform 的接触
+   // rope 和 solidplatforms 的接触
    rayCastPlatforms(x1, y1, x2, y2) {
       let closestHit = null;
       let minDst = Infinity;

@@ -26,8 +26,10 @@ STRAPLINE. Add an exciting one sentence description of your game here.
 
 IMAGE. Add an image of your game here, keep this updated with a snapshot of your latest development.
 
-<style>.startgame{font-size:25px; display:block;width:fit-content;margin:10px auto;}</style>
-<a href = "https://uob-comsm0166.github.io/2026-group-6/" class="startgame"> Start Game </a>
+<div align="center">
+  <a href = "https://uob-comsm0166.github.io/2026-group-6/"> Start Game </a>
+</div>
+
 
 LINK. Add a link here to your deployed game, you can also make the image above link to your game if you wish. Your game lives in the [/docs](/docs) folder, and is published using Github pages. 
 

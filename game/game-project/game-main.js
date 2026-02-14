@@ -14,6 +14,7 @@ let player;
 let platforms = [];
 let enemies = [];
 let particles = [];
+let solidPlatforms = [];
 let camX = 0;
 let camY = 0;
 let gameStatus = "PLAY";
@@ -62,7 +63,7 @@ function draw() {
    scale(GAME_SCALE);
    translate(-camX, -camY);
 
-   // 绘制 LDtk 视觉图层
+   // 绘制 LDtk 视觉图层（所有collisions）
    let layers = level.layerInstances;
    for (let i = layers.length - 1; i >= 0; i--) {
       let layer = layers[i];
@@ -191,6 +192,34 @@ function drawGameOverScreen() {
    textSize(20); text("Press R to Restart", width / 2, height / 2 + 50);
 }
 
+function drawLayerTiles(layer) {
+   let gridSize = layer.__gridSize;
+   let allTiles = [];
+   if (layer.autoLayerTiles) allTiles = allTiles.concat(layer.autoLayerTiles);
+   if (layer.gridTiles) allTiles = allTiles.concat(layer.gridTiles);
+
+   for (let tile of allTiles) {
+      let destX = tile.px[0] + layer.__pxTotalOffsetX;
+      let destY = tile.px[1] + layer.__pxTotalOffsetY;
+      let srcX = tile.src[0];
+      let srcY = tile.src[1];
+
+      if (tile.f === 0) {
+         image(tilesetImage, destX, destY, gridSize, gridSize, srcX, srcY, gridSize, gridSize);
+      } else {
+         push();
+         translate(destX + gridSize / 2, destY + gridSize / 2);
+         scale((tile.f === 1 || tile.f === 3) ? -1 : 1, (tile.f === 2 || tile.f === 3) ? -1 : 1);
+         image(tilesetImage, -gridSize / 2, -gridSize / 2, gridSize, gridSize, srcX, srcY, gridSize, gridSize);
+         pop();
+      }
+   }
+}
+
+function hexToRgb(hex) {
+   return color(hex);
+}
+
 //  逻辑更新
 
 function updateGameLogic() {
@@ -221,7 +250,7 @@ function updateGameLogic() {
             let tip = rope.getTip(player);
             if (dist(tip.x, tip.y, e.x + e.w / 2, e.y + e.h / 2) < 10 && !e.purified) {
                e.takeDamage(1);
-               spawnParticles(e.x + e.w / 2, e.y + e.h / 2, "HIT");
+               Particle.spawn(e.x + e.w / 2, e.y + e.h / 2, "HIT");
                if (rope.state === "EXTENDING") rope.state = "RETRACTING";
             }
          }
@@ -265,16 +294,4 @@ function keyPressed() {
    if (gameStatus === "PLAY" && (key === 'r' || key === 'R')) {
       loadLevel(FIXED_LEVEL_INDEX);
    }
-}
-
-// 粒子效果
-class Particle {
-   constructor(x, y, t) { this.x = x; this.y = y; this.vx = random(-2, 2); this.vy = random(-2, 2); this.life = 255; }
-   update() { this.x += this.vx; this.y += this.vy; this.life -= 15; }
-   display() { fill(0, 255, 255, this.life); noStroke(); ellipse(this.x, this.y, 2, 2); }
-}
-
-// 粒子生成
-function spawnParticles(x, y, t) {
-   for (let i = 0; i < 5; i++) particles.push(new Particle(x, y, t));
 }
