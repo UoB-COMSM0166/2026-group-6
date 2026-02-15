@@ -1,49 +1,49 @@
-// ========================================
-//  p5.js 入口 — 仅负责生命周期转发
-// ========================================
+// =============================================
+//  p5.js 入口 — 仅转发生命周期, 零逻辑
+// =============================================
 
-let game;
-let ldtkData, tilesetImage;
+let resources;
+let gm;  // GameManager
 
 function preload() {
-   ldtkData = loadJSON('map/map-main.ldtk');
-   tilesetImage = loadImage('resources/images/map_image/test_allgrid_8px.png');
+   resources = new ResourceManager();
+   resources.preload();
 }
 
 function setup() {
    let canvas = createCanvas(1300, 750);
 
-   // 画布样式
    canvas.style('display', 'block');
-   canvas.style('margin', 'auto');  //让画面水平居中
+   canvas.style('margin', 'auto');
    canvas.style('position', 'absolute');
    canvas.style('top', '50%');
    canvas.style('left', '50%');
    canvas.style('transform', 'translate(-50%, -50%)');
-   // 给网页加深色背景
-   document.body.style.backgroundColor = "#1a1a1a"; 
-   document.body.style.margin = "0";  //消除网页边缘的空白
-   document.body.style.overflow = "hidden";  // 防止出现滚动条
+
+   document.body.style.backgroundColor = "#1a1a1a";
+   document.body.style.margin = "0";
+   document.body.style.overflow = "hidden";
 
    canvas.elt.oncontextmenu = () => false;
    noSmooth();
 
-   if (ldtkData) {
-      game = new Game(ldtkData, tilesetImage);
-      game.loadLevel();
+   if (resources.ldtkData) {
+      resources.markLoaded();
+      gm = new GameManager(resources);
+      gm.loadLevel();
    }
 }
 
 function draw() {
-   if (!game) return;
-   game.update();
-   game.render();
+   if (!gm) return;
+   gm.update();
+   gm.render();
 }
 
 function mousePressed() {
-   if (game) game.onMousePressed(mouseButton);
+   if (gm) gm.onMousePressed(mouseButton);
 }
 
 function keyPressed() {
-   if (game) game.onKeyPressed(key);
+   if (gm) gm.onKeyPressed(key);
 }

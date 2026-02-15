@@ -1,51 +1,46 @@
 class Rope {
    constructor(ropeColor) {
-      const GRID = GameConfig.World.GRID_SIZE;
+      const G = GameConfig.World.GRID_SIZE;
 
       this.state = "IDLE";    // IDLE | EXTENDING | RETRACTING | SWINGING
       this.len = 0;
       this.nodes = [];
-      this.nodeDist = GRID / 2;
-      this.maxLen = GRID * 5;
-      this.speed = GRID * 0.8;
+      this.nodeDist = G / 2;
+      this.maxLen = G * 5;
+      this.speed = G * 0.8;
       this.angle = 0;
       this.anchor = { x: 0, y: 0 };
       this.color = ropeColor;
-      this.material = 'SOFT';  // SOFT | HARD
+      this.material = 'SOFT';
       this.currentTip = { x: 0, y: 0 };
    }
 
-   // ========== 材质切换 ==========
+   // ====== 材质 ======
 
    toggleMaterial(player) {
       this.material = (this.material === 'SOFT') ? 'HARD' : 'SOFT';
       if (this.state === "SWINGING") {
-         if (this.material === 'HARD') {
-            this._generateStraightNodes(player);
-         } else {
-            this.nodeDist = GameConfig.World.GRID_SIZE / 2;
-         }
+         if (this.material === 'HARD') this._genStraightNodes(player);
+         else this.nodeDist = GameConfig.World.GRID_SIZE / 2;
       }
    }
 
-   // ========== 绳长调节 ==========
+   // ====== 绳长 ======
 
-   /** 收缩/释放绳子长度，受 maxLen 约束 */
    changeLength(amount) {
       if (this.state !== "SWINGING") return;
-      const GRID = GameConfig.World.GRID_SIZE;
+      const G = GameConfig.World.GRID_SIZE;
+      this.len = constrain(this.len + amount, G, this.maxLen);
 
-      this.len += amount;
-      this.len = constrain(this.len, GRID, this.maxLen);
-
-      // 软绳：根据锁定的长度重新计算节点间距
       if (this.material === 'SOFT' && this.nodes.length > 0) {
-         this.nodeDist = this.len / this.nodes.length;
-         this.nodeDist = constrain(this.nodeDist, GRID * 0.1, GRID);
+         this.nodeDist = constrain(
+            this.len / this.nodes.length,
+            G * 0.1, G
+         );
       }
    }
 
-   // ========== 发射与收回 ==========
+   // ====== 发射/收回 ======
 
    fire(px, py, tx, ty) {
       if (this.state === "SWINGING") {
@@ -61,40 +56,31 @@ class Rope {
       this.currentTip = { x: px, y: py };
    }
 
-   // ========== 主更新 ==========
+   // ====== 主更新 (接收 LevelManager) ======
 
-   update(player, solidPlatforms) {
-      if (this.state === "EXTENDING") {
-         this._updateExtending(player, solidPlatforms);
-      } else if (this.state === "RETRACTING") {
-         this._updateRetracting();
-      } else if (this.state === "SWINGING") {
-         if (this.material === 'SOFT') {
-            this._simulateSoftPhysics(player, solidPlatforms);
-         } else {
-            this._simulateHardPhysics(player);
-         }
+   update(player, level) {
+      if (this.state === "EXTENDING") this._updateExtend(player, level);
+      else if (this.state === "RETRACTING") this._updateRetract();
+      else if (this.state === "SWINGING") {
+         if (this.material === 'SOFT') this._simSoft(player, level);
+         else this._simHard(player);
       }
    }
 
-   // ========== 物理约束（作用于玩家） ==========
+   // ====== 物理约束 (作用于玩家) ======
 
    applyPhysics(player) {
       if (this.state !== "SWINGING") return;
 
-      let currentDist = dist(player.cx(), player.cy(), this.anchor.x, this.anchor.y);
+      let curDist = dist(player.cx(), player.cy(), this.anchor.x, this.anchor.y);
 
-      // 超出绳长时拉回玩家
-      if (currentDist > this.len) {
-         let angle = atan2(player.cy() - this.anchor.y, player.cx() - this.anchor.x);
-         let clampDist = this.len;
-         let targetX = this.anchor.x + cos(angle) * clampDist;
-         let targetY = this.anchor.y + sin(angle) * clampDist;
-
-         let pullX = (targetX - player.cx()) * 0.5;
-         let pullY = (targetY - player.cy()) * 0.5;
-         player.vx += pullX;
-         player.vy += pullY;
+      // 超出绳长 → 拉回
+      if (curDist > this.len) {
+         let a = atan2(player.cy() - this.anchor.y, player.cx() - this.anchor.x);
+         let tX = this.anchor.x + cos(a) * this.len;
+         let tY = this.anchor.y + sin(a) * this.len;
+         player.vx += (tX - player.cx()) * 0.5;
+         player.vy += (tY - player.cy()) * 0.5;
          player.vx *= 0.9;
          player.vy *= 0.9;
       }
@@ -102,214 +88,175 @@ class Rope {
       // 绞盘辅助力
       if (this.material === 'SOFT') {
          if (this.nodes.length >= 2) {
-            let second = this.nodes[this.nodes.length - 2];
-            let d = dist(player.cx(), player.cy(), second.x, second.y);
+            let sec = this.nodes[this.nodes.length - 2];
+            let d = dist(player.cx(), player.cy(), sec.x, sec.y);
             if (d > this.nodeDist) {
-               let angle = atan2(second.y - player.cy(), second.x - player.cx());
-               let force = (d - this.nodeDist) * 0.2;
-               player.vx += cos(angle) * force;
-               player.vy += sin(angle) * force;
+               let a = atan2(sec.y - player.cy(), sec.x - player.cx());
+               let f = (d - this.nodeDist) * 0.2;
+               player.vx += cos(a) * f;
+               player.vy += sin(a) * f;
             }
          }
       } else {
-         // 硬绳绞盘
-         let diff = currentDist - this.len;
+         let diff = curDist - this.len;
          if (abs(diff) > 1) {
-            let angle = atan2(this.anchor.y - player.cy(), this.anchor.x - player.cx());
-            let force = diff * 0.2;
-            player.vx += cos(angle) * force;
-            player.vy += sin(angle) * force;
+            let a = atan2(this.anchor.y - player.cy(), this.anchor.x - player.cx());
+            let f = diff * 0.2;
+            player.vx += cos(a) * f;
+            player.vy += sin(a) * f;
             player.vx *= 0.9;
             player.vy *= 0.9;
          }
       }
    }
 
-   // ========== 查询方法 ==========
+   // ====== 查询 ======
 
    getTip(player) {
       return (this.state === "SWINGING") ? this.anchor : this.currentTip;
    }
 
-   /** 硬绳的碰撞盒（可被玩家当作固体踩踏） */
    getCollisionBoxes() {
       if (this.state !== "SWINGING" || this.material !== 'HARD') return [];
-      const GRID = GameConfig.World.GRID_SIZE;
-      let boxSize = GRID / 2;
-      let offset = boxSize / 2;
-      return this.nodes.map(node => ({
-         x: node.x - offset,
-         y: node.y - offset,
-         w: boxSize,
-         h: boxSize,
-      }));
+      const G = GameConfig.World.GRID_SIZE;
+      let s = G / 2, off = s / 2;
+      return this.nodes.map(n => ({ x: n.x - off, y: n.y - off, w: s, h: s }));
    }
 
-   // ========== 渲染 ==========
+   // ====== 渲染 ======
 
    display(player) {
       if (this.state === "IDLE") return;
-      const GRID = GameConfig.World.GRID_SIZE;
-      let strokeW = (this.material === 'HARD') ? max(2, GRID / 5) : max(1, GRID / 6);
-
-      stroke(this.color);
-      strokeWeight(strokeW);
-      noFill();
+      const G = GameConfig.World.GRID_SIZE;
+      let sw = (this.material === 'HARD') ? max(2, G / 5) : max(1, G / 6);
+      stroke(this.color); strokeWeight(sw); noFill();
 
       if (this.nodes.length > 0) {
          beginShape();
-         for (let node of this.nodes) vertex(node.x, node.y);
+         for (let n of this.nodes) vertex(n.x, n.y);
          endShape();
-
-         noStroke();
-         fill(this.color);
-         ellipse(this.anchor.x, this.anchor.y, GRID / 3, GRID / 3);
+         noStroke(); fill(this.color);
+         ellipse(this.anchor.x, this.anchor.y, G / 3, G / 3);
       } else {
          line(player.cx(), player.cy(), this.currentTip.x, this.currentTip.y);
       }
    }
 
-   // ========== 内部方法 ==========
+   // ====== 内部 ======
 
-   _updateExtending(player, solidPlatforms) {
+   _updateExtend(player, level) {
       let moveDist = this.speed;
       let reachedMax = false;
-
       if (this.len + moveDist >= this.maxLen) {
          moveDist = this.maxLen - this.len;
          reachedMax = true;
       }
 
-      let nextX = this.currentTip.x + cos(this.angle) * moveDist;
-      let nextY = this.currentTip.y + sin(this.angle) * moveDist;
+      let nx = this.currentTip.x + cos(this.angle) * moveDist;
+      let ny = this.currentTip.y + sin(this.angle) * moveDist;
 
-      let hitResult = this._rayCastPlatforms(this.currentTip.x, this.currentTip.y, nextX, nextY, solidPlatforms);
+      // ★ 使用 LevelManager 射线检测
+      let hit = level.rayCast(this.currentTip.x, this.currentTip.y, nx, ny);
 
-      if (hitResult) {
+      if (hit) {
          this.state = "SWINGING";
-         this.anchor = { x: hitResult.x, y: hitResult.y };
-         let distTotal = dist(player.cx(), player.cy(), this.anchor.x, this.anchor.y);
-         this.len = min(distTotal, this.maxLen);
-
-         if (this.material === 'SOFT') {
-            this._initSoftNodes(player, distTotal);
-         } else {
-            this._generateStraightNodes(player);
-         }
+         this.anchor = { x: hit.x, y: hit.y };
+         let d = dist(player.cx(), player.cy(), hit.x, hit.y);
+         this.len = min(d, this.maxLen);
+         if (this.material === 'SOFT') this._initSoftNodes(player, d);
+         else this._genStraightNodes(player);
       } else {
-         this.currentTip.x = nextX;
-         this.currentTip.y = nextY;
+         this.currentTip.x = nx;
+         this.currentTip.y = ny;
          this.len += moveDist;
          if (reachedMax) this.state = "RETRACTING";
       }
    }
 
-   _updateRetracting() {
+   _updateRetract() {
       this.len -= this.speed * 2;
-      if (this.len <= 0) {
-         this.len = 0;
-         this.state = "IDLE";
-      }
+      if (this.len <= 0) { this.len = 0; this.state = "IDLE"; }
    }
 
    _initSoftNodes(player, distTotal) {
-      const GRID = GameConfig.World.GRID_SIZE;
-      this.nodeDist = GRID / 2;
-      let totalNodes = max(2, floor(distTotal / this.nodeDist));
+      const G = GameConfig.World.GRID_SIZE;
+      this.nodeDist = G / 2;
+      let total = max(2, floor(distTotal / this.nodeDist));
       this.nodes = [];
-      for (let i = 0; i < totalNodes; i++) {
-         let t = i / (totalNodes - 1);
+      for (let i = 0; i < total; i++) {
+         let t = i / (total - 1);
          let nx = lerp(this.anchor.x, player.cx(), t);
          let ny = lerp(this.anchor.y, player.cy(), t);
          this.nodes.push({ x: nx, y: ny, oldx: nx, oldy: ny });
       }
    }
 
-   _generateStraightNodes(player) {
-      const GRID = GameConfig.World.GRID_SIZE;
+   _genStraightNodes(player) {
+      const G = GameConfig.World.GRID_SIZE;
       let pX = player.cx(), pY = player.cy();
-      let distTotal = dist(pX, pY, this.anchor.x, this.anchor.y);
-      this.nodeDist = GRID / 2;
-      let totalNodes = max(2, floor(distTotal / this.nodeDist));
+      let d = dist(pX, pY, this.anchor.x, this.anchor.y);
+      this.nodeDist = G / 2;
+      let total = max(2, floor(d / this.nodeDist));
       this.nodes = [];
-      for (let i = 0; i < totalNodes; i++) {
-         let t = i / (totalNodes - 1);
+      for (let i = 0; i < total; i++) {
+         let t = i / (total - 1);
          let nx = lerp(this.anchor.x, pX, t);
          let ny = lerp(this.anchor.y, pY, t);
          this.nodes.push({ x: nx, y: ny, oldx: nx, oldy: ny });
       }
-      this.len = distTotal;
+      this.len = d;
    }
 
-   _rayCastPlatforms(x1, y1, x2, y2, solidPlatforms) {
-      let closestHit = null;
-      let minDst = Infinity;
-      for (let p of solidPlatforms) {
-         let hit = Physics.lineRectIntersect(x1, y1, x2, y2, p.x, p.y, p.w, p.h);
-         if (hit) {
-            let d = dist(x1, y1, hit.x, hit.y);
-            if (d < minDst) { minDst = d; closestHit = hit; }
-         }
-      }
-      return closestHit;
-   }
-
-   _simulateSoftPhysics(player, solidPlatforms) {
+   _simSoft(player, level) {
       if (this.nodes.length < 2) return;
 
-      // 锚定首尾节点
       this.nodes[0].x = this.anchor.x;
       this.nodes[0].y = this.anchor.y;
-      let lastNode = this.nodes[this.nodes.length - 1];
-      lastNode.x = player.cx();
-      lastNode.y = player.cy();
+      let last = this.nodes[this.nodes.length - 1];
+      last.x = player.cx();
+      last.y = player.cy();
 
-      // Verlet积分（中间节点）
+      // Verlet 积分
       for (let i = 1; i < this.nodes.length - 1; i++) {
-         let node = this.nodes[i];
-         let vx = (node.x - node.oldx) * 0.98;
-         let vy = (node.y - node.oldy) * 0.98;
-         let tempX = node.x, tempY = node.y;
+         let n = this.nodes[i];
+         let vx = (n.x - n.oldx) * 0.98;
+         let vy = (n.y - n.oldy) * 0.98;
+         let tx = n.x, ty = n.y;
+         n.x += vx;
+         n.y += vy + 0.5;
 
-         node.x += vx;
-         node.y += vy + 0.5;
-
-         // 节点与固体碰撞
-         for (let p of solidPlatforms) {
-            if (Physics.pointRect(node.x, node.y, p.x, p.y, p.w, p.h)) {
-               node.x = tempX;
-               node.y = tempY;
-            }
+         // ★ 使用 LevelManager 点碰撞检测
+         if (level.isPointSolid(n.x, n.y)) {
+            n.x = tx;
+            n.y = ty;
          }
-         node.oldx = tempX;
-         node.oldy = tempY;
+         n.oldx = tx;
+         n.oldy = ty;
       }
 
-      // 距离约束迭代
-      let iterations = GameConfig.Rope.STIFFNESS;
-      for (let k = 0; k < iterations; k++) {
+      // 距离约束
+      let iter = GameConfig.Rope.STIFFNESS;
+      for (let k = 0; k < iter; k++) {
          for (let i = 0; i < this.nodes.length - 1; i++) {
             let A = this.nodes[i], B = this.nodes[i + 1];
             let dx = B.x - A.x, dy = B.y - A.y;
-            let dst = sqrt(dx * dx + dy * dy);
-            if (dst === 0) continue;
-            let diff = this.nodeDist - dst;
-            let offX = (dx * diff / dst) * 0.5;
-            let offY = (dy * diff / dst) * 0.5;
-            if (i !== 0) { A.x -= offX; A.y -= offY; }
-            if (i + 1 !== this.nodes.length - 1) { B.x += offX; B.y += offY; }
+            let d = sqrt(dx * dx + dy * dy);
+            if (d === 0) continue;
+            let diff = this.nodeDist - d;
+            let ox = (dx * diff / d) * 0.5;
+            let oy = (dy * diff / d) * 0.5;
+            if (i !== 0) { A.x -= ox; A.y -= oy; }
+            if (i + 1 !== this.nodes.length - 1) { B.x += ox; B.y += oy; }
          }
       }
    }
 
-   _simulateHardPhysics(player) {
+   _simHard(player) {
       let pX = player.cx(), pY = player.cy();
-      let totalNodes = this.nodes.length;
-      if (totalNodes < 2) return;
-
-      // 硬绳：线性插值到目标位置
-      for (let i = 0; i < totalNodes; i++) {
-         let t = i / (totalNodes - 1);
+      let total = this.nodes.length;
+      if (total < 2) return;
+      for (let i = 0; i < total; i++) {
+         let t = i / (total - 1);
          this.nodes[i].x = lerp(this.anchor.x, pX, t);
          this.nodes[i].y = lerp(this.anchor.y, pY, t);
       }

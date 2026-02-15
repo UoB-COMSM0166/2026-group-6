@@ -1,6 +1,6 @@
 class Player {
    constructor(x, y) {
-      const GRID = GameConfig.World.GRID_SIZE;
+      const G = GameConfig.World.GRID_SIZE;
 
       this.hp = GameConfig.Player.MAX_HP;
       this.invulnerableTimer = 0;
@@ -8,8 +8,8 @@ class Player {
 
       this.x = x;
       this.y = y;
-      this.w = GRID;
-      this.h = GRID;
+      this.w = G;
+      this.h = G;
       this.vx = 0;
       this.vy = 0;
       this.grounded = false;
@@ -21,134 +21,138 @@ class Player {
    cx() { return this.x + this.w / 2; }
    cy() { return this.y + this.h / 2; }
 
-   // ========== 主更新 ==========
+   // ====== 主更新 ======
 
-   update(game) {
-      this.updateTimers();
-      this.handleMovementInput();
-      this.handleRopeInput();
-      this.applyPhysics(game);
-      this.resolveWorldCollisions(game.solidPlatforms);
-      this.checkEnemyCollision(game);
+   /**
+    * @param {GameManager} gm  游戏管理器引用 (访问 gm.level, gm.enemies)
+    */
+   update(gm) {
+      this._tickTimers();
+      this._handleMove();
+      this._handleWinch();
+      this._applyPhysics(gm.level);
+      this._resolveWorld(gm.level);
+      this._checkEnemyHit(gm);
    }
 
-   // ========== 输入处理 ==========
+   // ====== 输入 ======
 
-   updateTimers() {
+   _tickTimers() {
       if (this.invulnerableTimer > 0) this.invulnerableTimer--;
       if (this.knockTimer > 0) this.knockTimer--;
    }
 
-   handleMovementInput() {
-      let moveForce = this.grounded ? GameConfig.Player.SPEED : GameConfig.Player.SPEED * 0.7;
-      if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.vx -= moveForce;
-      if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) this.vx += moveForce;
+   _handleMove() {
+      let f = this.grounded ? GameConfig.Player.SPEED : GameConfig.Player.SPEED * 0.7;
+      if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.vx -= f;
+      if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) this.vx += f;
    }
 
-   handleRopeInput() {
-      const GRID = GameConfig.World.GRID_SIZE;
-      let climbSpeed = GRID * GameConfig.Player.CLIMB_SPEED;
-      let winchForce = GameConfig.Player.WINCH_FORCE;
+   _handleWinch() {
+      const G = GameConfig.World.GRID_SIZE;
+      let cs = G * GameConfig.Player.CLIMB_SPEED;
+      let wf = GameConfig.Player.WINCH_FORCE;
 
-      // 左绳绞盘: Q 收缩, Z 释放
       if (this.ropeL.state === "SWINGING") {
          if (keyIsDown(81)) { // Q
-            this.ropeL.changeLength(-climbSpeed);
-            let targetNode = this.ropeL.nodes[0] || this.ropeL.anchor;
-            let angle = atan2(targetNode.y - this.cy(), targetNode.x - this.cx());
-            this.vx += cos(angle) * winchForce;
-            this.vy += sin(angle) * winchForce;
+            this.ropeL.changeLength(-cs);
+            let tgt = this.ropeL.nodes[0] || this.ropeL.anchor;
+            let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
+            this.vx += cos(a) * wf;
+            this.vy += sin(a) * wf;
          }
-         if (keyIsDown(90)) this.ropeL.changeLength(climbSpeed); // Z
+         if (keyIsDown(90)) this.ropeL.changeLength(cs); // Z
       }
 
-      // 右绳绞盘: E 收缩, C 释放
       if (this.ropeR.state === "SWINGING") {
          if (keyIsDown(69)) { // E
-            this.ropeR.changeLength(-climbSpeed);
-            let targetNode = this.ropeR.nodes[0] || this.ropeR.anchor;
-            let angle = atan2(targetNode.y - this.cy(), targetNode.x - this.cx());
-            this.vx += cos(angle) * winchForce;
-            this.vy += sin(angle) * winchForce;
+            this.ropeR.changeLength(-cs);
+            let tgt = this.ropeR.nodes[0] || this.ropeR.anchor;
+            let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
+            this.vx += cos(a) * wf;
+            this.vy += sin(a) * wf;
          }
-         if (keyIsDown(67)) this.ropeR.changeLength(climbSpeed); // C
+         if (keyIsDown(67)) this.ropeR.changeLength(cs); // C
       }
    }
 
-   // ========== 物理与碰撞 ==========
+   // ====== 物理 ======
 
-   applyPhysics(game) {
+   /**
+    * @param {LevelManager} level
+    */
+   _applyPhysics(level) {
       this.vx *= 0.85;
       this.vy += GameConfig.World.GRAVITY;
 
-      // 绳索物理更新
-      this.ropeL.update(this, game.solidPlatforms);
-      this.ropeR.update(this, game.solidPlatforms);
+      // 绳索物理 (传入 LevelManager)
+      this.ropeL.update(this, level);
+      this.ropeR.update(this, level);
       this.ropeL.applyPhysics(this);
       this.ropeR.applyPhysics(this);
    }
 
-   resolveWorldCollisions(solidPlatforms) {
-      // 构建碰撞体列表（含硬绳碰撞盒）
+   /**
+    * @param {LevelManager} level
+    */
+   _resolveWorld(level) {
+      // 收集绳索碰撞盒
       let heldRopes = [];
       if (this.ropeL.state === "SWINGING" && this.ropeL.material === 'HARD') heldRopes.push(this.ropeL);
       if (this.ropeR.state === "SWINGING" && this.ropeR.material === 'HARD') heldRopes.push(this.ropeR);
 
-      // X轴碰撞
       this.x += this.vx;
-      this.resolveCollisions(true, solidPlatforms, heldRopes);
+      this._resolve(true, level, heldRopes);
 
-      // Y轴碰撞
       this.y += this.vy;
-      this.resolveCollisions(false, solidPlatforms, heldRopes);
+      this._resolve(false, level, heldRopes);
    }
 
    /**
-    * AABB碰撞检测与分离
-    * @param {boolean} onXAxis - 当前处理的是X轴还是Y轴
-    * @param {Array} solidPlatforms - 固体平台列表
-    * @param {Array} ignoredRopes - 被持有的绳子（不作为碰撞体）
+    * AABB 碰撞分离
+    *
+    * ★ 核心优化: 使用 level.getSolidTilesInRect() 替代遍历全部 solidPlatforms
+    *   之前: for (let p of solidPlatforms) → O(地图格子总数)
+    *   现在: 只检测玩家包围盒附近 ~9-16 格 → O(1)
     */
-   resolveCollisions(onXAxis, solidPlatforms, ignoredRopes = []) {
+   _resolve(onX, level, ignoredRopes) {
       this.grounded = false;
 
-      // 收集所有碰撞体：平台 + 硬绳碰撞盒
-      let allColliders = [...solidPlatforms];
+      // ★ 空间查询: 获取玩家附近的固体 Tile
+      let colliders = level.getSolidTilesInRect(this.x, this.y, this.w, this.h, 1);
+
+      // 追加硬绳碰撞盒
       if (this.ropeL.material === 'HARD' && this.ropeL.state === 'SWINGING' && !ignoredRopes.includes(this.ropeL)) {
-         allColliders = allColliders.concat(this.ropeL.getCollisionBoxes());
+         colliders = colliders.concat(this.ropeL.getCollisionBoxes());
       }
       if (this.ropeR.material === 'HARD' && this.ropeR.state === 'SWINGING' && !ignoredRopes.includes(this.ropeR)) {
-         allColliders = allColliders.concat(this.ropeR.getCollisionBoxes());
+         colliders = colliders.concat(this.ropeR.getCollisionBoxes());
       }
 
-      // AABB碰撞分离
-      for (let p of allColliders) {
+      // AABB 分离
+      for (let p of colliders) {
          if (!Physics.rectIntersect(this.x, this.y, this.w, this.h, p.x, p.y, p.w, p.h)) continue;
 
-         let playerHalfW = this.w / 2, playerHalfH = this.h / 2;
-         let platHalfW = p.w / 2, platHalfH = p.h / 2;
+         let phW = this.w / 2, phH = this.h / 2;
+         let ppW = p.w / 2,    ppH = p.h / 2;
+         let dx = (this.x + phW) - (p.x + ppW);
+         let dy = (this.y + phH) - (p.y + ppH);
+         let oX = (phW + ppW) - abs(dx);
+         let oY = (phH + ppH) - abs(dy);
 
-         let dx = (this.x + playerHalfW) - (p.x + platHalfW);
-         let dy = (this.y + playerHalfH) - (p.y + platHalfH);
+         if (oX <= 0 || oY <= 0) continue;
 
-         let overlapX = (playerHalfW + platHalfW) - abs(dx);
-         let overlapY = (playerHalfH + platHalfH) - abs(dy);
-
-         if (overlapX <= 0 || overlapY <= 0) continue;
-
-         if (overlapX < overlapY) {
-            // 侧面碰撞
-            if (onXAxis) {
-               this.x += (dx > 0) ? overlapX : -overlapX;
+         if (oX < oY) {
+            if (onX) {
+               this.x += (dx > 0) ? oX : -oX;
                this.vx = 0;
             }
          } else {
-            // 垂直碰撞
-            if (!onXAxis) {
+            if (!onX) {
                if (dy > 0) {
-                  this.y += overlapY; // 撞头
+                  this.y += oY;
                } else {
-                  this.y -= overlapY; // 落地
+                  this.y -= oY;
                   this.grounded = true;
                }
                this.vy = 0;
@@ -156,10 +160,19 @@ class Player {
          }
       }
 
-      // 额外着地检测（站立时）
-      if (!onXAxis) {
+      // 额外着地检测 (站立时)
+      if (!onX) {
          this.grounded = false;
-         for (let p of allColliders) {
+         // ★ 只查脚底下方的一排格子
+         let footColliders = level.getSolidTilesInRect(this.x, this.y + this.h - 2, this.w, 8, 0);
+         // 追加硬绳碰撞盒
+         if (this.ropeL.material === 'HARD' && this.ropeL.state === 'SWINGING' && !ignoredRopes.includes(this.ropeL)) {
+            footColliders = footColliders.concat(this.ropeL.getCollisionBoxes());
+         }
+         if (this.ropeR.material === 'HARD' && this.ropeR.state === 'SWINGING' && !ignoredRopes.includes(this.ropeR)) {
+            footColliders = footColliders.concat(this.ropeR.getCollisionBoxes());
+         }
+         for (let p of footColliders) {
             if (this.x + this.w > p.x + 2 && this.x < p.x + p.w - 2 &&
                this.y + this.h >= p.y - 1 && this.y + this.h <= p.y + 5) {
                this.grounded = true;
@@ -169,32 +182,29 @@ class Player {
       }
    }
 
-   // ========== 敌人碰撞 ==========
+   // ====== 敌人碰撞 ======
 
-   checkEnemyCollision(game) {
+   _checkEnemyHit(gm) {
       if (this.invulnerableTimer > 0) return;
-      for (let enemy of game.enemies) {
-         if (Physics.rectIntersect(this.x, this.y, this.w, this.h, enemy.x, enemy.y, enemy.w, enemy.h)) {
-            this.beDamaged(enemy, game);
+      for (let e of gm.enemies) {
+         if (Physics.rectIntersect(this.x, this.y, this.w, this.h, e.x, e.y, e.w, e.h)) {
+            this._takeDamage(e, gm);
             break;
          }
       }
    }
 
-   beDamaged(enemy, game) {
+   _takeDamage(enemy, gm) {
       this.hp -= enemy.damage;
-      if (this.hp <= 0) {
-         this.die(game);
-         return;
-      }
+      if (this.hp <= 0) { this.die(gm); return; }
       this.invulnerableTimer = GameConfig.Player.InvulInterval;
       this.knockTimer = GameConfig.Player.KnockInterval;
-      let pushDir = (this.x < enemy.x) ? -1 : 1;
-      this.vx = pushDir * 3;
+      let dir = (this.x < enemy.x) ? -1 : 1;
+      this.vx = dir * 3;
       this.vy = -2;
    }
 
-   // ========== 动作 ==========
+   // ====== 动作 ======
 
    fireRope(side, tx, ty) {
       if (side === "LEFT") this.ropeL.fire(this.cx(), this.cy(), tx, ty);
@@ -202,42 +212,35 @@ class Player {
    }
 
    jump() {
-      let jumpForce = -1 * GameConfig.Player.JUMPFORCE;
+      let jf = -GameConfig.Player.JUMPFORCE;
       if (this.grounded) {
-         this.vy = jumpForce;
+         this.vy = jf;
       } else if (this.ropeL.state === "SWINGING" || this.ropeR.state === "SWINGING") {
-         // 空中摇摆时跳跃力减弱
-         this.vy = jumpForce * 0.3;
+         this.vy = jf * 0.5;
          this.vx *= 1.2;
       }
    }
 
-   die(game) {
-      game.status = "GAMEOVER";
+   die(gm) {
+      gm.status = "GAMEOVER";
       this.invulnerableTimer = 0;
       this.knockTimer = 0;
    }
 
-   // ========== 渲染 ==========
+   // ====== 渲染 ======
 
    display(camera, scale) {
-      const GRID = GameConfig.World.GRID_SIZE;
+      const G = GameConfig.World.GRID_SIZE;
       noStroke();
-
-      // 受伤闪红
       fill(this.knockTimer > 0 ? color(255, 100, 100) : 255);
       rect(this.x, this.y, this.w, this.h);
 
       // 眼睛跟随鼠标
       fill(0);
-      let worldMouse = camera.screenToWorld(mouseX, mouseY, scale);
-      let angle = atan2(worldMouse.y - this.cy(), worldMouse.x - this.cx());
-      let eyeOffset = GRID * 0.3;
-      let eyeSize = max(1, GRID * 0.25);
-      rect(
-         this.cx() + cos(angle) * eyeOffset - eyeSize / 2,
-         this.cy() + sin(angle) * eyeOffset - eyeSize / 2,
-         eyeSize, eyeSize
-      );
+      let wm = camera.screenToWorld(mouseX, mouseY, scale);
+      let a = atan2(wm.y - this.cy(), wm.x - this.cx());
+      let off = G * 0.3, sz = max(1, G * 0.25);
+      rect(this.cx() + cos(a) * off - sz / 2,
+         this.cy() + sin(a) * off - sz / 2, sz, sz);
    }
 }

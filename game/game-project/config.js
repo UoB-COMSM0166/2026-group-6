@@ -1,43 +1,43 @@
 const GameConfig = {
-   // === 世界基础设置 ===
+   // === 世界基础 ===
    World: {
-      GRID_SIZE: 16,  // 核心：所有尺寸的基准
-      GRAVITY: 0.35,  // 全局重力
-      COLLISIONTYPE: ["ground", "spaceship", "mechanism", "Wall"],
+      GRID_SIZE: 16,
+      GRAVITY: 0.35,
+      SOLID_TYPES: ["ground", "spaceship", "mechanism", "Wall"],
    },
 
-   // === 显示设置 ===
+   // === 显示 ===
    Display: {
       GAME_SCALE: 3,
       MAX_CANVAS_WIDTH: 1000,
       MAX_CANVAS_HEIGHT: 700,
    },
 
-   // === 关卡设置 ===
+   // === 关卡 ===
    Level: {
       START_INDEX: 0,
    },
 
-   // === 玩家设置 ===
+   // === 玩家 ===
    Player: {
       MAX_HP: 20,
-      SPEED: 0.5,  // 移动速度系数 (基于 GRID_SIZE)
-      CLIMB_SPEED: 0.05,  // 爬绳速度系数
-      WINCH_FORCE: 0.3,  // 拉绳力度
+      SPEED: 0.5,
+      CLIMB_SPEED: 0.05,
+      WINCH_FORCE: 0.3,
       JUMPFORCE: 5,
-      InvulInterval: 30,  // 受伤时间间隔
-      KnockInterval: 15,  // 击退间隔
+      InvulInterval: 30,
+      KnockInterval: 15,
    },
 
-   // === 敌人设置 ===
+   // === 敌人 ===
    Enemy: {
       SPEED: 0.5,
-      JUMPFORCE: 3.5,  // 敌人能跳多高（以格子数为单位）
-      DROP_DEPTH_TILES: 3,  // 敢跳下去的最大深度（格子数）
+      JUMPFORCE: 3.5,
+      DROP_DEPTH_TILES: 3,
    },
 
-   // === 绳索物理 ===
+   // === 绳索 ===
    Rope: {
-      STIFFNESS: 16,  // 硬度
-   }
+      STIFFNESS: 16,
+   },
 };
