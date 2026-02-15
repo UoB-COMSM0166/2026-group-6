@@ -3,7 +3,7 @@ const GameConfig = {
    World: {
       GRID_SIZE: 16,
       GRAVITY: 0.35,
-      SOLID_TYPES: ["ground", "spaceship", "mechanism", "Wall"],
+      SOLID_TYPES: ["ground", "spaceship", "mechanism", "wall"],
    },
 
    // === 显示 ===
