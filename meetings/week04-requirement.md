@@ -52,7 +52,7 @@ Given the player lacks a required ability, when approaching a gated or polluted 
 As a player, I want purification progress to continuously change the environment and provide clear feedback, so that exploration feels fresh and my actions feel meaningful.
 
 #### Acceptance Criteria:    
-Given an area’s pollution level decreases, when purification progress is made, then environmental elements change to reflect the new world state, and visual feedback is clearly presented (e.g. reduced fog, cleaner colors, restored visibility).
+Given an area’s pollution level decreases, when purification progress is made, then environmental elements change to reflect the new world state, and visual feedback is clearly presented (e.g. reduced fog or pollution, cleaner colors, restored visibility, fewer enemies).
 
 #### User Story 8: Players can understand purification progress and goals
 As a player, I want to understand my current purification progress and objectives, so that I can decide where to explore and what to purify next.
