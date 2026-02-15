@@ -38,9 +38,11 @@ class GameManager {
 
    /**
     * 加载关卡
-    * @param {Object} [spawnOverride]  可选, 覆盖出生点 {x, y} (关卡过渡时使用)
+    * @param {Object} [transition]  关卡过渡数据 {x, y, vx, vy}
+    *   如果提供, 保留当前玩家状态, 只更新位置和速度
+    *   如果不提供, 全新开始 (新游戏 / 按R重启)
     */
-   loadLevel(spawnOverride) {
+   loadLevel(transition) {
       let ldtk = this.resources.ldtkData;
 
       // 1. LevelManager 解析地图
@@ -50,20 +52,21 @@ class GameManager {
       let size = this.level.getCanvasSize();
       resizeCanvas(size.w, size.h);
 
-      // 3. 创建玩家 (过渡时保留 HP, 可以在不同卡触发不同的出生点)
-      if (spawnOverride) {
-         // 关卡过渡: 保留当前玩家状态, 只更新位置
-         this.player.x = spawnOverride.x;
-         this.player.y = spawnOverride.y;
-         this.player.vx = 0;
-         this.player.vy = 0;
-         // 收回绳索
+      // 3. 创建/恢复玩家
+      if (transition && this.player) {
+         // ═══ 关卡过渡: 保留 HP、绳索材质等状态 ═══
+         this.player.x = transition.x;
+         this.player.y = transition.y;
+         // 保留移动方向的速度, 过渡更流畅
+         this.player.vx = transition.vx || 0;
+         this.player.vy = transition.vy || 0;
+         // 收回绳索 (跨关卡的锚点已失效)
          this.player.ropeL.state = "IDLE";
          this.player.ropeL.nodes = [];
          this.player.ropeR.state = "IDLE";
          this.player.ropeR.nodes = [];
       } else {
-         // 新游戏 / 重新开始
+         // ═══ 新游戏 / 重新开始 ═══
          let start = this.level.playerStart || { x: 50, y: 50 };
          this.player = new Player(start.x, start.y);
       }
@@ -197,14 +200,24 @@ class GameManager {
    /**
     * ★ 检测玩家是否到达地图边缘且有邻居关卡
     * 如果有, 切换到邻居关卡并重新定位玩家
+    *
+    * 流程:
+    *   1. LevelManager.checkEdgeTransition() 检测边缘 + 查找邻居 + 坐标映射
+    *   2. 保存玩家速度 (保持移动惯性)
+    *   3. loadLevel(transition) 加载新关卡, 保留玩家状态
     */
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
 
-      // 切换关卡, 保留玩家状态
+      // 切换关卡, 保留速度让过渡更流畅
       this.levelIndex = result.levelIndex;
-      this.loadLevel({ x: result.newX, y: result.newY });
+      this.loadLevel({
+         x: result.newX,
+         y: result.newY,
+         vx: this.player.vx,
+         vy: this.player.vy,
+      });
    }
 
    _checkWinLose() {

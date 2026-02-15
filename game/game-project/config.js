@@ -36,6 +36,11 @@ const GameConfig = {
       DROP_DEPTH_TILES: 3,
    },
 
+   Entity: {
+      PlayerStart: "Player_start",
+      ToxicPool: "toxic_poor",
+   },
+
    // === 绳索 ===
    Rope: {
       STIFFNESS: 16,
