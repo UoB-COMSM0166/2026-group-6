@@ -7,7 +7,7 @@ const GameConfig = {
    },
 
    level: {
-      startLevel:23,
+      startLevel:0,
    },
 
    // === 玩家设置 ===
