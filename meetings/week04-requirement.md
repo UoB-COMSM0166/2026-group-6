@@ -22,7 +22,7 @@ Given purification actions consume purification energy, when the player uses the
 Given the player purifies enemies, collects relevant resources, or completes an area, when these actions are successfully performed, then purification energy is partially restored or increased.
 
 ## Epic 2：Rope Tools and Environmental Interaction
-#### User Story 3: Unlock purification and rope-based abilities over time
+#### User Story 3: Unlock purification and rope-based abilities through progression
 As a game designer, I want players to unlock new purification or rope-related abilities over time, so that they feel a clear sense of progression throughout the game.
 
 #### Acceptance Criteria:  
