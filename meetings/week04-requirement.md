@@ -11,14 +11,14 @@
 As a player, I want to be able to quit the game or experience a lethal death without losing critical progress, so that I can handle real-life interruptions and feel encouraged to retry challenges.
 
 #### Acceptance Criteria:  
-Given the player quits the game or experiences a lethal death, when the game is resumed or reloaded, then the player respawns at the most recent purification checkpoint.   
+Given the player quits the game or experiences a lethal death, when the game is resumed or reloaded, then the player respawns at the most recent purification checkpoint.    
 Given the player has previously purified areas or unlocked abilities, when the player respawns, then purified areas remain purified and unlocked abilities are retained.
 
 #### User Story 2: Limited purification energy creates meaningful decisions
 As a player, I want purification energy to be limited, so that I must make meaningful decisions about when and where to purify the environment.
 
 #### Acceptance Criteria:
-Given purification actions consume purification energy, when the player uses these abilities repeatedly, then the available purification energy is reduced, and the player must choose between purifying, exploring further, or retreating to recover resources.  
+Given purification actions consume purification energy, when the player uses these abilities repeatedly, then the available purification energy is reduced, and the player must choose between purifying, exploring further, or retreating to recover resources.     
 Given the player purifies enemies, collects relevant resources, or completes an area, when these actions are successfully performed, then purification energy is partially restored or increased.
 
 ## Epic 2：Rope Tools and Environmental Interaction
