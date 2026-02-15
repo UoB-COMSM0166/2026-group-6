@@ -33,6 +33,7 @@ class Player {
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
       this._checkEnemyHit(gm);
+      this._checkToxicPool(gm);
    }
 
    // ====== 输入 ======
@@ -134,14 +135,15 @@ class Player {
          if (!Physics.rectIntersect(this.x, this.y, this.w, this.h, p.x, p.y, p.w, p.h)) continue;
 
          let phW = this.w / 2, phH = this.h / 2;
-         let ppW = p.w / 2,    ppH = p.h / 2;
+         let ppW = p.w / 2, ppH = p.h / 2;
          let dx = (this.x + phW) - (p.x + ppW);
          let dy = (this.y + phH) - (p.y + ppH);
+         // 计算X/Y轴的重叠量（oX：X轴重叠像素，oY：Y轴重叠像素）
          let oX = (phW + ppW) - abs(dx);
          let oY = (phH + ppH) - abs(dy);
-
+         //无重叠
          if (oX <= 0 || oY <= 0) continue;
-
+         // 根据偏移量大小优先处理偏移量大的轴
          if (oX < oY) {
             if (onX) {
                this.x += (dx > 0) ? oX : -oX;
@@ -202,6 +204,26 @@ class Player {
       let dir = (this.x < enemy.x) ? -1 : 1;
       this.vx = dir * 3;
       this.vy = -2;
+   }
+
+   // 碰到毒池
+   _checkToxicPool(gm) {
+      if (this._isOverlappingToxicPool(gm.level)) {
+         this.die(gm);
+      }
+   }
+
+   _isOverlappingToxicPool(level) {
+      let m = 0.1;
+      let tiles = level.getTilesInRect(this.x + m, this.y + m, this.w - m * 2, this.h - m * 2, 0);
+      for (let t of tiles) {
+         if (Physics.rectIntersect(
+            this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
+            t.x, t.y, t.w, t.h) && t.type === "toxic_poor") {
+            return true;
+         }
+      }
+      return false;
    }
 
    // ====== 动作 ======
