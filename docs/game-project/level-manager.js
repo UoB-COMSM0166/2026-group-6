@@ -1,5 +1,5 @@
 /**
- * LevelManager — 场景总管
+ * LevelManager — 场景
  *
  * 核心职责:
  *   1. 解析 LDtk 地图数据
@@ -7,9 +7,6 @@
  *   3. 提供 O(1) 空间查询代替 O(n) 遍历
  *   4. 统一渲染 (Tile + 装饰图层)
  *
- * 性能对比:
- *   旧: for (let p of solidPlatforms) → 5000块=每帧遍历5000次
- *   新: getTileAt(col, row) → 无论地图多大, 只查玩家附近 ~9 格
  */
 class LevelManager {
    constructor() {
@@ -44,6 +41,7 @@ class LevelManager {
       // 实体数据 (解析后的原始数据, 由 GameManager 消费)
       this.playerStart = null;  // {x, y}
       this.enemySpawns = [];    // [{x, y, hp, damage}]
+      this.entitySpawns = [];   // [{x, y, w, h, identifier, color, fields}] 所有其他实体
    }
 
    // ========================================================
@@ -72,6 +70,7 @@ class LevelManager {
       this.renderLayers = [];
       this.playerStart = null;
       this.enemySpawns = [];
+      this.entitySpawns = [];
 
       // 构建 IntGrid 名称查找表
       let lookup = this._buildIntGridLookup(ldtkData, "Collisions");
@@ -126,7 +125,7 @@ class LevelManager {
    }
 
    // 查询tile的类型
-   getTiletype(col,row){
+   getTiletype(col, row) {
       if (row < 0 || row >= this.rows || col < 0 || col >= this.cols) return null;
       let tile = this.grid[row][col];
       return (tile && tile.active) ? tile.type : null;
@@ -154,15 +153,15 @@ class LevelManager {
    getSolidTilesInRect(x, y, w, h, margin = 1) {
       let g = this.gridSize;
       let startCol = Math.floor((x - this.offsetX) / g) - margin;
-      let endCol   = Math.floor((x + w - this.offsetX) / g) + margin;
+      let endCol = Math.floor((x + w - this.offsetX) / g) + margin;
       let startRow = Math.floor((y - this.offsetY) / g) - margin;
-      let endRow   = Math.floor((y + h - this.offsetY) / g) + margin;
+      let endRow = Math.floor((y + h - this.offsetY) / g) + margin;
 
       // 钳制到有效范围
       startCol = Math.max(0, startCol);
       startRow = Math.max(0, startRow);
-      endCol   = Math.min(this.cols - 1, endCol);
-      endRow   = Math.min(this.rows - 1, endRow);
+      endCol = Math.min(this.cols - 1, endCol);
+      endRow = Math.min(this.rows - 1, endRow);
 
       let result = [];
       for (let r = startRow; r <= endRow; r++) {
@@ -176,29 +175,29 @@ class LevelManager {
       return result;
    }
 
-         /**
-    * 获取矩形区域内的所有 active 固体 Tile
-    * 这是替代 `for (let p of solidPlatforms)` 的核心方法
-    *
-    * @param {number} x  世界像素 x
-    * @param {number} y  世界像素 y
-    * @param {number} w  宽度
-    * @param {number} h  高度
-    * @param {number} [margin=1]  额外扩展的格子数 (安全边距)
-    * @returns {Tile[]}
-    */
+   /**
+* 获取矩形区域内的所有 active 固体 Tile
+* 这是替代 `for (let p of solidPlatforms)` 的核心方法
+*
+* @param {number} x  世界像素 x
+* @param {number} y  世界像素 y
+* @param {number} w  宽度
+* @param {number} h  高度
+* @param {number} [margin=1]  额外扩展的格子数 (安全边距)
+* @returns {Tile[]}
+*/
    getTilesInRect(x, y, w, h, margin = 1) {
       let g = this.gridSize;
       let startCol = Math.floor((x - this.offsetX) / g) - margin;
-      let endCol   = Math.floor((x + w - this.offsetX) / g) + margin;
+      let endCol = Math.floor((x + w - this.offsetX) / g) + margin;
       let startRow = Math.floor((y - this.offsetY) / g) - margin;
-      let endRow   = Math.floor((y + h - this.offsetY) / g) + margin;
+      let endRow = Math.floor((y + h - this.offsetY) / g) + margin;
 
       // 钳制到有效范围
       startCol = Math.max(0, startCol);
       startRow = Math.max(0, startRow);
-      endCol   = Math.min(this.cols - 1, endCol);
-      endRow   = Math.min(this.rows - 1, endRow);
+      endCol = Math.min(this.cols - 1, endCol);
+      endRow = Math.min(this.rows - 1, endRow);
 
       let result = [];
       for (let r = startRow; r <= endRow; r++) {
@@ -264,11 +263,19 @@ class LevelManager {
    /**
     * 检测玩家是否走到了地图边缘, 且该方向有邻居关卡
     *
-    * LDtk 的 __neighbours 格式:
-    *   [{ levelIid: "uuid-string", dir: "n"|"s"|"e"|"w" }, ...]
+    * === 工作原理 ===
     *
-    * LDtk 的每个 level 有 worldX, worldY 表示在世界中的绝对像素位置
-    * 利用这两个值可以精确计算玩家在新关卡中的坐标
+    * LDtk 每个 level 有:
+    *   worldX, worldY  — 在世界中的绝对像素位置
+    *   pxWid, pxHei    — 像素尺寸
+    *   __neighbours     — [{ levelIid, dir:"n"|"s"|"e"|"w" }]
+    *
+    * 坐标转换公式:
+    *   玩家世界坐标 = 当前关卡.worldX + player.x
+    *   新关卡本地坐标 = 玩家世界坐标 - 目标关卡.worldX
+    *
+    * 同一方向可能有多个邻居 (例如东边并排两个小关卡):
+    *   需要根据玩家的世界坐标判断到底进哪个
     *
     * @param {Player} player
     * @returns {{ levelIndex: number, newX: number, newY: number } | null}
@@ -277,45 +284,76 @@ class LevelManager {
       // 1. 判断玩家越过了哪个边
       let dir = null;
       if (player.x + player.w > this.mapW) dir = 'e';
-      else if (player.x < 0)               dir = 'w';
+      else if (player.x < 0) dir = 'w';
       else if (player.y + player.h > this.mapH) dir = 's';
-      else if (player.y < 0)               dir = 'n';
+      else if (player.y < 0) dir = 'n';
 
       if (!dir) return null;
 
-      // 2. 查找该方向的邻居
-      let neighbour = this.neighbours.find(n => n.dir === dir);
-      if (!neighbour) return null;
+      // 2. 筛选该方向的所有邻居候选
+      let candidates = this.neighbours.filter(n => n.dir === dir);
+      if (candidates.length === 0) return null;
 
-      // 3. 通过 iid 找到目标关卡索引
-      let targetIndex = this._findLevelIndexByIid(neighbour.levelIid);
-      if (targetIndex === -1) return null;
-
-      let targetLevel = this.ldtkData.levels[targetIndex];
-
-      // 4. 用世界坐标计算玩家在新关卡中的本地坐标
-      //    玩家世界位置 = 当前关卡worldX + 玩家本地x
-      //    新本地位置   = 玩家世界位置 - 目标关卡worldX
+      // 3. 玩家的世界绝对坐标
       let worldPX = this.worldX + player.x;
       let worldPY = this.worldY + player.y;
 
-      let newX = worldPX - targetLevel.worldX;
-      let newY = worldPY - targetLevel.worldY;
+      // 4. 遍历候选邻居, 找到与玩家位置真正重叠的那个
+      for (let candidate of candidates) {
+         let idx = this._findLevelIndexByIid(candidate.levelIid);
+         if (idx === -1) continue;
 
-      // 5. 在过渡轴上微调, 让玩家出现在新地图内侧, 防止立刻触发反向过渡
-      let margin = 2;
-      if (dir === 'e') newX = margin;
-      if (dir === 'w') newX = targetLevel.pxWid - player.w - margin;
-      if (dir === 's') newY = margin;
-      if (dir === 'n') newY = targetLevel.pxHei - player.h - margin;
+         let target = this.ldtkData.levels[idx];
 
-      return { levelIndex: targetIndex, newX, newY };
+         // 判断玩家是否在这个邻居的范围内
+         let overlaps = false;
+         if (dir === 'e' || dir === 'w') {
+            // 左右过渡 → 检查 Y 轴是否重叠
+            overlaps = (worldPY + player.h > target.worldY) &&
+               (worldPY < target.worldY + target.pxHei);
+         } else {
+            // 上下过渡 → 检查 X 轴是否重叠
+            overlaps = (worldPX + player.w > target.worldX) &&
+               (worldPX < target.worldX + target.pxWid);
+         }
+
+         if (!overlaps) continue;
+
+         // 5. 计算在目标关卡中的本地坐标
+         let newX = worldPX - target.worldX;
+         let newY = worldPY - target.worldY;
+
+         // 6. 在过渡方向上微调位置, 防止立刻触发反向过渡
+         let margin = 2;
+         if (dir === 'e') newX = margin;
+         if (dir === 'w') newX = target.pxWid - player.w - margin;
+         if (dir === 's') newY = margin;
+         if (dir === 'n') newY = target.pxHei - player.h - margin;
+
+         // 7. 钳制非过渡轴, 确保不超出目标地图范围
+         newX = Math.max(0, Math.min(newX, target.pxWid - player.w));
+         newY = Math.max(0, Math.min(newY, target.pxHei - player.h));
+
+         return { levelIndex: idx, newX, newY };
+      }
+
+      return null; // 没有匹配的邻居
    }
 
-   /** 通过 LDtk iid 查找关卡在 levels[] 中的索引 */
+   /** 通过 LDtk iid 查找关卡在 levels[] 中的索引 (带缓存) */
    _findLevelIndexByIid(iid) {
       if (!this.ldtkData) return -1;
-      return this.ldtkData.levels.findIndex(l => l.iid === iid);
+
+      // 懒初始化 iid→index 查找表 (只建一次)
+      if (!this._iidCache) {
+         this._iidCache = {};
+         for (let i = 0; i < this.ldtkData.levels.length; i++) {
+            this._iidCache[this.ldtkData.levels[i].iid] = i;
+         }
+      }
+
+      let idx = this._iidCache[iid];
+      return (idx !== undefined) ? idx : -1;
    }
 
    // ========================================================
@@ -340,7 +378,7 @@ class LevelManager {
    //  内部: 解析
    // ========================================================
 
-   
+
    // 加载地图中Collision（intgrid）中各个类型的tile
    _parseCollisionLayer(layer, lookup) {
       let g = layer.__gridSize;
@@ -407,10 +445,11 @@ class LevelManager {
 
    _parseEntities(layer) {
       for (let entity of layer.entityInstances) {
-         let x = entity.px[0] + layer.__pxTotalOffsetX;
-         let y = entity.px[1] + layer.__pxTotalOffsetY;
+         let pivot = entity.__pivot || [0, 0];
+         let x = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];;
+         let y = entity.px[1] + layer.__pxTotalOffsetY - entity.height * pivot[1];; 
 
-         if (entity.__identifier === "Player_start") {
+         if (entity.__identifier === GameConfig.Entity.PlayerStart) {
             this.playerStart = { x, y };
          }
          else if (entity.__identifier === "Enemy") {
@@ -420,6 +459,21 @@ class LevelManager {
             if (hpField) hp = hpField.__value;
             if (dmgField) damage = dmgField.__value;
             this.enemySpawns.push({ x, y, hp, damage });
+         }
+         else {
+            // 所有其他实体
+            let fields = {};
+            for (let f of entity.fieldInstances) {
+               fields[f.__identifier] = f.__value;
+            }
+            this.entitySpawns.push({
+               x , y,
+               w: entity.width,
+               h: entity.height,
+               identifier: entity.__identifier,
+               color: entity.__smartColor || '#FF00FF',
+               fields,
+            });
          }
       }
    }

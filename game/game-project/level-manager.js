@@ -1,5 +1,5 @@
 /**
- * LevelManager — 场景总管
+ * LevelManager — 场景
  *
  * 核心职责:
  *   1. 解析 LDtk 地图数据
@@ -7,9 +7,6 @@
  *   3. 提供 O(1) 空间查询代替 O(n) 遍历
  *   4. 统一渲染 (Tile + 装饰图层)
  *
- * 性能对比:
- *   旧: for (let p of solidPlatforms) → 5000块=每帧遍历5000次
- *   新: getTileAt(col, row) → 无论地图多大, 只查玩家附近 ~9 格
  */
 class LevelManager {
    constructor() {
@@ -448,8 +445,9 @@ class LevelManager {
 
    _parseEntities(layer) {
       for (let entity of layer.entityInstances) {
-         let x = entity.px[0] + layer.__pxTotalOffsetX;
-         let y = entity.px[1] + layer.__pxTotalOffsetY;
+         let pivot = entity.__pivot || [0, 0];
+         let x = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];;
+         let y = entity.px[1] + layer.__pxTotalOffsetY - entity.height * pivot[1];; 
 
          if (entity.__identifier === GameConfig.Entity.PlayerStart) {
             this.playerStart = { x, y };
@@ -461,6 +459,21 @@ class LevelManager {
             if (hpField) hp = hpField.__value;
             if (dmgField) damage = dmgField.__value;
             this.enemySpawns.push({ x, y, hp, damage });
+         }
+         else {
+            // 所有其他实体
+            let fields = {};
+            for (let f of entity.fieldInstances) {
+               fields[f.__identifier] = f.__value;
+            }
+            this.entitySpawns.push({
+               x , y,
+               w: entity.width,
+               h: entity.height,
+               identifier: entity.__identifier,
+               color: entity.__smartColor || '#FF00FF',
+               fields,
+            });
          }
       }
    }

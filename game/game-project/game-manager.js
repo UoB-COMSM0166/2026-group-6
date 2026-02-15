@@ -1,5 +1,5 @@
 /**
- * GameManager — 总导演
+ * GameManager - 游戏主管理
  *
  * 职责:
  *   - 控制游戏状态 (PLAY / WIN / GAMEOVER)
@@ -26,6 +26,7 @@ class GameManager {
       // 运行时对象
       this.player = null;
       this.enemies = [];
+      this.entities = [];
       this.particles = [];
 
       // 游戏状态
@@ -77,11 +78,27 @@ class GameManager {
          this.enemies.push(new Enemy(spawn.x, spawn.y, spawn.hp, spawn.damage, this.level));
       }
 
+      // 5. 创建其他实体
+      this._createEntities();
+
       this.particles = [];
       this.camera.reset();
       this.status = "PLAY";
    }
 
+   _createEntities() {
+      this.entities = [];
+      for (let spawn of this.level.entitySpawns) {
+         let ent;
+         switch (spawn.identifier) {
+            case GameConfig.Entity.Tool: ent = new Tool(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.PollutionCore: ent = new PollutionCore(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.CleanEnergy: ent = new CleanEnergy(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+         }
+         this.entities.push(ent);
+      }
+   }
    // ========================================================
    //  主循环
    // ========================================================
@@ -99,6 +116,9 @@ class GameManager {
 
       // 敌人
       this._updateEnemies();
+
+      // 通用实体
+      this._updateEntities();
 
       // 粒子
       this._updateParticles();
@@ -121,6 +141,7 @@ class GameManager {
       this.level.draw(this.resources.tilesetImage);
 
       // 游戏对象
+      for (let ent of this.entities) ent.display();
       for (let e of this.enemies) e.display();
       for (let p of this.particles) p.display();
       this.player.ropeL.display(this.player);
@@ -190,6 +211,17 @@ class GameManager {
       }
    }
 
+   _updateEntities() {
+      for (let i = this.entities.length - 1; i >= 0; i--) {
+         let ent = this.entities[i];
+         ent.update(this.level);
+         if (ent.isTouchingPlayer(this.player)) {
+            ent.onPlayerContact(this.player, this);
+         }
+         if (ent.isDead) this.entities.splice(i, 1);
+      }
+   }
+
    _updateParticles() {
       for (let i = this.particles.length - 1; i >= 0; i--) {
          this.particles[i].update();
@@ -204,7 +236,7 @@ class GameManager {
     * 流程:
     *   1. LevelManager.checkEdgeTransition() 检测边缘 + 查找邻居 + 坐标映射
     *   2. 保存玩家速度 (保持移动惯性)
-    *   3. loadLevel(transition) 加载新关卡, 保留玩家状态
+    *   3. loadLevel(transition) 加载新关卡, 保留玩家状态（在transition中添加保留的其他玩家状态，后续应单独加到一个class里面）
     */
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);

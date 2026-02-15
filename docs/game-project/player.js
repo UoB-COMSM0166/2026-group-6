@@ -219,7 +219,7 @@ class Player {
       for (let t of tiles) {
          if (Physics.rectIntersect(
             this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
-            t.x, t.y, t.w, t.h) && t.type === "toxic_poor") {
+            t.x, t.y, t.w, t.h) && t.type === GameConfig.Entity.ToxicPool) {
             return true;
          }
       }

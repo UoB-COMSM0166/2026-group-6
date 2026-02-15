@@ -37,8 +37,14 @@ const GameConfig = {
    },
 
    Entity: {
-      PlayerStart: "Player_start",
+      Enemy: "Enemy",
+      PlayerStart: "Player_start", // only one in the world
       ToxicPool: "toxic_poor",
+      PollutionCore: "Pollution_Core",
+      Tool: "Tools",
+      Boss: "Boss",
+      CleanEnergy: "Cleaning_energy",
+      Ladder: "Ladder",
    },
 
    // === 绳索 ===

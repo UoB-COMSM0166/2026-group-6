@@ -1579,7 +1579,7 @@
 						},
 						{
 							"__identifier": "Player_start",
-							"__grid": [10,18],
+							"__grid": [11,18],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -1588,9 +1588,9 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 150,
-							"px": [80,144],
+							"px": [88,144],
 							"fieldInstances": [{ "__identifier": "Float", "__type": "Float", "__value": 0, "__tile": null, "defUid": 151, "realEditorValues": [] }],
-							"__worldX": 32,
+							"__worldX": 40,
 							"__worldY": 1352
 						}
 					]
@@ -2188,6 +2188,22 @@
 							"fieldInstances": [],
 							"__worldX": 628,
 							"__worldY": 1256
+						},
+						{
+							"__identifier": "Pollution_Core",
+							"__grid": [34,17],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#68386C",
+							"iid": "772f2810-fa90-11f0-90b8-1d96a5eb24e0",
+							"width": 16,
+							"height": 16,
+							"defUid": 13,
+							"px": [276,144],
+							"fieldInstances": [],
+							"__worldX": 612,
+							"__worldY": 1352
 						}
 					]
 				},
@@ -12585,22 +12601,6 @@
 					"overrideTilesetUid": null,
 					"gridTiles": [],
 					"entityInstances": [
-						{
-							"__identifier": "Player_start",
-							"__grid": [8,39],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#D77643",
-							"iid": "65371d60-fa90-11f0-aac2-79e12e01fc28",
-							"width": 16,
-							"height": 16,
-							"defUid": 150,
-							"px": [64,312],
-							"fieldInstances": [{ "__identifier": "Float", "__type": "Float", "__value": 0, "__tile": null, "defUid": 151, "realEditorValues": [] }],
-							"__worldX": 3736,
-							"__worldY": 1280
-						},
 						{
 							"__identifier": "Enemy",
 							"__grid": [26,23],
