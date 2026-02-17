@@ -1,8 +1,8 @@
 class Player {
    constructor(x, y) {
       const G = GameConfig.World.GRID_SIZE;
-
-      this.hp = GameConfig.Player.MAX_HP;
+      this.maxHp = GameConfig.Player.MAX_HP;
+      this.hp = this.maxHp;
       this.invulnerableTimer = 0;
       this.knockTimer = 0;
 
@@ -12,6 +12,7 @@ class Player {
       this.h = G;
       this.vx = 0;
       this.vy = 0;
+      this.cleanEnergy=100;
       this.grounded = false;
 
       this.ropeL = new Rope(color(0, 255, 255));
@@ -204,6 +205,10 @@ class Player {
       let dir = (this.x < enemy.x) ? -1 : 1;
       this.vx = dir * 3;
       this.vy = -2;
+   }
+
+   _reduceCleanEnergy(number){
+      this.cleanEnergy -= number;
    }
 
    // 碰到毒池

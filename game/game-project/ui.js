@@ -2,16 +2,19 @@ class UI {
 
    static drawHUD(player) {
       fill(255); noStroke(); textSize(12); textAlign(LEFT, TOP);
-      text("HP: " + player.hp, 25, 10);
+      
+      // player entity
+      text("HP: " + player.hp, 25, 15);
+      text("clean energy: " + player.cleanEnergy, 25, 30);
 
       let matL = player.ropeL.material;
       let matR = player.ropeR.material;
 
       fill(matL === 'HARD' ? 255 : color(0, 255, 255));
-      text(`[1] Left Mode: ${matL}`, 10, 30);
+      text(`[1] Left Mode: ${matL}`, 10, 50);
 
       fill(matR === 'HARD' ? 255 : color(255, 100, 100));
-      text(`[2] Right Mode: ${matR}`, 10, 50);
+      text(`[2] Right Mode: ${matR}`, 10, 70);
 
       this._drawMouseButtons(player);
 

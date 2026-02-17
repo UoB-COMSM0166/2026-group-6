@@ -54,8 +54,9 @@ class GameManager {
       resizeCanvas(size.w, size.h);
 
       // 3. 创建/恢复玩家
+
+      // 关卡过渡: 保留 HP、绳索材质等状态
       if (transition && this.player) {
-         // ═══ 关卡过渡: 保留 HP、绳索材质等状态 ═══
          this.player.x = transition.x;
          this.player.y = transition.y;
          // 保留移动方向的速度, 过渡更流畅
@@ -66,24 +67,34 @@ class GameManager {
          this.player.ropeL.nodes = [];
          this.player.ropeR.state = "IDLE";
          this.player.ropeR.nodes = [];
-      } else {
-         // ═══ 新游戏 / 重新开始 ═══
+      }
+      // 重新开始
+      else if (this.status == "GAMEOVER" && this.player) {
+         let start = this.level.playerStart || { x: 50, y: 50 };
+         this.player.hp = this.player.maxHp;
+         this.player.x = start.x;
+         this.player.y = start.y;
+      }
+      // 新游戏
+      else {
          let start = this.level.playerStart || { x: 50, y: 50 };
          this.player = new Player(start.x, start.y);
       }
+      // 4. 创建敌人
+      this._createEnemy();
+      // 5. 创建其他实体
+      this._createEntities();
+      this.particles = [];
+      this.camera.reset();
+      this.status = "PLAY";
+   }
 
+   _createEnemy() {
       // 4. 创建敌人
       this.enemies = [];
       for (let spawn of this.level.enemySpawns) {
          this.enemies.push(new Enemy(spawn.x, spawn.y, spawn.hp, spawn.damage, this.level));
       }
-
-      // 5. 创建其他实体
-      this._createEntities();
-
-      this.particles = [];
-      this.camera.reset();
-      this.status = "PLAY";
    }
 
    _createEntities() {
@@ -173,7 +184,10 @@ class GameManager {
          if (key === '1') this.player.ropeL.toggleMaterial(this.player);
          if (key === '2') this.player.ropeR.toggleMaterial(this.player);
       }
-      if (key === 'r' || key === 'R') this.loadLevel();
+      if (key === 'r' || key === 'R') {
+         this.status = "GAMEOVER";
+         this.loadLevel();
+      }
    }
 
    // ========================================================
@@ -201,6 +215,7 @@ class GameManager {
                let tip = rope.getTip(this.player);
                if (dist(tip.x, tip.y, e.x + e.w / 2, e.y + e.h / 2) < 10 && !e.purified) {
                   e.takeDamage(1);
+                  this.player._reduceCleanEnergy(5);
                   this.addParticles(e.x + e.w / 2, e.y + e.h / 2);
                   if (rope.state === "EXTENDING") rope.state = "RETRACTING";
                }
