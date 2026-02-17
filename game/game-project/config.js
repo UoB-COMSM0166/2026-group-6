@@ -27,6 +27,7 @@ const GameConfig = {
       JUMPFORCE: 5,
       InvulInterval: 30,
       KnockInterval: 15,
+      DefaultStartPoint: { x: 5, y: 30 },
    },
 
    // === 敌人 ===

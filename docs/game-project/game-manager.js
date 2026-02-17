@@ -113,7 +113,7 @@ class GameManager {
       }
       // 重新开始
       else if (this.status == "GAMEOVER" && this.player) {
-         let start = this.level.playerStart || { x: 50, y: 50 };
+         let start = this.level.playerStart || GameConfig.Player.DefaultStartPoint;
          this.player.hp = this.player.maxHp;
          this.player.x = start.x;
          this.player.y = start.y;
@@ -121,7 +121,7 @@ class GameManager {
       }
       // 新游戏
       else {
-         let start = this.level.playerStart || { x: 50, y: 50 };
+         let start = this.level.playerStart || GameConfig.Player.DefaultStartPoint;
          this.player = new Player(start.x, start.y);
       }
    }

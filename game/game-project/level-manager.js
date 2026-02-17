@@ -554,7 +554,6 @@ class LevelManager {
       // 画半透明底板
       fill(0, 0, 0, 150);
       noStroke();
-      rectMode(CORNER);
       rect(mapX, mapY, miniMapW, miniMapH, 5);
 
       // 计算小地图里的 1 个方块等于多少像素
@@ -590,6 +589,6 @@ class LevelManager {
       fill(255, 50, 50);
       let px = (player.x / this.mapW) * miniMapW;
       let py = (player.y / this.mapH) * miniMapH;
-      ellipse(mapX + px, mapY + py, 6, 6);
+      ellipse(mapX + px, mapY + py, 8, 8);
    }
 }
