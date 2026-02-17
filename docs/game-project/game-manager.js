@@ -22,7 +22,7 @@ class GameManager {
       // 子系统
       this.level = new LevelManager();
       this.camera = new Camera();
-
+      this.levelsInfo = {}; // 里面是class Level
       // 运行时对象
       this.player = null;
       this.enemies = [];
@@ -53,7 +53,19 @@ class GameManager {
       let size = this.level.getCanvasSize();
       resizeCanvas(size.w, size.h);
 
-      // 3. 创建/恢复玩家
+      // 3. 创建/恢复玩家/读取地图创建后经修改的信息
+      if (!(this.levelIndex in this.levelsInfo)) {
+         // 4. 创建敌人
+         this._createEnemy();
+         // 5. 创建其他实体
+         this._createEntities();
+         let level = new Level(this.enemies,this.entities,this.levelIndex);
+         this.levelsInfo[this.levelIndex] = level;
+      }
+      else {
+         this.enemies = this.levelsInfo[this.levelIndex].enemies;
+         this.entities = this.levelsInfo[this.levelIndex].entities;
+      }
 
       // 关卡过渡: 保留 HP、绳索材质等状态
       if (transition && this.player) {
@@ -80,10 +92,6 @@ class GameManager {
          let start = this.level.playerStart || { x: 50, y: 50 };
          this.player = new Player(start.x, start.y);
       }
-      // 4. 创建敌人
-      this._createEnemy();
-      // 5. 创建其他实体
-      this._createEntities();
       this.particles = [];
       this.camera.reset();
       this.status = "PLAY";
