@@ -29,7 +29,6 @@ class Player {
     */
    update(gm) {
       this._tickTimers();
-      this._handleMove();
       this._handleWinch();
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
@@ -42,12 +41,6 @@ class Player {
    _tickTimers() {
       if (this.invulnerableTimer > 0) this.invulnerableTimer--;
       if (this.knockTimer > 0) this.knockTimer--;
-   }
-
-   _handleMove() {
-      let f = this.grounded ? GameConfig.Player.SPEED : GameConfig.Player.SPEED * 0.7;
-      if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.vx -= f;
-      if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) this.vx += f;
    }
 
    _handleWinch() {
@@ -236,6 +229,11 @@ class Player {
    fireRope(side, tx, ty) {
       if (side === "LEFT") this.ropeL.fire(this.cx(), this.cy(), tx, ty);
       if (side === "RIGHT") this.ropeR.fire(this.cx(), this.cy(), tx, ty);
+   }
+ 
+   move(dir) {
+      let f = this.grounded ? GameConfig.Player.SPEED : GameConfig.Player.SPEED * 0.7;
+      this.vx += dir * f;
    }
 
    jump() {

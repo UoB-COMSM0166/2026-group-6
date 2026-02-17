@@ -1,5 +1,7 @@
 /**
  * LevelManager — 场景
+ * 
+ * 每个关卡都有一个LevelManager
  *
  * 核心职责:
  *   1. 解析 LDtk 地图数据
@@ -7,9 +9,11 @@
  *   3. 提供 O(1) 空间查询代替 O(n) 遍历
  *   4. 统一渲染 (Tile + 装饰图层)
  *
+ * @param {int} levelIndex
+ *
  */
 class LevelManager {
-   constructor() {
+   constructor(levelIndex) {
       // LDtk 数据引用 (用于跨关卡查询)
       this.ldtkData = null;
 
@@ -42,6 +46,9 @@ class LevelManager {
       this.playerStart = null;  // {x, y}
       this.enemySpawns = [];    // [{x, y, hp, damage}]
       this.entitySpawns = [];   // [{x, y, w, h, identifier, color, fields}] 所有其他实体
+      this.enemies;
+      this.entities;
+      this.levelIndex = levelIndex;
    }
 
    // ========================================================
@@ -446,8 +453,8 @@ class LevelManager {
    _parseEntities(layer) {
       for (let entity of layer.entityInstances) {
          let pivot = entity.__pivot || [0, 0];
-         let x = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];;
-         let y = entity.px[1] + layer.__pxTotalOffsetY - entity.height * pivot[1];; 
+         let x = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];
+         let y = entity.px[1] + layer.__pxTotalOffsetY - entity.height * pivot[1];
 
          if (entity.__identifier === GameConfig.Entity.PlayerStart) {
             this.playerStart = { x, y };
@@ -467,7 +474,7 @@ class LevelManager {
                fields[f.__identifier] = f.__value;
             }
             this.entitySpawns.push({
-               x , y,
+               x, y,
                w: entity.width,
                h: entity.height,
                identifier: entity.__identifier,
@@ -535,5 +542,54 @@ class LevelManager {
             pop();
          }
       }
+   }
+
+   drawMiniMap(player) {
+      let miniMapW = width * 0.2; // 相对屏幕宽度的缩小比例
+      let miniMapH = (this.mapH / this.mapW) * miniMapW; // 保持关卡的原始比例
+      let padding = 15;
+      let mapX = width - miniMapW - padding;
+      let mapY = padding;
+
+      // 画半透明底板
+      fill(0, 0, 0, 150);
+      noStroke();
+      rectMode(CORNER);
+      rect(mapX, mapY, miniMapW, miniMapH, 5);
+
+      // 计算小地图里的 1 个方块等于多少像素
+      let scaleX = miniMapW / this.cols;
+      let scaleY = miniMapH / this.rows;
+
+      // 画小地图
+      for (let y = 0; y < this.rows; y++) {
+         for (let x = 0; x < this.cols; x++) {
+            let tile = this.grid[y][x];
+            if (tile && tile.active) {
+               let color;
+               switch (tile.type) {
+                  case 'ground': color = "#b86f50"; break;
+                  case 'water': color = "#2CE8F5"; break;
+                  case 'toxic_poor': color = "#3E8948"; break;
+                  case 'spaceship': color = "#FFFFFF"; break;
+                  case 'rest': color = "#3E2731"; break;
+                  default: color = "#1d1717";
+               }
+               color = color + "a0"; // 透明度
+               fill(color);
+            }
+            else {
+               continue
+            };
+
+            rect(mapX + x * scaleX, mapY + y * scaleY, scaleX, scaleY);
+         }
+      }
+
+      // 画玩家
+      fill(255, 50, 50);
+      let px = (player.x / this.mapW) * miniMapW;
+      let py = (player.y / this.mapH) * miniMapH;
+      ellipse(mapX + px, mapY + py, 6, 6);
    }
 }

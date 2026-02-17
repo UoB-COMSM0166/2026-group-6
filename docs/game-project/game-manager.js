@@ -20,9 +20,9 @@ class GameManager {
       this.levelIndex = GameConfig.Level.START_INDEX;
 
       // 子系统
-      this.level = new LevelManager();
+      this.level = new LevelManager(this.levelIndex);
       this.camera = new Camera();
-      this.levelsInfo = {}; // 里面是class Level
+      this.levelsInfo = {}; // 里面是class Levelmanager
       // 运行时对象
       this.player = null;
       this.enemies = [];
@@ -40,8 +40,6 @@ class GameManager {
    /**
     * 加载关卡
     * @param {Object} [transition]  关卡过渡数据 {x, y, vx, vy}
-    *   如果提供, 保留当前玩家状态, 只更新位置和速度
-    *   如果不提供, 全新开始 (新游戏 / 按R重启)
     */
    loadLevel(transition) {
       let ldtk = this.resources.ldtkData;
@@ -53,45 +51,12 @@ class GameManager {
       let size = this.level.getCanvasSize();
       resizeCanvas(size.w, size.h);
 
-      // 3. 创建/恢复玩家/读取地图创建后经修改的信息
-      if (!(this.levelIndex in this.levelsInfo)) {
-         // 4. 创建敌人
-         this._createEnemy();
-         // 5. 创建其他实体
-         this._createEntities();
-         let level = new Level(this.enemies,this.entities,this.levelIndex);
-         this.levelsInfo[this.levelIndex] = level;
-      }
-      else {
-         this.enemies = this.levelsInfo[this.levelIndex].enemies;
-         this.entities = this.levelsInfo[this.levelIndex].entities;
-      }
+      // 创建恢复读取地图的实体
+      this._loadEntities();
 
-      // 关卡过渡: 保留 HP、绳索材质等状态
-      if (transition && this.player) {
-         this.player.x = transition.x;
-         this.player.y = transition.y;
-         // 保留移动方向的速度, 过渡更流畅
-         this.player.vx = transition.vx || 0;
-         this.player.vy = transition.vy || 0;
-         // 收回绳索 (跨关卡的锚点已失效)
-         this.player.ropeL.state = "IDLE";
-         this.player.ropeL.nodes = [];
-         this.player.ropeR.state = "IDLE";
-         this.player.ropeR.nodes = [];
-      }
-      // 重新开始
-      else if (this.status == "GAMEOVER" && this.player) {
-         let start = this.level.playerStart || { x: 50, y: 50 };
-         this.player.hp = this.player.maxHp;
-         this.player.x = start.x;
-         this.player.y = start.y;
-      }
-      // 新游戏
-      else {
-         let start = this.level.playerStart || { x: 50, y: 50 };
-         this.player = new Player(start.x, start.y);
-      }
+      // 3. 创建/恢复玩家
+      this._loadPlayer(transition);
+
       this.particles = [];
       this.camera.reset();
       this.status = "PLAY";
@@ -118,6 +83,55 @@ class GameManager {
          this.entities.push(ent);
       }
    }
+
+   _loadEntities() {
+      if (!(this.levelIndex in this.levelsInfo)) {
+         // 4. 创建敌人
+         this._createEnemy();
+         // 5. 创建其他实体
+         this._createEntities();
+         this.level.enemies = this.enemies;
+         this.level.entities = this.entities;
+         this.levelsInfo[this.levelIndex] = this.level;
+      }
+      else {
+         this.enemies = this.levelsInfo[this.levelIndex].enemies;
+         this.entities = this.levelsInfo[this.levelIndex].entities;
+      }
+   }
+
+   _loadPlayer(transition) {
+      // 关卡过渡: 保留 HP、绳索材质等状态
+      if (transition && this.player) {
+         this.player.x = transition.x;
+         this.player.y = transition.y;
+         // 保留移动方向的速度, 过渡更流畅
+         this.player.vx = transition.vx || 0;
+         this.player.vy = transition.vy || 0;
+         // 收回绳索 (跨关卡的锚点已失效)
+         this._resetRope();
+      }
+      // 重新开始
+      else if (this.status == "GAMEOVER" && this.player) {
+         let start = this.level.playerStart || { x: 50, y: 50 };
+         this.player.hp = this.player.maxHp;
+         this.player.x = start.x;
+         this.player.y = start.y;
+         this._resetRope();
+      }
+      // 新游戏
+      else {
+         let start = this.level.playerStart || { x: 50, y: 50 };
+         this.player = new Player(start.x, start.y);
+      }
+   }
+
+   _resetRope() {
+      this.player.ropeL.state = "IDLE";
+      this.player.ropeL.nodes = [];
+      this.player.ropeR.state = "IDLE";
+      this.player.ropeR.nodes = [];
+   }
    // ========================================================
    //  主循环
    // ========================================================
@@ -127,6 +141,9 @@ class GameManager {
 
       // 玩家更新 (传入 GameManager 引用)
       this.player.update(this);
+
+      // 持续按键
+      this._onKeyDown();
 
       // 摄像机
       let viewW = width / this.scale;
@@ -169,6 +186,10 @@ class GameManager {
 
       pop();
 
+      // 画小地图
+      if (keyIsDown(77)) {
+         this.level.drawMiniMap(this.player);
+      }
       // UI (屏幕空间)
       UI.drawHUD(this.player);
       if (this.status === "WIN") UI.drawWinScreen();
@@ -188,7 +209,7 @@ class GameManager {
 
    onKeyPressed(key) {
       if (this.status === "PLAY") {
-         if (key === ' ') this.player.jump();
+         if (key === ' ' || key === 'ArrowUp' || key === 'w' || key === 'W') this.player.jump();
          if (key === '1') this.player.ropeL.toggleMaterial(this.player);
          if (key === '2') this.player.ropeR.toggleMaterial(this.player);
       }
@@ -196,6 +217,11 @@ class GameManager {
          this.status = "GAMEOVER";
          this.loadLevel();
       }
+   }
+
+   _onKeyDown() {
+      if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.player.move(-1);  // d param: dir
+      if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) this.player.move(1);  // a
    }
 
    // ========================================================

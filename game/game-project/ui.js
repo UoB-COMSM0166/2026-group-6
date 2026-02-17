@@ -2,7 +2,7 @@ class UI {
 
    static drawHUD(player) {
       fill(255); noStroke(); textSize(12); textAlign(LEFT, TOP);
-      
+
       // player entity
       text("HP: " + player.hp, 25, 15);
       text("clean energy: " + player.cleanEnergy, 25, 30);
