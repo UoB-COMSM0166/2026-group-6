@@ -18,20 +18,24 @@ You will be developing your game using [P5.js](https://p5js.org) a javascript li
 
 ## Your Game (change to title of your game)
 
-STRAPLINE. Add an exciting one sentence description of your game here.
+### description
+This is a non-linear level-based game that combines side-scrolling platforming, puzzle-solving, and lightweight RPG elements, with the core theme of "purifying pollution and ecological restoration." Players use rope tools to delve into highly polluted areas, gradually restoring the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world. 
+
+### demo image: v2.1
+
+(updated in 18/02/26)
 
 <p align="center">
-  <img src="resources/images/week4-snapshot.png" width="500">
+  <img src="resources/images/week5-snapshot.png" width="500">
 </p>
 
-IMAGE. Add an image of your game here, keep this updated with a snapshot of your latest development.
+
+### TRY TO START GAME
 
 <div align="center">
   <a href = "https://uob-comsm0166.github.io/2026-group-6/"> Start Game </a>
 </div>
 
-
-LINK. Add a link here to your deployed game, you can also make the image above link to your game if you wish. Your game lives in the [/docs](/docs) folder, and is published using Github pages. 
 
 VIDEO. Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
 
@@ -43,12 +47,12 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 
 | Name | Github-Username | Email | Role |
 |------|----------|-------|------|
-| Qizhou Lu | qizhoul888-crypto | ah25177@bristol.ac.uk | Role |
-| Yifei Niu | yifeiniu0925 | sa25269@bristol.ac.uk | Role |
-| Mengzhou Gao | mengzhou168 | ti25314@bristol.ac.uk | Role |
-| Ruomu Lu | n-wind-ddd | co25180@bristol.ac.uk | Role |
-| Hang Su | chaofengming123 | fy25078@bristol.ac.uk | Role |
-| Jiaying Wang | jiaying2000wang | zb25795@bristol.ac.uk | Role |
+| Qizhou Lu | qizhoul888-crypto | ah25177@bristol.ac.uk | Backend method implementation, mechanism implementation |
+| Yifei Niu | yifeiniu0925 | sa25269@bristol.ac.uk | Game content design and requirement analysis, project manager |
+| Mengzhou Gao | mengzhou168 | ti25314@bristol.ac.uk | Map and Level Design, Game detail design|
+| Ruomu Lu | n-wind-ddd | co25180@bristol.ac.uk | Architecture, integrating front-end and back-end, core code development |
+| Hang Su | chaofengming123 | fy25078@bristol.ac.uk | Front-end development, tester, analysis and planning of project progress |
+| Jiaying Wang | jiaying2000wang | zb25795@bristol.ac.uk | UI design, feedback, experience, sound effects, summary meeting |
 
 
 ## Project Report
@@ -58,10 +62,11 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 - 5% ~250 words
   
 - Describe of the game:
-- This game is based on the concept of evolution and purification. At the end of this century, the envoriment of the Earth starting to change rapidly because of long-term pollution which is not suitable for human beings to survive so we have to move to another planet in the universe. However, we always remeber the times we spent on the old original home, and that was a question arising from the depths of the soul, a longing for home, can't we go back? Back to our home? After years of persistent efforts and in-depth researches, finally scientists discovered an energy source that can purify soil, ocean, river, atomosphere, even monsters, so almost anything in the world. But you need to discovr the old home with barely no help first since you lost connection with base, so hummm...Hope good luck for you! What new stories are waiting now? Let's explore...
+- This is a non-linear level-based game that combines side-scrolling platforming, puzzle-solving, and lightweight RPG elements, with the core theme of "purifying pollution and ecological restoration." Players use rope tools to delve into highly polluted areas, gradually restoring the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world. 
+- The game is set on an alien planet on the verge of collapse due to long-term pollution. The indigenous civilization, faced with ecological imbalance, chose to enter a dormant state, waiting to see if the planet could still be repaired. 
+- Players will take on the role of an advanced artificial intelligence purification unit sent to the depths of the planet. Using rope tools and cleaning energy, they will penetrate various highly polluted areas, purify contaminated organisms and the environment, and gradually restore the planet's ecosystem. 
+- As players carry out purification actions, the planet's environmental structure, passage routes, and ecological status will continue to change. In the end, players do not just "leave the planet"; instead, based on the world's purification level (a percentage mechanism), they will face different endings between escape, coexistence, or reconstruction.
 
-- What makes it novel? What's the "twist"?
-- The player started with two rope-like tools made of special materials and no help so has to wait and avoid some monsters, while after your journey going on, suddenly you have the chance to communicate with base. Congraduations! Let's try your new super power to beat the monsters and purify the envoriment. Oh, wait, why you can jump higher and have stronger props now? How should you control they to help you as you want, maybe you need to try several times and hold on! Possiblely you are the hero who will be memoried of all our offsprings since you are the one who kindles the slight fire of hope of the lost epic dream: humanity could return to Earth, the motherland of our ancestor born.
 
 ### Requirements 
 
