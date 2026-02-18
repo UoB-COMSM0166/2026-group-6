@@ -20,6 +20,7 @@ class Ladder extends Entity {
       if (!keyIsDown(UP_ARROW) && !keyIsDown(87) &&
          !keyIsDown(DOWN_ARROW) && !keyIsDown(83)) {
          player.vy = 0;
+         player.vy -= GameConfig.World.GRAVITY; //抵消重力
       }
 
    }
