@@ -12,7 +12,7 @@ class Player {
       this.h = G;
       this.vx = 0;
       this.vy = 0;
-      this.cleanEnergy=100;
+      this.cleanEnergy = 100;
       this.grounded = false;
 
       this.ropeL = new Rope(color(0, 255, 255));
@@ -77,7 +77,12 @@ class Player {
     * @param {LevelManager} level
     */
    _applyPhysics(level) {
-      this.vx *= 0.85;
+      if (this.grounded) {
+         this.vx *= GameConfig.World.FrictionalForce; // 摩擦力
+      }
+      else {
+         this.vx *= GameConfig.World.AirFrictionalForce; // 摩擦力
+      }
       this.vy += GameConfig.World.GRAVITY;
 
       // 绳索物理 (传入 LevelManager)
@@ -91,16 +96,29 @@ class Player {
     * @param {LevelManager} level
     */
    _resolveWorld(level) {
+      const G = GameConfig.World.GRID_SIZE;
+      const maxStep = G * 0.5; // 每次判断的步数最多半格
+
       // 收集绳索碰撞盒
       let heldRopes = [];
       if (this.ropeL.state === "SWINGING" && this.ropeL.material === 'HARD') heldRopes.push(this.ropeL);
       if (this.ropeR.state === "SWINGING" && this.ropeR.material === 'HARD') heldRopes.push(this.ropeR);
 
-      this.x += this.vx;
-      this._resolve(true, level, heldRopes);
+      // X轴分步检测
+      let stepsX = Math.ceil(Math.abs(this.vx) / maxStep);
+      let dx = this.vx / stepsX;
+      for (let i = 0; i < stepsX; i++) {
+         this.x += dx;
+         this._resolve(true, level, heldRopes);
+      }
 
-      this.y += this.vy;
-      this._resolve(false, level, heldRopes);
+      // Y轴分步检测
+      let stepsY = Math.ceil(Math.abs(this.vy) / maxStep);
+      let dy = this.vy / stepsY;
+      for (let i = 0; i < stepsY; i++) {
+         this.y += dy;
+         this._resolve(false, level, heldRopes);
+      }
    }
 
    /**
@@ -200,7 +218,7 @@ class Player {
       this.vy = -2;
    }
 
-   _reduceCleanEnergy(number){
+   _reduceCleanEnergy(number) {
       this.cleanEnergy -= number;
    }
 
@@ -230,7 +248,7 @@ class Player {
       if (side === "LEFT") this.ropeL.fire(this.cx(), this.cy(), tx, ty);
       if (side === "RIGHT") this.ropeR.fire(this.cx(), this.cy(), tx, ty);
    }
- 
+
    move(dir) {
       let f = this.grounded ? GameConfig.Player.SPEED : GameConfig.Player.SPEED * 0.7;
       this.vx += dir * f;
