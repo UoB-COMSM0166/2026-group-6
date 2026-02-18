@@ -63,7 +63,7 @@ class Enemy {
       let nextY = this.y + this.vy;
       this.grounded = false;
 
-      // ★ 空间查询: 只检测附近的固体
+      // 空间查询: 只检测附近的固体
       let nearbyY = level.getSolidTilesInRect(this.x + 0.1, nextY, this.w - 0.2, this.h, 0);
       let hitY = false;
       for (let t of nearbyY) {
@@ -81,7 +81,7 @@ class Enemy {
       }
       if (!hitY) this.y += this.vy;
 
-      if (this.y > 1000) this.hp = 0;
+      if (this.y > level.mapH) this.hp = 0;
 
       // --- X 轴 ---
       const G = GameConfig.World.GRID_SIZE;
@@ -97,13 +97,13 @@ class Enemy {
          }
       }
 
-      // ★ 悬崖检测: 利用 LevelManager 列查询
+      // 悬崖检测: 利用 LevelManager 列查询
       let probeX = (this.dir === 1) ? (nextX + this.w + 0.5) : (nextX - 0.5);
       let feetRow = level.worldToGrid(0, this.y + this.h).row;
       let maxDropRow = level.worldToGrid(0, this.y + this.h + G * GameConfig.Enemy.DROP_DEPTH_TILES).row;
       let probeCol = level.worldToGrid(probeX, 0).col;
 
-      let safeToDrop = level.hasSolidInColumn(probeCol, feetRow - 1, maxDropRow);
+      let safeToDrop = level.hasSolidInColumn(probeCol, feetRow - 1, maxDropRow - 1);
       let aboutToFall = !safeToDrop;
 
       if (hitWall) {
@@ -115,9 +115,15 @@ class Enemy {
          } else {
             if (this.vy > 2.0) this._turn();
          }
-      } else if (aboutToFall && this.grounded) {
+      }
+      else if (aboutToFall && this.grounded) {
          this._turn();
-      } else {
+      }
+      // 接近地图边缘转向
+      else if (this._isCrossMap(level)) {
+         this._turn();
+      }
+      else {
          this.x = nextX;
       }
    }
@@ -136,6 +142,15 @@ class Enemy {
          fill(lerpColor(color(100), color(255, 0, 0), this.hp / this.maxHp));
       }
       rect(this.x, this.y, this.w, this.h);
+   }
+
+   // 超出地图
+   _isCrossMap(level) {
+      let nextX = this.x + this.speed * this.dir * 0.8;
+      const G = GameConfig.World.GRID_SIZE;
+      let margin = G * 0.5;
+      return ((this.dir === -1 && nextX < margin) ||
+         (this.dir === 1 && nextX + this.w > level.mapW - margin));
    }
 
    _turn() {

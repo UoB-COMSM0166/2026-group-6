@@ -97,7 +97,7 @@ class Player {
     */
    _resolveWorld(level) {
       const G = GameConfig.World.GRID_SIZE;
-      const maxStep = G * 0.5; // 每次判断的步数最多半格
+      const maxStep = G * 0.3; // 每次判断的步数最多半格
 
       // 收集绳索碰撞盒
       let heldRopes = [];

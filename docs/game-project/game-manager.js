@@ -20,7 +20,7 @@ class GameManager {
       this.levelIndex = GameConfig.Level.START_INDEX;
 
       // 子系统
-      this.level = new LevelManager(this.levelIndex);
+      this.level;
       this.camera = new Camera();
       this.levelsInfo = {}; // 里面是class Levelmanager
       // 运行时对象
@@ -44,15 +44,21 @@ class GameManager {
    loadLevel(transition) {
       let ldtk = this.resources.ldtkData;
 
+      if (this.levelIndex in this.levelsInfo) {
+         this.level = this.levelsInfo[this.levelIndex];
+      }
+      else {
+         this.level = new LevelManager(this.levelIndex);
+         this.level.load(ldtk, this.levelIndex);
+      }
       // 1. LevelManager 解析地图
-      this.level.load(ldtk, this.levelIndex);
+
+      // 创建恢复读取地图的实体
+      this._loadEntities();
 
       // 2. 调整画布
       let size = this.level.getCanvasSize();
       resizeCanvas(size.w, size.h);
-
-      // 创建恢复读取地图的实体
-      this._loadEntities();
 
       // 3. 创建/恢复玩家
       this._loadPlayer(transition);
@@ -103,11 +109,13 @@ class GameManager {
    _loadPlayer(transition) {
       // 关卡过渡: 保留 HP、绳索材质等状态
       if (transition && this.player) {
+         // 切换地图无敌帧
+         this.player.invulnerableTimer = GameConfig.Player.InvulInterval
          this.player.x = transition.x;
          this.player.y = transition.y;
          // 保留移动方向的速度, 过渡更流畅
-         this.player.vx = transition.vx || 0;
-         this.player.vy = transition.vy || 0;
+         this.player.vx = transition.vx * 0.5 || 0;
+         this.player.vy = transition.vy * 0.5 || 0;
          // 收回绳索 (跨关卡的锚点已失效)
          this._resetRope();
       }
@@ -117,6 +125,8 @@ class GameManager {
          this.player.hp = this.player.maxHp;
          this.player.x = start.x;
          this.player.y = start.y;
+         this.player.vx = 0;
+         this.player.vy = 0;
          this._resetRope();
       }
       // 新游戏
@@ -159,7 +169,7 @@ class GameManager {
       // 粒子
       this._updateParticles();
 
-      // ★ 关卡过渡检测 (优先于胜负判定)
+      // 关卡过渡检测 (优先于胜负判定)
       this._checkTransition();
 
       // 胜负判定
@@ -290,7 +300,7 @@ class GameManager {
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
-
+      this._savaLevel();
       // 切换关卡, 保留速度让过渡更流畅
       this.levelIndex = result.levelIndex;
       this.loadLevel({
@@ -299,6 +309,11 @@ class GameManager {
          vx: this.player.vx,
          vy: this.player.vy,
       });
+   }
+
+   _savaLevel() {
+      this.levelsInfo[this.levelIndex].enemies = this.enemies;
+      this.levelsInfo[this.levelIndex].entities = this.entities;
    }
 
    _checkWinLose() {

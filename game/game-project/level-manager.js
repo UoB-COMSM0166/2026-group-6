@@ -138,7 +138,7 @@ class LevelManager {
       return (tile && tile.active) ? tile.type : null;
    }
 
-   /** 世界坐标 → 网格坐标 */
+   /** World coordinates → grid coordinates */
    worldToGrid(px, py) {
       return {
          col: Math.floor((px - this.offsetX) / this.gridSize),

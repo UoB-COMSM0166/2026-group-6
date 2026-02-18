@@ -36,7 +36,7 @@ const GameConfig = {
    Enemy: {
       SPEED: 0.5,
       JUMPFORCE: 3.5,
-      DROP_DEPTH_TILES: 3,
+      DROP_DEPTH_TILES: 2.5,
    },
 
    Entity: {
