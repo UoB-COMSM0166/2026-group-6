@@ -231,12 +231,21 @@ class Player {
       }
    }
    _isTouchRest(gm) {
-      if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
-         { solidOnly: false, type: GameConfig.Collision.Rest, margin: 1 })) {
-         gm.level.resetPlayerStart(this.x, this.y);
+      let m = 0.3;
+      let tiles = gm.level.getTilesInRect(
+         this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
+         { type: GameConfig.Collision.Rest, margin: 0 }
+      );
+      for (let t of tiles) {
+         if (Physics.rectIntersect(
+            this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
+            t.x, t.y, t.w, t.h)) {
+            let mid = gm.level.findRestMiddle(t.col, t.row);
+            if (mid) gm.level.resetPlayerStart(mid.x - 0.25 * this.w, mid.y - this.h);
+            return;
+         }
       }
    }
-
    // ====== 动作 ======
 
    fireRope(side, tx, ty) {

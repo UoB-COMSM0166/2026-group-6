@@ -159,13 +159,15 @@ class LevelManager {
     * @param {number} w  宽度
     * @param {number} h  高度
     * @param {Object} [opts]
-    *   - margin {number}    额外扩展的格子数 (默认 1)
+    *   - margin {int}    额外扩展的格子数 (默认 1)
+    *   - type {string|null}   限定 tile 类型
     *   - solidOnly {boolean} 是否只返回固体 (默认 false)
     * @returns {Tile[]}
     */
    getTilesInRect(x, y, w, h, opts = {}) {
       let margin = opts.margin ?? 1;
       let solidOnly = opts.solidOnly ?? false;
+      let type = opts.type || null;
 
       let g = this.gridSize;
       let startCol = Math.floor((x - this.offsetX) / g) - margin;
@@ -182,8 +184,15 @@ class LevelManager {
       for (let r = startRow; r <= endRow; r++) {
          for (let c = startCol; c <= endCol; c++) {
             let tile = this.grid[r][c];
-            if (tile && tile.active && (!solidOnly || tile.isSolid)) {
-               result.push(tile);
+            if (tile && tile.active) {
+               if (type === null) {
+                  if (!solidOnly || tile.isSolid) {
+                     result.push(tile);
+                  }
+               }
+               else if (tile.type === type) {
+                  result.push(tile);
+               }
             }
          }
       }
@@ -261,6 +270,34 @@ class LevelManager {
          }
       }
       return closestHit;
+   }
+
+   findRestMiddle(col, row) {
+      // 水平方向查找连续的 rest tile
+      let restTiles = [];
+
+      // 向左扫描
+      let c = col;
+      while (c >= 0 && this.getTiletype(c, row) === 'rest') {
+         restTiles.unshift({ col: c, row: row });
+         c--;
+      }
+      // 向右扫描（跳过自身）
+      c = col + 1;
+      while (c < this.cols && this.getTiletype(c, row) === 'rest') {
+         restTiles.push({ col: c, row: row });
+         c++;
+      }
+
+      if (restTiles.length < 3) return null;
+
+      // 取中间那个
+      let mid = restTiles[Math.floor(restTiles.length / 2)];
+      let g = this.gridSize;
+      return {
+         x: mid.col * g + this.offsetX,
+         y: mid.row * g + this.offsetY
+      };
    }
 
    // ========================================================
