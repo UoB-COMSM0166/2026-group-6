@@ -49,25 +49,29 @@ class Player {
       let wf = GameConfig.Player.WINCH_FORCE;
 
       if (this.ropeL.state === "SWINGING") {
-         if (keyIsDown(81)) { // Q
+         // Z
+         if (keyIsDown(90)) { 
             this.ropeL.changeLength(-cs);
             let tgt = this.ropeL.nodes[0] || this.ropeL.anchor;
             let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
             this.vx += cos(a) * wf;
             this.vy += sin(a) * wf;
          }
-         if (keyIsDown(90)) this.ropeL.changeLength(cs); // Z
+         // Q
+         if (keyIsDown(81)) this.ropeL.changeLength(cs); 
       }
 
       if (this.ropeR.state === "SWINGING") {
-         if (keyIsDown(69)) { // E
+         // C
+         if (keyIsDown(67)) { 
             this.ropeR.changeLength(-cs);
             let tgt = this.ropeR.nodes[0] || this.ropeR.anchor;
             let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
             this.vx += cos(a) * wf;
             this.vy += sin(a) * wf;
          }
-         if (keyIsDown(67)) this.ropeR.changeLength(cs); // C
+         // E 
+         if (keyIsDown(69)) this.ropeR.changeLength(cs); 
       }
    }
 
