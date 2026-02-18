@@ -146,25 +146,33 @@ class LevelManager {
       };
    }
 
+   /** 便捷方法：只返回固体 Tile */
+   getSolidTilesInRect(x, y, w, h, margin = 1) {
+      return this.getTilesInRect(x, y, w, h, { margin, solidOnly: true });
+   }
+
    /**
-    * 获取矩形区域内的所有 active 固体 Tile
-    * 这是替代 `for (let p of solidPlatforms)` 的核心方法
+    * 获取矩形区域内的所有 active Tile
     *
     * @param {number} x  世界像素 x
     * @param {number} y  世界像素 y
     * @param {number} w  宽度
     * @param {number} h  高度
-    * @param {number} [margin=1]  额外扩展的格子数 (安全边距)
+    * @param {Object} [opts]
+    *   - margin {number}    额外扩展的格子数 (默认 1)
+    *   - solidOnly {boolean} 是否只返回固体 (默认 false)
     * @returns {Tile[]}
     */
-   getSolidTilesInRect(x, y, w, h, margin = 1) {
+   getTilesInRect(x, y, w, h, opts = {}) {
+      let margin = opts.margin ?? 1;
+      let solidOnly = opts.solidOnly ?? false;
+
       let g = this.gridSize;
       let startCol = Math.floor((x - this.offsetX) / g) - margin;
       let endCol = Math.floor((x + w - this.offsetX) / g) + margin;
       let startRow = Math.floor((y - this.offsetY) / g) - margin;
       let endRow = Math.floor((y + h - this.offsetY) / g) + margin;
 
-      // 钳制到有效范围
       startCol = Math.max(0, startCol);
       startRow = Math.max(0, startRow);
       endCol = Math.min(this.cols - 1, endCol);
@@ -174,7 +182,7 @@ class LevelManager {
       for (let r = startRow; r <= endRow; r++) {
          for (let c = startCol; c <= endCol; c++) {
             let tile = this.grid[r][c];
-            if (tile && tile.active && tile.isSolid) {
+            if (tile && tile.active && (!solidOnly || tile.isSolid)) {
                result.push(tile);
             }
          }
@@ -183,39 +191,31 @@ class LevelManager {
    }
 
    /**
-* 获取矩形区域内的所有 active 固体 Tile
-* 这是替代 `for (let p of solidPlatforms)` 的核心方法
-*
-* @param {number} x  世界像素 x
-* @param {number} y  世界像素 y
-* @param {number} w  宽度
-* @param {number} h  高度
-* @param {number} [margin=1]  额外扩展的格子数 (安全边距)
-* @returns {Tile[]}
-*/
-   getTilesInRect(x, y, w, h, margin = 1) {
-      let g = this.gridSize;
-      let startCol = Math.floor((x - this.offsetX) / g) - margin;
-      let endCol = Math.floor((x + w - this.offsetX) / g) + margin;
-      let startRow = Math.floor((y - this.offsetY) / g) - margin;
-      let endRow = Math.floor((y + h - this.offsetY) / g) + margin;
+ * 检测一个矩形是否与指定类型（或固体）的 Tile 重叠
+ * @param {number} x, y, w, h  世界坐标矩形
+ * @param {Object} [opts]
+ *   - solidOnly {boolean}  只查固体 (默认 true)
+ *   - type {string|null}   限定 tile 类型 (如 "toxic_poor")
+ *   - margin {number}      碰撞检测内缩量 (默认 0.1)
+ * @returns {boolean}
+ */
+   isRectOverlappingTile(x, y, w, h, opts = {}) {
+      let solidOnly = opts.solidOnly !== false;
+      let type = opts.type || null;
+      let m = opts.margin ?? 0.1;
 
-      // 钳制到有效范围
-      startCol = Math.max(0, startCol);
-      startRow = Math.max(0, startRow);
-      endCol = Math.min(this.cols - 1, endCol);
-      endRow = Math.min(this.rows - 1, endRow);
+      let bx = x + m, by = y + m, bw = w - m * 2, bh = h - m * 2;
+      let tiles = solidOnly
+         ? this.getSolidTilesInRect(bx, by, bw, bh, 0)
+         : this.getTilesInRect(bx, by, bw, bh, 0);
 
-      let result = [];
-      for (let r = startRow; r <= endRow; r++) {
-         for (let c = startCol; c <= endCol; c++) {
-            let tile = this.grid[r][c];
-            if (tile && tile.active) {
-               result.push(tile);
-            }
+      for (let t of tiles) {
+         if (type && t.type !== type) continue;
+         if (Physics.rectIntersect(bx, by, bw, bh, t.x, t.y, t.w, t.h)) {
+            return true;
          }
       }
-      return result;
+      return false;
    }
 
    /**
@@ -361,6 +361,10 @@ class LevelManager {
 
       let idx = this._iidCache[iid];
       return (idx !== undefined) ? idx : -1;
+   }
+
+   resetPlayerStart(x, y) {
+      this.playerStart = { x: x, y: y };
    }
 
    // ========================================================
@@ -569,9 +573,9 @@ class LevelManager {
                switch (tile.type) {
                   case 'ground': color = "#b86f50"; break;
                   case 'water': color = "#2CE8F5"; break;
-                  case 'toxic_poor': color = "#3E8948"; break;
+                  case 'toxic_poor': color = "#640d47"; break;
                   case 'spaceship': color = "#FFFFFF"; break;
-                  case 'rest': color = "#3E2731"; break;
+                  case 'rest': color = "#36e23f"; break;
                   default: color = "#1d1717";
                }
                color = color + "a0"; // 透明度

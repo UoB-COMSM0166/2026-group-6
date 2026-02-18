@@ -52,7 +52,7 @@ class GameManager {
          this.level.load(ldtk, this.levelIndex);
       }
       // 1. LevelManager 解析地图
-
+      
       // 创建恢复读取地图的实体
       this._loadEntities();
 
@@ -62,6 +62,7 @@ class GameManager {
 
       // 3. 创建/恢复玩家
       this._loadPlayer(transition);
+      this.level.resetPlayerStart(this.player.x, this.player.y);
 
       this.particles = [];
       this.camera.reset();

@@ -33,7 +33,8 @@ class Player {
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
       this._checkEnemyHit(gm);
-      this._checkToxicPool(gm);
+      this._isInToxicPool(gm);
+      this._isTouchRest(gm);
    }
 
    // ====== 输入 ======
@@ -223,23 +224,17 @@ class Player {
    }
 
    // 碰到毒池
-   _checkToxicPool(gm) {
-      if (this._isOverlappingToxicPool(gm.level)) {
+   _isInToxicPool(gm) {
+      if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
+         { solidOnly: false, type: GameConfig.Collision.ToxicPool, margin: 0.1 })) {
          this.die(gm);
       }
    }
-
-   _isOverlappingToxicPool(level) {
-      let m = 0.1;
-      let tiles = level.getTilesInRect(this.x + m, this.y + m, this.w - m * 2, this.h - m * 2, 0);
-      for (let t of tiles) {
-         if (Physics.rectIntersect(
-            this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
-            t.x, t.y, t.w, t.h) && t.type === GameConfig.Entity.ToxicPool) {
-            return true;
-         }
+   _isTouchRest(gm) {
+      if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
+         { solidOnly: false, type: GameConfig.Collision.Rest, margin: 1 })) {
+         gm.level.resetPlayerStart(this.x, this.y);
       }
-      return false;
    }
 
    // ====== 动作 ======

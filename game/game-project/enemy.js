@@ -28,24 +28,12 @@ class Enemy {
 
       // 出生防卡墙：使用空间查询
       let safety = 100;
-      while (this._isOverlapping(level) && safety > 0) {
+      while (level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
+         { solidOnly: true, margin: 0.1 })
+         && safety > 0) {
          this.y -= 1;
          safety--;
       }
-   }
-
-   /** 检测当前位置是否与固体重叠 */
-   _isOverlapping(level) {
-      let m = 0.1;
-      let tiles = level.getSolidTilesInRect(this.x + m, this.y + m, this.w - m * 2, this.h - m * 2, 0);
-      for (let t of tiles) {
-         if (Physics.rectIntersect(
-            this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
-            t.x, t.y, t.w, t.h)) {
-            return true;
-         }
-      }
-      return false;
    }
 
    /**
