@@ -5,7 +5,7 @@ const GameConfig = {
       GRAVITY: 0.35,
       FrictionalForce: 0.83,
       AirFrictionalForce: 0.9,
-      SOLID_TYPES: ["ground", "spaceship", "mechanism", "wall"],
+      SOLID_TYPES: ["ground", "spaceship", "mechanism"],
    },
 
    // === 显示 ===
@@ -47,11 +47,11 @@ const GameConfig = {
       Boss: "Boss",
       CleanEnergy: "Cleaning_energy",
       Ladder: "Ladder",
+      Rest: "Rest",
    },
 
    Collision: {
       ToxicPool: "toxic_poor",
-      Rest: "rest",
    },
 
    // === 绳索 ===

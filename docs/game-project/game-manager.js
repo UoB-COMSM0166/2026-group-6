@@ -52,7 +52,7 @@ class GameManager {
          this.level.load(ldtk, this.levelIndex);
       }
       // 1. LevelManager 解析地图
-      
+
       // 创建恢复读取地图的实体
       this._loadEntities();
 
@@ -85,6 +85,8 @@ class GameManager {
             case GameConfig.Entity.Tool: ent = new Tool(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.PollutionCore: ent = new PollutionCore(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.CleanEnergy: ent = new CleanEnergy(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.Rest: ent = new Rest(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.Ladder: ent = new Ladder(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
          }
          this.entities.push(ent);

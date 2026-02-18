@@ -272,34 +272,6 @@ class LevelManager {
       return closestHit;
    }
 
-   findRestMiddle(col, row) {
-      // 水平方向查找连续的 rest tile
-      let restTiles = [];
-
-      // 向左扫描
-      let c = col;
-      while (c >= 0 && this.getTiletype(c, row) === 'rest') {
-         restTiles.unshift({ col: c, row: row });
-         c--;
-      }
-      // 向右扫描（跳过自身）
-      c = col + 1;
-      while (c < this.cols && this.getTiletype(c, row) === 'rest') {
-         restTiles.push({ col: c, row: row });
-         c++;
-      }
-
-      if (restTiles.length < 3) return null;
-
-      // 取中间那个
-      let mid = restTiles[Math.floor(restTiles.length / 2)];
-      let g = this.gridSize;
-      return {
-         x: mid.col * g + this.offsetX,
-         y: mid.row * g + this.offsetY
-      };
-   }
-
    // ========================================================
    //  关卡过渡 (Level Transition)
    // ========================================================
@@ -612,7 +584,6 @@ class LevelManager {
                   case 'water': color = "#2CE8F5"; break;
                   case 'toxic_poor': color = "#640d47"; break;
                   case 'spaceship': color = "#FFFFFF"; break;
-                  case 'rest': color = "#36e23f"; break;
                   default: color = "#1d1717";
                }
                color = color + "a0"; // 透明度

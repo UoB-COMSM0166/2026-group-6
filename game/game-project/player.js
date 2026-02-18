@@ -34,7 +34,6 @@ class Player {
       this._resolveWorld(gm.level);
       this._checkEnemyHit(gm);
       this._isInToxicPool(gm);
-      this._isTouchRest(gm);
    }
 
    // ====== 输入 ======
@@ -228,22 +227,6 @@ class Player {
       if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
          { solidOnly: false, type: GameConfig.Collision.ToxicPool, margin: 0.1 })) {
          this.die(gm);
-      }
-   }
-   _isTouchRest(gm) {
-      let m = 0.3;
-      let tiles = gm.level.getTilesInRect(
-         this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
-         { type: GameConfig.Collision.Rest, margin: 0 }
-      );
-      for (let t of tiles) {
-         if (Physics.rectIntersect(
-            this.x + m, this.y + m, this.w - m * 2, this.h - m * 2,
-            t.x, t.y, t.w, t.h)) {
-            let mid = gm.level.findRestMiddle(t.col, t.row);
-            if (mid) gm.level.resetPlayerStart(mid.x - 0.25 * this.w, mid.y - this.h);
-            return;
-         }
       }
    }
    // ====== 动作 ======
