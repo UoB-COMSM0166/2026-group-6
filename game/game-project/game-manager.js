@@ -256,14 +256,16 @@ class GameManager {
          // ★ 敌人更新接收 LevelManager
          e.update(this.level);
 
-         // 绳索命中
+         // 绳索命中，对左右绳子做相同的判断
          [this.player.ropeL, this.player.ropeR].forEach(rope => {
             if (rope.state === "EXTENDING" || rope.state === "SWINGING") {
                let tip = rope.getTip(this.player);
                if (dist(tip.x, tip.y, e.x + e.w / 2, e.y + e.h / 2) < 10 && !e.purified) {
-                  e.takeDamage(1);
-                  this.player._reduceCleanEnergy(5);
-                  this.addParticles(e.x + e.w / 2, e.y + e.h / 2);
+                  if (this.player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) {
+                     e.takeDamage(1);
+                     this.player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
+                     this.addParticles(e.x + e.w / 2, e.y + e.h / 2);
+                  } 
                   if (rope.state === "EXTENDING") rope.state = "RETRACTING";
                }
             }

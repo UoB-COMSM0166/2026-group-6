@@ -23,6 +23,7 @@ const GameConfig = {
    // === 玩家 ===
    Player: {
       MAX_HP: 20,
+      MAXCleanEnergy: 100,
       SPEED: 0.5,
       CLIMB_SPEED: 0.05,
       WINCH_FORCE: 0.3,
@@ -30,6 +31,7 @@ const GameConfig = {
       InvulInterval: 30,
       KnockInterval: 15,
       DefaultStartPoint: { x: 5, y: 30 },
+      AttackConsume: 5,
    },
 
    // === 敌人 ===

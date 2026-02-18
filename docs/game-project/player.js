@@ -12,7 +12,7 @@ class Player {
       this.h = G;
       this.vx = 0;
       this.vy = 0;
-      this.cleanEnergy = 100;
+      this.cleanEnergy = GameConfig.Player.MAXCleanEnergy;
       this.grounded = false;
 
       this.ropeL = new Rope(color(0, 255, 255));
@@ -50,7 +50,7 @@ class Player {
 
       if (this.ropeL.state === "SWINGING") {
          // Z
-         if (keyIsDown(90)) { 
+         if (keyIsDown(90)) {
             this.ropeL.changeLength(-cs);
             let tgt = this.ropeL.nodes[0] || this.ropeL.anchor;
             let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
@@ -58,12 +58,12 @@ class Player {
             this.vy += sin(a) * wf;
          }
          // Q
-         if (keyIsDown(81)) this.ropeL.changeLength(cs); 
+         if (keyIsDown(81)) this.ropeL.changeLength(cs);
       }
 
       if (this.ropeR.state === "SWINGING") {
          // C
-         if (keyIsDown(67)) { 
+         if (keyIsDown(67)) {
             this.ropeR.changeLength(-cs);
             let tgt = this.ropeR.nodes[0] || this.ropeR.anchor;
             let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
@@ -71,7 +71,7 @@ class Player {
             this.vy += sin(a) * wf;
          }
          // E 
-         if (keyIsDown(69)) this.ropeR.changeLength(cs); 
+         if (keyIsDown(69)) this.ropeR.changeLength(cs);
       }
    }
 
@@ -222,8 +222,17 @@ class Player {
       this.vy = -2;
    }
 
-   _reduceCleanEnergy(number) {
-      this.cleanEnergy -= number;
+   /**
+   * @param {number} consume
+   */
+   reduceCleanEnergy(consume) {
+      if (this.checkRemainCleanEnergy(consume)) {
+         this.cleanEnergy -= consume;
+      }
+   }
+
+   checkRemainCleanEnergy(consume) {
+      return (this.cleanEnergy - consume) >= 0;
    }
 
    // 碰到毒池
