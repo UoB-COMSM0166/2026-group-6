@@ -202,7 +202,7 @@ class Player {
    takeDamage(damage, gm) {
       this.hp -= damage;
       if (this.hp <= 0) { this.die(gm); return; }
-      this.invulnerableTimer = GameConfig.Player.InvulInterval;      
+      this.invulnerableTimer = GameConfig.Player.InvulInterval;
    }
 
    /**

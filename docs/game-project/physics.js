@@ -9,9 +9,9 @@ class Physics {
    }
 
    static lineRectIntersect(x1, y1, x2, y2, rx, ry, rw, rh) {
-      let left   = this.lineLineIntersect(x1, y1, x2, y2, rx, ry, rx, ry + rh);
-      let right  = this.lineLineIntersect(x1, y1, x2, y2, rx + rw, ry, rx + rw, ry + rh);
-      let top    = this.lineLineIntersect(x1, y1, x2, y2, rx, ry, rx + rw, ry);
+      let left = this.lineLineIntersect(x1, y1, x2, y2, rx, ry, rx, ry + rh);
+      let right = this.lineLineIntersect(x1, y1, x2, y2, rx + rw, ry, rx + rw, ry + rh);
+      let top = this.lineLineIntersect(x1, y1, x2, y2, rx, ry, rx + rw, ry);
       let bottom = this.lineLineIntersect(x1, y1, x2, y2, rx, ry + rh, rx + rw, ry + rh);
       let closest = null;
       let minDst = Infinity;
