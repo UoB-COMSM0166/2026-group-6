@@ -252,25 +252,16 @@ class GameManager {
    _updateEnemies() {
       for (let i = this.enemies.length - 1; i >= 0; i--) {
          let e = this.enemies[i];
-
-         // ★ 敌人更新接收 LevelManager
+         // enemy update the state of level
          e.update(this.level);
-
-         // 绳索命中，对左右绳子做相同的判断
+         if (e.isTouchingPlayer(this.player)) {
+            e.onPlayerContact(this.player, this);
+         }
          [this.player.ropeL, this.player.ropeR].forEach(rope => {
-            if (rope.state === "EXTENDING" || rope.state === "SWINGING") {
-               let tip = rope.getTip(this.player);
-               if (dist(tip.x, tip.y, e.x + e.w / 2, e.y + e.h / 2) < 10 && !e.purified) {
-                  if (this.player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) {
-                     e.takeDamage(1);
-                     this.player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
-                     this.addParticles(e.x + e.w / 2, e.y + e.h / 2);
-                  } 
-                  if (rope.state === "EXTENDING") rope.state = "RETRACTING";
-               }
+            if (e.isTouchingRope(rope, this.player)) {
+               e.onRopeContact(rope, this.player, this);
             }
          });
-
          if (e.isDead) this.enemies.splice(i, 1);
       }
    }
@@ -282,6 +273,11 @@ class GameManager {
          if (ent.isTouchingPlayer(this.player)) {
             ent.onPlayerContact(this.player, this);
          }
+         [this.player.ropeL, this.player.ropeR].forEach(rope => {
+            if (ent.isTouchingRope(rope, this.player)) {
+               ent.onRopeContact(rope, this.player, this);
+            }
+         });
          if (ent.isDead) this.entities.splice(i, 1);
       }
    }

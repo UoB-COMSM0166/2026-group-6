@@ -80,7 +80,7 @@ class Enemy extends Entity {
          { solidOnly: true, margin: 0.1 });
 
       // 悬崖检测: 利用 LevelManager 列查询
-      let probeX = (this.dir === 1) ? (nextX + this.w - 0.6 * this.w) : (nextX + 0.6 * this.w);
+      let probeX = (this.dir === 1) ? (nextX + this.w - 0.5 * this.w) : (nextX + 0.5 * this.w);
       let feetRow = level.worldToGrid(0, this.y + this.h).row;
       let maxDropRow = level.worldToGrid(0, this.y + this.h + G * GameConfig.Enemy.DROP_DEPTH_TILES).row;
       let probeCol = level.worldToGrid(probeX, 0).col;
@@ -108,6 +108,17 @@ class Enemy extends Entity {
       else {
          this.x = nextX;
       }
+   }
+
+   onRopeContact(rope, player, gm) {
+      if (this.purified) return;
+      if (!player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) return;
+
+      this.takeDamage(1);
+      player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
+      gm.addParticles(this.cx(), this.cy());
+
+      if (rope.state === "EXTENDING") rope.state = "RETRACTING";
    }
 
    takeDamage(n) {

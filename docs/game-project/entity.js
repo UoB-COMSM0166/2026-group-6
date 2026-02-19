@@ -67,13 +67,37 @@ class Entity {
    }
 
    /**
-    * ★ 玩家接触时的行为 — 子类覆写此方法
+    * 玩家接触时的行为 — 子类覆写此方法
     *
     * @param {Player} player
     * @param {GameManager} gm
     */
    onPlayerContact(player, gm) {
       // 默认无行为, 子类覆写
+   }
+
+   /**
+    * 检测是否与绳子接触
+    * @param {Player} player
+    * @param {Rope} rope
+    * @returns {boolean}
+    */
+   isTouchingRope(rope, player) {
+      if (!this.active) return false;
+      if (rope.state !== "EXTENDING" && rope.state !== "SWINGING") return false;
+      let tip = rope.getTip(player);
+      return dist(tip.x, tip.y, this.cx(), this.cy()) < 10;
+   }
+
+   /**
+    * 绳子接触时的行为 — 子类覆写此方法
+    *
+    * @param {Player} player
+    * @param {Rope} rope
+    * @param {GameManager} gm
+    */
+   onRopeContact(rope, player, gm) {
+      // 默认无行为
    }
 
    // ====== 更新 ======
