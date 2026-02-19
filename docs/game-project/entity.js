@@ -13,7 +13,7 @@ class Entity {
     * @param {number} y  像素坐标 y
     * @param {number} w  宽度 (像素)
     * @param {number} h  高度 (像素)
-    * @param {Object} [spawnData]  LDtk 原始数据, 包含 color 和 fields
+    * @param {Object} [spawnData]  LDtk 原始数据
     */
    constructor(x, y, w, h, spawnData = {}) {
       // 位置与尺寸

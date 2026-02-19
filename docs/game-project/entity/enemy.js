@@ -1,9 +1,10 @@
-class Enemy extends Entity{
+class Enemy extends Entity {
    /**
     * @param {number} x
     * @param {number} y
-    * @param {number} hp
-    * @param {number} damage
+    * @param {number} w
+    * @param {number} h
+    * @param {Object} [spawnData]  LDtk 原始数据
     * @param {LevelManager} level  用于出生位置修正
     */
    constructor(x, y, w, h, spawnData, level) {
@@ -25,7 +26,7 @@ class Enemy extends Entity{
       this.speed = GameConfig.Enemy.SPEED;
       this.vy = 0;
       this.grounded = false;
-      this.jumpForce = -1 * GameConfig.Enemy.JUMPFORCE;
+      this.jumpForce = -0.85 * GameConfig.Enemy.JUMPFORCE;
 
       // 出生防卡墙：使用空间查询
       let safety = 100;
@@ -53,22 +54,19 @@ class Enemy extends Entity{
       this.grounded = false;
 
       // 空间查询: 只检测附近的固体
-      let nearbyY = level.getSolidTilesInRect(this.x + 0.1, nextY, this.w - 0.2, this.h, 0);
-      let hitY = false;
-      for (let t of nearbyY) {
-         if (Physics.rectIntersect(this.x + 0.1, nextY, this.w - 0.2, this.h, t.x, t.y, t.w, t.h)) {
-            hitY = true;
-            if (this.vy > 0) {
-               this.y = t.y - this.h;
-               this.grounded = true;
-            } else if (this.vy < 0) {
-               this.y = t.y + t.h;
-            }
-            this.vy = 0;
-            break;
+      let hitTileY = level.isRectOverlappingTile(this.x + 0.1, nextY, this.w - 0.2, this.h,
+         { solidOnly: true, margin: 0 });
+      if (hitTileY) {
+         if (this.vy > 0) {
+            this.y = hitTileY.y - this.h;
+            this.grounded = true;
+         } else if (this.vy < 0) {
+            this.y = hitTileY.y + hitTileY.h;
          }
+         this.vy = 0;
+      } else {
+         this.y += this.vy;
       }
-      if (!hitY) this.y += this.vy;
 
       if (this.y > level.mapH) this.hp = 0;
 
@@ -77,17 +75,12 @@ class Enemy extends Entity{
       let nextX = this.x + this.speed * this.dir * 0.8;
 
       // 撞墙检测 (空间查询)
-      let nearbyX = level.getSolidTilesInRect(nextX, this.y, this.w, this.h, 0);
       let hitWall = false;
-      for (let t of nearbyX) {
-         if (Physics.rectIntersect(nextX, this.y, this.w, this.h, t.x, t.y, t.w, t.h)) {
-            hitWall = true;
-            break;
-         }
-      }
+      hitWall = !!level.isRectOverlappingTile(nextX, this.y, this.w, this.h,
+         { solidOnly: true, margin: 0.1 });
 
       // 悬崖检测: 利用 LevelManager 列查询
-      let probeX = (this.dir === 1) ? (nextX + this.w + 0.5) : (nextX - 0.5);
+      let probeX = (this.dir === 1) ? (nextX + this.w - 0.6 * this.w) : (nextX + 0.6 * this.w);
       let feetRow = level.worldToGrid(0, this.y + this.h).row;
       let maxDropRow = level.worldToGrid(0, this.y + this.h + G * GameConfig.Enemy.DROP_DEPTH_TILES).row;
       let probeCol = level.worldToGrid(probeX, 0).col;

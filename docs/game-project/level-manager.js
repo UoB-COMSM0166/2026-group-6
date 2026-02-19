@@ -206,7 +206,7 @@ class LevelManager {
  *   - solidOnly {boolean}  只查固体 (默认 true)
  *   - type {string|null}   限定 tile 类型 (如 "toxic_poor")
  *   - margin {number}      碰撞检测内缩量 (默认 0.1)
- * @returns {boolean}
+ * @returns tile/ null
  */
    isRectOverlappingTile(x, y, w, h, opts = {}) {
       let solidOnly = opts.solidOnly !== false;
@@ -221,10 +221,10 @@ class LevelManager {
       for (let t of tiles) {
          if (type && t.type !== type) continue;
          if (Physics.rectIntersect(bx, by, bw, bh, t.x, t.y, t.w, t.h)) {
-            return true;
+            return t;
          }
       }
-      return false;
+      return null;
    }
 
    /**

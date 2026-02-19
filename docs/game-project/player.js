@@ -238,7 +238,7 @@ class Player {
    // 碰到毒池
    _isInToxicPool(gm) {
       if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
-         { solidOnly: false, type: GameConfig.Collision.ToxicPool, margin: 0.1 })) {
+         { solidOnly: false, type: GameConfig.Collision.ToxicPool, margin: 0.1 }) === null) {
          this.die(gm);
       }
    }
