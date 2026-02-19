@@ -465,37 +465,39 @@ class LevelManager {
 
    _parseEntities(layer) {
       for (let entity of layer.entityInstances) {
-         let pivot = entity.__pivot || [0, 0];
-         let x = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];
-         let y = entity.px[1] + layer.__pxTotalOffsetY - entity.height * pivot[1];
-
+         let spawn = this._addEntitySpawn(entity, layer);
          if (entity.__identifier === GameConfig.Entity.PlayerStart) {
-            this.playerStart = { x, y };
+            this.playerStart = { x: spawn.x, y: spawn.y };
          }
          else if (entity.__identifier === "Enemy") {
-            let hp = 3, damage = 1;
             let hpField = entity.fieldInstances.find(f => f.__identifier === "hp");
             let dmgField = entity.fieldInstances.find(f => f.__identifier === "damage");
-            if (hpField) hp = hpField.__value;
-            if (dmgField) damage = dmgField.__value;
-            this.enemySpawns.push({ x, y, hp, damage });
+            if (hpField) spawn.hp = hpField.__value;
+            if (dmgField) spawn.damage = dmgField.__value;
+            this.enemySpawns.push(spawn);
          }
          else {
-            // 所有其他实体
-            let fields = {};
-            for (let f of entity.fieldInstances) {
-               fields[f.__identifier] = f.__value;
-            }
-            this.entitySpawns.push({
-               x, y,
-               w: entity.width,
-               h: entity.height,
-               identifier: entity.__identifier,
-               color: entity.__smartColor || '#FF00FF',
-               fields,
-            });
+            this.entitySpawns.push(spawn);
          }
       }
+   }
+
+   _addEntitySpawn(entity, layer) {
+      let pivot = entity.__pivot || [0, 0];
+      let x = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];
+      let y = entity.px[1] + layer.__pxTotalOffsetY - entity.height * pivot[1];
+      let fields = {};
+      for (let f of entity.fieldInstances) {
+         fields[f.__identifier] = f.__value;
+      }
+      return {
+         x, y,
+         w: entity.width,
+         h: entity.height,
+         identifier: entity.__identifier,
+         color: entity.__smartColor || '#FF00FF',
+         fields,
+      };
    }
 
    _buildIntGridLookup(ldtkData, layerName) {
