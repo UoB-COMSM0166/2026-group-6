@@ -25,7 +25,6 @@ class GameManager {
       this.levelsInfo = {}; // 里面是class Levelmanager
       // 运行时对象
       this.player = null;
-      this.enemies = [];
       this.entities = [];
       this.particles = [];
 
@@ -69,16 +68,14 @@ class GameManager {
       this.status = "PLAY";
    }
 
-   _createEnemy() {
-      // 4. 创建敌人
-      this.enemies = [];
-      for (let spawn of this.level.enemySpawns) {
-         this.enemies.push(new Enemy(spawn.x, spawn.y, spawn.w, spawn.h, spawn, this.level));
-      }
-   }
 
    _createEntities() {
       this.entities = [];
+
+      // 创建敌人
+      for (let spawn of this.level.enemySpawns) {
+         this.entities.push(new Enemy(spawn.x, spawn.y, spawn.w, spawn.h, spawn, this.level));
+      }
       for (let spawn of this.level.entitySpawns) {
          let ent;
          switch (spawn.identifier) {
@@ -95,16 +92,12 @@ class GameManager {
 
    _loadEntities() {
       if (!(this.levelIndex in this.levelsInfo)) {
-         // 4. 创建敌人
-         this._createEnemy();
-         // 5. 创建其他实体
+         // 创建实体
          this._createEntities();
-         this.level.enemies = this.enemies;
          this.level.entities = this.entities;
          this.levelsInfo[this.levelIndex] = this.level;
       }
       else {
-         this.enemies = this.levelsInfo[this.levelIndex].enemies;
          this.entities = this.levelsInfo[this.levelIndex].entities;
       }
    }
@@ -163,9 +156,6 @@ class GameManager {
       let viewH = height / this.scale;
       this.camera.follow(this.player, this.level.mapW, this.level.mapH, viewW, viewH);
 
-      // 敌人
-      this._updateEnemies();
-
       // 通用实体
       this._updateEntities();
 
@@ -191,7 +181,6 @@ class GameManager {
 
       // 游戏对象
       for (let ent of this.entities) ent.display();
-      for (let e of this.enemies) e.display();
       for (let p of this.particles) p.display();
       this.player.ropeL.display(this.player);
       this.player.ropeR.display(this.player);
@@ -249,23 +238,6 @@ class GameManager {
    //  内部
    // ========================================================
 
-   _updateEnemies() {
-      for (let i = this.enemies.length - 1; i >= 0; i--) {
-         let e = this.enemies[i];
-         // enemy update the state of level
-         e.update(this.level);
-         if (e.isTouchingPlayer(this.player)) {
-            e.onPlayerContact(this.player, this);
-         }
-         [this.player.ropeL, this.player.ropeR].forEach(rope => {
-            if (e.isTouchingRope(rope, this.player)) {
-               e.onRopeContact(rope, this.player, this);
-            }
-         });
-         if (e.isDead) this.enemies.splice(i, 1);
-      }
-   }
-
    _updateEntities() {
       for (let i = this.entities.length - 1; i >= 0; i--) {
          let ent = this.entities[i];
@@ -313,7 +285,6 @@ class GameManager {
    }
 
    _savaLevel() {
-      this.levelsInfo[this.levelIndex].enemies = this.enemies;
       this.levelsInfo[this.levelIndex].entities = this.entities;
    }
 

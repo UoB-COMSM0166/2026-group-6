@@ -46,7 +46,6 @@ class LevelManager {
       this.playerStart = null;  // {x, y}
       this.enemySpawns = [];    // [{x, y, hp, damage}]
       this.entitySpawns = [];   // [{x, y, w, h, identifier, color, fields}] 所有其他实体
-      this.enemies;
       this.entities;
       this.levelIndex = levelIndex;
    }

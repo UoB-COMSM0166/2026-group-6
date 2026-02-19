@@ -110,6 +110,16 @@ class Enemy extends Entity {
       }
    }
 
+   onPlayerContact(player, gm) {
+      if (this.purified) return;
+      if (player.invulnerableTimer > 0) return;
+      player.takeDamage(this.damage, gm);
+      player.knockTimer = GameConfig.Player.KnockInterval;
+      let dir = (player.x < this.x) ? -1 : 1;
+      player.vx = dir * 3;
+      player.vy = -2;
+   }
+
    onRopeContact(rope, player, gm) {
       if (this.purified) return;
       if (!player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) return;

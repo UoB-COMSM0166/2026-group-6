@@ -25,14 +25,13 @@ class Player {
    // ====== 主更新 ======
 
    /**
-    * @param {GameManager} gm  游戏管理器引用 (访问 gm.level, gm.enemies)
+    * @param {GameManager} gm  游戏管理器引用 (访问 gm.level, gm.entities)
     */
    update(gm) {
       this._tickTimers();
       this._handleWinch();
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
-      this._checkEnemyHit(gm);
       this._isInToxicPool(gm);
    }
 
@@ -200,26 +199,10 @@ class Player {
       }
    }
 
-   // ====== 敌人碰撞 ======
-
-   _checkEnemyHit(gm) {
-      if (this.invulnerableTimer > 0) return;
-      for (let e of gm.enemies) {
-         if (Physics.rectIntersect(this.x, this.y, this.w, this.h, e.x, e.y, e.w, e.h)) {
-            this._takeDamage(e, gm);
-            break;
-         }
-      }
-   }
-
-   _takeDamage(enemy, gm) {
-      this.hp -= enemy.damage;
+   takeDamage(damage, gm) {
+      this.hp -= damage;
       if (this.hp <= 0) { this.die(gm); return; }
-      this.invulnerableTimer = GameConfig.Player.InvulInterval;
-      this.knockTimer = GameConfig.Player.KnockInterval;
-      let dir = (this.x < enemy.x) ? -1 : 1;
-      this.vx = dir * 3;
-      this.vy = -2;
+      this.invulnerableTimer = GameConfig.Player.InvulInterval;      
    }
 
    /**
@@ -238,7 +221,7 @@ class Player {
    // 碰到毒池
    _isInToxicPool(gm) {
       if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
-         { solidOnly: false, type: GameConfig.Collision.ToxicPool, margin: 0.1 }) === null) {
+         { solidOnly: false, type: GameConfig.Collision.ToxicPool, margin: 0.1 }) !== null) {
          this.die(gm);
       }
    }
