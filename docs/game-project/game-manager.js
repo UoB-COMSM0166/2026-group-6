@@ -73,7 +73,7 @@ class GameManager {
       // 4. 创建敌人
       this.enemies = [];
       for (let spawn of this.level.enemySpawns) {
-         this.enemies.push(new Enemy(spawn.x, spawn.y, spawn.hp, spawn.damage, this.level));
+         this.enemies.push(new Enemy(spawn.x, spawn.y, spawn.w, spawn.h, spawn, this.level));
       }
    }
 

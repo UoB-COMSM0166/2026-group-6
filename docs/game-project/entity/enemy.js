@@ -1,4 +1,4 @@
-class Enemy {
+class Enemy extends Entity{
    /**
     * @param {number} x
     * @param {number} y
@@ -6,17 +6,18 @@ class Enemy {
     * @param {number} damage
     * @param {LevelManager} level  用于出生位置修正
     */
-   constructor(x, y, hp, damage, level) {
+   constructor(x, y, w, h, spawnData, level) {
+      super(x, y, w, h, spawnData);
       const G = GameConfig.World.GRID_SIZE;
 
       this.x = x;
       this.y = y;
-      this.w = G;
-      this.h = G;
-      this.damage = damage;
+      this.w = w;
+      this.h = h;
+      this.damage = spawnData.damage;
       this.jumpTime = 0;
-      this.maxHp = hp;
-      this.hp = hp;
+      this.maxHp = spawnData.hp;
+      this.hp = this.maxHp;
       this.purified = false;
       this.alpha = 255;
 
