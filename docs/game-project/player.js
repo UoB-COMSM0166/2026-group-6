@@ -13,6 +13,8 @@ class Player {
       this.vx = 0;
       this.vy = 0;
       this.cleanEnergy = GameConfig.Player.MAXCleanEnergy;
+      this.jumpForce = GameConfig.Player.JUMPFORCE;
+
       this.grounded = false;
 
       this.showPrompt = null;  // 显示按键提示
@@ -250,7 +252,7 @@ class Player {
    }
 
    jump() {
-      let jf = -GameConfig.Player.JUMPFORCE;
+      let jf = -1 * this.jumpForce;
       if (this.grounded) {
          this.vy = jf;
       } else if (this.ropeL.state === "SWINGING" || this.ropeR.state === "SWINGING") {

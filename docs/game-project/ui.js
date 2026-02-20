@@ -76,17 +76,21 @@ class UI {
       let remaining = duration - elapsed;
 
       let alpha;
+      // apear
       if (elapsed < fadeIn) {
          alpha = map(elapsed, 0, fadeIn, 0, 255);
-      } else if (remaining < fadeOut) {
+      } 
+      // disappear
+      else if (remaining < fadeOut) {
          alpha = map(remaining, 0, fadeOut, 0, 255);
-      } else {
+      } 
+      else {
          alpha = 255;
       }
 
       let slideOffset = 0;
       if (elapsed < fadeIn) {
-         slideOffset = map(elapsed, 0, fadeIn, -15, 0);
+         slideOffset = map(elapsed, 0, fadeIn, -20, 0);
       }
 
       let yPos = 50 + slideOffset;
