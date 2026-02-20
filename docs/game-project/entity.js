@@ -124,7 +124,7 @@ class Entity {
       if (!this.active) return;
 
       if (this.sprite) {
-         // ★ 有精灵时直接绘制图片
+         // 有sprite时直接绘制图片
          image(this.sprite, this.x, this.y, this.w, this.h);
       } else {
          // 无精灵时用 p5 形状绘制

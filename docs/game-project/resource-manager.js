@@ -24,6 +24,7 @@ class ResourceManager {
    preload() {
       this.data.ldtk = loadJSON('map/map-main.ldtk');
       this.images.tileset = loadImage('resources/images/map_image/test_allgrid_8px.png');
+      this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       // 未来扩展:
       // this.images.playerSprite = loadImage('resources/images/player.png');
       // this.sounds.jump = loadSound('resources/audio/jump.wav');

@@ -96,6 +96,7 @@ class GameManager {
          this._createEntities();
          this.level.entities = this.entities;
          this.levelsInfo[this.levelIndex] = this.level;
+         this.level.totalPollutionCore = this.level.getPollutionCoreCount();
       }
       else {
          this.entities = this.levelsInfo[this.levelIndex].entities;
@@ -193,7 +194,7 @@ class GameManager {
          this.level.drawMiniMap(this.player);
       }
       // UI (屏幕空间)
-      UI.drawHUD(this.player);
+      UI.drawHUD(this.player, this.level);
       if (this.status === "WIN") UI.drawWinScreen();
       else if (this.status === "GAMEOVER") UI.drawGameOverScreen();
    }
@@ -252,6 +253,7 @@ class GameManager {
          });
          if (ent.isDead) this.entities.splice(i, 1);
       }
+      this.level.pollutionCoreCount = this.level.getPollutionCoreCount();
    }
 
    _updateParticles() {

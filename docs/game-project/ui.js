@@ -1,11 +1,14 @@
 class UI {
 
-   static drawHUD(player) {
+   static drawHUD(player, level) {
       fill(255); noStroke(); textSize(12); textAlign(LEFT, TOP);
 
       // player entity
       text("HP: " + player.hp, 25, 15);
       text("clean energy: " + player.cleanEnergy, 25, 30);
+      text("pollution core: " +
+         level.pollutionCoreCount + ' / ' +
+         level.totalPollutionCore, width - 130, 30);
 
       let matL = player.ropeL.material;
       let matR = player.ropeR.material;

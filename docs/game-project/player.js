@@ -15,6 +15,8 @@ class Player {
       this.cleanEnergy = GameConfig.Player.MAXCleanEnergy;
       this.grounded = false;
 
+      this.showPrompt = null;  // 显示按键提示
+
       this.ropeL = new Rope(color(0, 255, 255));
       this.ropeR = new Rope(color(255, 100, 100));
    }
@@ -212,6 +214,16 @@ class Player {
       if (this.checkRemainCleanEnergy(consume)) {
          this.cleanEnergy -= consume;
       }
+      else {
+         return;
+      }
+   }
+
+   /**
+   * @param {number} supply
+   */
+   supplyCleanEnergy(supply) {
+      this.cleanEnergy += supply;
    }
 
    checkRemainCleanEnergy(consume) {
@@ -268,5 +280,28 @@ class Player {
       let off = G * 0.3, sz = max(1, G * 0.25);
       rect(this.cx() + cos(a) * off - sz / 2,
          this.cy() + sin(a) * off - sz / 2, sz, sz);
+      this._showPrompt();
+   }
+
+   setPrompt(prompt) {
+      this.showPrompt = prompt;
+   }
+   _showPrompt() {
+      // 按键提示
+      if (this.showPrompt) {
+         let px = this.cx(), py = this.y - 10;
+         // 背景框
+         fill(0, 0, 0, 150);
+         noStroke();
+         let promptW = 7;
+         let promptH = 4;
+         rect(px - promptW, py - promptH, promptW * 2, promptH * 2, 3);
+         // 文字
+         fill(255);
+         textAlign(CENTER, CENTER);
+         textSize(5);
+         text(this.showPrompt, px, py);
+         this.showPrompt = null;  // 在每帧在其他地方重新设置
+      }
    }
 }

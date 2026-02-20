@@ -1,6 +1,7 @@
 class Ladder extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
+      this.sprite = resources.images.ladder;
    }
 
    onPlayerContact(player, gm) {

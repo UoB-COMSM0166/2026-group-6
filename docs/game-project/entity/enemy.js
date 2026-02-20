@@ -80,7 +80,7 @@ class Enemy extends Entity {
          { solidOnly: true, margin: 0.1 });
 
       // 悬崖检测: 利用 LevelManager 列查询
-      let probeX = (this.dir === 1) ? (nextX + this.w - 0.5 * this.w) : (nextX + 0.5 * this.w);
+      let probeX = (this.dir === 1) ? (nextX + 0.5 * this.w + 0.1) : (nextX + 0.5 * this.w - 0.1);
       let feetRow = level.worldToGrid(0, this.y + this.h).row;
       let maxDropRow = level.worldToGrid(0, this.y + this.h + G * GameConfig.Enemy.DROP_DEPTH_TILES).row;
       let probeCol = level.worldToGrid(probeX, 0).col;

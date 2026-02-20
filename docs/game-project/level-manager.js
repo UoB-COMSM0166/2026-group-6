@@ -42,12 +42,15 @@ class LevelManager {
       // 每个条目: { type: 'tiles' } 或 { type: 'decor', layer: ldtkLayerData }
       this.renderLayers = [];
 
+      this.pollutionCoreCount = 0;
+
       // 实体数据 (解析后的原始数据, 由 GameManager 消费)
       this.playerStart = null;  // {x, y}
       this.enemySpawns = [];    // [{x, y, hp, damage}]
       this.entitySpawns = [];   // [{x, y, w, h, identifier, color, fields}] 所有其他实体
       this.entities;
       this.levelIndex = levelIndex;
+      this.totalPollutionCore = 0;
    }
 
    // ========================================================
@@ -479,6 +482,16 @@ class LevelManager {
             this.entitySpawns.push(spawn);
          }
       }
+   }
+
+   getPollutionCoreCount() {
+      let pollutionCoreCount = 0;
+      for (let e of this.entities) {
+         if (e.type === GameConfig.Entity.PollutionCore && e.active) {
+            pollutionCoreCount += 1;
+         }
+      }
+      return pollutionCoreCount;
    }
 
    _addEntitySpawn(entity, layer) {
