@@ -30,6 +30,10 @@ class GameManager {
 
       // 游戏状态
       this.status = "PLAY"; // PLAY | WIN | GAMEOVER
+
+      this.areaName = "";
+      this.areaNameStartTime;
+      this.areaNameDuration;
    }
 
    // ========================================================
@@ -66,6 +70,9 @@ class GameManager {
       this.particles = [];
       this.camera.reset();
       this.status = "PLAY";
+      this.areaName = ldtk.levels[this.levelIndex].identifier;
+      this.areaNameStartTime = millis();
+      this.areaNameDuration = 3000;
    }
 
 
@@ -190,13 +197,17 @@ class GameManager {
       pop();
 
       // 画小地图
-      if (keyIsDown(77)) {
+      if (keyIsDown(Keys.M)) {
          this.level.drawMiniMap(this.player);
       }
       // UI (屏幕空间)
       UI.drawHUD(this.player, this.level);
       if (this.status === "WIN") UI.drawWinScreen();
       else if (this.status === "GAMEOVER") UI.drawGameOverScreen();
+      let elapsed = millis() - this.areaNameStartTime;
+      if (elapsed < this.areaNameDuration) {
+         UI.drawAreaName(this.areaName, elapsed, this.areaNameDuration);
+      }
    }
 
    // ========================================================
@@ -216,15 +227,16 @@ class GameManager {
          if (key === '1') this.player.ropeL.toggleMaterial(this.player);
          if (key === '2') this.player.ropeR.toggleMaterial(this.player);
       }
-      if (key === 'r' || key === 'R') {
-         this.status = "GAMEOVER";
-         this.loadLevel();
+      if (this.status === "GAMEOVER") {
+         if (key === 'R' || key === 'r') {
+            this.loadLevel();
+         }
       }
    }
 
    _onKeyDown() {
-      if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.player.move(-1);  // d param: dir
-      if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) this.player.move(1);  // a
+      if (keyIsDown(LEFT_ARROW) || keyIsDown(Keys.A)) this.player.move(-1);  // a param: dir
+      if (keyIsDown(RIGHT_ARROW) || keyIsDown(Keys.D)) this.player.move(1);  // d
    }
 
    // ========================================================

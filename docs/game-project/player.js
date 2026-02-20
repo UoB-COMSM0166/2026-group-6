@@ -51,7 +51,7 @@ class Player {
 
       if (this.ropeL.state === "SWINGING") {
          // Z
-         if (keyIsDown(90)) {
+         if (keyIsDown(Keys.Z)) {
             this.ropeL.changeLength(-cs);
             let tgt = this.ropeL.nodes[0] || this.ropeL.anchor;
             let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
@@ -59,12 +59,12 @@ class Player {
             this.vy += sin(a) * wf;
          }
          // Q
-         if (keyIsDown(81)) this.ropeL.changeLength(cs);
+         if (keyIsDown(Keys.Q)) this.ropeL.changeLength(cs);
       }
 
       if (this.ropeR.state === "SWINGING") {
          // C
-         if (keyIsDown(67)) {
+         if (keyIsDown(Keys.C)) {
             this.ropeR.changeLength(-cs);
             let tgt = this.ropeR.nodes[0] || this.ropeR.anchor;
             let a = atan2(tgt.y - this.cy(), tgt.x - this.cx());
@@ -72,7 +72,7 @@ class Player {
             this.vy += sin(a) * wf;
          }
          // E 
-         if (keyIsDown(69)) this.ropeR.changeLength(cs);
+         if (keyIsDown(Keys.E)) this.ropeR.changeLength(cs);
       }
    }
 

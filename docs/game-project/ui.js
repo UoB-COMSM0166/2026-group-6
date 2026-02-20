@@ -69,4 +69,42 @@ class UI {
       text("DIED", width / 2, height / 2);
       textSize(20); text("Press R to Restart", width / 2, height / 2 + 50);
    }
+
+   static drawAreaName(name, elapsed, duration) {
+      let fadeIn = 700;    // 0.7秒
+      let fadeOut = 800;   // 0.8秒
+      let remaining = duration - elapsed;
+
+      let alpha;
+      if (elapsed < fadeIn) {
+         alpha = map(elapsed, 0, fadeIn, 0, 255);
+      } else if (remaining < fadeOut) {
+         alpha = map(remaining, 0, fadeOut, 0, 255);
+      } else {
+         alpha = 255;
+      }
+
+      let slideOffset = 0;
+      if (elapsed < fadeIn) {
+         slideOffset = map(elapsed, 0, fadeIn, -15, 0);
+      }
+
+      let yPos = 50 + slideOffset;
+
+      push();
+      textAlign(CENTER, TOP);
+
+      // 半透明黑色背景条
+      noStroke();
+      fill(0, 0, 0, alpha * 0.4);
+      rectMode(CENTER);
+      rect(width / 2, yPos + 10, 250, 40, 8);
+
+      // 白色区域：地图名
+      fill(255, 255, 255, alpha);
+      textSize(22);
+      text(name, width / 2, yPos);
+
+      pop();
+   }
 }
