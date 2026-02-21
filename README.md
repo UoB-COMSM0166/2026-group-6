@@ -93,7 +93,15 @@ As the game's scope expanded, requirements continued to evolve. Through the ongo
   <img src="docs/resources/images/map_image/Class Diagram.png" width="100%"/>
 </p>
 
-The class diagram illustrates the core structure of the game, including the GameManager, LevelManager, Player, Entity hierarchy, and the rope-based interaction system.
+The class diagram illustrates the overall structure of the game system. The `GameManager` acts as the central coordinator, managing the player, level progression, camera, and shared resources. The game world is organised around a `LevelManager`, which maintains collections of entities derived from a common abstract `Entity` class.  
+
+In addition, the diagram models the rope-based interaction system, which enables traversal, puzzle solving, and pollution purification. This design follows object-oriented principles and promotes modularity and maintainability.
+#### Sequence Diagram – Purify
+<p align="center">
+  <img src="docs/resources/images/SequenceDiagram_Purify.png" width="100%"/>
+</p>
+
+The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification results in a level state update via the `LevelManager`, while insufficient energy leads to no change in the game state.
 
 ### Implementation
 
