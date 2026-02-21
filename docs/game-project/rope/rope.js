@@ -132,7 +132,7 @@ class Rope {
       while (this.nodes.length < target) this._insertBeforeLast();
    }
 
-   // ── 每帧更新 ─────────────────────────────────────────
+   // 每帧更新
 
    update(player, level) {
       if (this.nodes.length === 0) return;
