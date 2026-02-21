@@ -58,6 +58,45 @@ const GameConfig = {
 
    // === 绳索 ===
    Rope: {
-      STIFFNESS: 16,
+      // 长度
+      NODE_SPACING_GRIDS: 0.3,        // 节点间距 (格)
+      MAX_LENGTH_GRIDS: 6,            // 最大绳长 (格)
+      MIN_LENGTH_GRIDS: 1,            // 绞盘最短长度 (格)
+
+      // 发射
+      LAUNCH_SPEED_GRIDS: 0.8,        // 发射初速度 (格/帧)
+      TIP_GRAVITY: 0.12,              // 绳头重力 (像素/帧²)
+      TIP_AIR_DRAG: 0.995,            // 绳头空气阻力
+      HEAD_MASS: 3.0,                 // 绳头质量
+      EXTENDING_GRAVITY_SCALE: 0.09,  // 发射阶段节点重力缩放
+
+      // Verlet 模拟
+      VERLET_DAMPING: 0.98,           // 节点速度衰减
+      NODE_GRAVITY: 0.35,             // 节点重力
+      STIFFNESS: 30,                  // 距离约束迭代次数
+      CONSTRAINT_FACTOR: 0.5,         // 约束修正系数
+
+      // 玩家约束 (软绳)
+      PULL_STRENGTH: 0.1,             // 超出绳长时拉回力
+      PULL_DAMPING: 0.9,              // 拉回时速度衰减
+
+      // 玩家约束 (硬绳)
+      HARD_SPRING_STRENGTH: 0.2,      // 弹簧力度
+      HARD_SPRING_DAMPING: 0.9,       // 弹簧阻尼
+      HARD_SPRING_THRESHOLD: 1,       // 距离偏差阈值 (像素)
+
+      // 收回
+      RETRACT_INTERVAL: 1,            // 每隔几帧删一个节点
+
+      // 渲染
+      STROKE_RATIO: 1 / 6,
+      STROKE_MIN: 1,
+      HARD_STROKE_RATIO: 1 / 5,
+      HARD_STROKE_MIN: 2,
+      ANCHOR_DOT_RATIO: 1 / 3,
+      TIP_DOT_RATIO: 1 / 4,
+
+      // 硬绳碰撞盒
+      COLLISION_BOX_RATIO: 0.5,
    },
 };

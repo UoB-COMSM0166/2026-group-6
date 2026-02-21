@@ -141,10 +141,8 @@ class GameManager {
    }
 
    _resetRope() {
-      this.player.ropeL.state = "IDLE";
-      this.player.ropeL.nodes = [];
-      this.player.ropeR.state = "IDLE";
-      this.player.ropeR.nodes = [];
+      this.player.ropeL.reset();
+      this.player.ropeR.reset();
    }
    // ========================================================
    //  主循环
