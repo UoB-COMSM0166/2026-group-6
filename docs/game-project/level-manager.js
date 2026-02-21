@@ -471,7 +471,7 @@ class LevelManager {
          if (entity.__identifier === GameConfig.Entity.PlayerStart) {
             this.playerStart = { x: spawn.x, y: spawn.y };
          }
-         else if (entity.__identifier === "Enemy") {
+         else if (entity.__identifier === GameConfig.Entity.Enemy) {
             let hpField = entity.fieldInstances.find(f => f.__identifier === "hp");
             let dmgField = entity.fieldInstances.find(f => f.__identifier === "damage");
             if (hpField) spawn.hp = hpField.__value;

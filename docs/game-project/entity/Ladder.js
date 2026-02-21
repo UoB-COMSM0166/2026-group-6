@@ -7,7 +7,6 @@ class Ladder extends Entity {
    onPlayerContact(player, gm) {
       player.grounded = true;
       // 接触梯子时：取消重力，允许上下爬 可以跳跃
-      player.vy *= 0.8;  // 阻尼，防止自由落体
       if (keyIsDown(UP_ARROW) || keyIsDown(Keys.W)) {
          player.vy = -2;  // W/上
          player.vx *= 0.7;
