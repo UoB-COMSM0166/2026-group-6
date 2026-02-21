@@ -177,7 +177,7 @@ class GameManager {
       this._checkWinLose();
    }
 
-   render() {
+render() {
       background(color(this.level.bgColor));
 
       push();
@@ -196,10 +196,15 @@ class GameManager {
 
       pop();
 
-      // 画小地图
+      // 常态化显示右上角小地图
+      this.level.drawMiniMap(this.player);
+
+      // 按下 M 键，屏幕中央放大显示当前及相邻地图
       if (keyIsDown(Keys.M)) {
-         this.level.drawMiniMap(this.player);
+         this.level.drawLargeMap(this.player);
       }
+      // =======================================================
+
       // UI (屏幕空间)
       UI.drawHUD(this.player, this.level);
       if (this.status === "WIN") UI.drawWinScreen();

@@ -617,4 +617,111 @@ class LevelManager {
       let py = (player.y / this.mapH) * miniMapH;
       ellipse(mapX + px, mapY + py, 8, 8);
    }
+
+   /**
+    * 在屏幕中间放大显示当前地图及相邻的地图
+    */
+   drawLargeMap(player) {
+      // 1. 画一个半透明的黑色遮罩，盖住后面的游戏画面
+      fill(0, 0, 0, 200);
+      noStroke();
+      rect(0, 0, width, height);
+
+      // 2. 收集需要显示的关卡：当前关卡 + 相邻关卡
+      let levelsToShow = [this.ldtkData.levels[this.levelIndex]];
+      for (let n of this.neighbours) {
+         let nIdx = this._findLevelIndexByIid(n.levelIid);
+         if (nIdx !== -1) {
+            levelsToShow.push(this.ldtkData.levels[nIdx]);
+         }
+      }
+
+      // 3. 计算这些关卡在世界坐标中的整体包围盒（确定大地图的总尺寸）
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      for (let lvl of levelsToShow) {
+         minX = Math.min(minX, lvl.worldX);
+         minY = Math.min(minY, lvl.worldY);
+         maxX = Math.max(maxX, lvl.worldX + lvl.pxWid);
+         maxY = Math.max(maxY, lvl.worldY + lvl.pxHei);
+      }
+
+      let worldW = maxX - minX;
+      let worldH = maxY - minY;
+
+      // 4. 计算大地图的缩放比例 (最大占据屏幕宽/高的 70%)
+      let maxMapW = width * 0.7;
+      let maxMapH = height * 0.7;
+      let mapScale = Math.min(maxMapW / worldW, maxMapH / worldH);
+
+      let mapDrawW = worldW * mapScale;
+      let mapDrawH = worldH * mapScale;
+
+      // 让整张大地图在屏幕上居中
+      let offsetX = (width - mapDrawW) / 2;
+      let offsetY = (height - mapDrawH) / 2;
+
+      // 5. 遍历并绘制每个关卡
+      let lookup = this._buildIntGridLookup(this.ldtkData, "Collisions");
+
+      for (let lvl of levelsToShow) {
+         let lx = offsetX + (lvl.worldX - minX) * mapScale;
+         let ly = offsetY + (lvl.worldY - minY) * mapScale;
+         let lw = lvl.pxWid * mapScale;
+         let lh = lvl.pxHei * mapScale;
+
+         let isCurrent = (lvl.iid === this.ldtkData.levels[this.levelIndex].iid);
+
+         // 画关卡底图（当前关卡高亮一些，相邻关卡偏暗）
+         fill(isCurrent ? "rgba(60, 60, 60, 0.8)" : "rgba(30, 30, 30, 0.6)");
+         stroke(isCurrent ? "#ffffff" : "#666666");
+         strokeWeight(isCurrent ? 2 : 1);
+         rect(lx, ly, lw, lh, 5);
+         noStroke();
+
+         // 读取并在大地图上画出简易的地形 (解析 Collision 层)
+         let colLayer = lvl.layerInstances.find(l => l.__identifier === "Collisions");
+         if (colLayer && colLayer.intGridCsv) {
+            let cWid = colLayer.__cWid;
+            let cHei = colLayer.__cHei;
+            let scaleX = lw / cWid;
+            let scaleY = lh / cHei;
+
+            for (let i = 0; i < colLayer.intGridCsv.length; i++) {
+               let tileId = colLayer.intGridCsv[i];
+               if (tileId !== 0) {
+                  let c = i % cWid;
+                  let r = Math.floor(i / cWid);
+                  let typeName = lookup[tileId];
+
+                  let colorHex = "#1d1717";
+                  if (typeName === 'ground') colorHex = "#b86f50";
+                  else if (typeName === 'water') colorHex = "#2CE8F5";
+                  else if (typeName === 'toxic_poor') colorHex = "#640d47";
+                  else if (typeName === 'spaceship') colorHex = "#FFFFFF";
+
+                  fill(colorHex + "a0");
+                  rect(lx + c * scaleX, ly + r * scaleY, scaleX, scaleY);
+               }
+            }
+         }
+      }
+
+      // 6. 画出玩家的当前位置（换算为世界坐标）
+      let playerWorldX = this.worldX + player.x;
+      let playerWorldY = this.worldY + player.y;
+      let px = offsetX + (playerWorldX - minX) * mapScale;
+      let py = offsetY + (playerWorldY - minY) * mapScale;
+      
+      fill(255, 50, 50); // 红色代表玩家
+      stroke(255);
+      strokeWeight(1.5);
+      ellipse(px, py, 12, 12);
+      noStroke();
+      
+      // 7. 顶部标题
+      fill(255);
+      textAlign(CENTER, TOP);
+      textSize(24);
+      text("WORLD MAP", width / 2, offsetY - 40);
+   }
 }
