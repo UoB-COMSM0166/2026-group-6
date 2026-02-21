@@ -95,7 +95,9 @@ As the game's scope expanded, requirements continued to evolve. Through the ongo
 
 - Describe implementation of your game, in particular highlighting the TWO areas of *technical challenge* in developing your game.
 #### Class Diagram
-<img src="docs/resources/images/map_image/Class Diagram.png" width="80%"/>   
+<p align="center">
+  <img src="docs/resources/images/map_image/Class Diagram.png" width="80%"/>
+</p>
 
 The class diagram illustrates the core structure of the game, including the GameManager, LevelManager, Player, Entity hierarchy, and the rope-based interaction system.
 
