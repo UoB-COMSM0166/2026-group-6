@@ -101,7 +101,7 @@ In addition, the diagram models the rope-based interaction system, which enables
   <img src="docs/resources/images/SequenceDiagram_Purify.png" width="80%"/>
 </p>
 
-The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification results in a level state update via the `LevelManager`, while insufficient energy leads to no change in the game state.
+The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification notifies the LevelManager, which checks whether enough pollution cores in the current area have been purified to allow level progression. If energy is insufficient, the purification attempt fails and no core state is changed.
 
 ### Implementation
 
