@@ -98,7 +98,7 @@ The class diagram illustrates the overall structure of the game system. The `Gam
 In addition, the diagram models the rope-based interaction system, which enables traversal, puzzle solving, and pollution purification. This design follows object-oriented principles and promotes modularity and maintainability.
 #### Sequence Diagram – Purify
 <p align="center">
-  <img src="docs/resources/images/SequenceDiagram_Purify.png" width="100%"/>
+  <img src="docs/resources/images/map_image/SequenceDiagram_Purify.png" width="100%"/>
 </p>
 
 The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification results in a level state update via the `LevelManager`, while insufficient energy leads to no change in the game state.
