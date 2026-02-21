@@ -11,10 +11,6 @@ class Enemy extends Entity {
       super(x, y, w, h, spawnData);
       const G = GameConfig.World.GRID_SIZE;
 
-      this.x = x;
-      this.y = y;
-      this.w = w;
-      this.h = h;
       this.damage = spawnData.damage;
       this.jumpTime = 0;
       this.maxHp = spawnData.hp;
