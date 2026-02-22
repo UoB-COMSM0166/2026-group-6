@@ -135,6 +135,7 @@ class Rope {
    set state(value) {
       if (value === "IDLE") this.reset();
       else if (value === "RETRACTING") {
+         this.extending = false;
          this.retracting = true;
          this.stuck = false;
       }
