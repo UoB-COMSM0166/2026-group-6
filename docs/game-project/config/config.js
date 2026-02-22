@@ -17,7 +17,7 @@ const GameConfig = {
 
    // === 关卡 ===
    Level: {
-      START_INDEX: 0,
+      START_INDEX: 25,
    },
 
    // === 玩家 ===
