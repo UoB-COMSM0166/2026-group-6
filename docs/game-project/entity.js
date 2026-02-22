@@ -84,7 +84,7 @@ class Entity {
     */
    isTouchingRope(rope, player) {
       if (!this.active) return false;
-      if (rope.state !== "EXTENDING" && rope.state !== "SWINGING") return false;
+      if (rope.state === "IDLE" || rope.state === "RETRACTING") return false;
       let tip = rope.getTip(player);
       return dist(tip.x, tip.y, this.cx(), this.cy()) < 10;
    }

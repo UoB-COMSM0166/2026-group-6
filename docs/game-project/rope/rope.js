@@ -16,6 +16,7 @@ class Rope {
       this.nodes = [];
       this.stuck = false;
       this.retracting = false;
+      this.extending = false
       this.material = 'SOFT';
 
       // 绳头抛射物
@@ -59,21 +60,76 @@ class Rope {
       }
    }
 
+   _getChainPathLength() {
+      let total = 0;
+      for (let i = 0; i < this.nodes.length - 1; i++) {
+         let a = this.nodes[i], b = this.nodes[i + 1];
+         total += dist(a.x, a.y, b.x, b.y);
+      }
+      // EXTENDING 时加上 lastNode 到飞行 tip 的距离
+      if (!this.stuck && !this.retracting) {
+         total += dist(this.lastNode.x, this.lastNode.y, this.tip.x, this.tip.y);
+      }
+      return total;
+   }
+
+   _maintainStrandLength() {
+      if (this.nodes.length < 2) return;
+
+      // 首次进入 STRAND 时记录当前路径长度作为固定绳长
+      if (this.ropeLength <= 0) {
+         let chainLen = this.nodeDist * (this.nodes.length - 1);
+         let directDist = dist(this.nodes[0].x, this.nodes[0].y, this.tip.x, this.tip.y);
+         this.ropeLength = Math.max(chainLen, directDist);
+         this.ropeLength = Math.max(this.ropeLength, this._getChainPathLength());
+      }
+
+      let pathLen = this._getChainPathLength();
+      let excess = pathLen - this.ropeLength;
+
+      if (excess <= 0) return;
+
+      // 从 tip 端沿轨迹收回 excess 的长度
+      while (excess > 0 && this.nodes.length > 1) {
+         let last = this.lastNode;
+         let prev = this.nodes[this.nodes.length - 2];
+         let segLen = dist(prev.x, prev.y, last.x, last.y);
+
+         if (segLen <= excess) {
+            // 整段都需要收回，移除末端节点
+            this.nodes.pop();
+            excess -= segLen;
+
+            if (this.nodes.length <= 1) {
+               this.reset();
+               return;
+            }
+         } else {
+            // 只需收回该段的一部分：将末端节点向前一节点移动
+            let ratio = excess / segLen;
+            last.x = lerp(last.x, prev.x, ratio);
+            last.y = lerp(last.y, prev.y, ratio);
+            last.oldx = last.x;
+            last.oldy = last.y;
+            excess = 0;
+         }
+      }
+
+      // 同步 tip 位置
+      this.tip.x = this.lastNode.x;
+      this.tip.y = this.lastNode.y;
+   }
+
    // 状态查询
 
    get isIdle() { return this.nodes.length === 0; }
-
-   get isExtending() {
-      return this.nodes.length > 0
-         && this.nodes.length < this.maxNodes
-         && !this.stuck && !this.retracting;
-   }
 
    get state() {
       if (this.nodes.length === 0) return "IDLE";
       if (this.retracting) return "RETRACTING";
       if (this.stuck) return "SWINGING";
-      return "EXTENDING";
+      if (this.extending) return "EXTENDING";
+      return "STRAND";
    }
 
    set state(value) {
@@ -94,6 +150,7 @@ class Rope {
       if (!this.isIdle) {
          this.retracting = true;
          this.stuck = false;
+         this.extending = false;
          return;
       }
 
@@ -106,6 +163,7 @@ class Rope {
       this.nodes = [this._node(px, py)];
       this.stuck = false;
       this.retracting = false;
+      this.extending = true;
       this._retractTimer = 0;
    }
 
@@ -113,6 +171,7 @@ class Rope {
       this.nodes = [];
       this.stuck = false;
       this.retracting = false;
+      this.extending = false;
       this.ropeLength = 0;
       this._retractTimer = 0;
    }
@@ -141,7 +200,7 @@ class Rope {
    update(player, level) {
       if (this.nodes.length === 0) return;
 
-      if (this.isExtending) this._advanceTip(level);
+      if (this.extending) this._advanceTip(level);
 
       if (this.retracting) {
          this._retractOneNode();
@@ -149,6 +208,9 @@ class Rope {
       }
 
       this._simulate(player, level);
+
+      if (this.state === "STRAND") this._maintainStrandLength();
+
       this.tip.x = this.lastNode.x;
       this.tip.y = this.lastNode.y;
    }
@@ -194,7 +256,7 @@ class Rope {
 
       beginShape();
       for (let n of this.nodes) vertex(n.x, n.y);
-      if (this.isExtending) vertex(this.tip.x, this.tip.y);
+      if (this.extending) vertex(this.tip.x, this.tip.y);
       endShape();
 
       // 端点圆点
@@ -231,11 +293,15 @@ class Rope {
 
       if (dist(this.lastNode.x, this.lastNode.y, newX, newY) >= this.nodeDist) {
          this.nodes.push(this._node(newX, newY, oldX, oldY));
+         if (this.nodes.length >= this.maxNodes) {
+            this.extending = false;
+         }
       }
    }
 
    _stickAt(x, y) {
       this.stuck = true;
+      this.extending = false;
       this.tip.x = x;
       this.tip.y = y;
       this.nodes.push(this._node(x, y));
@@ -300,7 +366,7 @@ class Rope {
    _integrateVerlet(level) {
       let endIdx = this.stuck ? this.nodes.length - 1 : this.nodes.length;
       let gravity = RC.NODE_GRAVITY;
-      if (this.isExtending) gravity *= RC.EXTENDING_GRAVITY_SCALE;
+      if (this.extending) gravity *= RC.EXTENDING_GRAVITY_SCALE;
 
       for (let i = 1; i < endIdx; i++) {
          let n = this.nodes[i];

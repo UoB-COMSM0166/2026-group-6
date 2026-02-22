@@ -36,7 +36,7 @@ class Player {
       this._handleWinch();
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
-      this._clampToRopes();        // 世界碰撞后重新执行绳长约束
+      this._clampToRopes();  // 世界碰撞后重新执行绳长约束
       this._isInToxicPool(gm);
    }
 
