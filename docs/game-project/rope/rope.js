@@ -205,7 +205,10 @@ class Rope {
 
       if (this.retracting) {
          this._retractOneNode();
-         if (this.nodes.length === 0) return;
+         if (this.nodes.length === 0) {
+            this.reset();
+            return;
+         }
       }
 
       this._simulate(player, level);
@@ -303,6 +306,7 @@ class Rope {
    _stickAt(x, y) {
       this.stuck = true;
       this.extending = false;
+      this.retracting = false;
       this.tip.x = x;
       this.tip.y = y;
       this.nodes.push(this._node(x, y));
@@ -378,9 +382,9 @@ class Rope {
          let newX = n.x + vx;
          let newY = n.y + vy + gravity;
 
-         // 分轴碰撞: 允许沿表面滑动而非完全回退
+         // 当RETRACTING时进行分轴碰撞: 允许沿表面滑动而非完全回退
          let solidXY = level.isPointSolid(newX, newY);
-         if (solidXY) {
+         if (solidXY && this.state !== "EXTENDING") {
             let solidX = level.isPointSolid(newX, prevY);
             let solidY = level.isPointSolid(prevX, newY);
             if (!solidX && solidY) {
@@ -396,7 +400,9 @@ class Rope {
                n.x = prevX;
                n.y = prevY;
             }
-         } else {
+         } 
+         // 正常绳子轨迹
+         else {
             n.x = newX;
             n.y = newY;
          }

@@ -59,7 +59,7 @@ const GameConfig = {
    // === 绳索 ===
    Rope: {
       // 长度
-      NODE_SPACING_GRIDS: 0.3,        // 节点间距 (格)
+      NODE_SPACING_GRIDS: 0.3,        // 节点间距 (格) 不可变
       MAX_LENGTH_GRIDS: 6,            // 最大绳长 (格) 可变
       MIN_LENGTH_GRIDS: 1,            // 绞盘最短长度 (格)
 
