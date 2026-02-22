@@ -239,7 +239,10 @@ class Rope {
       this.tip.x = x;
       this.tip.y = y;
       this.nodes.push(this._node(x, y));
-      this.ropeLength = this.nodeDist * (this.nodes.length - 1);
+      //  绳长限制为理论和实际长度的较大值
+      let chainLen = this.nodeDist * (this.nodes.length - 1);
+      let directDist = dist(this.nodes[0].x, this.nodes[0].y, x, y);
+      this.ropeLength = Math.max(chainLen, directDist);
    }
 
    // 内部: 收回
