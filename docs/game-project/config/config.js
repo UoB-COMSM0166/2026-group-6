@@ -17,7 +17,7 @@ const GameConfig = {
 
    // === 关卡 ===
    Level: {
-      START_INDEX: 24,
+      START_INDEX: 0,
    },
 
    // === 玩家 ===
@@ -30,7 +30,7 @@ const GameConfig = {
       JUMPFORCE: 5,
       InvulInterval: 30,
       KnockInterval: 15,
-      DefaultStartPoint: { x: 210, y: 90 },
+      DefaultStartPoint: { x: 10, y: 30 },
       AttackConsume: 5,
    },
 

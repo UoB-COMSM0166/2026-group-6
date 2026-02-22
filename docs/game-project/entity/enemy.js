@@ -124,7 +124,7 @@ class Enemy extends Entity {
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
       gm.addParticles(this.cx(), this.cy());
 
-      if (rope.state === "EXTENDING") rope.state = "RETRACTING";
+      if (rope.state !== "RETRACTING") rope.state = "RETRACTING";
    }
 
    takeDamage(n) {

@@ -82,6 +82,10 @@ class Rope {
          this.retracting = true;
          this.stuck = false;
       }
+      else if (value === "SWINGING") {
+         if (this.stuck === true) return;
+         this._stickAt(this.tip.x, this.tip.y);
+      }
    }
 
    // 操作

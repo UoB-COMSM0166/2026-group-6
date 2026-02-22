@@ -13,7 +13,25 @@ class PollutionCore extends Entity {
             this.polluteDegree -= consume;
          }
       }
-      else{
+      else {
+         this.destroy();
+      }
+   }
+
+   onRopeContact(rope, player, gm) {
+      if (this.isDead) return;
+      if (rope.state !== "SWINGING") rope.state = "SWINGING";
+      if (this.polluteDegree > 0) {
+         player.setPrompt('F');
+         if (keyIsDown(Keys.F)) {
+            let consume = 2;
+            gm.addParticles(this.cx(), this.cy());
+            player.reduceCleanEnergy(consume);
+            this.polluteDegree -= consume;
+         }
+      }
+      else {
+         if (rope.state !== "RETRACTING") rope.state = "RETRACTING";
          this.destroy();
       }
    }
