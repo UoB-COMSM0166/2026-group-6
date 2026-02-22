@@ -319,7 +319,23 @@ class Rope {
       let lastIdx = count - 1;
 
       for (let k = 0; k < RC.STIFFNESS; k++) {
+         // 正向: player(0) → tip(lastIdx)
          for (let i = 0; i < lastIdx; i++) {
+            let A = this.nodes[i];
+            let B = this.nodes[i + 1];
+            let dx = B.x - A.x, dy = B.y - A.y;
+            let d = sqrt(dx * dx + dy * dy);
+            if (d === 0) continue;
+
+            let f = (this.nodeDist - d) / d * RC.CONSTRAINT_FACTOR;
+            let ox = dx * f, oy = dy * f;
+
+            if (i !== 0) { A.x -= ox; A.y -= oy; }
+            if (!(i + 1 === lastIdx && this.stuck)) { B.x += ox; B.y += oy; }
+         }
+
+         // 反向: tip(lastIdx) → player(0)
+         for (let i = lastIdx - 1; i >= 0; i--) {
             let A = this.nodes[i];
             let B = this.nodes[i + 1];
             let dx = B.x - A.x, dy = B.y - A.y;

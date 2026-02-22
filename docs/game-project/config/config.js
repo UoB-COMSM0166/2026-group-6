@@ -73,8 +73,8 @@ const GameConfig = {
       // Verlet 模拟
       VERLET_DAMPING: 0.98,           // 节点速度衰减
       NODE_GRAVITY: 0.35,             // 节点重力
-      STIFFNESS: 30,                  // 距离约束迭代次数
-      CONSTRAINT_FACTOR: 0.3,         // 约束修正系数
+      STIFFNESS: 35,                  // 距离约束迭代次数
+      CONSTRAINT_FACTOR: 0.7,         // 约束修正系数
 
       // 玩家约束 (软绳)
       PULL_STRENGTH: 0.01,             // 超出绳长时拉回力
