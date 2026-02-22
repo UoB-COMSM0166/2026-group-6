@@ -262,7 +262,7 @@ class Rope {
       } else {
          this._integrateVerlet(level);
       }
-      this._solveConstraints();
+      this._solveConstraints(level);
    }
 
    _pinFixedEnds(player) {
@@ -289,7 +289,7 @@ class Rope {
       }
    }
 
-   /** 软绳: Verlet 积分 (惯性 + 重力 + 碰墙回退) */
+   /** 软绳: Verlet 积分 (惯性 + 重力 + 滑动碰撞) */
    _integrateVerlet(level) {
       let endIdx = this.stuck ? this.nodes.length - 1 : this.nodes.length;
       let gravity = RC.NODE_GRAVITY;
@@ -301,54 +301,127 @@ class Rope {
          let vy = (n.y - n.oldy) * RC.VERLET_DAMPING;
          let prevX = n.x, prevY = n.y;
 
-         n.x += vx;
-         n.y += vy + gravity;
+         let newX = n.x + vx;
+         let newY = n.y + vy + gravity;
 
-         if (level.isPointSolid(n.x, n.y)) {
-            n.x = prevX;
-            n.y = prevY;
+         // 分轴碰撞: 允许沿表面滑动而非完全回退
+         let solidXY = level.isPointSolid(newX, newY);
+         if (solidXY) {
+            let solidX = level.isPointSolid(newX, prevY);
+            let solidY = level.isPointSolid(prevX, newY);
+            if (!solidX && solidY) {
+               // Y方向被挡, 只移动X
+               n.x = newX;
+               n.y = prevY;
+            } else if (solidX && !solidY) {
+               // X方向被挡, 只移动Y
+               n.x = prevX;
+               n.y = newY;
+            } else {
+               // 两个方向都被挡, 不移动
+               n.x = prevX;
+               n.y = prevY;
+            }
+         } else {
+            n.x = newX;
+            n.y = newY;
          }
+
          n.oldx = prevX;
          n.oldy = prevY;
       }
    }
 
-   /** 距离约束: 保持相邻节点间距 = nodeDist */
-   _solveConstraints() {
+   /**
+    *    ropejoint: 只有超过距离才开始更改node位置，其他时候将可以动的点平分的拉回中心
+    *    核心改进: pinned[] 数组追踪「接触地表的节点」
+    *    接触地表的节点在约束求解中被视为固定锚点
+    *    使绳子自然搭在地块上、绕过拐角
+    */
+   _solveConstraints(level) {
       let count = this.nodes.length;
       let lastIdx = count - 1;
 
+      // 标记固定节点: 玩家端 + 锚点端 + 接触地表的节点
+      let pinned = new Array(count).fill(false);
+      pinned[0] = true;                           // 玩家端始终固定
+      if (this.stuck) pinned[lastIdx] = true;     // 锚点端始终固定
+
       for (let k = 0; k < RC.STIFFNESS; k++) {
-         // 正向: player(0) → tip(lastIdx)
+         // ── 距离约束 ──
          for (let i = 0; i < lastIdx; i++) {
             let A = this.nodes[i];
             let B = this.nodes[i + 1];
             let dx = B.x - A.x, dy = B.y - A.y;
-            let d = sqrt(dx * dx + dy * dy);
-            if (d === 0) continue;
+            let d = Math.sqrt(dx * dx + dy * dy);
+            if (d === 0 || d <= this.nodeDist) continue;
+            let diff = (this.nodeDist - d) / d;
+            let ox = dx * diff;
+            let oy = dy * diff;
 
-            let f = (this.nodeDist - d) / d * RC.CONSTRAINT_FACTOR;
-            let ox = dx * f, oy = dy * f;
+            let aFixed = pinned[i];
+            let bFixed = pinned[i + 1];
 
-            if (i !== 0) { A.x -= ox; A.y -= oy; }
-            if (!(i + 1 === lastIdx && this.stuck)) { B.x += ox; B.y += oy; }
+            if (aFixed && bFixed) {
+               // 两端都固定, 跳过
+               continue;
+            } else if (aFixed) {
+               // 只有 B 可以移动 → 100% 修正量给 B
+               B.x += ox;
+               B.y += oy;
+            } else if (bFixed) {
+               // 只有 A 可以移动 → 100% 修正量给 A
+               A.x -= ox;
+               A.y -= oy;
+            } else {
+               // 双向各承担 50%  ax = (ax+bx)/2-(ax-bx)*ratio*0.5
+               A.x -= ox * 0.5;
+               A.y -= oy * 0.5;
+               B.x += ox * 0.5;
+               B.y += oy * 0.5;
+            }
          }
 
-         // 反向: tip(lastIdx) → player(0)
-         for (let i = lastIdx - 1; i >= 0; i--) {
-            let A = this.nodes[i];
-            let B = this.nodes[i + 1];
-            let dx = B.x - A.x, dy = B.y - A.y;
-            let d = sqrt(dx * dx + dy * dy);
-            if (d === 0) continue;
-
-            let f = (this.nodeDist - d) / d * RC.CONSTRAINT_FACTOR;
-            let ox = dx * f, oy = dy * f;
-
-            if (i !== 0) { A.x -= ox; A.y -= oy; }
-            if (!(i + 1 === lastIdx && this.stuck)) { B.x += ox; B.y += oy; }
+         // ── 碰撞分离 (每次约束迭代后) ──
+         if (this.material == "SOFT") {
+            if (level) {
+               let endIdx = this.stuck ? count - 1 : count;
+               for (let i = 1; i < endIdx; i++) {
+                  if (level.isPointSolid(this.nodes[i].x, this.nodes[i].y)) {
+                     this._pushNodeOutOfSolid(this.nodes[i], level);
+                     pinned[i] = true;   // 标记为地表接触 → 后续迭代视为固定点
+                  }
+               }
+            }
          }
       }
+   }
+
+   /**
+    * 将单个节点从固体 Tile 中推出 (沿最小穿透轴)
+    * 推出后钉住 oldx/oldy 消除 Verlet 隐含速度
+    */
+   _pushNodeOutOfSolid(node, level) {
+      let { col, row } = level.worldToGrid(node.x, node.y);
+      let tile = level.getTileAt(col, row);
+      if (!tile || !tile.isSolid) return;
+
+      // 四个方向的穿透深度
+      let left = node.x - tile.x;
+      let right = (tile.x + tile.w) - node.x;
+      let top = node.y - tile.y;
+      let bottom = (tile.y + tile.h) - node.y;
+      let minD = Math.min(left, right, top, bottom);
+
+      // 沿最小穿透方向推出
+      if (minD === top) node.y = tile.y;
+      else if (minD === bottom) node.y = tile.y + tile.h;
+      else if (minD === left) node.x = tile.x;
+      else node.x = tile.x + tile.w;
+
+      // 钉住: 消除隐含速度, 防止振荡穿墙
+      node.oldx = node.x;
+      node.oldy = node.y;
    }
 
    // 内部: 玩家约束
@@ -364,14 +437,28 @@ class Rope {
       player.vy = (player.vy + sin(a) * f) * RC.HARD_SPRING_DAMPING;
    }
 
-   /** 软绳: 超出绳长时单向拉回 */
+   /** 软绳: Rope Joint — 超出绳长时硬约束 */
    _applySoftConstraint(player, curDist) {
       if (curDist <= this.ropeLength) return;
 
-      let a = atan2(player.cy() - this.tip.y, player.cx() - this.tip.x);
-      let targetX = this.tip.x + cos(a) * this.ropeLength;
-      let targetY = this.tip.y + sin(a) * this.ropeLength;
-      player.vx = (player.vx + (targetX - player.cx()) * RC.PULL_STRENGTH) * RC.PULL_DAMPING;
-      player.vy = (player.vy + (targetY - player.cy()) * RC.PULL_STRENGTH) * RC.PULL_DAMPING;
+      // 方向: 锚点 → 玩家
+      let dx = player.cx() - this.tip.x;
+      let dy = player.cy() - this.tip.y;
+      if (curDist === 0) return;
+      let nx = dx / curDist;
+      let ny = dy / curDist;
+
+      // 硬约束: 直接把玩家钳制到绳长圆上
+      let targetCX = this.tip.x + nx * this.ropeLength;
+      let targetCY = this.tip.y + ny * this.ropeLength;
+      player.x = targetCX - player.w / 2;
+      player.y = targetCY - player.h / 2;
+
+      // 去除径向外推速度分量, 只保留切向 (允许摆荡)
+      let radialV = player.vx * nx + player.vy * ny;
+      if (radialV > 0) {
+         player.vx -= radialV * nx;
+         player.vy -= radialV * ny;
+      }
    }
 }

@@ -17,7 +17,7 @@ const GameConfig = {
 
    // === 关卡 ===
    Level: {
-      START_INDEX: 0,
+      START_INDEX: 24,
    },
 
    // === 玩家 ===
@@ -30,7 +30,7 @@ const GameConfig = {
       JUMPFORCE: 5,
       InvulInterval: 30,
       KnockInterval: 15,
-      DefaultStartPoint: { x: 10, y: 30 },
+      DefaultStartPoint: { x: 210, y: 90 },
       AttackConsume: 5,
    },
 
@@ -59,8 +59,8 @@ const GameConfig = {
    // === 绳索 ===
    Rope: {
       // 长度
-      NODE_SPACING_GRIDS: 0.4,        // 节点间距 (格)
-      MAX_LENGTH_GRIDS: 6.5,            // 最大绳长 (格) 可变
+      NODE_SPACING_GRIDS: 0.3,        // 节点间距 (格)
+      MAX_LENGTH_GRIDS: 6,            // 最大绳长 (格) 可变
       MIN_LENGTH_GRIDS: 1,            // 绞盘最短长度 (格)
 
       // 发射
@@ -73,12 +73,7 @@ const GameConfig = {
       // Verlet 模拟
       VERLET_DAMPING: 0.98,           // 节点速度衰减
       NODE_GRAVITY: 0.35,             // 节点重力
-      STIFFNESS: 35,                  // 距离约束迭代次数
-      CONSTRAINT_FACTOR: 0.7,         // 约束修正系数
-
-      // 玩家约束 (软绳)
-      PULL_STRENGTH: 0.01,             // 超出绳长时拉回力
-      PULL_DAMPING: 0.9,              // 拉回时速度衰减
+      STIFFNESS: 25,                  // 距离约束迭代次数 (越大绳子越刚性, 不易拉伸)
 
       // 玩家约束 (硬绳)
       HARD_SPRING_STRENGTH: 0.2,      // 弹簧力度

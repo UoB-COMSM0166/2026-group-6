@@ -36,6 +36,7 @@ class Player {
       this._handleWinch();
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
+      this._clampToRopes();        // 世界碰撞后重新执行绳长约束
       this._isInToxicPool(gm);
    }
 
@@ -228,6 +229,46 @@ class Player {
 
    checkRemainCleanEnergy(consume) {
       return (this.cleanEnergy - consume) >= 0;
+   }
+
+
+   /**
+    * 世界碰撞解算后, 重新钳制玩家到绳长范围内
+    *
+    * 流程: applyPhysics(绳约束) → resolveWorld(瓦片碰撞) → clampToRopes(绳约束补偿)
+    * 避免瓦片碰撞把玩家推出绳长范围后没有修正
+    */
+   _clampToRopes() {
+      this._clampToRope(this.ropeL);
+      this._clampToRope(this.ropeR);
+   }
+
+   /**
+    * 对单根绳子执行硬长度约束
+    * 只在软绳 SWINGING 状态下生效
+    */
+   _clampToRope(rope) {
+      if (rope.material !== 'SOFT' || !rope.stuck || rope.nodes.length < 2) return;
+      let dx = this.cx() - rope.tip.x;
+      let dy = this.cy() - rope.tip.y;
+      let d = Math.sqrt(dx * dx + dy * dy);
+      if (d <= rope.ropeLength) return;
+
+      // 方向: 锚点 → 玩家
+      let nx = dx / d, ny = dy / d;
+
+      // 硬钳制到绳长圆上
+      let targetCX = rope.tip.x + nx * rope.ropeLength;
+      let targetCY = rope.tip.y + ny * rope.ropeLength;
+      this.x = targetCX - this.w / 2;
+      this.y = targetCY - this.h / 2;
+
+      // 去除径向外推速度, 保留切向 (允许摆荡)
+      let radialV = this.vx * nx + this.vy * ny;
+      if (radialV > 0) {
+         this.vx -= radialV * nx;
+         this.vy -= radialV * ny;
+      }
    }
 
    // 碰到毒池
