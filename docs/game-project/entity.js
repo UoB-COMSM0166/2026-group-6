@@ -120,15 +120,15 @@ class Entity {
     * 将来给实体加图片只需:
     *   entity.sprite = loadImage('xxx.png');
     */
-   display() {
+   display(level) {
       if (!this.active) return;
 
       if (this.sprite) {
          // 有sprite时直接绘制图片
          image(this.sprite, this.x, this.y, this.w, this.h);
       } else {
-         // 无精灵时用 p5 形状绘制
-         this._drawShape();
+         // 无精灵时用 p5 形状绘制，顺便把 level 也传给子类的绘制方法
+         this._drawShape(level);
       }
    }
 
