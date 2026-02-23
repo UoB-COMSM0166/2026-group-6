@@ -571,14 +571,14 @@ class LevelManager {
       }
    }
 
-   drawMiniMap(player) {
+drawMiniMap(player) {
       let miniMapW = width * 0.2; // 相对屏幕宽度的缩小比例
       let miniMapH = (this.mapH / this.mapW) * miniMapW; // 保持关卡的原始比例
       let padding = 15;
       let mapX = width - miniMapW - padding;
       let mapY = padding;
 
-      // 画半透明底板
+      // 1. 画半透明底板
       fill(0, 0, 0, 150);
       noStroke();
       rect(mapX, mapY, miniMapW, miniMapH, 5);
@@ -587,35 +587,63 @@ class LevelManager {
       let scaleX = miniMapW / this.cols;
       let scaleY = miniMapH / this.rows;
 
-      // 画小地图
+      // 2. 画小地图地形
       for (let y = 0; y < this.rows; y++) {
          for (let x = 0; x < this.cols; x++) {
             let tile = this.grid[y][x];
             if (tile && tile.active) {
-               let color;
+               let colorHex;
                switch (tile.type) {
-                  case 'ground': color = "#b86f50"; break;
-                  case 'water': color = "#2CE8F5"; break;
-                  case 'toxic_poor': color = "#640d47"; break;
-                  case 'spaceship': color = "#FFFFFF"; break;
-                  default: color = "#1d1717";
+                  case 'ground': colorHex = "#b86f50"; break;
+                  case 'water': colorHex = "#2CE8F5"; break;
+                  case 'toxic_poor': colorHex = "#640d47"; break;
+                  case 'spaceship': colorHex = "#FFFFFF"; break;
+                  default: colorHex = "#1d1717";
                }
-               color = color + "a0"; // 透明度
-               fill(color);
+               fill(colorHex + "a0"); // 带透明度
+               rect(mapX + x * scaleX, mapY + y * scaleY, scaleX, scaleY);
             }
-            else {
-               continue
-            };
-
-            rect(mapX + x * scaleX, mapY + y * scaleY, scaleX, scaleY);
          }
       }
 
-      // 画玩家
-      fill(255, 50, 50);
+      // 怪物和污染核心
+      if (this.entities) {
+         for (let ent of this.entities) {
+            // 如果已经被吃掉、净化或死亡，则不显示在小地图上
+            if (ent.isDead) continue; 
+
+            // 将实体的世界坐标转换为小地图相对坐标
+            let ex = mapX + (ent.x / this.mapW) * miniMapW;
+            let ey = mapY + (ent.y / this.mapH) * miniMapH;
+            
+            // 按比例计算实体在小地图上的宽高（设置最小值为4，防止太小看不见）
+            let ew = Math.max(4, (ent.w / this.mapW) * miniMapW);
+            let eh = Math.max(4, (ent.h / this.mapH) * miniMapH);
+
+            if (ent.constructor.name === "Enemy") {
+               fill(255, 150, 0); // 橙色代表怪物
+               rect(ex, ey, ew, eh);
+            } 
+            else if (ent.constructor.name === "PollutionCore") {
+               fill(200, 100, 255); // 紫色代表污染核心
+               rect(ex, ey, ew, eh);
+            }
+            // 【新增分支】：显示清洁能量
+            else if (ent.constructor.name === "CleanEnergy") {
+               fill(0, 255, 255); // 青色代表清洁能量
+               rect(ex, ey, ew, eh);
+            }
+         }
+      }
+
+      // 3. 玩家
+      fill(255, 50, 50); // 红色代表玩家
+      stroke(255);
+      strokeWeight(1.5);
       let px = (player.x / this.mapW) * miniMapW;
       let py = (player.y / this.mapH) * miniMapH;
       ellipse(mapX + px, mapY + py, 8, 8);
+      noStroke();
    }
 
    /**

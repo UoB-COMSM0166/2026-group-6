@@ -1,14 +1,11 @@
 class UI {
 
-   static drawHUD(player, level) {
+   static drawHUD(player, level, gm) {
       fill(255); noStroke(); textSize(12); textAlign(LEFT, TOP);
 
       // player entity
       text("HP: " + player.hp, 25, 15);
       text("clean energy: " + player.cleanEnergy, 25, 30);
-      text("pollution core: " +
-         level.pollutionCoreCount + ' / ' +
-         level.totalPollutionCore, width - 130, 30);
 
       let matL = player.ropeL.material;
       let matR = player.ropeR.material;
@@ -18,6 +15,22 @@ class UI {
 
       fill(matR === 'HARD' ? 255 : color(255, 100, 100));
       text(`[2] Right Mode: ${matR}`, 10, 70);
+
+      push();
+      textAlign(CENTER, TOP);
+      textSize(24);
+      
+      // 获取当前 Area 的百分比进度（0 到 100）
+      let percentage = gm.getAreaProgress();
+      
+      fill(0, 150);
+      // 阴影
+      text(`Area Purified: ${percentage}%`, width / 2 + 2, 22);
+      
+      // 文字
+      fill(200, 100, 255);
+      text(`Area Purified: ${percentage}%`, width / 2, 20);
+      pop();
 
       this._drawMouseButtons(player);
 
