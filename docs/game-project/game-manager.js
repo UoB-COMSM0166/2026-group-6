@@ -34,11 +34,22 @@ class GameManager {
       this.areaName = "";
       this.areaNameStartTime;
       this.areaNameDuration;
+      this.preload();
    }
 
    // ========================================================
    //  关卡管理
    // ========================================================
+
+   preload() {
+      let ldtk = this.resources.ldtkData;
+      const lastIndex = ldtk.levels.length - 1;
+      for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
+         this.levelIndex = levelIndex;
+         this.loadLevel();
+      }
+      this.levelIndex = GameConfig.Level.START_INDEX;
+   }
 
    /**
     * 加载关卡
