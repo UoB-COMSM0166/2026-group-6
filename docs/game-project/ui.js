@@ -19,17 +19,18 @@ class UI {
       push();
       textAlign(CENTER, TOP);
       textSize(24);
-      
+
       // 获取当前 Area 的百分比进度（0 到 100）
       let percentage = gm.getAreaProgress();
-      
+      let areaNumber = level.areaNumber;
+
       fill(0, 150);
       // 阴影
-      text(`Area Purified: ${percentage}%`, width / 2 + 2, 22);
-      
+      text(`Area${areaNumber} Purified: ${percentage}%`, width / 2 + 2, 22);
+
       // 文字
       fill(200, 100, 255);
-      text(`Area Purified: ${percentage}%`, width / 2, 20);
+      text(`Area${areaNumber} Purified: ${percentage}%`, width / 2, 20);
       pop();
 
       this._drawMouseButtons(player);
@@ -92,11 +93,11 @@ class UI {
       // apear
       if (elapsed < fadeIn) {
          alpha = map(elapsed, 0, fadeIn, 0, 255);
-      } 
+      }
       // disappear
       else if (remaining < fadeOut) {
          alpha = map(remaining, 0, fadeOut, 0, 255);
-      } 
+      }
       else {
          alpha = 255;
       }

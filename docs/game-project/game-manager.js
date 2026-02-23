@@ -115,6 +115,7 @@ class GameManager {
          this.level.entities = this.entities;
          this.levelsInfo[this.levelIndex] = this.level;
          this.level.totalPollutionCore = this.level.getPollutionCoreCount();
+         this.level.totalEnemies = this.level.getEnemiesCount();
       }
       else {
          this.entities = this.levelsInfo[this.levelIndex].entities;
@@ -328,58 +329,34 @@ class GameManager {
        */
    getAreaProgress() {
       let ldtk = this.resources.ldtkData;
-      let currentLevelId = ldtk.levels[this.levelIndex].identifier;
-      let areaPrefix = currentLevelId.split('_')[0];
-
-      let totalValue = 0;
-      let currentPurifiedValue = 0;
+      let currentAreaNumber = this.level.areaNumber;
 
       // 定义净化值权重
       const CORE_WEIGHT = 5;
       const ENEMY_WEIGHT = 1;
-
-      for (let i = 0; i < ldtk.levels.length; i++) {
-         let lvl = ldtk.levels[i];
-
-         // 筛选出所有属于当前 Area 前缀的 Level
-         if (lvl.identifier.startsWith(areaPrefix)) {
-            let initialCores = 0;
-            let initialEnemies = 0;
-
-            // 1. 直接从 LDtk 原始数据读取该关卡的初始实体数量
-            let entityLayer = lvl.layerInstances.find(l => l.__identifier === "Entities");
-            if (entityLayer) {
-               for (let ent of entityLayer.entityInstances) {
-                  if (ent.__identifier === "Pollution_Core") initialCores++;
-                  if (ent.__identifier === "Enemy") initialEnemies++;
-               }
-            }
-
+      let remainingCores = 0;
+      let remainingEnemies = 0;
+      let initialCores = 0;
+      let initialEnemies = 0;
+      // 不算最终关
+      for (let i = 0; i < ldtk.levels.length - 1; i++) {
+         let lvl = this.levelsInfo[i];
+         // 筛选出所有areaNumber为当前Level的areaNumber的level
+         if (lvl.areaNumber = currentAreaNumber) {
+            initialCores += lvl.totalPollutionCore;
+            initialEnemies += lvl.totalEnemies;
+            remainingCores += lvl.getPollutionCoreCount();
+            remainingEnemies += lvl.getEnemiesCount();
             // 累加该关卡能提供的总净化值
-            totalValue += (initialCores * CORE_WEIGHT) + (initialEnemies * ENEMY_WEIGHT);
 
-            // 2. 如果玩家已经访问过这个关卡，计算实际存活的数量
-            if (i in this.levelsInfo) {
-               let loadedLevel = this.levelsInfo[i];
-               let remainingCores = 0;
-               let remainingEnemies = 0;
-
-               // 遍历该关卡当前还存活的实体
-               for (let ent of loadedLevel.entities) {
-                  if (ent.type === "PollutionCore") remainingCores++;
-                  if (ent.type === "Enemy") remainingEnemies++;
-               }
-
-               // 初始数量 - 存活数量 = 已经净化的数量
-               let purifiedCores = initialCores - remainingCores;
-               let purifiedEnemies = initialEnemies - remainingEnemies;
-               currentPurifiedValue += (purifiedCores * CORE_WEIGHT) + (purifiedEnemies * ENEMY_WEIGHT);
-            }
          }
       }
-
+      let currentPurifiedEnemies = initialEnemies - remainingEnemies;
+      let currentPurifiedCores = initialCores - remainingCores;
+      let currentPurifiedValue = currentPurifiedEnemies * ENEMY_WEIGHT + currentPurifiedCores * CORE_WEIGHT;
+      let totalValue = (initialCores * CORE_WEIGHT) + (initialEnemies * ENEMY_WEIGHT);
       // 计算百分比 (向下取整，并且防止除以 0 导致报错)
-      let percentage = totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100);
+      let percentage = (totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100));
       return percentage;
    }
 }

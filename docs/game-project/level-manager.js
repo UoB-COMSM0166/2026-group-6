@@ -51,6 +51,7 @@ class LevelManager {
       this.entities;
       this.levelIndex = levelIndex;
       this.totalPollutionCore = 0;
+      this.toalEnemies = 0;
    }
 
    // ========================================================
@@ -65,6 +66,7 @@ class LevelManager {
    load(ldtkData, levelIndex) {
       let level = ldtkData.levels[levelIndex];
       this.ldtkData = ldtkData;
+      this.areaNumber = this.getAreaNumber(ldtkData.levels[this.levelIndex]);
       this.mapW = level.pxWid;
       this.mapH = level.pxHei;
       this.bgColor = level.__bgColor;
@@ -492,6 +494,21 @@ class LevelManager {
          }
       }
       return pollutionCoreCount;
+   }
+
+   getEnemiesCount() {
+      let enemyCount = 0;
+      for (let e of this.entities) {
+         if (e.type === GameConfig.Entity.Enemy && e.active) {
+            enemyCount += 1;
+         }
+      }
+      return enemyCount;
+   }
+
+   getAreaNumber(level) {
+      let field = level.fieldInstances.find(f => f.__identifier === "areaNumber");
+      return field ? field.__value : null;
    }
 
    _addEntitySpawn(entity, layer) {
