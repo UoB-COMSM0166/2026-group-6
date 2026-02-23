@@ -11,7 +11,7 @@
 	"iid": "8a664600-fa90-11f0-b92a-41df9fd93921",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 247,
+	"nextUid": 248,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -1628,19 +1628,19 @@
 			"pivotY": 0,
 			"fieldDefs": [
 				{
-					"identifier": "Point",
+					"identifier": "target",
 					"doc": null,
-					"__type": "Point",
-					"uid": 243,
-					"type": "F_Point",
+					"__type": "EntityRef",
+					"uid": 247,
+					"type": "F_EntityRef",
 					"isArray": false,
 					"canBeNull": true,
 					"arrayMinLength": null,
 					"arrayMaxLength": null,
-					"editorDisplayMode": "PointPath",
+					"editorDisplayMode": "RefLinkBetweenCenters",
 					"editorDisplayScale": 1,
 					"editorDisplayPos": "Above",
-					"editorLinkStyle": "StraightArrow",
+					"editorLinkStyle": "CurvedArrow",
 					"editorDisplayColor": null,
 					"editorAlwaysShow": false,
 					"editorShowInWorld": true,
@@ -1659,8 +1659,8 @@
 					"symmetricalRef": false,
 					"autoChainRef": true,
 					"allowOutOfLevelRef": true,
-					"allowedRefs": "OnlySame",
-					"allowedRefsEntityUid": null,
+					"allowedRefs": "OnlySpecificEntity",
+					"allowedRefsEntityUid": 232,
 					"allowedRefTags": [],
 					"tilesetUid": null
 				}
@@ -6746,9 +6746,14 @@
 							"height": 8,
 							"defUid": 242,
 							"px": [8,40],
-							"fieldInstances": [{ "__identifier": "Point", "__type": "Point", "__value": { "cx": 43, "cy": 4 }, "__tile": null, "defUid": 243, "realEditorValues": [{
+							"fieldInstances": [{ "__identifier": "target", "__type": "EntityRef", "__value": {
+								"entityIid": "357a57e0-fa90-11f0-be9e-6155988c3ffe",
+								"layerIid": "3890f0d1-fa90-11f0-9b59-37155b2dc8d5",
+								"levelIid": "3890f0d0-fa90-11f0-9b59-6bbcb442a368",
+								"worldIid": "8a666d10-fa90-11f0-b92a-9b54c592e172"
+							}, "__tile": null, "defUid": 247, "realEditorValues": [{
 								"id": "V_String",
-								"params": ["43,4"]
+								"params": ["357a57e0-fa90-11f0-be9e-6155988c3ffe"]
 							}] }],
 							"__worldX": 2312,
 							"__worldY": 1200
