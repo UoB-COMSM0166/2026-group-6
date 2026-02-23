@@ -175,7 +175,7 @@ class GameManager {
       this._checkWinLose();
    }
 
-render() {
+   render() {
       background(color(this.level.bgColor));
 
       push();
@@ -311,14 +311,14 @@ render() {
       if (this.player.hp <= 0) this.player.die(this);
    }
 
-/**
-    * 计算当前所在 Area（包含多个 Level）的净化百分比进度
-    * 权重规则：污染核心 = 5, 怪物 = 1
-    */
+   /**
+       * 计算当前所在 Area（包含多个 Level）的净化百分比进度
+       * 权重规则：污染核心 = 5, 怪物 = 1
+       */
    getAreaProgress() {
       let ldtk = this.resources.ldtkData;
       let currentLevelId = ldtk.levels[this.levelIndex].identifier;
-      let areaPrefix = currentLevelId.split('_')[0]; 
+      let areaPrefix = currentLevelId.split('_')[0];
 
       let totalValue = 0;
       let currentPurifiedValue = 0;
@@ -329,7 +329,7 @@ render() {
 
       for (let i = 0; i < ldtk.levels.length; i++) {
          let lvl = ldtk.levels[i];
-         
+
          // 筛选出所有属于当前 Area 前缀的 Level
          if (lvl.identifier.startsWith(areaPrefix)) {
             let initialCores = 0;
@@ -355,8 +355,8 @@ render() {
 
                // 遍历该关卡当前还存活的实体
                for (let ent of loadedLevel.entities) {
-                  if (ent.constructor.name === "PollutionCore") remainingCores++;
-                  if (ent.constructor.name === "Enemy") remainingEnemies++;
+                  if (ent.type === "PollutionCore") remainingCores++;
+                  if (ent.type === "Enemy") remainingEnemies++;
                }
 
                // 初始数量 - 存活数量 = 已经净化的数量

@@ -11,7 +11,7 @@
 	"iid": "8a664600-fa90-11f0-b92a-41df9fd93921",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 246,
+	"nextUid": 247,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -1743,7 +1743,45 @@
 			{ "id": "Hammer", "tileRect": null, "color": 4073265 }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
 		{ "identifier": "Gatetype", "uid": 244, "values": [ { "id": "CleanedTrigger", "tileRect": null, "color": 12470831 }, { "id": "MechanismTrigger", "tileRect": null, "color": 14120515 } ], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }
-	], "externalEnums": [], "levelFields": [] },
+	], "externalEnums": [], "levelFields": [
+		{
+			"identifier": "areaNumber",
+			"doc": null,
+			"__type": "String",
+			"uid": 246,
+			"type": "F_String",
+			"isArray": false,
+			"canBeNull": true,
+			"arrayMinLength": null,
+			"arrayMaxLength": null,
+			"editorDisplayMode": "Hidden",
+			"editorDisplayScale": 1,
+			"editorDisplayPos": "Above",
+			"editorLinkStyle": "StraightArrow",
+			"editorDisplayColor": null,
+			"editorAlwaysShow": false,
+			"editorShowInWorld": true,
+			"editorCutLongValues": true,
+			"editorTextSuffix": null,
+			"editorTextPrefix": null,
+			"useForSmartColor": false,
+			"exportToToc": false,
+			"searchable": false,
+			"min": null,
+			"max": null,
+			"regex": null,
+			"acceptFileTypes": null,
+			"defaultOverride": null,
+			"textLanguageMode": null,
+			"symmetricalRef": false,
+			"autoChainRef": true,
+			"allowOutOfLevelRef": true,
+			"allowedRefs": "OnlySame",
+			"allowedRefsEntityUid": null,
+			"allowedRefTags": [],
+			"tilesetUid": null
+		}
+	] },
 	"levels": [
 		{
 			"identifier": "Area1_1",
@@ -1764,7 +1802,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "1", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["1"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -2500,7 +2541,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "1", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["1"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -2935,7 +2979,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "1", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["1"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -3481,7 +3528,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "1", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["1"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -3882,7 +3932,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "1", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["1"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -4475,7 +4528,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "1", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["1"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -4617,7 +4673,10 @@
 									"params": ["core_A1"]
 								}] },
 								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [] },
-								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": null, "__tile": null, "defUid": 245, "realEditorValues": [] }
+								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["MechanismTrigger"]
+								}] }
 							],
 							"__worldX": 1912,
 							"__worldY": 1528
@@ -5044,7 +5103,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -5388,7 +5450,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -5916,7 +5981,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -6372,7 +6440,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -7107,7 +7178,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -7266,7 +7340,10 @@
 									"params": ["core_B3"]
 								}] },
 								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [] },
-								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": null, "__tile": null, "defUid": 245, "realEditorValues": [] }
+								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["MechanismTrigger"]
+								}] }
 							],
 							"__worldX": 2088,
 							"__worldY": 984
@@ -7551,7 +7628,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -7718,7 +7798,10 @@
 									"params": ["core_B2"]
 								}] },
 								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [null] },
-								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": null, "__tile": null, "defUid": 245, "realEditorValues": [] }
+								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["MechanismTrigger"]
+								}] }
 							],
 							"__worldX": 2304,
 							"__worldY": 1080
@@ -8055,7 +8138,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -8139,7 +8225,10 @@
 									"params": ["core_B4"]
 								}] },
 								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [] },
-								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": null, "__tile": null, "defUid": 245, "realEditorValues": [] }
+								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["MechanismTrigger"]
+								}] }
 							],
 							"__worldX": 3072,
 							"__worldY": 1112
@@ -8525,7 +8614,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "3", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["3"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -9266,7 +9358,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "3", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["3"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -9832,7 +9927,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "3", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["3"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -10464,7 +10562,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "3", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["3"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -10850,7 +10951,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "3", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["3"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -11647,7 +11751,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "3", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["3"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -12276,7 +12383,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "2", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["2"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -12680,7 +12790,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "4", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["4"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -13164,7 +13277,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "4", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["4"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -14715,7 +14831,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "4", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["4"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -16726,7 +16845,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "4", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["4"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -17560,7 +17682,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "4", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["4"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -18266,7 +18391,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "4", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["4"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
@@ -18887,7 +19015,10 @@
 			"__smartColor": "#ADADB5",
 			"__bgPos": null,
 			"externalRelPath": null,
-			"fieldInstances": [],
+			"fieldInstances": [{ "__identifier": "areaNumber", "__type": "String", "__value": "4", "__tile": null, "defUid": 246, "realEditorValues": [{
+				"id": "V_String",
+				"params": ["4"]
+			}] }],
 			"layerInstances": [
 				{
 					"__identifier": "Entities",
