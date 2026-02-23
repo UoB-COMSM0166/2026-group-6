@@ -18,6 +18,9 @@ const GameConfig = {
    // === 关卡 ===
    Level: {
       START_INDEX: 0,
+      // 定义净化程度权重
+      CORE_WEIGHT: 5,
+      ENEMY_WEIGHT: 1,
    },
 
    // === 玩家 ===

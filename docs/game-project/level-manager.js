@@ -66,7 +66,7 @@ class LevelManager {
    load(ldtkData, levelIndex) {
       let level = ldtkData.levels[levelIndex];
       this.ldtkData = ldtkData;
-      this.areaNumber = this.getAreaNumber(ldtkData.levels[this.levelIndex]);
+      this.areaNumber = this._getAreaNumber(ldtkData.levels[this.levelIndex]);
       this.mapW = level.pxWid;
       this.mapH = level.pxHei;
       this.bgColor = level.__bgColor;
@@ -506,7 +506,7 @@ class LevelManager {
       return enemyCount;
    }
 
-   getAreaNumber(level) {
+   _getAreaNumber(level) {
       let field = level.fieldInstances.find(f => f.__identifier === "areaNumber");
       return field ? field.__value : null;
    }

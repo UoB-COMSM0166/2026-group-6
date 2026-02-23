@@ -332,8 +332,8 @@ class GameManager {
       let currentAreaNumber = this.level.areaNumber;
 
       // 定义净化值权重
-      const CORE_WEIGHT = 5;
-      const ENEMY_WEIGHT = 1;
+      let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
+      let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
       let remainingCores = 0;
       let remainingEnemies = 0;
       let initialCores = 0;
@@ -342,13 +342,12 @@ class GameManager {
       for (let i = 0; i < ldtk.levels.length - 1; i++) {
          let lvl = this.levelsInfo[i];
          // 筛选出所有areaNumber为当前Level的areaNumber的level
-         if (lvl.areaNumber = currentAreaNumber) {
+         if (lvl.areaNumber === currentAreaNumber) {
             initialCores += lvl.totalPollutionCore;
             initialEnemies += lvl.totalEnemies;
             remainingCores += lvl.getPollutionCoreCount();
             remainingEnemies += lvl.getEnemiesCount();
             // 累加该关卡能提供的总净化值
-
          }
       }
       let currentPurifiedEnemies = initialEnemies - remainingEnemies;
