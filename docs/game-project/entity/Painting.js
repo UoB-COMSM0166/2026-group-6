@@ -77,9 +77,9 @@ class Painting extends Entity {
       // ── 四角装饰铆钉 ──
       fill(200, 160, 70);
       const cs = 2;
-      rect(fx,           fy,           cs, cs);  // 左上
-      rect(fx + fw - cs, fy,           cs, cs);  // 右上
-      rect(fx,           fy + fh - cs, cs, cs);  // 左下
+      rect(fx, fy, cs, cs);  // 左上
+      rect(fx + fw - cs, fy, cs, cs);  // 右上
+      rect(fx, fy + fh - cs, cs, cs);  // 左下
       rect(fx + fw - cs, fy + fh - cs, cs, cs);  // 右下
    }
 }

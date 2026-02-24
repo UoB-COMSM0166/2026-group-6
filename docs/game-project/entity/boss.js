@@ -3,7 +3,7 @@ class Boss extends Entity {
       super(x, y, w, h, spawnData);
       this.maxHp = 20;
       this.hp = this.maxHp;
-      
+
       // Boss 状态机
       this.state = "IDLE"; // IDLE, SHOOT, FLOOD, SUMMON
       this.stateTimer = 0;
@@ -30,7 +30,7 @@ class Boss extends Entity {
             if (this.stateTimer === 20 || this.stateTimer === 40 || this.stateTimer === 60) {
                let targetX = gm.player.cx();
                let targetY = gm.player.cy();
-               
+
                // 【修改点】：把 this.cy() 改为 this.y - 5，让子弹从 Boss 头顶偏上一点的地方发射，防止瞬间撞地！
                gm.entities.push(new ToxicBullet(this.cx(), this.y - 5, targetX, targetY));
             }
@@ -43,9 +43,9 @@ class Boss extends Entity {
          case "FLOOD":
             // 技能刚开始，立刻给玩家文字警告
             if (this.stateTimer === 1) {
-               gm.player.setPrompt('ROOF!'); 
+               gm.player.setPrompt('ROOF!');
             }
-            
+
             // 【修改】：把伤害判定的开始时间推迟到 180帧 (警告 2秒 + 上涨 1秒)
             // 结束时间推迟到 360 帧
             if (this.stateTimer > 180 && this.stateTimer < 360) {
@@ -53,7 +53,7 @@ class Boss extends Entity {
                   if (gm.player.invulnerableTimer <= 0) {
                      gm.player.takeDamage(1, gm);
                      gm.player.knockTimer = GameConfig.Player.KnockInterval;
-                     gm.player.vy = -3; 
+                     gm.player.vy = -3;
                   }
                }
             }
@@ -89,22 +89,22 @@ class Boss extends Entity {
       gm.addParticles(this.cx(), this.cy(), 10); // 爆大团粒子
 
       if (rope.state === "EXTENDING") rope.state = "RETRACTING";
-      
+
       if (this.hp <= 0) {
          this.purified = true;
          // 触发游戏胜利或掉落大量清洁能量
       }
    }
 
-    // 【修改点】：增加 level 参数
+   // 【修改点】：增加 level 参数
    display(level) {
       if (this.purified) {
          fill(100, 255, 100, this.alpha);
       } else {
-         if (this.state === "SHOOT") fill(255, 0, 0); 
-         else fill(150, 0, 150); 
+         if (this.state === "SHOOT") fill(255, 0, 0);
+         else fill(150, 0, 150);
       }
-      
+
       rect(this.x, this.y, this.w, this.h);
 
       if (!this.purified) {
@@ -115,7 +115,7 @@ class Boss extends Entity {
       // ================= 【精准渲染毒水】 =================
       if (this.state === "FLOOD" && !this.purified) {
          let floodH = 0;
-         let maxFlood = this.floodHeight; 
+         let maxFlood = this.floodHeight;
 
          // 1. 警告期 (0-120帧): 底部出现闪烁的红色警告线
          if (this.stateTimer < 120 && level) {
@@ -127,15 +127,15 @@ class Boss extends Entity {
                line(0, level.mapH - 3, level.mapW, level.mapH - 3);
             }
             pop();
-         } 
+         }
          // 2. 上涨期 (120-180帧)
          else if (this.stateTimer >= 120 && this.stateTimer < 180) {
             floodH = ((this.stateTimer - 120) / 60) * maxFlood;
-         } 
+         }
          // 4. 消退期 (360-420帧)
          else if (this.stateTimer >= 360 && this.stateTimer <= 420) {
             floodH = ((420 - this.stateTimer) / 60) * maxFlood;
-         } 
+         }
          // 3. 满水期 (180-360帧)
          else {
             floodH = maxFlood;
@@ -144,10 +144,10 @@ class Boss extends Entity {
          // 真正画出上涨/满水/消退状态的毒水
          if (floodH > 0 && level) {
             push();
-            fill(100, 0, 150, 180); 
+            fill(100, 0, 150, 180);
             noStroke();
-            rect(0, level.mapH - floodH, level.mapW, floodH); 
-            
+            rect(0, level.mapH - floodH, level.mapW, floodH);
+
             stroke(200, 50, 255);
             strokeWeight(3);
             line(0, level.mapH - floodH, level.mapW, level.mapH - floodH);

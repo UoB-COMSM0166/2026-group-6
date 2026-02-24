@@ -107,8 +107,8 @@ class GameManager {
             case GameConfig.Entity.Painting: ent = new Painting(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.TeleportationGate: ent = new TeleportationGate(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.EndingButton: ent = new EndingButton(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
-            case GameConfig.Entity.GateWall:ent = new GateWall(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
-            case GameConfig.Entity.Button:ent = new Button(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.GateWall: ent = new GateWall(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.Button: ent = new Button(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
          }
          this.entities.push(ent);
@@ -273,21 +273,18 @@ class GameManager {
    //  内部
    // ========================================================
 
-_updateEntities() {
+   _updateEntities() {
       for (let i = this.entities.length - 1; i >= 0; i--) {
          let ent = this.entities[i];
          // 把 this (也就是 gm 本身) 传给实体，让 Boss 能拿到玩家坐标
-         ent.update(this.level, this); 
-         
-         
+         ent.update(this.level, this);
+
+
          if (!ent || ent.active === false) continue;
          if (typeof ent.updateWithGM === "function") {
             ent.updateWithGM(this);
          }
          if (ent.active === false) continue;
-         if (typeof ent.update === "function") {
-            ent.update(this.level);
-         }
 
          if (ent.isTouchingPlayer(this.player)) {
             ent.onPlayerContact(this.player, this);
@@ -406,7 +403,7 @@ _updateEntities() {
       let percentage = (totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100));
       return percentage;
    }
-   
+
    /**
     * 全局按 iid 找实体：
     */
@@ -466,7 +463,7 @@ _updateEntities() {
       let currentPurifiedCores = initialCores - remainingCores;
       //计算已净化加权分数
       let currentPurifiedValue =
-      currentPurifiedEnemies * ENEMY_WEIGHT + currentPurifiedCores * CORE_WEIGHT;
+         currentPurifiedEnemies * ENEMY_WEIGHT + currentPurifiedCores * CORE_WEIGHT;
       //算总分数
       let totalValue = initialCores * CORE_WEIGHT + initialEnemies * ENEMY_WEIGHT;
 

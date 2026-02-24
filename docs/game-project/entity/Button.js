@@ -8,16 +8,18 @@ class Button extends Entity {
 
   onPlayerContact(player, gm) {
     if (this.pressed) return;
+    player.setPrompt('F');
+    if (keyIsDown(Keys.F)) {
+      const target = this.fields?.target;
+      if (!target || !target.entityIid) {
+        console.warn("[Button] target missing entityIid");
+        return;
+      }
+      gm.openGateByIid(target.entityIid);
 
-    const target = this.fields?.target;
-    if (!target || !target.entityIid) {
-      console.warn("[Button] target missing entityIid");
-      return;
+      this.pressed = true;
     }
-    gm.openGateByIid(target.entityIid);
-    
-    this.pressed = true;
-}
+  }
 
   _drawShape() {
     fill(254, 174, 52);

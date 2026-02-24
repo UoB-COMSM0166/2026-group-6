@@ -35,12 +35,12 @@ class GateWall extends Entity {
          if (reqArea > 0) {
             progress = gm.getAreaProgressByAreaNumber(reqArea);
          } else {
-         progress = gm.getAreaProgress();
+            progress = gm.getAreaProgress();
          }
 
          if (progress >= PURIFY_OPEN_THRESHOLD) {
             this.open();
-         } 
+         }
       }
    }
 
