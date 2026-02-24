@@ -107,6 +107,8 @@ class GameManager {
             case GameConfig.Entity.Painting: ent = new Painting(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.TeleportationGate: ent = new TeleportationGate(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.EndingButton: ent = new EndingButton(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.GateWall:ent = new GateWall(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.Button:ent = new Button(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
          }
          this.entities.push(ent);
@@ -277,6 +279,16 @@ _updateEntities() {
          // 把 this (也就是 gm 本身) 传给实体，让 Boss 能拿到玩家坐标
          ent.update(this.level, this); 
          
+         
+         if (!ent || ent.active === false) continue;
+         if (typeof ent.updateWithGM === "function") {
+            ent.updateWithGM(this);
+         }
+         if (ent.active === false) continue;
+         if (typeof ent.update === "function") {
+            ent.update(this.level);
+         }
+
          if (ent.isTouchingPlayer(this.player)) {
             ent.onPlayerContact(this.player, this);
          }
@@ -389,4 +401,71 @@ _updateEntities() {
       let percentage = (totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100));
       return percentage;
    }
+   
+   /**
+    * 全局按 iid 找实体：
+    */
+   findEntityByIid(iid) {
+      if (!iid) return null;
+      let e = this.entities?.find(ent => ent && ent.iid === iid);
+      if (e) return e;
+
+      for (const key in this.levelsInfo) {
+         const lvl = this.levelsInfo[key];
+         if (!lvl || !lvl.entities) continue;
+         const hit = lvl.entities.find(ent => ent && ent.iid === iid);
+         if (hit) return hit;
+      }
+      return null;
+   }
+
+   /**
+    * 给按钮用：打开指定 iid 的 GateWall
+    */
+   openGateByIid(iid) {
+      const gate = this.findEntityByIid(iid);
+      if (gate && typeof gate.open === "function") {
+         gate.open();
+         return true;
+      }
+      return false;
+   }
+
+   /**
+    * 按指定 areaNumber 计算净化百分比 用于跨区域门
+    */
+   getAreaProgressByAreaNumber(areaNumber) {
+      let ldtk = this.resources.ldtkData;
+      //读取权重 + 初始化累计变量
+      let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
+      let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
+      //现在剩余未清理
+      let remainingCores = 0;
+      let remainingEnemies = 0;
+      //初始总数
+      let initialCores = 0;
+      let initialEnemies = 0;
+
+      for (let i = 0; i < ldtk.levels.length - 1; i++) {
+         let lvl = this.levelsInfo[i];
+
+         if (Number(lvl.areaNumber) === Number(areaNumber)) {
+            initialCores += lvl.totalPollutionCore;
+            initialEnemies += lvl.totalEnemies;
+            remainingCores += lvl.getPollutionCoreCount();
+            remainingEnemies += lvl.getEnemiesCount();
+         }
+      }
+      //计算已净化数量
+      let currentPurifiedEnemies = initialEnemies - remainingEnemies;
+      let currentPurifiedCores = initialCores - remainingCores;
+      //计算已净化加权分数
+      let currentPurifiedValue =
+      currentPurifiedEnemies * ENEMY_WEIGHT + currentPurifiedCores * CORE_WEIGHT;
+      //算总分数
+      let totalValue = initialCores * CORE_WEIGHT + initialEnemies * ENEMY_WEIGHT;
+
+      return (totalValue === 0) ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100);
+   }
+
 }

@@ -152,8 +152,23 @@ class LevelManager {
 
    /** 便捷方法：只返回固体 Tile */
    getSolidTilesInRect(x, y, w, h, margin = 1) {
-      return this.getTilesInRect(x, y, w, h, { margin, solidOnly: true });
+     // 原本的固体 tile
+     let colliders = this.getTilesInRect(x, y, w, h, { margin, solidOnly: true });
+
+      // 追加实体墙碰撞
+      if (this.entities && this.entities.length > 0) {
+      for (let e of this.entities) {
+         if (!e || !e.active) continue;
+         if (!e.blocksPlayer) continue;
+         const hit =
+            e.x < x + w && e.x + e.w > x &&
+            e.y < y + h && e.y + e.h > y;
+
+         if (hit) colliders.push(e);
+      }
    }
+  return colliders;
+}
 
    /**
     * 获取矩形区域内的所有 active Tile
@@ -520,6 +535,7 @@ class LevelManager {
          fields[f.__identifier] = f.__value;
       }
       return {
+         iid: entity.iid,
          x, y,
          w: entity.width,
          h: entity.height,

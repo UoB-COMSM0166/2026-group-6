@@ -60,6 +60,8 @@ const GameConfig = {
       Painting: "Painting",
       TeleportationGate: "Teleportation_Gate",
       EndingButton: "Endingbutton",
+      GateWall: "GateWall",
+      Button: "Button",
    },
 
    Collision: {
