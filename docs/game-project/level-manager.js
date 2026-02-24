@@ -637,16 +637,16 @@ class LevelManager {
             let ew = Math.max(4, (ent.w / this.mapW) * miniMapW);
             let eh = Math.max(4, (ent.h / this.mapH) * miniMapH);
 
-            if (ent.type === "Enemy") {
+            if (ent.type === GameConfig.Entity.Enemy) {
                fill(255, 150, 0); // 橙色代表怪物
                rect(ex, ey, ew, eh);
             }
-            else if (ent.type === "PollutionCore") {
+            else if (ent.type === GameConfig.Entity.PollutionCore) {
                fill(200, 100, 255); // 紫色代表污染核心
                rect(ex, ey, ew, eh);
             }
             // 【新增分支】：显示清洁能量
-            else if (ent.type === "CleanEnergy") {
+            else if (ent.type === GameConfig.Entity.CleanEnergy) {
                fill(0, 255, 255); // 青色代表清洁能量
                rect(ex, ey, ew, eh);
             }
