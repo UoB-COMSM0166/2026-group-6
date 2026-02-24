@@ -37,6 +37,9 @@ class Entity {
 
       // LDtk 自定义字段 (方便子类读取)
       this.fields = spawnData.fields || {};
+
+      // LDtk 实体唯一 id（跨 level 引用、按钮开门用）
+      this.iid = spawnData.iid || null;
    }
 
    // ====== 中心点 ======
