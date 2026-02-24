@@ -11,7 +11,7 @@
 	"iid": "8a664600-fa90-11f0-b92a-41df9fd93921",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 253,
+	"nextUid": 254,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -1560,6 +1560,43 @@
 					"__type": "LocalEnum.Gatetype",
 					"uid": 245,
 					"type": "F_Enum(244)",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "requiredArea",
+					"doc": null,
+					"__type": "Int",
+					"uid": 253,
+					"type": "F_Int",
 					"isArray": false,
 					"canBeNull": false,
 					"arrayMinLength": null,
@@ -4816,10 +4853,11 @@
 									"params": ["core_A1"]
 								}] },
 								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [] },
-								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
+								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["MechanismTrigger"]
-								}] }
+									"params": ["CleanedTrigger"]
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 1, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [1] }] }
 							],
 							"__worldX": 1912,
 							"__worldY": 1528
@@ -5828,7 +5866,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["MechanismTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 0, "__tile": null, "defUid": 253, "realEditorValues": [] }
 							],
 							"__worldX": 2336,
 							"__worldY": 1424
@@ -6290,7 +6329,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 2, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [2] }] }
 							],
 							"__worldX": 3064,
 							"__worldY": 1440
@@ -6335,19 +6375,19 @@
 						0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,
+						0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,
+						0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 						0,0,0,0,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,
@@ -6377,28 +6417,40 @@
 						{ "px": [8,88], "src": [112,400], "f": 0, "t": 1964, "d": [203,529], "a": 1 },
 						{ "px": [0,96], "src": [112,400], "f": 0, "t": 1964, "d": [203,576], "a": 1 },
 						{ "px": [8,96], "src": [112,400], "f": 0, "t": 1964, "d": [203,577], "a": 1 },
+						{ "px": [376,96], "src": [112,400], "f": 0, "t": 1964, "d": [203,623], "a": 1 },
 						{ "px": [0,104], "src": [112,400], "f": 0, "t": 1964, "d": [203,624], "a": 1 },
 						{ "px": [8,104], "src": [112,400], "f": 0, "t": 1964, "d": [203,625], "a": 1 },
+						{ "px": [376,104], "src": [112,400], "f": 0, "t": 1964, "d": [203,671], "a": 1 },
 						{ "px": [0,112], "src": [112,400], "f": 0, "t": 1964, "d": [203,672], "a": 1 },
 						{ "px": [8,112], "src": [112,400], "f": 0, "t": 1964, "d": [203,673], "a": 1 },
+						{ "px": [376,112], "src": [112,400], "f": 0, "t": 1964, "d": [203,719], "a": 1 },
 						{ "px": [0,120], "src": [112,400], "f": 0, "t": 1964, "d": [203,720], "a": 1 },
 						{ "px": [8,120], "src": [112,400], "f": 0, "t": 1964, "d": [203,721], "a": 1 },
+						{ "px": [376,120], "src": [112,400], "f": 0, "t": 1964, "d": [203,767], "a": 1 },
 						{ "px": [0,128], "src": [112,400], "f": 0, "t": 1964, "d": [203,768], "a": 1 },
 						{ "px": [8,128], "src": [112,400], "f": 0, "t": 1964, "d": [203,769], "a": 1 },
+						{ "px": [376,128], "src": [112,400], "f": 0, "t": 1964, "d": [203,815], "a": 1 },
 						{ "px": [0,136], "src": [112,400], "f": 0, "t": 1964, "d": [203,816], "a": 1 },
 						{ "px": [8,136], "src": [112,400], "f": 0, "t": 1964, "d": [203,817], "a": 1 },
+						{ "px": [376,136], "src": [112,400], "f": 0, "t": 1964, "d": [203,863], "a": 1 },
 						{ "px": [0,144], "src": [112,400], "f": 0, "t": 1964, "d": [203,864], "a": 1 },
 						{ "px": [8,144], "src": [112,400], "f": 0, "t": 1964, "d": [203,865], "a": 1 },
+						{ "px": [376,144], "src": [112,400], "f": 0, "t": 1964, "d": [203,911], "a": 1 },
 						{ "px": [0,152], "src": [112,400], "f": 0, "t": 1964, "d": [203,912], "a": 1 },
 						{ "px": [8,152], "src": [112,400], "f": 0, "t": 1964, "d": [203,913], "a": 1 },
+						{ "px": [376,152], "src": [112,400], "f": 0, "t": 1964, "d": [203,959], "a": 1 },
 						{ "px": [0,160], "src": [112,400], "f": 0, "t": 1964, "d": [203,960], "a": 1 },
 						{ "px": [8,160], "src": [112,400], "f": 0, "t": 1964, "d": [203,961], "a": 1 },
+						{ "px": [376,160], "src": [112,400], "f": 0, "t": 1964, "d": [203,1007], "a": 1 },
 						{ "px": [0,168], "src": [112,400], "f": 0, "t": 1964, "d": [203,1008], "a": 1 },
 						{ "px": [8,168], "src": [112,400], "f": 0, "t": 1964, "d": [203,1009], "a": 1 },
+						{ "px": [376,168], "src": [112,400], "f": 0, "t": 1964, "d": [203,1055], "a": 1 },
 						{ "px": [0,176], "src": [112,400], "f": 0, "t": 1964, "d": [203,1056], "a": 1 },
 						{ "px": [8,176], "src": [112,400], "f": 0, "t": 1964, "d": [203,1057], "a": 1 },
+						{ "px": [376,176], "src": [112,400], "f": 0, "t": 1964, "d": [203,1103], "a": 1 },
 						{ "px": [0,184], "src": [112,400], "f": 0, "t": 1964, "d": [203,1104], "a": 1 },
 						{ "px": [8,184], "src": [112,400], "f": 0, "t": 1964, "d": [203,1105], "a": 1 },
+						{ "px": [376,184], "src": [112,400], "f": 0, "t": 1964, "d": [203,1151], "a": 1 },
 						{ "px": [0,192], "src": [112,400], "f": 0, "t": 1964, "d": [203,1152], "a": 1 },
 						{ "px": [8,192], "src": [112,400], "f": 0, "t": 1964, "d": [203,1153], "a": 1 },
 						{ "px": [336,192], "src": [112,400], "f": 0, "t": 1964, "d": [203,1194], "a": 1 },
@@ -6475,7 +6527,6 @@
 						{ "px": [352,96], "src": [128,400], "f": 0, "t": 1966, "d": [202,620], "a": 1 },
 						{ "px": [360,96], "src": [128,400], "f": 0, "t": 1966, "d": [202,621], "a": 1 },
 						{ "px": [368,96], "src": [128,400], "f": 0, "t": 1966, "d": [202,622], "a": 1 },
-						{ "px": [376,96], "src": [128,400], "f": 0, "t": 1966, "d": [202,623], "a": 1 },
 						{ "px": [200,144], "src": [128,400], "f": 0, "t": 1966, "d": [202,889], "a": 1 },
 						{ "px": [208,144], "src": [128,400], "f": 0, "t": 1966, "d": [202,890], "a": 1 },
 						{ "px": [216,144], "src": [128,400], "f": 0, "t": 1966, "d": [202,891], "a": 1 },
@@ -6521,7 +6572,6 @@
 						{ "px": [352,184], "src": [144,400], "f": 0, "t": 1968, "d": [201,1148], "a": 1 },
 						{ "px": [360,184], "src": [144,400], "f": 0, "t": 1968, "d": [201,1149], "a": 1 },
 						{ "px": [368,184], "src": [144,400], "f": 0, "t": 1968, "d": [201,1150], "a": 1 },
-						{ "px": [376,184], "src": [144,400], "f": 0, "t": 1968, "d": [201,1151], "a": 1 },
 						{ "px": [136,200], "src": [144,400], "f": 0, "t": 1968, "d": [201,1217], "a": 1 },
 						{ "px": [144,200], "src": [144,400], "f": 0, "t": 1968, "d": [201,1218], "a": 1 },
 						{ "px": [152,200], "src": [144,400], "f": 0, "t": 1968, "d": [201,1219], "a": 1 },
@@ -6933,7 +6983,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["MechanismTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 0, "__tile": null, "defUid": 253, "realEditorValues": [] }
 							],
 							"__worldX": 2648,
 							"__worldY": 1184
@@ -7552,7 +7603,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["MechanismTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 0, "__tile": null, "defUid": 253, "realEditorValues": [] }
 							],
 							"__worldX": 2088,
 							"__worldY": 984
@@ -7591,7 +7643,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 0, "__tile": null, "defUid": 253, "realEditorValues": [] }
 							],
 							"__worldX": 1920,
 							"__worldY": 984
@@ -8038,7 +8091,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["MechanismTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 0, "__tile": null, "defUid": 253, "realEditorValues": [] }
 							],
 							"__worldX": 2304,
 							"__worldY": 1080
@@ -8464,10 +8518,11 @@
 									"params": ["core_B4"]
 								}] },
 								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [] },
-								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "MechanismTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
+								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["MechanismTrigger"]
-								}] }
+									"params": ["CleanedTrigger"]
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 2, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [2] }] }
 							],
 							"__worldX": 3072,
 							"__worldY": 1112
@@ -9743,7 +9798,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 3, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
 							],
 							"__worldX": 3480,
 							"__worldY": 1376
@@ -11340,7 +11396,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 3, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
 							],
 							"__worldX": 4944,
 							"__worldY": 1376
@@ -13768,7 +13825,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 0, "__tile": null, "defUid": 253, "realEditorValues": [] }
 							],
 							"__worldX": 4008,
 							"__worldY": 1040
@@ -15405,7 +15463,8 @@
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
-								}] }
+								}] },
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 0, "__tile": null, "defUid": 253, "realEditorValues": [] }
 							],
 							"__worldX": 4512,
 							"__worldY": 1232
