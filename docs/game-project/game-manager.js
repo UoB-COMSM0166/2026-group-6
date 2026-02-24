@@ -98,7 +98,7 @@ class GameManager {
       for (let spawn of this.level.entitySpawns) {
          let ent;
          switch (spawn.identifier) {
-            case "Boss": ent = new Boss(spawn.x, spawn.y, spawn.w, spawn.h, spawn, this.level); break;
+            case "Boss": ent = new Boss(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.Tool: ent = new Tool(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.PollutionCore: ent = new PollutionCore(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.CleanEnergy: ent = new CleanEnergy(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
@@ -288,6 +288,11 @@ _updateEntities() {
          if (ent.isDead) this.entities.splice(i, 1);
       }
       this.level.pollutionCoreCount = this.level.getPollutionCoreCount();
+
+      // 本关卡污染核心全部净化后，毒池变为水
+      if (this.level.pollutionCoreCount === 0 && !this.level.toxicConverted) {
+         this.level.convertToxicToWater(this.levelsInfo);
+      }
    }
 
    _updateParticles() {

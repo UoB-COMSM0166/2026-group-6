@@ -52,6 +52,7 @@ class LevelManager {
       this.levelIndex = levelIndex;
       this.totalPollutionCore = 0;
       this.toalEnemies = 0;
+      this.toxicConverted = false;
    }
 
    // ========================================================
@@ -484,6 +485,56 @@ class LevelManager {
             this.entitySpawns.push(spawn);
          }
       }
+   }
+
+   convertToxicToWater(levelsInfo) {
+      if (this.toxicConverted) return;
+      this.toxicConverted = true;
+
+      // 1. 从所有已加载关卡中查找 water tile 的视觉模板
+      let waterVisuals = this._findWaterVisuals(levelsInfo);
+
+      // 2. 替换所有 toxic_poor 瓦片
+      for (let r = 0; r < this.rows; r++) {
+         for (let c = 0; c < this.cols; c++) {
+            let tile = this.grid[r][c];
+            if (tile && tile.active && tile.type === GameConfig.Collision.ToxicPool) {
+               tile.type = "water";
+               if (waterVisuals) {
+                  tile.visuals = waterVisuals.map(v => ({ ...v }));
+               } else {
+                  tile.visuals = [];
+               }
+            }
+         }
+      }
+   }
+
+   _findWaterVisuals(levelsInfo) {
+      // 先搜索本关卡
+      let found = this._getWaterVisualsFromGrid(this.grid, this.rows, this.cols);
+      if (found) return found;
+
+      // 再搜索其他关卡
+      for (let idx in levelsInfo) {
+         let lvl = levelsInfo[idx];
+         if (lvl === this) continue;
+         found = this._getWaterVisualsFromGrid(lvl.grid, lvl.rows, lvl.cols);
+         if (found) return found;
+      }
+      return null;
+   }
+
+   _getWaterVisualsFromGrid(grid, rows, cols) {
+      for (let r = 0; r < rows; r++) {
+         for (let c = 0; c < cols; c++) {
+            let tile = grid[r][c];
+            if (tile && tile.active && tile.type === "water" && tile.visuals.length > 0) {
+               return tile.visuals.map(v => ({ ...v }));
+            }
+         }
+      }
+      return null;
    }
 
    getPollutionCoreCount() {

@@ -22,7 +22,7 @@ class Enemy extends Entity {
       this.speed = GameConfig.Enemy.SPEED;
       this.vy = 0;
       this.grounded = false;
-      this.jumpForce = -0.85 * GameConfig.Enemy.JUMPFORCE;
+      this.jumpForce = -0.8 * GameConfig.Enemy.JUMPFORCE;
 
       // 出生防卡墙：使用空间查询
       let safety = 100;

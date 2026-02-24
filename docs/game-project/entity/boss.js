@@ -1,7 +1,7 @@
 class Boss extends Entity {
-   constructor(x, y, w, h, spawnData, level) {
+   constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
-      this.maxHp = 500;
+      this.maxHp = 20;
       this.hp = this.maxHp;
       
       // Boss 状态机
