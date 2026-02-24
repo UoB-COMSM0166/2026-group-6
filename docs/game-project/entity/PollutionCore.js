@@ -22,24 +22,24 @@ class PollutionCore extends Entity {
    }
 
    onRopeContact(rope, player, gm) {
-         if (this.isDead) return;
-         if (rope.state !== "SWINGING") rope.state = "SWINGING";
-         
-         if (this.polluteDegree > 0) {
-            player.setPrompt('F');
-            if (keyIsDown(Keys.F)) {
-               let consume = 2;
-               // 增加能量检查，能量足够时才触发粒子、扣除能量和净化
-               if (player.checkRemainCleanEnergy(consume)) {
-                  gm.addParticles(this.cx(), this.cy());
-                  player.reduceCleanEnergy(consume);
-                  this.polluteDegree -= consume;
-               }
+      if (this.isDead) return;
+      if (rope.state !== "SWINGING") rope.state = "SWINGING";
+
+      if (this.polluteDegree > 0) {
+         player.setPrompt('F');
+         if (keyIsDown(Keys.F)) {
+            let consume = 2;
+            // 增加能量检查，能量足够时才触发粒子、扣除能量和净化
+            if (player.checkRemainCleanEnergy(consume)) {
+               gm.addParticles(this.cx(), this.cy());
+               player.reduceCleanEnergy(consume);
+               this.polluteDegree -= consume;
             }
          }
-         else {
-            if (rope.state !== "RETRACTING") rope.state = "RETRACTING";
-            this.destroy();
-         }
+      }
+      else {
+         if (rope.state !== "RETRACTING") rope.state = "RETRACTING";
+         this.destroy();
+      }
    }
 }

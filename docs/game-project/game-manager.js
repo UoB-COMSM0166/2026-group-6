@@ -34,11 +34,23 @@ class GameManager {
       this.areaName = "";
       this.areaNameStartTime;
       this.areaNameDuration;
+      this.pendingTeleport = null;
+      this.preload();
    }
 
    // ========================================================
    //  关卡管理
    // ========================================================
+
+   preload() {
+      let ldtk = this.resources.ldtkData;
+      const lastIndex = ldtk.levels.length;
+      for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
+         this.levelIndex = levelIndex;
+         this.loadLevel();
+      }
+      this.levelIndex = GameConfig.Level.START_INDEX;
+   }
 
    /**
     * 加载关卡
@@ -92,6 +104,9 @@ class GameManager {
             case GameConfig.Entity.CleanEnergy: ent = new CleanEnergy(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.Rest: ent = new Rest(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.Ladder: ent = new Ladder(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.Painting: ent = new Painting(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.TeleportationGate: ent = new TeleportationGate(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.EndingButton: ent = new EndingButton(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
          }
          this.entities.push(ent);
@@ -105,6 +120,7 @@ class GameManager {
          this.level.entities = this.entities;
          this.levelsInfo[this.levelIndex] = this.level;
          this.level.totalPollutionCore = this.level.getPollutionCoreCount();
+         this.level.totalEnemies = this.level.getEnemiesCount();
       }
       else {
          this.entities = this.levelsInfo[this.levelIndex].entities;
@@ -165,7 +181,7 @@ class GameManager {
 
       // 通用实体
       this._updateEntities();
-
+      this._checkTeleport();
       // 粒子
       this._updateParticles();
 
@@ -176,7 +192,7 @@ class GameManager {
       this._checkWinLose();
    }
 
-render() {
+   render() {
       background(color(this.level.bgColor));
 
       push();
@@ -290,6 +306,30 @@ _updateEntities() {
     *   2. 保存玩家速度 (保持移动惯性)
     *   3. loadLevel(transition) 加载新关卡, 保留玩家状态（在transition中添加保留的其他玩家状态，后续应单独加到一个class里面）
     */
+
+   _checkTeleport() {
+      if (!this.pendingTeleport) return;
+
+      let result = this.pendingTeleport;
+      this.pendingTeleport = null;
+
+      this._savaLevel();
+      this.levelIndex = result.levelIndex;
+      this.loadLevel({
+         x: result.newX,
+         y: result.newY,
+         vx: 0,
+         vy: 0,
+      });
+
+      // 目标关卡所有传送门设冷却，防止立刻回传
+      for (let ent of this.entities) {
+         if (ent instanceof TeleportationGate) {
+            ent.cooldown = 30;
+         }
+      }
+   }
+
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
@@ -314,64 +354,39 @@ _updateEntities() {
       if (this.player.hp <= 0) this.player.die(this);
    }
 
-/**
-    * 计算当前所在 Area（包含多个 Level）的净化百分比进度
-    * 权重规则：污染核心 = 5, 怪物 = 1
-    */
+   /**
+       * 计算当前所在 Area（包含多个 Level）的净化百分比进度
+       * 权重规则：污染核心 = 5, 怪物 = 1
+       */
    getAreaProgress() {
       let ldtk = this.resources.ldtkData;
-      let currentLevelId = ldtk.levels[this.levelIndex].identifier;
-      let areaPrefix = currentLevelId.split('_')[0]; 
-
-      let totalValue = 0;
-      let currentPurifiedValue = 0;
+      let currentAreaNumber = this.level.areaNumber;
 
       // 定义净化值权重
-      const CORE_WEIGHT = 5;
-      const ENEMY_WEIGHT = 1;
-
-      for (let i = 0; i < ldtk.levels.length; i++) {
-         let lvl = ldtk.levels[i];
-         
-         // 筛选出所有属于当前 Area 前缀的 Level
-         if (lvl.identifier.startsWith(areaPrefix)) {
-            let initialCores = 0;
-            let initialEnemies = 0;
-
-            // 1. 直接从 LDtk 原始数据读取该关卡的初始实体数量
-            let entityLayer = lvl.layerInstances.find(l => l.__identifier === "Entities");
-            if (entityLayer) {
-               for (let ent of entityLayer.entityInstances) {
-                  if (ent.__identifier === "Pollution_Core") initialCores++;
-                  if (ent.__identifier === "Enemy") initialEnemies++;
-               }
-            }
-
+      let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
+      let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
+      let remainingCores = 0;
+      let remainingEnemies = 0;
+      let initialCores = 0;
+      let initialEnemies = 0;
+      // 不算最终关
+      for (let i = 0; i < ldtk.levels.length - 1; i++) {
+         let lvl = this.levelsInfo[i];
+         // 筛选出所有areaNumber为当前Level的areaNumber的level，当到达结尾关时为整张地图的progress
+         if (lvl.areaNumber === currentAreaNumber || currentAreaNumber === '5') {
+            initialCores += lvl.totalPollutionCore;
+            initialEnemies += lvl.totalEnemies;
+            remainingCores += lvl.getPollutionCoreCount();
+            remainingEnemies += lvl.getEnemiesCount();
             // 累加该关卡能提供的总净化值
-            totalValue += (initialCores * CORE_WEIGHT) + (initialEnemies * ENEMY_WEIGHT);
-
-            // 2. 如果玩家已经访问过这个关卡，计算实际存活的数量
-            if (i in this.levelsInfo) {
-               let loadedLevel = this.levelsInfo[i];
-               let remainingCores = 0;
-               let remainingEnemies = 0;
-
-               // 遍历该关卡当前还存活的实体
-               for (let ent of loadedLevel.entities) {
-                  if (ent.constructor.name === "PollutionCore") remainingCores++;
-                  if (ent.constructor.name === "Enemy") remainingEnemies++;
-               }
-
-               // 初始数量 - 存活数量 = 已经净化的数量
-               let purifiedCores = initialCores - remainingCores;
-               let purifiedEnemies = initialEnemies - remainingEnemies;
-               currentPurifiedValue += (purifiedCores * CORE_WEIGHT) + (purifiedEnemies * ENEMY_WEIGHT);
-            }
          }
       }
-
+      let currentPurifiedEnemies = initialEnemies - remainingEnemies;
+      let currentPurifiedCores = initialCores - remainingCores;
+      let currentPurifiedValue = currentPurifiedEnemies * ENEMY_WEIGHT + currentPurifiedCores * CORE_WEIGHT;
+      let totalValue = (initialCores * CORE_WEIGHT) + (initialEnemies * ENEMY_WEIGHT);
       // 计算百分比 (向下取整，并且防止除以 0 导致报错)
-      let percentage = totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100);
+      let percentage = (totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100));
       return percentage;
    }
 }

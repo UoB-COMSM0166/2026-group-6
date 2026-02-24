@@ -19,17 +19,19 @@ class UI {
       push();
       textAlign(CENTER, TOP);
       textSize(24);
-      
+
       // 获取当前 Area 的百分比进度（0 到 100）
       let percentage = gm.getAreaProgress();
-      
+      let areaNumber = level.areaNumber;
+      if (areaNumber === "5") areaNumber = "Total";
+
       fill(0, 150);
       // 阴影
-      text(`Area Purified: ${percentage}%`, width / 2 + 2, 22);
-      
+      text(`Area${areaNumber} Purified: ${percentage}%`, width / 2 + 2, 22);
+
       // 文字
       fill(200, 100, 255);
-      text(`Area Purified: ${percentage}%`, width / 2, 20);
+      text(`Area${areaNumber} Purified: ${percentage}%`, width / 2, 20);
       pop();
 
       this._drawMouseButtons(player);
@@ -73,7 +75,6 @@ class UI {
       background(0, 150);
       fill(255); textAlign(CENTER); textSize(40);
       text("YOU WON!", width / 2, height / 2);
-      textSize(20); text("Press R to Restart", width / 2, height / 2 + 50);
    }
 
    static drawGameOverScreen() {
@@ -92,11 +93,11 @@ class UI {
       // apear
       if (elapsed < fadeIn) {
          alpha = map(elapsed, 0, fadeIn, 0, 255);
-      } 
+      }
       // disappear
       else if (remaining < fadeOut) {
          alpha = map(remaining, 0, fadeOut, 0, 255);
-      } 
+      }
       else {
          alpha = 255;
       }

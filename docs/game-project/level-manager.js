@@ -51,6 +51,7 @@ class LevelManager {
       this.entities;
       this.levelIndex = levelIndex;
       this.totalPollutionCore = 0;
+      this.toalEnemies = 0;
    }
 
    // ========================================================
@@ -65,6 +66,7 @@ class LevelManager {
    load(ldtkData, levelIndex) {
       let level = ldtkData.levels[levelIndex];
       this.ldtkData = ldtkData;
+      this.areaNumber = this._getAreaNumber(ldtkData.levels[this.levelIndex]);
       this.mapW = level.pxWid;
       this.mapH = level.pxHei;
       this.bgColor = level.__bgColor;
@@ -494,6 +496,21 @@ class LevelManager {
       return pollutionCoreCount;
    }
 
+   getEnemiesCount() {
+      let enemyCount = 0;
+      for (let e of this.entities) {
+         if (e.type === GameConfig.Entity.Enemy && e.active) {
+            enemyCount += 1;
+         }
+      }
+      return enemyCount;
+   }
+
+   _getAreaNumber(level) {
+      let field = level.fieldInstances.find(f => f.__identifier === "areaNumber");
+      return field ? field.__value : null;
+   }
+
    _addEntitySpawn(entity, layer) {
       let pivot = entity.__pivot || [0, 0];
       let x = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];
@@ -571,7 +588,7 @@ class LevelManager {
       }
    }
 
-drawMiniMap(player) {
+   drawMiniMap(player) {
       let miniMapW = width * 0.2; // 相对屏幕宽度的缩小比例
       let miniMapH = (this.mapH / this.mapW) * miniMapW; // 保持关卡的原始比例
       let padding = 15;
@@ -610,26 +627,26 @@ drawMiniMap(player) {
       if (this.entities) {
          for (let ent of this.entities) {
             // 如果已经被吃掉、净化或死亡，则不显示在小地图上
-            if (ent.isDead) continue; 
+            if (ent.isDead) continue;
 
             // 将实体的世界坐标转换为小地图相对坐标
             let ex = mapX + (ent.x / this.mapW) * miniMapW;
             let ey = mapY + (ent.y / this.mapH) * miniMapH;
-            
+
             // 按比例计算实体在小地图上的宽高（设置最小值为4，防止太小看不见）
             let ew = Math.max(4, (ent.w / this.mapW) * miniMapW);
             let eh = Math.max(4, (ent.h / this.mapH) * miniMapH);
 
-            if (ent.constructor.name === "Enemy") {
+            if (ent.type === GameConfig.Entity.Enemy) {
                fill(255, 150, 0); // 橙色代表怪物
                rect(ex, ey, ew, eh);
-            } 
-            else if (ent.constructor.name === "PollutionCore") {
+            }
+            else if (ent.type === GameConfig.Entity.PollutionCore) {
                fill(200, 100, 255); // 紫色代表污染核心
                rect(ex, ey, ew, eh);
             }
             // 【新增分支】：显示清洁能量
-            else if (ent.constructor.name === "CleanEnergy") {
+            else if (ent.type === GameConfig.Entity.CleanEnergy) {
                fill(0, 255, 255); // 青色代表清洁能量
                rect(ex, ey, ew, eh);
             }
@@ -739,13 +756,13 @@ drawMiniMap(player) {
       let playerWorldY = this.worldY + player.y;
       let px = offsetX + (playerWorldX - minX) * mapScale;
       let py = offsetY + (playerWorldY - minY) * mapScale;
-      
+
       fill(255, 50, 50); // 红色代表玩家
       stroke(255);
       strokeWeight(1.5);
       ellipse(px, py, 12, 12);
       noStroke();
-      
+
       // 7. 顶部标题
       fill(255);
       textAlign(CENTER, TOP);
