@@ -8,21 +8,16 @@ class Button extends Entity {
 
   onPlayerContact(player, gm) {
     if (this.pressed) return;
-    this.pressed = true;
 
-    const t = this.fields?.target;
-
-    // 兼容不同结构
-    const targetIid = t?.entityIid || t?.iid || t?.__iid ||
-      t?.entity?.iid || t?.ref?.entityIid || null;
-
-    if (!targetIid) {
+    const target = this.fields?.target;
+    if (!target || !target.entityIid) {
+      console.warn("[Button] target missing entityIid");
       return;
     }
-
-    // 全局打开门支持门在别的 level
-    const ok = gm.openGateByIid(targetIid);
-  }
+    gm.openGateByIid(target.entityIid);
+    
+    this.pressed = true;
+}
 
   _drawShape() {
     fill(254, 174, 52);

@@ -3,6 +3,9 @@
  * Gatetype = "CleanedTrigger"：区域净化>=80 自动打开
  * Gatetype = "MechanismTrigger"：按钮触发打开
  */
+// 净化达到80%开门
+const PURIFY_OPEN_THRESHOLD = 80;
+
 class GateWall extends Entity {
    constructor(x, y, w, h, spawnData = {}) {
       super(x, y, w, h, spawnData);
@@ -28,15 +31,19 @@ class GateWall extends Entity {
          const reqArea = Number(this.fields?.requiredArea ?? 0);
 
          // reqArea 没填就退回当前区域逻辑（兼容旧门）
-         const progress = (reqArea > 0) 
-            ? gm.getAreaProgressByAreaNumber(reqArea)
-            : gm.getAreaProgress();
+         let progress;
+         if (reqArea > 0) {
+            progress = gm.getAreaProgressByAreaNumber(reqArea);
+         } else {
+         progress = gm.getAreaProgress();
+         }
 
-         if (progress >= 80) {
+         if (progress >= PURIFY_OPEN_THRESHOLD) {
             this.open();
          } 
       }
    }
+
    _drawShape() {
       // 简单占位：黑色门
       fill(20);
