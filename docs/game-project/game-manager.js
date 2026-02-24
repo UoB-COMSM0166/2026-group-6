@@ -98,6 +98,7 @@ class GameManager {
       for (let spawn of this.level.entitySpawns) {
          let ent;
          switch (spawn.identifier) {
+            case "Boss": ent = new Boss(spawn.x, spawn.y, spawn.w, spawn.h, spawn, this.level); break;
             case GameConfig.Entity.Tool: ent = new Tool(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.PollutionCore: ent = new PollutionCore(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.CleanEnergy: ent = new CleanEnergy(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
@@ -202,7 +203,7 @@ class GameManager {
       this.level.draw(this.resources.tilesetImage);
 
       // 游戏对象
-      for (let ent of this.entities) ent.display();
+      for (let ent of this.entities) ent.display(this.level);
       for (let p of this.particles) p.display();
       this.player.ropeL.display(this.player);
       this.player.ropeR.display(this.player);
@@ -270,10 +271,12 @@ class GameManager {
    //  内部
    // ========================================================
 
-   _updateEntities() {
+_updateEntities() {
       for (let i = this.entities.length - 1; i >= 0; i--) {
          let ent = this.entities[i];
-         ent.update(this.level);
+         // 把 this (也就是 gm 本身) 传给实体，让 Boss 能拿到玩家坐标
+         ent.update(this.level, this); 
+         
          if (ent.isTouchingPlayer(this.player)) {
             ent.onPlayerContact(this.player, this);
          }
