@@ -53,6 +53,9 @@ const GameConfig = {
       CleanEnergy: "Cleaning_energy",
       Ladder: "Ladder",
       Rest: "Rest",
+      Painting: "Painting",
+      TeleportationGate: "Teleportation_Gate",
+      EndingButton: "Endingbutton",
    },
 
    Collision: {

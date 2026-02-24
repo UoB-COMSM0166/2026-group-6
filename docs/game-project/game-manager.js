@@ -34,6 +34,7 @@ class GameManager {
       this.areaName = "";
       this.areaNameStartTime;
       this.areaNameDuration;
+      this.pendingTeleport = null;
       this.preload();
    }
 
@@ -43,7 +44,7 @@ class GameManager {
 
    preload() {
       let ldtk = this.resources.ldtkData;
-      const lastIndex = ldtk.levels.length - 1;
+      const lastIndex = ldtk.levels.length;
       for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
          this.levelIndex = levelIndex;
          this.loadLevel();
@@ -102,6 +103,9 @@ class GameManager {
             case GameConfig.Entity.CleanEnergy: ent = new CleanEnergy(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.Rest: ent = new Rest(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             case GameConfig.Entity.Ladder: ent = new Ladder(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.Painting: ent = new Painting(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.TeleportationGate: ent = new TeleportationGate(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
+            case GameConfig.Entity.EndingButton: ent = new EndingButton(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
          }
          this.entities.push(ent);
@@ -176,7 +180,7 @@ class GameManager {
 
       // 通用实体
       this._updateEntities();
-
+      this._checkTeleport();
       // 粒子
       this._updateParticles();
 
@@ -299,6 +303,30 @@ class GameManager {
     *   2. 保存玩家速度 (保持移动惯性)
     *   3. loadLevel(transition) 加载新关卡, 保留玩家状态（在transition中添加保留的其他玩家状态，后续应单独加到一个class里面）
     */
+
+   _checkTeleport() {
+      if (!this.pendingTeleport) return;
+
+      let result = this.pendingTeleport;
+      this.pendingTeleport = null;
+
+      this._savaLevel();
+      this.levelIndex = result.levelIndex;
+      this.loadLevel({
+         x: result.newX,
+         y: result.newY,
+         vx: 0,
+         vy: 0,
+      });
+
+      // 目标关卡所有传送门设冷却，防止立刻回传
+      for (let ent of this.entities) {
+         if (ent instanceof TeleportationGate) {
+            ent.cooldown = 30;
+         }
+      }
+   }
+
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
@@ -341,8 +369,8 @@ class GameManager {
       // 不算最终关
       for (let i = 0; i < ldtk.levels.length - 1; i++) {
          let lvl = this.levelsInfo[i];
-         // 筛选出所有areaNumber为当前Level的areaNumber的level
-         if (lvl.areaNumber === currentAreaNumber) {
+         // 筛选出所有areaNumber为当前Level的areaNumber的level，当到达结尾关时为整张地图的progress
+         if (lvl.areaNumber === currentAreaNumber || currentAreaNumber === '5') {
             initialCores += lvl.totalPollutionCore;
             initialEnemies += lvl.totalEnemies;
             remainingCores += lvl.getPollutionCoreCount();

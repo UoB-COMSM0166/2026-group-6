@@ -25,6 +25,10 @@ class ResourceManager {
       this.data.ldtk = loadJSON('map/map-main.ldtk');
       this.images.tileset = loadImage('resources/images/map_image/test_allgrid_8px.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
+      this.images.painting = { paintings: [] };
+      for (let i = 1; i <= 5; i++) {
+         this.images.painting.paintings.push(loadImage(`resources/images/map_image/background_${i}.png`));
+      }
       // 未来扩展:
       // this.images.playerSprite = loadImage('resources/images/player.png');
       // this.sounds.jump = loadSound('resources/audio/jump.wav');

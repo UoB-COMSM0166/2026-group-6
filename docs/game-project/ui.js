@@ -23,6 +23,7 @@ class UI {
       // 获取当前 Area 的百分比进度（0 到 100）
       let percentage = gm.getAreaProgress();
       let areaNumber = level.areaNumber;
+      if (areaNumber === "5") areaNumber = "Total";
 
       fill(0, 150);
       // 阴影
@@ -74,7 +75,6 @@ class UI {
       background(0, 150);
       fill(255); textAlign(CENTER); textSize(40);
       text("YOU WON!", width / 2, height / 2);
-      textSize(20); text("Press R to Restart", width / 2, height / 2 + 50);
    }
 
    static drawGameOverScreen() {
