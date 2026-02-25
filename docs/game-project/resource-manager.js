@@ -32,6 +32,14 @@ class ResourceManager {
       // 未来扩展:
       // this.images.playerSprite = loadImage('resources/images/player.png');
       // this.sounds.jump = loadSound('resources/audio/jump.wav');
+
+      //怪物
+      this.images.enemy = this.images.enemy || {};
+      this.images.enemy.slime = {
+      walk: loadImage('resources/images/enemy/Monster_Slime_Walk-Sheet.png'),
+      attack: loadImage('resources/images/enemy/Monster_Slime_Attack1-Sheet.png'),
+      hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
+};
    }
 
    /** preload 完成后标记 */

@@ -24,6 +24,31 @@ class Enemy extends Entity {
       this.grounded = false;
       this.jumpForce = -0.8 * GameConfig.Enemy.JUMPFORCE;
 
+      // 动画
+      this.animState = "WALK"; 
+      this.animFrame = 0;
+      this.animTick = 0;
+
+      this.attackTimer = 0;
+      this.attackCooldown = 0;
+      this.hurtTimer = 0;
+
+      this.footOffsetY = 3; 
+      this.spriteCfg = {
+         frameW: 96,
+         frameH: 96,
+         walkFrames: 8,
+         attackFrames: 8,
+         hurtFrames: 4,
+         frameDelay: 6, 
+      };
+
+      this.spriteCrop = {
+         WALK:   { x: 38, y: 44, w: 19, h: 16 },
+         HURT:   { x: 37, y: 45, w: 19, h: 15 },
+         ATTACK: { x: 35, y: 41, w: 38, h: 19 }, 
+      };
+
       // 出生防卡墙：使用空间查询
       let safety = 100;
       while (level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
@@ -37,12 +62,17 @@ class Enemy extends Entity {
    /**
     * @param {LevelManager} level
     */
-   update(level) {
-      if (this.purified) {
-         this.alpha -= 5;
-         this.y -= 1;
+   update(level,gm) {
+      // 死亡：直接消失
+      if (this.hp <= 0) {
+         this.destroy();
          return;
       }
+
+      // 动画时间
+      if (this.attackCooldown > 0) this.attackCooldown--;
+      if (this.attackTimer > 0) this.attackTimer--;
+      if (this.hurtTimer > 0) this.hurtTimer--;
 
       // --- Y 轴 ---
       this.vy += 0.1;
@@ -104,11 +134,30 @@ class Enemy extends Entity {
       else {
          this.x = nextX;
       }
+
+      // 动画状态选择
+      if (this.hurtTimer > 0) {
+         this.animState = "HURT";
+      } else if (this.attackTimer > 0) {
+         this.animState = "ATTACK";
+      } else {
+         this.animState = "WALK";
+      }
+
+      this._tickAnim();
+
    }
 
    onPlayerContact(player, gm) {
-      if (this.purified) return;
       if (player.invulnerableTimer > 0) return;
+      // 触发攻击动画
+      if (this.attackCooldown <= 0) {
+         this.attackTimer = this.spriteCfg.attackFrames * this.spriteCfg.frameDelay;
+         this.attackCooldown = 20;
+         this.animFrame = 0;
+         this.animTick = 0;
+      }
+
       player.takeDamage(this.damage, gm);
       player.knockTimer = GameConfig.Player.KnockInterval;
       let dir = (player.x < this.x) ? -1 : 1;
@@ -117,7 +166,6 @@ class Enemy extends Entity {
    }
 
    onRopeContact(rope, player, gm) {
-      if (this.purified) return;
       if (!player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) return;
 
       this.takeDamage(1);
@@ -129,19 +177,21 @@ class Enemy extends Entity {
 
    takeDamage(n) {
       this.hp -= n;
-      if (this.hp <= 0) this.purified = true;
+
+      if (this.hp > 0) {
+         this.hurtTimer = this.spriteCfg.hurtFrames * this.spriteCfg.frameDelay;
+         this.animFrame = 0;
+         this.animTick = 0;
+      }
+
+      if (this.hp <= 0) {
+         this.destroy();
+      }
    }
 
    get isDead() { return this.hp <= 0; }
 
-   display() {
-      if (this.purified) {
-         fill(0, 255, 255, this.alpha);
-      } else {
-         fill(lerpColor(color(100), color(255, 0, 0), this.hp / this.maxHp));
-      }
-      rect(this.x, this.y, this.w, this.h);
-   }
+
 
    // 超出地图
    _isCrossMap(level) {
@@ -156,4 +206,68 @@ class Enemy extends Entity {
       this.dir *= -1;
       this.jumpTime = 0;
    }
+
+   _tickAnim() {
+      const cfg = this.spriteCfg;
+      this.animTick++;
+
+      if (this.animTick % cfg.frameDelay === 0) {
+         const maxFrames =
+         (this.animState === "HURT") ? cfg.hurtFrames :
+         (this.animState === "ATTACK") ? cfg.attackFrames :
+         cfg.walkFrames;
+
+      this.animFrame = (this.animFrame + 1) % maxFrames;
+      }
+   }
+
+   _drawShape() {
+      const slime = resources?.images?.enemy?.slime;
+      if (!slime) {
+         fill(255, 0, 0);
+         noStroke();
+         rect(this.x, this.y, this.w, this.h);
+         return;
+      }
+
+      const cfg = this.spriteCfg;
+
+      let sheet = slime.walk;
+      if (this.animState === "ATTACK") sheet = slime.attack;
+      if (this.animState === "HURT") sheet = slime.hurt;
+      if (!sheet) return;
+
+      const cols = Math.floor(sheet.width / cfg.frameW) || 1;
+      const f = this.animFrame;
+
+      const frameX = (f % cols) * cfg.frameW;
+      const frameY = Math.floor(f / cols) * cfg.frameH;
+
+      const crop = this.spriteCrop?.[this.animState] || 
+         { x: 0, y: 0, w: cfg.frameW, h: cfg.frameH };
+      const srcX = frameX + crop.x;
+      const srcY = frameY + crop.y;
+      const srcW = crop.w;
+      const srcH = crop.h;
+
+
+      let dw = 16, dh = 16;
+      if (this.animState === "ATTACK") { dw = 32; dh = 16; }
+
+      const dx = this.x + (this.w - dw) / 2;
+
+      const dy = this.y + this.h - dh + (this.footOffsetY || 0);
+
+      push();
+      if (this.dir === -1) {
+         translate(dx + dw, dy);
+         scale(-1, 1);
+         image(sheet, 0, 0, dw, dh, srcX, srcY, srcW, srcH);
+      } else {
+         image(sheet, dx, dy, dw, dh, srcX, srcY, srcW, srcH);
+      }
+      pop();
+   }
+
+
 }

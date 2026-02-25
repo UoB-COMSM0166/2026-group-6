@@ -91,10 +91,6 @@ class GameManager {
    _createEntities() {
       this.entities = [];
 
-      // 创建敌人
-      for (let spawn of this.level.enemySpawns) {
-         this.entities.push(new Enemy(spawn.x, spawn.y, spawn.w, spawn.h, spawn, this.level));
-      }
       for (let spawn of this.level.entitySpawns) {
          let ent;
          switch (spawn.identifier) {
@@ -111,7 +107,11 @@ class GameManager {
             case GameConfig.Entity.Button: ent = new Button(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
          }
-         this.entities.push(ent);
+      this.entities.push(ent);
+      }
+
+      for (let spawn of this.level.enemySpawns) {
+         this.entities.push(new Enemy(spawn.x, spawn.y, spawn.w, spawn.h, spawn, this.level));
       }
    }
 
