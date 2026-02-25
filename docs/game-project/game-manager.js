@@ -300,7 +300,7 @@ class GameManager {
 
       // 本关卡污染核心全部净化后，毒池变为水
       if (this.level.pollutionCoreCount === 0 && !this.level.toxicConverted) {
-         this.level.convertToxicToWater(this.levelsInfo);
+         this.level.convertToxicToWater();
       }
    }
 
