@@ -93,7 +93,7 @@ class Entity {
       if (!this.active) return false;
       if (rope.state === "IDLE" || rope.state === "RETRACTING") return false;
       let tip = rope.getTip(player);
-      return dist(tip.x, tip.y, this.cx(), this.cy()) < 10;
+      return Physics.pointRect(tip.x, tip.y, this.x, this.y, this.w, this.h);
    }
 
    /**

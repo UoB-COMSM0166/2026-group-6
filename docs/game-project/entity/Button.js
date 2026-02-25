@@ -15,6 +15,7 @@ class Button extends Entity {
         console.warn("[Button] target missing entityIid");
         return;
       }
+      gm.addParticles(this.cx(), this.cy());
       this.openGateByIid(gm, target.entityIid);
 
       this.pressed = true;

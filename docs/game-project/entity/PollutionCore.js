@@ -11,6 +11,7 @@ class PollutionCore extends Entity {
             let consume = 2;
             // 先检查玩家是否有足够的能量可以消耗
             if (player.checkRemainCleanEnergy(consume)) {
+               gm.addParticles(this.cx(), this.cy());
                player.reduceCleanEnergy(consume);
                this.polluteDegree -= consume;
             }

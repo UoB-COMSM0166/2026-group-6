@@ -218,7 +218,7 @@ class GameManager {
 
       // 按下 M 键，屏幕中央放大显示当前及相邻地图
       if (keyIsDown(Keys.M)) {
-         this.level.drawLargeMap(this.player);
+         this.level.drawLargeMap(this.player,this);
       }
       // =======================================================
 

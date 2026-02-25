@@ -13,6 +13,7 @@ class EndingButton extends Entity {
       else if (progress >= 60) this._endding2(gm);
       else this._endding3(gm);
       if (keyIsDown(Keys.F)) {
+         gm.addParticles(this.cx(), this.cy());
          gm.status = "WIN";
       }
    }

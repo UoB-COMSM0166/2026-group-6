@@ -153,23 +153,23 @@ class LevelManager {
 
    /** 便捷方法：只返回固体 Tile */
    getSolidTilesInRect(x, y, w, h, margin = 1) {
-     // 原本的固体 tile
-     let colliders = this.getTilesInRect(x, y, w, h, { margin, solidOnly: true });
+      // 原本的固体 tile
+      let colliders = this.getTilesInRect(x, y, w, h, { margin, solidOnly: true });
 
       // 追加实体墙碰撞
       if (this.entities && this.entities.length > 0) {
-      for (let e of this.entities) {
-         if (!e || !e.active) continue;
-         if (!e.blocksPlayer) continue;
-         const hit =
-            e.x < x + w && e.x + e.w > x &&
-            e.y < y + h && e.y + e.h > y;
+         for (let e of this.entities) {
+            if (!e || !e.active) continue;
+            if (!e.blocksPlayer) continue;
+            const hit =
+               e.x < x + w && e.x + e.w > x &&
+               e.y < y + h && e.y + e.h > y;
 
-         if (hit) colliders.push(e);
+            if (hit) colliders.push(e);
+         }
       }
+      return colliders;
    }
-  return colliders;
-}
 
    /**
     * 获取矩形区域内的所有 active Tile
@@ -704,7 +704,7 @@ class LevelManager {
    /**
     * 在屏幕中间放大显示当前地图及相邻的地图
     */
-   drawLargeMap(player) {
+   drawLargeMap(player, gm) {
       // 1. 画一个半透明的黑色遮罩，盖住后面的游戏画面
       fill(0, 0, 0, 200);
       noStroke();
@@ -744,8 +744,6 @@ class LevelManager {
       let offsetY = (height - mapDrawH) / 2;
 
       // 5. 遍历并绘制每个关卡
-      let lookup = this._buildIntGridLookup(this.ldtkData, "Collisions");
-
       for (let lvl of levelsToShow) {
          let lx = offsetX + (lvl.worldX - minX) * mapScale;
          let ly = offsetY + (lvl.worldY - minY) * mapScale;
@@ -761,29 +759,26 @@ class LevelManager {
          rect(lx, ly, lw, lh, 5);
          noStroke();
 
-         // 读取并在大地图上画出简易的地形 (解析 Collision 层)
-         let colLayer = lvl.layerInstances.find(l => l.__identifier === "Collisions");
-         if (colLayer && colLayer.intGridCsv) {
-            let cWid = colLayer.__cWid;
-            let cHei = colLayer.__cHei;
-            let scaleX = lw / cWid;
-            let scaleY = lh / cHei;
+         // 从 levelsInfo 读取已解析的网格数据绘制地形
+         let lvlIdx = this._findLevelIndexByIid(lvl.iid);
+         let lvlInfo = (lvlIdx !== -1) ? gm.levelsInfo[lvlIdx] : null;
+         if (lvlInfo && lvlInfo.grid) {
+            let scaleX = lw / lvlInfo.cols;
+            let scaleY = lh / lvlInfo.rows;
 
-            for (let i = 0; i < colLayer.intGridCsv.length; i++) {
-               let tileId = colLayer.intGridCsv[i];
-               if (tileId !== 0) {
-                  let c = i % cWid;
-                  let r = Math.floor(i / cWid);
-                  let typeName = lookup[tileId];
+            for (let r = 0; r < lvlInfo.rows; r++) {
+               for (let c = 0; c < lvlInfo.cols; c++) {
+                  let tile = lvlInfo.grid[r][c];
+                  if (tile && tile.active && tile.type) {
+                     let colorHex = "#1d1717";
+                     if (tile.type === 'ground') colorHex = "#b86f50";
+                     else if (tile.type === 'water') colorHex = "#2CE8F5";
+                     else if (tile.type === 'toxic_poor') colorHex = "#640d47";
+                     else if (tile.type === 'spaceship') colorHex = "#FFFFFF";
 
-                  let colorHex = "#1d1717";
-                  if (typeName === 'ground') colorHex = "#b86f50";
-                  else if (typeName === 'water') colorHex = "#2CE8F5";
-                  else if (typeName === 'toxic_poor') colorHex = "#640d47";
-                  else if (typeName === 'spaceship') colorHex = "#FFFFFF";
-
-                  fill(colorHex + "a0");
-                  rect(lx + c * scaleX, ly + r * scaleY, scaleX, scaleY);
+                     fill(colorHex + "a0");
+                     rect(lx + c * scaleX, ly + r * scaleY, scaleX, scaleY);
+                  }
                }
             }
          }

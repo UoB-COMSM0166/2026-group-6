@@ -4,10 +4,11 @@ class Rest extends Entity {
    }
 
    onPlayerContact(player, gm) {
-      player.setPrompt('T');
-      if (keyIsDown(Keys.T)) {
+      player.setPrompt('F');
+      if (keyIsDown(Keys.F)) {
          player.hp = player.maxHp;
          gm.level.resetPlayerStart(this.x + this.w * 0.15, this.y - player.h);
+         gm.addParticles(this.cx(), this.cy());
       }
    }
 }
