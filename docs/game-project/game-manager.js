@@ -372,10 +372,10 @@ class GameManager {
        * 计算当前所在 Area（包含多个 Level）的净化百分比进度
        * 权重规则：污染核心 = 5, 怪物 = 1
        */
-   getAreaProgress() {
+   getAreaProgress(areaNumber) {
       let ldtk = this.resources.ldtkData;
-      let currentAreaNumber = this.level.areaNumber;
-
+      let currentAreaNumber = areaNumber || this.level.areaNumber;
+      currentAreaNumber = Number(currentAreaNumber);
       // 定义净化值权重
       let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
       let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
@@ -387,7 +387,7 @@ class GameManager {
       for (let i = 0; i < ldtk.levels.length - 1; i++) {
          let lvl = this.levelsInfo[i];
          // 筛选出所有areaNumber为当前Level的areaNumber的level，当到达结尾关时为整张地图的progress
-         if (lvl.areaNumber === currentAreaNumber || currentAreaNumber === '5') {
+         if (Number(lvl.areaNumber) === currentAreaNumber || currentAreaNumber === 5) {
             initialCores += lvl.totalPollutionCore;
             initialEnemies += lvl.totalEnemies;
             remainingCores += lvl.getPollutionCoreCount();
@@ -407,67 +407,15 @@ class GameManager {
    /**
     * 全局按 iid 找实体：
     */
-   findEntityByIid(iid) {
-      if (!iid) return null;
-      let e = this.entities?.find(ent => ent && ent.iid === iid);
-      if (e) return e;
 
+   findEntityAndLevelByIid(iid) {
+      if (!iid) return null;
       for (const key in this.levelsInfo) {
          const lvl = this.levelsInfo[key];
          if (!lvl || !lvl.entities) continue;
          const hit = lvl.entities.find(ent => ent && ent.iid === iid);
-         if (hit) return hit;
+         if (hit) return { entity: hit, levelIndex: Number(key) };
       }
       return null;
    }
-
-   /**
-    * 给按钮用：打开指定 iid 的 GateWall
-    */
-   openGateByIid(iid) {
-      const gate = this.findEntityByIid(iid);
-      if (gate && typeof gate.open === "function") {
-         gate.open();
-         return true;
-      }
-      return false;
-   }
-
-   /**
-    * 按指定 areaNumber 计算净化百分比 用于跨区域门
-    */
-   getAreaProgressByAreaNumber(areaNumber) {
-      let ldtk = this.resources.ldtkData;
-      //读取权重 + 初始化累计变量
-      let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
-      let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
-      //现在剩余未清理
-      let remainingCores = 0;
-      let remainingEnemies = 0;
-      //初始总数
-      let initialCores = 0;
-      let initialEnemies = 0;
-
-      for (let i = 0; i < ldtk.levels.length - 1; i++) {
-         let lvl = this.levelsInfo[i];
-
-         if (Number(lvl.areaNumber) === Number(areaNumber)) {
-            initialCores += lvl.totalPollutionCore;
-            initialEnemies += lvl.totalEnemies;
-            remainingCores += lvl.getPollutionCoreCount();
-            remainingEnemies += lvl.getEnemiesCount();
-         }
-      }
-      //计算已净化数量
-      let currentPurifiedEnemies = initialEnemies - remainingEnemies;
-      let currentPurifiedCores = initialCores - remainingCores;
-      //计算已净化加权分数
-      let currentPurifiedValue =
-         currentPurifiedEnemies * ENEMY_WEIGHT + currentPurifiedCores * CORE_WEIGHT;
-      //算总分数
-      let totalValue = initialCores * CORE_WEIGHT + initialEnemies * ENEMY_WEIGHT;
-
-      return (totalValue === 0) ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100);
-   }
-
 }

@@ -15,7 +15,7 @@ class Button extends Entity {
         console.warn("[Button] target missing entityIid");
         return;
       }
-      gm.openGateByIid(target.entityIid);
+      this.openGateByIid(gm, target.entityIid);
 
       this.pressed = true;
     }
@@ -25,5 +25,16 @@ class Button extends Entity {
     fill(254, 174, 52);
     noStroke();
     rect(this.x, this.y, this.w, this.h);
+  }
+  /**
+    * 打开指定 iid 的 GateWall
+    */
+  openGateByIid(gm, iid) {
+    const gate = gm.findEntityAndLevelByIid(iid).entity;
+    if (gate && typeof gate.open === "function") {
+      gate.open();
+      return true;
+    }
+    return false;
   }
 }

@@ -22,29 +22,20 @@ class TeleportationGate extends Entity {
    }
 
    _resolveTarget(player, gm) {
-      let ldtk = gm.resources.ldtkData;
-      for (let i = 0; i < ldtk.levels.length; i++) {
-         let lvl = ldtk.levels[i];
-         if (lvl.iid !== this.targetRef.levelIid) continue;
-         for (let layer of lvl.layerInstances) {
-            if (layer.__type !== "Entities") continue;
-            for (let entity of layer.entityInstances) {
-               if (entity.iid === this.targetRef.entityIid) {
-                  let pivot = entity.__pivot || [0, 0];
-                  let gateX = entity.px[0] + layer.__pxTotalOffsetX - entity.width * pivot[0];
-                  let gateY = entity.px[1] + layer.__pxTotalOffsetY - entity.height * pivot[1];
+      if (!this.targetRef || !this.targetRef.entityIid) return null;
 
-                  let newX = gateX + entity.width / 2 - player.w / 2;
-                  let newY = gateY + entity.height - player.h;
+      let result = gm.findEntityAndLevelByIid(this.targetRef.entityIid);
+      if (!result) return null;
 
-                  newX = Math.max(0, Math.min(newX, lvl.pxWid - player.w));
-                  newY = Math.max(0, Math.min(newY, lvl.pxHei - player.h));
+      let target = result.entity;
+      let lvl = gm.resources.ldtkData.levels[result.levelIndex];
 
-                  return { levelIndex: i, newX, newY };
-               }
-            }
-         }
-      }
-      return null;
+      let newX = target.x + target.w / 2 - player.w / 2;
+      let newY = target.y + target.h - player.h;
+
+      newX = Math.max(0, Math.min(newX, lvl.pxWid - player.w));
+      newY = Math.max(0, Math.min(newY, lvl.pxHei - player.h));
+
+      return { levelIndex: result.levelIndex, newX, newY };
    }
 }

@@ -33,11 +33,10 @@ class GateWall extends Entity {
          // reqArea 没填就退回当前区域逻辑（兼容旧门）
          let progress;
          if (reqArea > 0) {
-            progress = gm.getAreaProgressByAreaNumber(reqArea);
+            progress = gm.getAreaProgress(reqArea);
          } else {
             progress = gm.getAreaProgress();
          }
-
          if (progress >= PURIFY_OPEN_THRESHOLD) {
             this.open();
          }
