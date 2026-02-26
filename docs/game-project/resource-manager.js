@@ -29,7 +29,25 @@ class ResourceManager {
       for (let i = 1; i <= 5; i++) {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background_${i}.png`));
       }
-      // 未来扩展:
+      // 音效扩展:
+      this.sounds.line1 = loadSound('resources/audio/sides/bluewhoosh.mp3');
+      this.sounds.line2 = loadSound('resources/audio/sides/redwhoosh.mp3');
+      this.sounds.ladder = loadSound('resources/audio/sides/climbladder.mp3');
+      this.sounds.doorfail = loadSound('resources/audio/sides/doornotopen.mp3');
+      this.sounds.door = loadSound('resources/audio/sides/dooropen.mp3');
+      this.sounds.failure = loadSound('resources/audio/sides/failure.mp3');
+      this.sounds.water = loadSound('resources/audio/sides/intowater.mp3');
+      this.sounds.map = loadSound('resources/audio/sides/map.mp3');
+      this.sounds.click = loadSound('resources/audio/sides/menuclick.mp3');
+      // 后续剧情用
+      // this.sounds.connection = loadSound('resources/audio/sides/noconnection.mp3');
+      this.sounds.paper = loadSound('resources/audio/sides/paper.mp3');
+      this.sounds.punch = loadSound('resources/audio/sides/punch.mp3');
+      this.sounds.purify = loadSound('resources/audio/sides/purify.mp3');
+      this.sounds.tool = loadSound('resources/audio/sides/tools.mp3');
+      // this.sounds.move = loadSound('resources/audio/sides/underwatermove.mp3');
+      this.sounds.upgrade = loadSound('resources/audio/sides/upgrade.mp3');
+      
       // this.images.playerSprite = loadImage('resources/images/player.png');
       // this.sounds.jump = loadSound('resources/audio/jump.wav');
    }
