@@ -30,8 +30,12 @@ class ResourceManager {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background_${i}.png`));
       }
       // 音效扩展:
-      this.sounds.line1 = loadSound('resources/audio/sides/bluewhoosh.mp3');
-      this.sounds.line2 = loadSound('resources/audio/sides/redwhoosh.mp3');
+
+      this.sounds.rope = {
+      ropeblue : loadSound('resources/audio/sides/bluewhoosh.mp3'),
+      ropered : loadSound('resources/audio/sides/redwhoosh.mp3')
+      };
+
       this.sounds.ladder = loadSound('resources/audio/sides/climbladder.mp3');
       this.sounds.doorfail = loadSound('resources/audio/sides/doornotopen.mp3');
       this.sounds.door = loadSound('resources/audio/sides/dooropen.mp3');
