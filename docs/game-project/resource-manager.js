@@ -36,21 +36,21 @@ class ResourceManager {
       ropered : loadSound('resources/audio/sides/redwhoosh.mp3')
       };
 
-      this.sounds.ladder = loadSound('resources/audio/sides/climbladder.mp3');
-      this.sounds.doorfail = loadSound('resources/audio/sides/doornotopen.mp3');
-      this.sounds.door = loadSound('resources/audio/sides/dooropen.mp3');
-      this.sounds.failure = loadSound('resources/audio/sides/failure.mp3');
-      this.sounds.water = loadSound('resources/audio/sides/intowater.mp3');
-      this.sounds.map = loadSound('resources/audio/sides/map.mp3');
-      this.sounds.click = loadSound('resources/audio/sides/menuclick.mp3');
+      this.sounds.ladder = loadSound('resources/audios/sides/climbladder.mp3');
+      this.sounds.doorfail = loadSound('resources/audios/sides/doornotopen.mp3');
+      this.sounds.door = loadSound('resources/audios/sides/dooropen.mp3');
+      this.sounds.failure = loadSound('resources/audios/sides/failure.mp3');
+      this.sounds.water = loadSound('resources/audios/sides/intowater.mp3');
+      this.sounds.map = loadSound('resources/audios/sides/map.mp3');
+      this.sounds.click = loadSound('resources/audios/sides/menuclick.mp3');
       // 后续剧情用
-      // this.sounds.connection = loadSound('resources/audio/sides/noconnection.mp3');
-      this.sounds.paper = loadSound('resources/audio/sides/paper.mp3');
-      this.sounds.punch = loadSound('resources/audio/sides/punch.mp3');
-      this.sounds.purify = loadSound('resources/audio/sides/purify.mp3');
-      this.sounds.tool = loadSound('resources/audio/sides/tools.mp3');
-      // this.sounds.move = loadSound('resources/audio/sides/underwatermove.mp3');
-      this.sounds.upgrade = loadSound('resources/audio/sides/upgrade.mp3');
+      // this.sounds.connection = loadSound('resources/audios/sides/noconnection.mp3');
+      this.sounds.paper = loadSound('resources/audios/sides/paper.mp3');
+      this.sounds.punch = loadSound('resources/audios/sides/punch.mp3');
+      this.sounds.purify = loadSound('resources/audios/sides/purify.mp3');
+      this.sounds.tool = loadSound('resources/audios/sides/tools.mp3');
+      // this.sounds.move = loadSound('resources/audios/sides/underwatermove.mp3');
+      this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.mp3');
       
       // this.images.playerSprite = loadImage('resources/images/player.png');
       // this.sounds.jump = loadSound('resources/audio/jump.wav');
