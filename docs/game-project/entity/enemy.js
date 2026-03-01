@@ -33,6 +33,8 @@ class Enemy extends Entity {
       this.attackCooldown = 0;
       this.hurtTimer = 0;
 
+      this.punchSound = resources.sounds.enemy.punch;
+
       this.footOffsetY = 3;
       this.spriteCfg = {
          frameW: 96,
@@ -170,6 +172,9 @@ class Enemy extends Entity {
 
    onRopeContact(rope, player, gm) {
       if (!player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) return;
+
+      // punch sound
+      if (!this.punchSound.isPlaying()) this.punchSound.play();
 
       this.takeDamage(1);
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
