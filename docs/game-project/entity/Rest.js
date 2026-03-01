@@ -7,7 +7,7 @@ class Rest extends Entity {
       player.setPrompt('F');
       if (keyIsDown(Keys.F)) {
          player.hp = player.maxHp;
-         gm.level.resetPlayerStart(this.x + this.w * 0.15, this.y - player.h);
+         gm.saveCheckpoint(gm.levelIndex, this.x + this.w * 0.15, this.y - player.h);
          gm.addParticles(this.cx(), this.cy());
       }
    }

@@ -4,7 +4,7 @@
  * Gatetype = "MechanismTrigger"：按钮触发打开
  */
 // 净化达到80%开门
-const PURIFY_OPEN_THRESHOLD = 80;
+const PURIFY_OPEN_THRESHOLD = GameConfig.World.PURIFY_CHANGE_THRESHOLD;
 
 class GateWall extends Entity {
    constructor(x, y, w, h, spawnData = {}) {

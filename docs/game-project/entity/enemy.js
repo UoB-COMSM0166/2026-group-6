@@ -25,7 +25,7 @@ class Enemy extends Entity {
       this.jumpForce = -0.8 * GameConfig.Enemy.JUMPFORCE;
 
       // 动画
-      this.animState = "WALK"; 
+      this.animState = "WALK";
       this.animFrame = 0;
       this.animTick = 0;
 
@@ -33,20 +33,20 @@ class Enemy extends Entity {
       this.attackCooldown = 0;
       this.hurtTimer = 0;
 
-      this.footOffsetY = 3; 
+      this.footOffsetY = 3;
       this.spriteCfg = {
          frameW: 96,
          frameH: 96,
          walkFrames: 8,
          attackFrames: 8,
          hurtFrames: 4,
-         frameDelay: 6, 
+         frameDelay: 6,
       };
 
       this.spriteCrop = {
-         WALK:   { x: 38, y: 44, w: 19, h: 16 },
-         HURT:   { x: 37, y: 45, w: 19, h: 15 },
-         ATTACK: { x: 35, y: 41, w: 38, h: 19 }, 
+         WALK: { x: 38, y: 44, w: 19, h: 16 },
+         HURT: { x: 33, y: 35, w: 23, h: 24 },
+         ATTACK: { x: 33, y: 44, w: 53, h: 45 },
       };
 
       // 出生防卡墙：使用空间查询
@@ -62,7 +62,7 @@ class Enemy extends Entity {
    /**
     * @param {LevelManager} level
     */
-   update(level,gm) {
+   update(level, gm) {
       // 死亡：直接消失
       if (this.hp <= 0) {
          this.destroy();
@@ -150,6 +150,9 @@ class Enemy extends Entity {
 
    onPlayerContact(player, gm) {
       if (player.invulnerableTimer > 0) return;
+      // The direction in which the player retreats
+      let dir = (player.x < this.x) ? -1 : 1;
+      if (this.dir * dir < 0) this._turn();
       // 触发攻击动画
       if (this.attackCooldown <= 0) {
          this.attackTimer = this.spriteCfg.attackFrames * this.spriteCfg.frameDelay;
@@ -160,9 +163,9 @@ class Enemy extends Entity {
 
       player.takeDamage(this.damage, gm);
       player.knockTimer = GameConfig.Player.KnockInterval;
-      let dir = (player.x < this.x) ? -1 : 1;
-      player.vx = dir * 3;
-      player.vy = -2;
+
+      // repel
+      player.repel(dir * 3, -2);
    }
 
    onRopeContact(rope, player, gm) {
@@ -213,11 +216,11 @@ class Enemy extends Entity {
 
       if (this.animTick % cfg.frameDelay === 0) {
          const maxFrames =
-         (this.animState === "HURT") ? cfg.hurtFrames :
-         (this.animState === "ATTACK") ? cfg.attackFrames :
-         cfg.walkFrames;
+            (this.animState === "HURT") ? cfg.hurtFrames :
+               (this.animState === "ATTACK") ? cfg.attackFrames :
+                  cfg.walkFrames;
 
-      this.animFrame = (this.animFrame + 1) % maxFrames;
+         this.animFrame = (this.animFrame + 1) % maxFrames;
       }
    }
 
@@ -243,7 +246,7 @@ class Enemy extends Entity {
       const frameX = (f % cols) * cfg.frameW;
       const frameY = Math.floor(f / cols) * cfg.frameH;
 
-      const crop = this.spriteCrop?.[this.animState] || 
+      const crop = this.spriteCrop?.[this.animState] ||
          { x: 0, y: 0, w: cfg.frameW, h: cfg.frameH };
       const srcX = frameX + crop.x;
       const srcY = frameY + crop.y;
@@ -252,11 +255,14 @@ class Enemy extends Entity {
 
 
       let dw = 16, dh = 16;
-      if (this.animState === "ATTACK") { dw = 32; dh = 16; }
+      if (this.animState === "ATTACK") { dw = 40; dh = 36; }
+      if (this.animState === "HURT") { dw = 18; dh = 19; }
 
       const dx = this.x + (this.w - dw) / 2;
 
-      const dy = this.y + this.h - dh + (this.footOffsetY || 0);
+      let dy = this.y + this.h - 16 + (this.footOffsetY || 0);
+      if (this.animState === "ATTACK") dy -= 2.15; // footoffset
+      if (this.animState === "HURT") dy -= 2.3; // footoffset
 
       push();
       if (this.dir === -1) {

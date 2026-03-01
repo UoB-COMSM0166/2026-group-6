@@ -6,6 +6,7 @@ const GameConfig = {
       FrictionalForce: 0.83,
       AirFrictionalForce: 0.9,
       SOLID_TYPES: ["ground", "spaceship", "mechanism"],
+      PURIFY_CHANGE_THRESHOLD: 75,
    },
 
    // === 显示 ===
@@ -28,6 +29,7 @@ const GameConfig = {
       MAX_HP: 20,
       MAXCleanEnergy: 100,
       SPEED: 0.5,
+      WATER_SPEED: 0.5,
       CLIMB_SPEED: 0.05,
       WINCH_FORCE: 0.3,
       JUMPFORCE: 5,
@@ -62,6 +64,7 @@ const GameConfig = {
 
    Collision: {
       ToxicPool: "toxic_poor",
+      Water: "water",
    },
 
    // === 绳索 ===

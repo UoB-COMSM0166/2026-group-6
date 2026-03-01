@@ -1,6 +1,4 @@
-// 常量别名 (实际值在 config.js → GameConfig.Rope)
 const RC = GameConfig.Rope;
-
 
 class Rope {
    /**

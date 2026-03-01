@@ -8,7 +8,7 @@
  *   - 转发输入事件
  *
  * 整个游戏只有一个 GameManager 实例。
- * main.js (p5入口) 仅负责将生命周期转发到这里。
+ * main.js 仅负责将生命周期转发到这里。
  */
 class GameManager {
    /**
@@ -30,19 +30,20 @@ class GameManager {
 
       // 游戏状态
       this.status = "PLAY"; // PLAY | WIN | GAMEOVER
-
-      this.areaName = "";
-      this.areaNameStartTime;
-      this.areaNameDuration;
+      this.environmentChanged = false;
+      this.mapPromptText = "";
+      this.mapPromptStartTime;
+      this.mapPromptDuration;
       this.pendingTeleport = null;
+      this._isPreloading;
+      this.checkpoint = null; // { levelIndex, x, y }
       this.preload();
    }
 
-   // ========================================================
-   //  关卡管理
-   // ========================================================
+   // 预加载所有关卡
 
    preload() {
+      this._isPreloading = true;
       let ldtk = this.resources.ldtkData;
       const lastIndex = ldtk.levels.length;
       for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
@@ -50,6 +51,8 @@ class GameManager {
          this.loadLevel();
       }
       this.levelIndex = GameConfig.Level.START_INDEX;
+      let playerStart = this.levelsInfo[this.levelIndex].playerStart || GameConfig.Player.DefaultStartPoint;
+      this.saveCheckpoint(this.levelIndex, playerStart.x, playerStart.y);
    }
 
    /**
@@ -71,20 +74,20 @@ class GameManager {
       // 创建恢复读取地图的实体
       this._loadEntities();
 
-      // 2. 调整画布
-      let size = this.level.getCanvasSize();
-      resizeCanvas(size.w, size.h);
-
-      // 3. 创建/恢复玩家
-      this._loadPlayer(transition);
-      this.level.resetPlayerStart(this.player.x, this.player.y);
-
-      this.particles = [];
-      this.camera.reset();
-      this.status = "PLAY";
-      this.areaName = ldtk.levels[this.levelIndex].identifier;
-      this.areaNameStartTime = millis();
-      this.areaNameDuration = 3000;
+      if (this._isPreloading) {
+         // 2. 调整画布
+         let size = this.level.getCanvasSize();
+         resizeCanvas(size.w, size.h);
+         // 3. 创建/恢复玩家
+         this._loadPlayer(transition);
+         this.particles = [];
+         this.camera.reset();
+         this.status = "PLAY";
+         // The prompt above the map
+         this.mapPromptText = ldtk.levels[this.levelIndex].identifier;
+         this.mapPromptStartTime = millis();
+         this.mapPromptDuration = 3000;
+      }
    }
 
 
@@ -107,7 +110,7 @@ class GameManager {
             case GameConfig.Entity.Button: ent = new Button(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
             default: ent = new Entity(spawn.x, spawn.y, spawn.w, spawn.h, spawn); break;
          }
-      this.entities.push(ent);
+         this.entities.push(ent);
       }
 
       for (let spawn of this.level.enemySpawns) {
@@ -144,10 +147,10 @@ class GameManager {
       }
       // 重新开始
       else if (this.status == "GAMEOVER" && this.player) {
-         let start = this.level.playerStart || GameConfig.Player.DefaultStartPoint;
+         let cp = this.checkpoint;
          this.player.hp = this.player.maxHp;
-         this.player.x = start.x;
-         this.player.y = start.y;
+         this.player.x = cp.x;
+         this.player.y = cp.y;
          this.player.vx = 0;
          this.player.vy = 0;
          this._resetRope();
@@ -163,9 +166,8 @@ class GameManager {
       this.player.ropeL.reset();
       this.player.ropeR.reset();
    }
-   // ========================================================
-   //  主循环
-   // ========================================================
+
+   // main loop
 
    update() {
       if (this.status !== "PLAY") return;
@@ -184,6 +186,7 @@ class GameManager {
       // 通用实体
       this._updateEntities();
       this._checkTeleport();
+      this._checkProcess()
       // 粒子
       this._updateParticles();
 
@@ -194,6 +197,8 @@ class GameManager {
       this._checkWinLose();
    }
 
+
+
    render() {
       background(color(this.level.bgColor));
 
@@ -201,7 +206,7 @@ class GameManager {
       scale(this.scale);
       translate(-this.camera.x, -this.camera.y);
 
-      // ★ 统一渲染: LevelManager 按图层顺序绘制所有 Tile + 装饰
+      //  统一渲染: LevelManager 按图层顺序绘制所有 Tile + 装饰
       this.level.draw(this.resources.tilesetImage);
 
       // 游戏对象
@@ -218,23 +223,20 @@ class GameManager {
 
       // 按下 M 键，屏幕中央放大显示当前及相邻地图
       if (keyIsDown(Keys.M)) {
-         this.level.drawLargeMap(this.player,this);
+         this.level.drawLargeMap(this.player, this);
       }
-      // =======================================================
 
       // UI (屏幕空间)
       UI.drawHUD(this.player, this.level, this);
       if (this.status === "WIN") UI.drawWinScreen();
       else if (this.status === "GAMEOVER") UI.drawGameOverScreen();
-      let elapsed = millis() - this.areaNameStartTime;
-      if (elapsed < this.areaNameDuration) {
-         UI.drawAreaName(this.areaName, elapsed, this.areaNameDuration);
+      let elapsed = millis() - this.mapPromptStartTime;
+      if (elapsed < this.mapPromptDuration) {
+         UI.drawMapPrompt(this.mapPromptText, elapsed, this.mapPromptDuration);
       }
    }
 
-   // ========================================================
    //  输入
-   // ========================================================
 
    onMousePressed(button) {
       if (this.status !== "PLAY") return;
@@ -251,6 +253,7 @@ class GameManager {
       }
       if (this.status === "GAMEOVER") {
          if (key === 'R' || key === 'r') {
+            this.levelIndex = this.checkpoint.levelIndex;
             this.loadLevel();
          }
       }
@@ -261,17 +264,13 @@ class GameManager {
       if (keyIsDown(RIGHT_ARROW) || keyIsDown(Keys.D)) this.player.move(1);  // d
    }
 
-   // ========================================================
-   //  粒子
-   // ========================================================
+   //  粒子特效
 
    addParticles(x, y, count = 5) {
       this.particles.push(...Particle.spawn(x, y, count));
    }
 
-   // ========================================================
    //  内部
-   // ========================================================
 
    _updateEntities() {
       for (let i = this.entities.length - 1; i >= 0; i--) {
@@ -298,10 +297,7 @@ class GameManager {
       }
       this.level.pollutionCoreCount = this.level.getPollutionCoreCount();
 
-      // 本关卡污染核心全部净化后，毒池变为水
-      if (this.level.pollutionCoreCount === 0 && !this.level.toxicConverted) {
-         this.level.convertToxicToWater();
-      }
+
    }
 
    _updateParticles() {
@@ -312,13 +308,13 @@ class GameManager {
    }
 
    /**
-    * ★ 检测玩家是否到达地图边缘且有邻居关卡
+    * 检测玩家是否到达地图边缘且有邻居关卡
     * 如果有, 切换到邻居关卡并重新定位玩家
     *
     * 流程:
     *   1. LevelManager.checkEdgeTransition() 检测边缘 + 查找邻居 + 坐标映射
     *   2. 保存玩家速度 (保持移动惯性)
-    *   3. loadLevel(transition) 加载新关卡, 保留玩家状态（在transition中添加保留的其他玩家状态，后续应单独加到一个class里面）
+    *   3. loadLevel(transition) 加载新关卡, 保留玩家状态
     */
 
    _checkTeleport() {
@@ -326,8 +322,6 @@ class GameManager {
 
       let result = this.pendingTeleport;
       this.pendingTeleport = null;
-
-      this._savaLevel();
       this.levelIndex = result.levelIndex;
       this.loadLevel({
          x: result.newX,
@@ -344,10 +338,28 @@ class GameManager {
       }
    }
 
+   _checkProcess() {
+      if (this.getAreaProgress() > GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
+         this.mapPromptText = "Some things have changed due to purification.";
+         this.mapPromptStartTime = millis();
+         this.mapPromptDuration = 3000;
+         this.environmentChanged = true;
+         // 本area净化程度到达一定值后，毒池变为水
+         if (!this.level.toxicConverted) {
+            for (let key in this.levelsInfo) {
+               let level = this.levelsInfo[key];
+               if (level.areaNumber === this.level.areaNumber) level.convertToxicToWater();
+            }
+         }
+      }
+      if (this.getAreaProgress() < GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == true) {
+         this.environmentChanged = false;
+      }
+   }
+
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
-      this._savaLevel();
       // 切换关卡, 保留速度让过渡更流畅
       this.levelIndex = result.levelIndex;
       this.loadLevel({
@@ -358,8 +370,8 @@ class GameManager {
       });
    }
 
-   _savaLevel() {
-      this.levelsInfo[this.levelIndex].entities = this.entities;
+   saveCheckpoint(levelIndex, x, y) {
+      this.checkpoint = { levelIndex, x, y };
    }
 
    _checkWinLose() {

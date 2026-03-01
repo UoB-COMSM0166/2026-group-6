@@ -4,10 +4,16 @@ class Button extends Entity {
 
     this.iid = spawnData.iid || null;
     this.pressed = false;
+    this.dialogW = 40;
+    this.dialogText = "This button has \nalready opened \na door.";
   }
 
   onPlayerContact(player, gm) {
-    if (this.pressed) return;
+    if (this.pressed) {
+      this.dialogOpen = true;
+      this._playerNearby = true;
+      return;
+    };
     player.setPrompt('F');
     if (keyIsDown(Keys.F)) {
       const target = this.fields?.target;
@@ -20,6 +26,15 @@ class Button extends Entity {
 
       this.pressed = true;
     }
+  }
+
+  update(level) {
+    // 玩家离开后自动关闭对话框
+    if (!this._playerNearby && this.dialogOpen) {
+      this.dialogOpen = false;
+    }
+    // 每帧重置接触标志（由 onPlayerContact 在接触时置 true）
+    this._playerNearby = false;
   }
 
   _drawShape() {

@@ -14,7 +14,6 @@ class ToxicBullet extends Entity {
       // 你可以调小这个值让子弹飞得更快，调大让子弹飞得更慢
       let time = 45; 
 
-      // 【核心物理公式】：计算精准命中目标的初速度
       // 水平方向是匀速运动: x = v_x * t
       this.vx = dx / time;
       
@@ -58,8 +57,8 @@ class ToxicBullet extends Entity {
    _drawShape() {
       push(); // 使用 push/pop 防止样式污染其他实体
       fill(200, 50, 255); // 毒液的亮紫色
-      stroke(255);        // 【新增】：纯白色的描边
-      strokeWeight(2);    // 【新增】：加粗描边让它在深色背景下非常显眼
+      stroke(255);        // 纯白色的描边
+      strokeWeight(2);    // 加粗描边让它在深色背景下非常显眼
       ellipse(this.cx(), this.cy(), this.w, this.h);
       pop();
    }

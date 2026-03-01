@@ -5,9 +5,7 @@
  *
  * 核心职责:
  *   1. 解析 LDtk 地图数据
- *   2. 用 2D 网格 (spatial hash) 存储 Tile 对象
- *   3. 提供 O(1) 空间查询代替 O(n) 遍历
- *   4. 统一渲染 (Tile + 装饰图层)
+ *   2. 用 2D 网格 存储 Tile 对象
  *
  * @param {int} levelIndex
  *
@@ -55,9 +53,7 @@ class LevelManager {
       this.toxicConverted = false;
    }
 
-   // ========================================================
    //  加载关卡
-   // ========================================================
 
    /**
     * 解析 LDtk 关卡, 填充网格和图层
@@ -108,9 +104,8 @@ class LevelManager {
       }
    }
 
-   /**
-    * 获取推荐的画布尺寸
-    */
+   // 推荐的画布尺寸
+
    getCanvasSize() {
       let scale = GameConfig.Display.GAME_SCALE;
       return {
@@ -627,7 +622,7 @@ class LevelManager {
    }
 
    drawMiniMap(player) {
-      let miniMapW = width * 0.2; // 相对屏幕宽度的缩小比例
+      let miniMapW = width * 0.15; // 相对屏幕宽度的缩小比例
       let miniMapH = (this.mapH / this.mapW) * miniMapW; // 保持关卡的原始比例
       let padding = 15;
       let mapX = width - miniMapW - padding;
@@ -655,7 +650,7 @@ class LevelManager {
                   case 'spaceship': colorHex = "#FFFFFF"; break;
                   default: colorHex = "#1d1717";
                }
-               fill(colorHex + "a0"); // 带透明度
+               fill(colorHex + "50"); // 带透明度
                rect(mapX + x * scaleX, mapY + y * scaleY, scaleX, scaleY);
             }
          }
@@ -674,18 +669,18 @@ class LevelManager {
             // 按比例计算实体在小地图上的宽高（设置最小值为4，防止太小看不见）
             let ew = Math.max(4, (ent.w / this.mapW) * miniMapW);
             let eh = Math.max(4, (ent.h / this.mapH) * miniMapH);
-
+            let alpha = 100;
             if (ent.type === GameConfig.Entity.Enemy) {
-               fill(255, 150, 0); // 橙色代表怪物
+               fill(255, 150, 0, alpha); // 橙色代表怪物
                rect(ex, ey, ew, eh);
             }
             else if (ent.type === GameConfig.Entity.PollutionCore) {
-               fill(200, 100, 255); // 紫色代表污染核心
+               fill(200, 100, 255, alpha); // 紫色代表污染核心
                rect(ex, ey, ew, eh);
             }
             // 【新增分支】：显示清洁能量
             else if (ent.type === GameConfig.Entity.CleanEnergy) {
-               fill(0, 255, 255); // 青色代表清洁能量
+               fill(0, 255, 255, alpha); // 青色代表清洁能量
                rect(ex, ey, ew, eh);
             }
          }
@@ -694,7 +689,7 @@ class LevelManager {
       // 3. 玩家
       fill(255, 50, 50); // 红色代表玩家
       stroke(255);
-      strokeWeight(1.5);
+      strokeWeight(1);
       let px = (player.x / this.mapW) * miniMapW;
       let py = (player.y / this.mapH) * miniMapH;
       ellipse(mapX + px, mapY + py, 8, 8);

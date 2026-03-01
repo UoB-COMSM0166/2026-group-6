@@ -90,6 +90,7 @@ class Player {
          this.vx *= GameConfig.World.AirFrictionalForce; // 摩擦力
       }
       this.vy += GameConfig.World.GRAVITY;
+      this._isInWater(gm);
 
       // 绳索物理 (传入 LevelManager)
       this.ropeL.update(this, level);
@@ -103,7 +104,7 @@ class Player {
     */
    _resolveWorld(level) {
       const G = GameConfig.World.GRID_SIZE;
-      const maxStep = G * 0.3; // 每次判断的步数最多半格
+      const maxStep = G * 0.1; // 每次判断的步数
 
       // 收集绳索碰撞盒
       let heldRopes = [];
@@ -130,14 +131,14 @@ class Player {
    /**
     * AABB 碰撞分离
     *
-    * ★ 核心优化: 使用 level.getSolidTilesInRect() 替代遍历全部 solidPlatforms
+    *  核心优化: 使用 level.getSolidTilesInRect() 替代遍历全部 solidPlatforms
     *   之前: for (let p of solidPlatforms) → O(地图格子总数)
     *   现在: 只检测玩家包围盒附近 ~9-16 格 → O(1)
     */
    _resolve(onX, level, ignoredRopes) {
       this.grounded = false;
 
-      // ★ 空间查询: 获取玩家附近的固体 Tile
+      //  空间查询: 获取玩家附近的固体 Tile
       let colliders = level.getSolidTilesInRect(this.x, this.y, this.w, this.h, 1);
 
       // 追加硬绳碰撞盒
@@ -183,7 +184,7 @@ class Player {
       // 额外着地检测 (站立时)
       if (!onX) {
          this.grounded = false;
-         // ★ 只查脚底下方的一排格子
+         //  只查脚底下方的一排格子
          let footColliders = level.getSolidTilesInRect(this.x, this.y + this.h - 2, this.w, 8, 0);
          // 追加硬绳碰撞盒
          if (this.ropeL.material === 'HARD' && this.ropeL.state === 'SWINGING' && !ignoredRopes.includes(this.ropeL)) {
@@ -200,6 +201,34 @@ class Player {
             }
          }
       }
+   }
+
+   _isInWater(gm) {
+      if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
+         { solidOnly: false, type: GameConfig.Collision.Water, margin: 0.1 }) !== null) {
+         this._buoyancy(gm);
+         this.vy *= 0.97;
+         let speed = GameConfig.Player.WATER_SPEED;
+         if (keyIsDown(Keys.S) || keyIsDown(DOWN_ARROW)) this.vy += speed;
+         if (keyIsDown(UP_ARROW) || keyIsDown(Keys.W)) this.vy -= speed;
+      }
+   }
+
+   _buoyancy(gm) {
+      let waterDeep = 0;
+      let playerPos = gm.level.worldToGrid(this.cx(), this.y + this.h);
+      let tile = gm.level.grid[playerPos.row - 1]?.[playerPos.col];
+      if (tile && tile.type === GameConfig.Collision.Water) waterDeep = this.h;
+      else {
+         tile = gm.level.grid[playerPos.row]?.[playerPos.col];
+         if (tile && tile.type === GameConfig.Collision.Water) {
+            waterDeep = tile.y - (this.y + this.h);
+         }
+      }
+      // Formula: F = ρ × g × V
+      let waterDensity = 1 / 7;
+      let buoyancyForce = waterDensity * GameConfig.World.GRAVITY * waterDeep;
+      this.vy -= buoyancyForce;
    }
 
    takeDamage(damage, gm) {
@@ -298,6 +327,11 @@ class Player {
          this.vy = jf * 0.5;
          this.vx *= 1.2;
       }
+   }
+
+   repel(repelX, repelY) {
+      this.vx = repelX;
+      this.vy = repelY;
    }
 
    die(gm) {

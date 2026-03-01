@@ -3,7 +3,7 @@
  *
  * 提供:
  *   - 位置、尺寸、碰撞检测
- *   - 默认显示 (p5 形状, 颜色取自 LDtk 编辑器)
+ *   - 默认显示 (rect 形状)
  *   - 精灵占位 (this.sprite), 将来替换为图片
  *   - onPlayerContact() 接口, 子类覆写实现各种交互
  */
@@ -31,7 +31,7 @@ class Entity {
       // 显示颜色 (LDtk 编辑器中定义的颜色, 作为默认绘制色)
       this.displayColor = spawnData.color || '#2600ff';
 
-      // ★ 精灵占位 — 将来用 loadImage() 设置
+      // 精灵占位 — 将来用 loadImage() 设置
       // 设置后 display() 会自动用精灵替代形状
       this.sprite = null;
 

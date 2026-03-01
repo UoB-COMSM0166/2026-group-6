@@ -2,6 +2,7 @@ class Ladder extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
       this.sprite = resources.images.ladder;
+      this.climbSound = resources.sounds.ladder;
    }
 
    onPlayerContact(player, gm) {
@@ -23,5 +24,17 @@ class Ladder extends Entity {
          player.vy -= GameConfig.World.GRAVITY; //抵消重力
       }
 
+      //ladder sound
+      const climbing =
+         (keyIsDown(UP_ARROW) || keyIsDown(Keys.W) ||
+            keyIsDown(DOWN_ARROW) || keyIsDown(Keys.S));
+
+
+      if (climbing) {
+         if (!this.climbSound.isPlaying()) this.climbSound.play();
+      }
+      // else {
+      //    if (this.climbSound.isPlaying()) this.climbSound.stop();
+      // }
    }
 }
