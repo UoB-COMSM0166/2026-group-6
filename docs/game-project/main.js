@@ -2,6 +2,8 @@ let resources;
 let gm;
 let appState = "MENU";  // MENU | PLAYING
 let menuDiv;
+let intro;
+let started = false;
 
 function preload() {
    resources = new ResourceManager();
@@ -24,7 +26,8 @@ function setup() {
 
    canvas.elt.oncontextmenu = () => false;
    noSmooth();
-
+   //Cover
+   intro = new introUI();
    if (resources.ldtkData) {
       resources.markLoaded();
    }
@@ -33,12 +36,29 @@ function setup() {
 }
 
 function draw() {
+   //start
+   if (!started) {
+      background(0);
+      intro.updateTransition();
+      intro.display();
+      return;
+   }
    if (appState !== "PLAYING" || !gm) return;
    gm.update();
    gm.render();
 }
 
 function mousePressed() {
+   //UI part
+   if (!started) {
+      if (intro.transition < 1) {
+         intro.startTransition();
+      } else {
+         started = true;
+         _showMenu();
+      }
+      return false;
+   }
    if (appState === "PLAYING" && gm) gm.onMousePressed(mouseButton);
 }
 
@@ -55,7 +75,7 @@ function _createMenu() {
    menuDiv.id = 'game-menu';
    menuDiv.style.cssText =
       'position:fixed; top:0; left:0; width:100%; height:100%;' +
-      'display:flex; flex-direction:column; justify-content:center; align-items:center;' +
+      'display:none; flex-direction:column; justify-content:center; align-items:center;' +
       'gap:20px; background:#1a1a2e; z-index:10;';
 
    let btnStart = _makeBtn('Start Game', function () {
