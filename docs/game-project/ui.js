@@ -53,7 +53,7 @@ class introUI {
     textAlign(CENTER, CENTER);
     textSize(16);
     fill(255, 255, 255);
-    text("✨ Group 6 ✨", width / 2, 570);
+    text("✨ UoB-COMSM0166/2026-group-6 ✨", width / 2, 570);
     pop();
   }
 
@@ -73,7 +73,7 @@ class introUI {
     pop();
   }
 
-  // 绘制鼠标图标：椭圆形，中间一分为二（上下），上半部分再左右分割
+  // 绘制鼠标图标：椭圆形
   drawMouseIcon(x, y, w, h, alpha) {
     push();
     rectMode(CENTER);
@@ -86,13 +86,13 @@ class introUI {
     strokeWeight(2);
     ellipse(x, y, w, h);
 
-    // 中间水平分割线（将椭圆分为上下两半）
+    // 鼠标
     stroke(255, 255, 255, aVal);
     strokeWeight(1.5);
-    let lineY = y - h * 0.1; // 水平线略偏上，使得上下比例接近真实鼠标（上半略小）
+    let lineY = y - h * 0.1; // 水平线略偏上点
     line(x - w / 2 + 4, lineY, x + w / 2 - 4, lineY);
 
-    // 上半部分垂直分割线（左右两半）
+    // 鼠标
     line(x, y - h / 2 + 4, x, lineY - 2);
 
     pop();
@@ -121,19 +121,19 @@ class introUI {
     text("Game Instructions", width / 2, 150);
 
     // ========== 移动部分：左右两列，每列两层 ==========
-    let leftXBase = 200; // 左侧按键区域基准X
-    let rightXBase = 480; // 右侧按键区域基准X
-    let startY = 200; // 起始Y
+    let leftXBase = 200; // 左侧按键
+    let rightXBase = 480; // 右侧按键
+    let startY = 200; // Y
     let keyWidth = 40;
     let keyHeight = 32;
-    let horizontalSpacing = 10; // 水平间距
-    let verticalSpacing = 40; // 垂直间距
+    let horizontalSpacing = 10; // 水平
+    let verticalSpacing = 40; // 垂直
 
-    // 左侧WASD布局：W放在S正上方
+    // WASD
     let aX = leftXBase;
     let sX = leftXBase + keyWidth + horizontalSpacing;
     let dX = leftXBase + 2 * (keyWidth + horizontalSpacing);
-    let wX = sX; // W的x坐标与S相同
+    let wX = sX; 
 
     this.drawKey("W", wX, startY, keyWidth, keyHeight, alpha);
     let secondY = startY + verticalSpacing;
@@ -141,7 +141,7 @@ class introUI {
     this.drawKey("S", sX, secondY, keyWidth, keyHeight, alpha);
     this.drawKey("D", dX, secondY, keyWidth, keyHeight, alpha);
 
-    // 右侧箭头布局
+    // Arrows按键
     let leftArrowX = rightXBase;
     let downArrowX = rightXBase + keyWidth + horizontalSpacing;
     let rightArrowX = rightXBase + 2 * (keyWidth + horizontalSpacing);
@@ -152,7 +152,7 @@ class introUI {
     this.drawKey("↓", downArrowX, secondY, keyWidth, keyHeight, alpha);
     this.drawKey("→", rightArrowX, secondY, keyWidth, keyHeight, alpha);
 
-    // 绘制中间的 "Move" 说明
+    //  Move 
     let midX =
       (leftXBase + 2.5 * (keyWidth + horizontalSpacing) + rightXBase) / 2;
     let midY = startY + verticalSpacing / 2;
@@ -170,7 +170,7 @@ class introUI {
       { key: "F", desc: "Save" },
       { key: "R", desc: "Restart" },
       { key: "M", desc: "Map" },
-      { type: "mouse", desc: "Fire Rope" }, // 鼠标图标
+      { type: "mouse", desc: "Fire Rope" },//之后记得改成左右键不同
     ];
 
     for (let i = 0; i < singleKeys.length; i++) {
