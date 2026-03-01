@@ -30,10 +30,13 @@ class Ladder extends Entity {
             keyIsDown(DOWN_ARROW) || keyIsDown(Keys.S));
 
 
-      if (climbing) {
-         if (!this.climbSound.isPlaying()) this.climbSound.play();
+      if (climbingSounde) {
+
+         if (climbing && !this.climbSound.isPlaying()) 
+            this.climbSound.loop();
       } else {
-         if (this.climbSound.isPlaying()) this.climbSound.stop();
+         if (!clibming && this.climbSound.isPlaying()) 
+            this.climbSound.stop();
       }
    }
 }

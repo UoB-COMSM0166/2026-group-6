@@ -120,6 +120,9 @@ class Enemy extends Entity {
       if (this.purified) return;
       if (!player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) return;
 
+      //attack sound
+      //
+
       this.takeDamage(1);
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
       gm.addParticles(this.cx(), this.cy());
