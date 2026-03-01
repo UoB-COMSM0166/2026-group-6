@@ -51,6 +51,7 @@ class LevelManager {
       this.totalPollutionCore = 0;
       this.toalEnemies = 0;
       this.toxicConverted = false;
+      this.mapOpen = false;
    }
 
    //  加载关卡
@@ -700,6 +701,10 @@ class LevelManager {
     * 在屏幕中间放大显示当前地图及相邻的地图
     */
    drawLargeMap(player, gm) {
+      if (!resources.sounds.map.isPlaying() && !this.mapOpen) {
+         this.mapOpen = true
+         resources.sounds.map.play();
+      }
       // 1. 画一个半透明的黑色遮罩，盖住后面的游戏画面
       fill(0, 0, 0, 200);
       noStroke();

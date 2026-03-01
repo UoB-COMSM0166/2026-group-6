@@ -11,7 +11,7 @@ function preload() {
 }
 
 function setup() {
-   let canvas = createCanvas(1300, 750);
+   let canvas = createCanvas(1000, 700);
 
    canvas.style('display', 'block');
    canvas.style('margin', 'auto');
@@ -31,8 +31,6 @@ function setup() {
    if (resources.ldtkData) {
       resources.markLoaded();
    }
-
-   _createMenu();
 }
 
 function draw() {
@@ -55,7 +53,7 @@ function mousePressed() {
          intro.startTransition();
       } else {
          started = true;
-         _showMenu();
+         _createMenu();
       }
       return false;
    }
@@ -74,11 +72,13 @@ function _createMenu() {
    menuDiv = document.createElement('div');
    menuDiv.id = 'game-menu';
    menuDiv.style.cssText =
-      'position:fixed; top:0; left:0; width:100%; height:100%;' +
-      'display:none; flex-direction:column; justify-content:center; align-items:center;' +
+      'position:fixed; top:50%; left:50%; width:1000px; height:700px;' +
+      'transform:translate(-50%,-50%);' +
+      'display:flex; flex-direction:column; justify-content:center; align-items:center;' +
       'gap:20px; background:#1a1a2e; z-index:10;';
 
    let btnStart = _makeBtn('Start Game', function () {
+      if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
       gm = null;
       gm = new GameManager(resources);
       gm.loadLevel();
@@ -86,6 +86,7 @@ function _createMenu() {
    });
 
    let btnContinue = _makeBtn('Continue Game', function () {
+      if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
       if (!gm) return;
       _hideMenu();
    });

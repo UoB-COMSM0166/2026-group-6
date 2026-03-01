@@ -34,6 +34,7 @@ class Enemy extends Entity {
       this.hurtTimer = 0;
 
       this.punchSound = resources.sounds.enemy.punch;
+      this.purifySound = resources.sounds.enemy.purify;
 
       this.footOffsetY = 3;
       this.spriteCfg = {
@@ -193,6 +194,8 @@ class Enemy extends Entity {
       }
 
       if (this.hp <= 0) {
+         if (!this.purifySound.isPlaying()) this.purifySound.play();
+         this.purified = true;
          this.destroy();
       }
    }

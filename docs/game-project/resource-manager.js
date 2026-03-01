@@ -33,15 +33,16 @@ class ResourceManager {
       // 音效扩展:
 
       this.sounds.rope = {
-      ropeblue : loadSound('resources/audios/sides/bluewhoosh.mp3'),
-      ropered : loadSound('resources/audios/sides/redwhoosh.mp3')
+         ropeblue: loadSound('resources/audios/sides/bluewhoosh.mp3'),
+         ropered: loadSound('resources/audios/sides/redwhoosh.mp3')
       };
 
       this.sounds.ladder = loadSound('resources/audios/sides/climbladder.mp3');
       this.sounds.doorfail = loadSound('resources/audios/sides/doornotopen.mp3');
       this.sounds.door = loadSound('resources/audios/sides/dooropen.mp3');
       this.sounds.failure = loadSound('resources/audios/sides/failure.mp3');
-      this.sounds.water = loadSound('resources/audios/sides/intowater.mp3');
+      this.sounds.intowater = loadSound('resources/audios/sides/intowater.mp3');
+      this.sounds.underwater = loadSound('resources/audios/sides/underwatermove.mp3');
       this.sounds.map = loadSound('resources/audios/sides/map.mp3');
       this.sounds.click = loadSound('resources/audios/sides/menuclick.mp3');
       // 后续剧情用

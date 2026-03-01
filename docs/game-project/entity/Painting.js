@@ -24,13 +24,15 @@ class Painting extends Entity {
    }
 
    onPlayerContact(player, gm) {
+      this._playerNearby = true;
       let fNow = keyIsDown(Keys.F);
-      if (fNow) {
-         this.dialogOpen = !this.dialogOpen;
+      if (fNow && !this.dialogOpen) {
+         this.dialogOpen = true;
+         if (!resources.sounds.paper.isPlaying()) resources.sounds.paper.play();
       }
       if (this.dialogOpen === true) return;
+
       player.setPrompt('F');
-      this._playerNearby = true;
    }
 
    update(level) {

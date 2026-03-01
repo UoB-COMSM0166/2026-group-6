@@ -16,6 +16,7 @@ class Player {
       this.jumpForce = GameConfig.Player.JUMPFORCE;
 
       this.grounded = false;
+      this.inwater = false;
 
       this.showPrompt = null;  // 显示按键提示
 
@@ -207,10 +208,18 @@ class Player {
       if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
          { solidOnly: false, type: GameConfig.Collision.Water, margin: 0.1 }) !== null) {
          this._buoyancy(gm);
+         if (!this.inwater) {
+            if (!resources.sounds.intowater.isPlaying()) resources.sounds.intowater.play();
+            this.inwater = true;
+         }
+         if (!resources.sounds.underwater.isPlaying()) resources.sounds.underwater.play();
          this.vy *= 0.97;
          let speed = GameConfig.Player.WATER_SPEED;
          if (keyIsDown(Keys.S) || keyIsDown(DOWN_ARROW)) this.vy += speed;
          if (keyIsDown(UP_ARROW) || keyIsDown(Keys.W)) this.vy -= speed;
+      }
+      else {
+         this.inwater = false;
       }
    }
 
@@ -335,6 +344,7 @@ class Player {
    }
 
    die(gm) {
+      if (!resources.sounds.failure.isPlaying()) resources.sounds.failure.play();
       gm.status = "GAMEOVER";
       this.invulnerableTimer = 0;
       this.knockTimer = 0;

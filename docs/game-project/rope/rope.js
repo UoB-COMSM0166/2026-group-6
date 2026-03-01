@@ -28,6 +28,9 @@ class Rope {
       this.minLen = this.G * RC.MIN_LENGTH_GRIDS;
       this.launchSpeed = this.G * RC.LAUNCH_SPEED_GRIDS;
       this.ropeLength = 0;
+
+      // sound
+      this.fireSound = resources.sounds.rope;
    }
 
    // 节点工具
@@ -152,7 +155,12 @@ class Rope {
          this.extending = false;
          return;
       }
-
+      if (this.color.toString() === color(0, 255, 255).toString()) {
+         if (!this.fireSound.ropeblue.isPlaying()) this.fireSound.ropeblue.play();
+      }
+      if (this.color.toString() === color(255, 100, 100).toString()) {
+         if (!this.fireSound.ropered.isPlaying()) this.fireSound.ropered.play();
+      }
       let angle = atan2(ty - py, tx - px);
       this.tip.x = px;
       this.tip.y = py;
@@ -398,7 +406,7 @@ class Rope {
                n.x = prevX;
                n.y = prevY;
             }
-         } 
+         }
          // 正常绳子轨迹
          else {
             n.x = newX;

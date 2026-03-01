@@ -225,6 +225,9 @@ class GameManager {
       if (keyIsDown(Keys.M)) {
          this.level.drawLargeMap(this.player, this);
       }
+      else {
+         this.level.mapOpen = false;
+      }
 
       // UI (屏幕空间)
       UI.drawHUD(this.player, this.level, this);
@@ -340,6 +343,7 @@ class GameManager {
 
    _checkProcess() {
       if (this.getAreaProgress() > GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
+         if (!resources.sounds.upgrade.isPlaying()) resources.sounds.upgrade.play();
          this.mapPromptText = "Some things have changed due to purification.";
          this.mapPromptStartTime = millis();
          this.mapPromptDuration = 3000;

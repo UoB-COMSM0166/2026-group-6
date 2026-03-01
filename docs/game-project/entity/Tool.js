@@ -5,6 +5,7 @@ class Tool extends Entity {
    }
 
    onPlayerContact(player, gm) {
+      if (!resources.sounds.tool.isPlaying()) resources.sounds.tool.play();
       switch (this.toolType) {
          case "Clean":
             this._getClean(player);
@@ -18,7 +19,10 @@ class Tool extends Entity {
          case "Hp":
             this._getHp(player);
             break;
-         default: break;
+         default: {
+            this.destroy();
+            break;
+         }
       }
    }
 

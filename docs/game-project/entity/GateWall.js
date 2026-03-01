@@ -19,6 +19,7 @@ class GateWall extends Entity {
 
    open() {
       if (this.isOpen) return;
+      if (!resources.sounds.door.isPlaying()) resources.sounds.door.play();
       this.isOpen = true;
       this.active = false;
    }
