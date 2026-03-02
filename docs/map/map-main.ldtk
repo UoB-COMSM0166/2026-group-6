@@ -2028,26 +2028,6 @@
 							"__worldY": 1384
 						},
 						{
-							"__identifier": "Enemy",
-							"__grid": [31,23],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#FF0044",
-							"iid": "608ea940-fa90-11f0-b5f0-f7687816ad2c",
-							"width": 16,
-							"height": 16,
-							"defUid": 12,
-							"px": [252,192],
-							"fieldInstances": [
-								{ "__identifier": "hp", "__type": "Float", "__value": 3, "__tile": null, "defUid": 26, "realEditorValues": [] },
-								{ "__identifier": "String", "__type": "String", "__value": null, "__tile": null, "defUid": 55, "realEditorValues": [] },
-								{ "__identifier": "damage", "__type": "Float", "__value": 5, "__tile": null, "defUid": 219, "realEditorValues": [] }
-							],
-							"__worldX": 204,
-							"__worldY": 1400
-						},
-						{
 							"__identifier": "Player_start",
 							"__grid": [11,11],
 							"__pivot": [0,0],
@@ -2164,22 +2144,6 @@
 							],
 							"__worldX": 308,
 							"__worldY": 1296
-						},
-						{
-							"__identifier": "Pollution_Core",
-							"__grid": [37,24],
-							"__pivot": [0.5,1],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#68386C",
-							"iid": "41c41260-fa90-11f0-9c58-559481bc1c36",
-							"width": 16,
-							"height": 16,
-							"defUid": 13,
-							"px": [300,200],
-							"fieldInstances": [{ "__identifier": "coreId", "__type": "String", "__value": null, "__tile": null, "defUid": 233, "realEditorValues": [] }],
-							"__worldX": 252,
-							"__worldY": 1408
 						},
 						{
 							"__identifier": "Pollution_Core",
@@ -3085,6 +3049,22 @@
 							"fieldInstances": [],
 							"__worldX": 672,
 							"__worldY": 1368
+						},
+						{
+							"__identifier": "Rest",
+							"__grid": [31,17],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#EAD4AA",
+							"iid": "4c3d8780-fa90-11f0-bdd2-f764e66049f6",
+							"width": 24,
+							"height": 8,
+							"defUid": 230,
+							"px": [248,136],
+							"fieldInstances": [],
+							"__worldX": 584,
+							"__worldY": 1344
 						}
 					]
 				},
