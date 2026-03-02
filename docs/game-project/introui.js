@@ -101,33 +101,34 @@ class introUI {
    // 绘制说明页
    drawInstructionPage(alpha) {
       push();
+      alpha = alpha || 1;
       let aVal = alpha * 255;
 
       // 背景卡片
       fill(0, 0, 0, aVal * 0.7);
       noStroke();
-      rect(120, 100, 560, 400, 20);
+      rect(60, 55, 760, 530, 20);
 
       fill(30, 30, 40, aVal * 0.8);
       stroke(255, 255, 255, aVal);
       strokeWeight(2);
-      rect(130, 110, 540, 380, 16);
+      rect(70, 65, 740, 510, 16);
 
       // 标题
       fill(255, 255, 255, aVal);
       noStroke();
       textAlign(CENTER, CENTER);
       textSize(28);
-      text("Game Instructions", width / 2, 150);
+      text("Game Instructions", width / 2 - 55, 100);
 
       // ========== 移动部分：左右两列，每列两层 ==========
-      let leftXBase = 200; // 左侧按键
+      let leftXBase = 170; // 左侧按键
       let rightXBase = 480; // 右侧按键
-      let startY = 200; // Y
+      let startY = 195; // Y
       let keyWidth = 40;
-      let keyHeight = 32;
-      let horizontalSpacing = 10; // 水平
-      let verticalSpacing = 40; // 垂直
+      let keyHeight = 30;
+      let horizontalSpacing = 8; // 水平
+      let verticalSpacing = 36; // 垂直
 
       // WASD
       let aX = leftXBase;
@@ -163,7 +164,7 @@ class introUI {
 
       // ========== 其他单键 ==========
       let otherStartY = secondY + verticalSpacing + 10;
-      let rowHeight = 40;
+      let rowHeight = 34;
 
       const singleKeys = [
          { key: "Space", desc: "Jump" },
@@ -178,16 +179,44 @@ class introUI {
          let y = otherStartY + i * rowHeight;
 
          if (item.type === "mouse") {
-            this.drawMouseIcon(280, y + 5, 25, 33, alpha);
+            this.drawMouseIcon(220, y + 5, 25, 33, alpha);
          } else {
             let keyW = item.key === "Space" ? 80 : 50;
-            this.drawKey(item.key, 280, y, keyW, 32, alpha);
+            this.drawKey(item.key, 220, y, keyW, 28, alpha);
          }
 
          fill(255, 255, 255, aVal);
          textAlign(LEFT, CENTER);
-         textSize(18);
-         text(item.desc, 480, y);
+         textSize(16);
+         text(item.desc, 300, y);
+      }
+
+      // sideui
+      const ropeKeys = [
+         { key: "1", desc: "Change Blue Rope Texture" },
+         { key: "2", desc: "Change Red Rope Texture" },
+         { key: "Q", desc: "Prolong Blue Rope" },
+         { key: "Z", desc: "Shorten Blue Rope" },
+         { key: "E", desc: "Prolong Red Rope" },
+         { key: "C", desc: "Shorten Red Rope" },
+         { key: "ESC", desc: "Open the menu" },
+         { key: "T", desc: "Show the instruction" },
+      ];
+
+      let ropeStartY = otherStartY;
+      let ropeKeyX = 500;
+      let ropeDescX = 555;
+
+      for (let i = 0; i < ropeKeys.length; i++) {
+         let item = ropeKeys[i];
+         let y = ropeStartY + i * rowHeight;
+
+         this.drawKey(item.key, ropeKeyX, y, 40, 28, alpha);
+
+         fill(255, 255, 255, aVal);
+         textAlign(LEFT, CENTER);
+         textSize(14);
+         text(item.desc, ropeDescX, y);
       }
 
       pop();
