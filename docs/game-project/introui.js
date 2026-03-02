@@ -167,7 +167,7 @@ class introUI {
 
       const singleKeys = [
          { key: "Space", desc: "Jump" },
-         { key: "F", desc: "Save" },
+         { key: "F", desc: "Interact" },
          { key: "R", desc: "Restart" },
          { key: "M", desc: "Map" },
          { type: "mouse", desc: "Fire Rope" },//之后记得改成左右键不同
