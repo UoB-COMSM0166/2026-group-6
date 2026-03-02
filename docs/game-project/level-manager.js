@@ -511,10 +511,15 @@ class LevelManager {
             if (tile && tile.active && tile.type === GameConfig.Collision.ToxicPool) {
                tile.type = "water";
                for (let v of tile.visuals) {
-                  v.srcX += 6 * g;
                   v.srcY -= 6 * g;
                }
             }
+            // if (tile && tile.active && tile.type === GameConfig.Collision.Ground) {
+            //    for (let v of tile.visuals) {
+            //       v.srcY += 16 * g;
+            //       v.srcX += g;
+            //    }
+            // }
          }
       }
    }

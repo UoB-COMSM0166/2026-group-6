@@ -23,7 +23,7 @@ class ResourceManager {
     */
    preload() {
       this.data.ldtk = loadJSON('map/map-main.ldtk');
-      this.images.tileset = loadImage('resources/images/map_image/test_allgrid_8px.png');
+      this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.painting = { paintings: [] };
       for (let i = 1; i <= 5; i++) {

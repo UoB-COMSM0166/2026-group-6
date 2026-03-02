@@ -6,7 +6,7 @@ const GameConfig = {
       FrictionalForce: 0.83,
       AirFrictionalForce: 0.9,
       SOLID_TYPES: ["ground", "spaceship", "mechanism"],
-      PURIFY_CHANGE_THRESHOLD: 75,
+      PURIFY_CHANGE_THRESHOLD: 5,
    },
 
    // === 显示 ===
@@ -65,6 +65,7 @@ const GameConfig = {
    Collision: {
       ToxicPool: "toxic_poor",
       Water: "water",
+      Ground: "ground",
    },
 
    // === 绳索 ===
