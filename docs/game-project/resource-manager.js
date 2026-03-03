@@ -40,26 +40,26 @@ class ResourceManager {
       // 音效扩展:
 
       this.sounds.rope = {
-         ropeblue: loadSound('resources/audios/sides/bluewhoosh.mav'),
-         ropered: loadSound('resources/audios/sides/redwhoosh.mav')
+         ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
+         ropered: loadSound('resources/audios/sides/redwhoosh.wav')
       };
 
-      this.sounds.ladder = loadSound('resources/audios/sides/climbladder.mav');
-      this.sounds.doorfail = loadSound('resources/audios/sides/doornotopen.mav');
-      this.sounds.door = loadSound('resources/audios/sides/dooropen.mav');
-      this.sounds.failure = loadSound('resources/audios/sides/failure.mav');
-      this.sounds.intowater = loadSound('resources/audios/sides/intowater.mav');
-      this.sounds.underwater = loadSound('resources/audios/sides/underwatermove.mav');
-      this.sounds.map = loadSound('resources/audios/sides/map.mav');
-      this.sounds.click = loadSound('resources/audios/sides/menuclick.mav');
+      this.sounds.ladder = loadSound('resources/audios/sides/climbladder.wav');
+      this.sounds.doorfail = loadSound('resources/audios/sides/doornotopen.wav');
+      this.sounds.door = loadSound('resources/audios/sides/dooropen.wav');
+      this.sounds.failure = loadSound('resources/audios/sides/failure.wav');
+      this.sounds.intowater = loadSound('resources/audios/sides/intowater.wav');
+      this.sounds.underwater = loadSound('resources/audios/sides/underwatermove.wav');
+      this.sounds.map = loadSound('resources/audios/sides/map.wav');
+      this.sounds.click = loadSound('resources/audios/sides/menuclick.wav');
       // 后续剧情用
       this.sounds.enemy = this.sounds.enemy || {};
-      this.sounds.paper = loadSound('resources/audios/sides/paper.mav');
-      this.sounds.enemy.punch = loadSound('resources/audios/sides/punch.mav');
-      this.sounds.purify = loadSound('resources/audios/sides/purify.mav');
+      this.sounds.paper = loadSound('resources/audios/sides/paper.wav');
+      this.sounds.enemy.punch = loadSound('resources/audios/sides/punch.wav');
+      this.sounds.purify = loadSound('resources/audios/sides/purify.wav');
       this.sounds.purify.setVolume(0.1);
-      this.sounds.tool = loadSound('resources/audios/sides/tools.mav');
-      this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.mav');
+      this.sounds.tool = loadSound('resources/audios/sides/tools.wav');
+      this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.wav');
 
       //怪物
       this.images.enemy = this.images.enemy || {};
