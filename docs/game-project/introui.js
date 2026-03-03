@@ -95,6 +95,16 @@ class introUI {
       // 鼠标
       line(x, y - h / 2 + 4, x, lineY - 2);
 
+      let arcH = (lineY - (y - h / 2 + 4)) * 2;
+      // 左键点击高亮
+      noStroke();
+      fill(0, 255, 255, aVal * 0.5);
+      arc(x, lineY, w - 8, arcH, PI, PI + HALF_PI, PIE);
+
+      // 右键点击高亮
+      fill(255, 100, 100, aVal * 0.5);
+      arc(x, lineY, w - 8, arcH, PI + HALF_PI, TWO_PI, PIE);
+
       pop();
    }
 
@@ -105,26 +115,29 @@ class introUI {
       let aVal = alpha * 255;
 
       // 背景卡片
+      const cardwidth = 450;
+      const cardheight = 600;
+      const cardmargin = 20;
       fill(0, 0, 0, aVal * 0.7);
       noStroke();
-      rect(60, 55, 760, 530, 20);
+      rect(width / 2 - cardwidth / 2, 55, cardwidth, cardheight, 20);
 
       fill(30, 30, 40, aVal * 0.8);
       stroke(255, 255, 255, aVal);
       strokeWeight(2);
-      rect(70, 65, 740, 510, 16);
+      rect(width / 2 - cardwidth / 2 + cardmargin / 2, 55 + cardmargin / 2,
+         cardwidth - cardmargin, cardheight - cardmargin, 16);
 
       // 标题
       fill(255, 255, 255, aVal);
       noStroke();
       textAlign(CENTER, CENTER);
       textSize(28);
-      text("Game Instructions", width / 2 - 55, 100);
+      text("Game Instructions", width / 2, 100);
 
-      // ========== 移动部分：左右两列，每列两层 ==========
-      let leftXBase = 170; // 左侧按键
-      let rightXBase = 480; // 右侧按键
-      let startY = 195; // Y
+      let leftXBase = width / 2 - 150; // 左侧按键
+      let rightXBase = width / 2 + 50; // 右侧按键
+      let startY = 185; // Y
       let keyWidth = 40;
       let keyHeight = 30;
       let horizontalSpacing = 8; // 水平
@@ -154,58 +167,58 @@ class introUI {
       this.drawKey("→", rightArrowX, secondY, keyWidth, keyHeight, alpha);
 
       //  Move 
-      let midX =
-         (leftXBase + 2.5 * (keyWidth + horizontalSpacing) + rightXBase) / 2;
-      let midY = startY + verticalSpacing / 2;
+      let midX = width / 2;
+      let midY = startY;
       fill(255, 255, 255, aVal);
       textAlign(CENTER, CENTER);
       textSize(20);
       text("Move", midX, midY);
 
-      // ========== 其他单键 ==========
-      let otherStartY = secondY + verticalSpacing + 10;
-      let rowHeight = 34;
+      // other keys
+      let otherStartY = secondY + verticalSpacing + 20;
+      let rowHeight = 39;
 
       const singleKeys = [
          { key: "Space", desc: "Jump" },
          { key: "F", desc: "Interact" },
          { key: "R", desc: "Restart" },
          { key: "M", desc: "Map" },
+         { key: "ESC", desc: "Menu" },
+         { key: "T", desc: "KeyBoards" },
          { type: "mouse", desc: "Fire Rope" },//之后记得改成左右键不同
       ];
-
+      const leftX = width / 2 - 60;
+      const leftDescX = width / 2 - 180;
       for (let i = 0; i < singleKeys.length; i++) {
          let item = singleKeys[i];
          let y = otherStartY + i * rowHeight;
 
          if (item.type === "mouse") {
-            this.drawMouseIcon(220, y + 5, 25, 33, alpha);
+            this.drawMouseIcon(leftX, y + 5, 25, 33, alpha);
          } else {
             let keyW = item.key === "Space" ? 80 : 50;
-            this.drawKey(item.key, 220, y, keyW, 28, alpha);
+            this.drawKey(item.key, leftX, y, keyW, 28, alpha);
          }
 
          fill(255, 255, 255, aVal);
          textAlign(LEFT, CENTER);
          textSize(16);
-         text(item.desc, 300, y);
+         text(item.desc, leftDescX, y);
       }
 
       // sideui
       const ropeKeys = [
-         { key: "1", desc: "Change Blue Rope Texture" },
-         { key: "2", desc: "Change Red Rope Texture" },
+         { key: "1", desc: "toggle Cyan Material" },
+         { key: "2", desc: "toggle Red Material" },
          { key: "Q", desc: "Prolong Blue Rope" },
          { key: "Z", desc: "Shorten Blue Rope" },
          { key: "E", desc: "Prolong Red Rope" },
          { key: "C", desc: "Shorten Red Rope" },
-         { key: "ESC", desc: "Open the menu" },
-         { key: "T", desc: "Show the instruction" },
       ];
 
       let ropeStartY = otherStartY;
-      let ropeKeyX = 500;
-      let ropeDescX = 555;
+      let ropeKeyX = width / 2 + 40;
+      let ropeDescX = width / 2 + 70;
 
       for (let i = 0; i < ropeKeys.length; i++) {
          let item = ropeKeys[i];
