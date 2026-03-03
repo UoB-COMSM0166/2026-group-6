@@ -25,6 +25,10 @@ class ResourceManager {
       this.data.ldtk = loadJSON('map/map-main.ldtk');
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
+      this.images.button = loadImage('resources/images/map_image/button.png');
+      this.images.tools = loadImage('resources/images/map_image/tools.png');
+      this.images.pollutioncore = loadImage('resources/images/map_image/pollution_core.png');
+      this.images.cleanenergy = loadImage('resources/images/map_image/cleanenergy.png');
       this.images.painting = { paintings: [] };
       for (let i = 1; i <= 5; i++) {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));
@@ -49,7 +53,7 @@ class ResourceManager {
       this.sounds.enemy = this.sounds.enemy || {};
       this.sounds.paper = loadSound('resources/audios/sides/paper.mp3');
       this.sounds.enemy.punch = loadSound('resources/audios/sides/punch.mp3');
-      this.sounds.enemy.purify = loadSound('resources/audios/sides/purify.mp3');
+      this.sounds.purify = loadSound('resources/audios/sides/purify.mp3');
       this.sounds.tool = loadSound('resources/audios/sides/tools.mp3');
       this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.mp3');
 

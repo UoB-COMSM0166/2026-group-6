@@ -34,7 +34,7 @@ class Enemy extends Entity {
       this.hurtTimer = 0;
 
       this.punchSound = resources.sounds.enemy.punch;
-      this.purifySound = resources.sounds.enemy.purify;
+      this.purifySound = resources.sounds.purify;
 
       this.footOffsetY = 3;
       this.spriteCfg = {
