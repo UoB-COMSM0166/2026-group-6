@@ -27,10 +27,18 @@ This is a non-linear level-based game that combines side-scrolling platforming, 
 
 VIDEO. Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
 
-<p align="center">
-  <video src="resources/video/attackmonster.mov" controls width="200">
-</p>
 
+
+<table>
+  <tr>
+    <td><img src="resources\gifs\attackmonster.gif" width="200">Attack monster</td>
+    <td><img src="resources\gifs\energySup.gif" width="200">Energy Supply</td>
+  </tr>
+  <tr>
+    <td><img src="resources\gifs\purifycore.gif" width="200">Purify pollutoncore</td>
+    <td><img src="resources\gifs\rest.gif" width="200">Set a save point and restore hp</td>
+  </tr>
+</table>
 
 
 ## Your Group
