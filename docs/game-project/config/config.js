@@ -65,6 +65,7 @@ const GameConfig = {
    Collision: {
       ToxicPool: "toxic_poor",
       Water: "water",
+      Ground: "ground",
    },
 
    // === 绳索 ===

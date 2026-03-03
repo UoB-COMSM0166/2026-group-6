@@ -229,6 +229,11 @@ class GameManager {
          this.level.mapOpen = false;
       }
 
+      // 按下 M 键，屏幕中央放大显示当前及相邻地图
+      if (keyIsDown(Keys.T)) {
+         intro.drawInstructionPage();
+      }
+
       // UI (屏幕空间)
       UI.drawHUD(this.player, this.level, this);
       if (this.status === "WIN") UI.drawWinScreen();

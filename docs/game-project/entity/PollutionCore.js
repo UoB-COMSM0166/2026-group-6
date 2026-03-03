@@ -1,7 +1,9 @@
 class PollutionCore extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
+      this.sprite = resources.images.pollutionCore;
       this.polluteDegree = 50; // clear need energy
+      this.purifySound = resources.sounds.purify;
    }
 
    onPlayerContact(player, gm) {
@@ -18,6 +20,7 @@ class PollutionCore extends Entity {
          }
       }
       else {
+         if (!this.purifySound.isPlaying()) this.purifySound.play();
          this.destroy(); // 净化完成，销毁实体
       }
    }
@@ -40,6 +43,7 @@ class PollutionCore extends Entity {
       }
       else {
          if (rope.state !== "RETRACTING") rope.state = "RETRACTING";
+         if (!this.purifySound.isPlaying()) this.purifySound.play();
          this.destroy();
       }
    }
