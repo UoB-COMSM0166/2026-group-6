@@ -92,8 +92,17 @@ The final outcome of the game is determined by the player’s purification progr
 
 ## 3. Requirements
 
-- 15% ~750 words
-- Early stages design. Ideation process. How did you decide as a team what to develop? Use case diagrams, user stories.
+### Stakeholders and User Stories
+
+<p align="center">
+  <img src="resources/images/stakeholder-onion-model.png" width="650"/>
+</p>
+
+<p align="center">
+  <b>Figure 1.</b> Stakeholder Onion Model
+</p>
+
+
 ### Reflection
 In this project, our team progressively understood and mastered the roles of epics, user stories, and acceptance criteria in software engineering through the example of Running App in the workshop, and how they integrate with our game's context. Early in the project, frequent communication among team members led us to believe we had reached consensus on functional requirements, causing us to underestimate the necessity of formalized requirement descriptions.
 
