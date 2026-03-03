@@ -1,6 +1,7 @@
 class CleanEnergy extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
+      this.sprite = resources.images.cleaningEnergy;
       this.energy = 100;
       this.sprite = resources.images.cleanenergy;
    }
