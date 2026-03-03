@@ -38,7 +38,7 @@ class introUI {
       textSize(70);
       for (let i = 4; i > 0; i--) {
          fill(100, 150, 255, 30);
-         text("in the natural", width / 2 + i, height / 2 + i);
+         text("Ecological Restoration", width / 2 + i, height / 2 + i);
       }
       fill(255);
       text("Purifying", width / 2, height / 2);
