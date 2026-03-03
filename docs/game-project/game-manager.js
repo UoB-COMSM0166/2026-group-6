@@ -244,6 +244,8 @@ class GameManager {
          UI.drawMapPrompt(this.mapPromptText, elapsed, this.mapPromptDuration);
       }
 
+      
+      this.sideUI.render(leftControls, rightControls);
       //Side Keyboard
       const leftControls = [
          { key: "W", desc: "Up" },
@@ -261,9 +263,7 @@ class GameManager {
          { key: "C", desc: "Shorten Rope" },
          { key: "M", desc: "Map" },
          { key: "H", desc: "Help" },
-];
-
-this.sideUI.render(leftControls, rightControls);
+      ];
    }
 
    //  输入
