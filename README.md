@@ -52,8 +52,19 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 
 
 ## Project Report
+- [1. Introduction](#1-introduction)
+- [2. Game Content](#2-game-content)
+- [3. Requirements](#3-requirements)
+- [4. Design](#4-design)
+- [5. Implementation](#5-implementation)
+- [6. Evaluation](#6-evaluation)
+- [7. Process](#7-process)
+- [8. Sustainability](#8-sustainability)
+- [9. Conclusion](#9-conclusion)
+- [10. Contribution Statement](#10-contribution-statement)
+- [11. Additional Marks](#11-additional-marks)
 
-### Introduction
+## 1. Introduction
 
 - 5% ~250 words
   
@@ -63,12 +74,13 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 - Players will take on the role of an advanced artificial intelligence purification unit sent to the depths of the planet. Using rope tools and cleaning energy, they will penetrate various highly polluted areas, purify contaminated organisms and the environment, and gradually restore the planet's ecosystem. 
 - As players carry out purification actions, the planet's environmental structure, passage routes, and ecological status will continue to change. In the end, players do not just "leave the planet"; instead, based on the world's purification level (a percentage mechanism), they will face different endings between escape, coexistence, or reconstruction.
 
+## 2. Game Content
 
-### Requirements 
+## 3. Requirements
 
 - 15% ~750 words
 - Early stages design. Ideation process. How did you decide as a team what to develop? Use case diagrams, user stories.
-#### Reflection
+### Reflection
 In this project, our team progressively understood and mastered the roles of epics, user stories, and acceptance criteria in software engineering through the example of Running App in the workshop, and how they integrate with our game's context. Early in the project, frequent communication among team members led us to believe we had reached consensus on functional requirements, causing us to underestimate the necessity of formalized requirement descriptions.
 
 This assumption was gradually corrected as requirements were systematically organized and discussed. Organizing requirements into epics enabled high-level, structured planning of game systems—such as the core purification mechanism, exploration and ability unlocking, and world state feedback with ending systems. This approach helped define system boundaries during design and maintain logical consistency between features.
@@ -80,11 +92,11 @@ Acceptance criteria helped translate abstract design goals into concrete, verifi
 As the game's scope expanded, requirements continued to evolve. Through the ongoing addition, adjustment, or removal of user stories, we optimized the requirements system in a more agile manner. This ensured that the final implemented features aligned with the game's theme while also meeting the course's requirements for testability and maintainability.
 
 
-### Design
+## 4. Design
 
 - 15% ~750 words 
 - System architecture. Class diagrams, behavioural diagrams. 
-#### Class Diagram
+### Class Diagram
 <p align="center">
   <img src="docs/resources/images/map_image/Class Diagram.png" width="100%"/>
 </p>
@@ -92,20 +104,21 @@ As the game's scope expanded, requirements continued to evolve. Through the ongo
 The class diagram illustrates the overall structure of the game system. The `GameManager` acts as the central coordinator, managing the player, level progression, camera, and shared resources. The game world is organised around a `LevelManager`, which maintains collections of entities derived from a common abstract `Entity` class.  
 
 In addition, the diagram models the rope-based interaction system, which enables traversal, puzzle solving, and pollution purification. This design follows object-oriented principles and promotes modularity and maintainability.
-#### Sequence Diagram – Purify
+### Sequence Diagram – Purify
 <p align="center">
   <img src="docs/resources/images/SequenceDiagram_Purify.png" width="80%"/>
 </p>
 
 The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification notifies the LevelManager, which checks whether enough pollution cores in the current area have been purified to allow level progression. If energy is insufficient, the purification attempt fails and no core state is changed.
 
-### Implementation
+## 5. Implementation
 
 - 15% ~750 words
 
 - Describe implementation of your game, in particular highlighting the TWO areas of *technical challenge* in developing your game.
 
-### Evaluation
+
+## 6. Evaluation
 
 - 15% ~750 words
 
@@ -115,23 +128,26 @@ The sequence diagram shows the process of purifying a pollution core using the r
 
 - Description of how code was tested. 
 
-### Process 
+## 7. Process 
 
 - 15% ~750 words
 
 - Teamwork. How did you work together, what tools and methods did you use? Did you define team roles? Reflection on how you worked together. Be honest, we want to hear about what didn't work as well as what did work, and importantly how your team adapted throughout the project.
 
-### Conclusion
+## 8. Sustainability
+
+
+## 9. Conclusion
 
 - 10% ~500 words
 
 - Reflect on the project as a whole. Lessons learnt. Reflect on challenges. Future work, describe both immediate next steps for your current game and also what you would potentially do if you had chance to develop a sequel.
 
-### Contribution Statement
+## 10. Contribution Statement
 
 - Provide a table of everyone's contribution, which *may* be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Please let us know as soon as possible if there are any issues with teamwork as soon as they are apparent and we will do our best to help your team work harmoniously together.
 
-### Additional Marks
+## 11. Additional Marks
 
 You can delete this section in your own repo, it's just here for information. in addition to the marks above, we will be marking you on the following two points:
 
