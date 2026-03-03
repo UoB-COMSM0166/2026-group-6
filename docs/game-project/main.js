@@ -94,6 +94,20 @@ function _createMenu() {
    btnContinue.style.opacity = '0.3';
    btnContinue.style.pointerEvents = 'none';
 
+   _makeBtn('Leave the Game', function () {
+   if (!resources.sounds.click.isPlaying())
+      resources.sounds.click.play();
+      
+      //leave the game
+      gm = null;
+
+      intro.transition = 0;
+      intro.isTransitioning = false;
+      _hideMenu();
+   });
+
+
+
    menuDiv.appendChild(btnStart);
    menuDiv.appendChild(btnContinue);
    document.body.appendChild(menuDiv);

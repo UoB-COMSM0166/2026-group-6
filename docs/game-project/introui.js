@@ -111,29 +111,26 @@ class introUI {
    // 绘制说明页
    drawInstructionPage(alpha) {
       push();
-      alpha = alpha || 1;
+      if (alpha === undefined) alpha = 1;
       let aVal = alpha * 255;
 
       // 背景卡片
       const cardwidth = 450;
       const cardheight = 600;
-      const cardmargin = 20;
-      fill(0, 0, 0, aVal * 0.7);
-      noStroke();
-      rect(width / 2 - cardwidth / 2, 55, cardwidth, cardheight, 20);
-
-      fill(30, 30, 40, aVal * 0.8);
-      stroke(255, 255, 255, aVal);
-      strokeWeight(2);
-      rect(width / 2 - cardwidth / 2 + cardmargin / 2, 55 + cardmargin / 2,
-         cardwidth - cardmargin, cardheight - cardmargin, 16);
+      const paperX = width / 2 - cardwidth / 2;
+      const paperY = 55;
+      
+      push();
+      tint(255, aVal); // aVal = alpha * 255
+      image(resources.images.paper, paperX, paperY, cardwidth, cardheight);
+      pop();
 
       // 标题
-      fill(255, 255, 255, aVal);
+      fill(40, 40, 40, aVal);
       noStroke();
       textAlign(CENTER, CENTER);
       textSize(28);
-      text("Game Instructions", width / 2, 100);
+      text("Game Instructions", width / 2, 110);
 
       let leftXBase = width / 2 - 150; // 左侧按键
       let rightXBase = width / 2 + 50; // 右侧按键
@@ -158,7 +155,7 @@ class introUI {
       //  Move 
       let midX = width / 2;
       let midY = startY;
-      fill(255, 255, 255, aVal);
+      fill(40, 40, 40, aVal);
       textAlign(CENTER, CENTER);
       textSize(20);
       text("Move", midX, midY);
@@ -169,9 +166,6 @@ class introUI {
 
       const singleKeys = [
          { key: "F", desc: "Interact" },
-         { key: "M", desc: "Map" },
-         { key: "H", desc: "Help" },
-         { key: "ESC", desc: "Menu" },
          { type: "mouse", desc: "Fire Rope" },
       ];
       const leftX = width / 2 - 60;
@@ -187,7 +181,7 @@ class introUI {
             this.drawKey(item.key, leftX, y, keyW, 28, alpha);
          }
 
-         fill(255, 255, 255, aVal);
+         fill(40, 40, 40, aVal);
          textAlign(LEFT, CENTER);
          textSize(16);
          text(item.desc, leftDescX, y);
@@ -195,9 +189,17 @@ class introUI {
 
       // sideui
       const ropeKeys = [
+         { key: "Left Click", desc: "Firm Rope" },
+         { key: "Right Click", desc: "Soft Rope" },
+
          { key: "T", desc: "Change Rope" },
          { key: "E", desc: "Prolong Rope" },
          { key: "C", desc: "Shorten Rope" },
+
+         { key: "M", desc: "Map" },
+         { key: "H", desc: "Help" },
+
+         { key: "ESC", desc: "Menu" },
       ];
 
       let ropeStartY = otherStartY;
@@ -230,7 +232,6 @@ class introUI {
          noStroke();
          rect(0, 0, width, height);
          pop();
-
          this.drawInstructionPage(this.transition);
       }
    }
