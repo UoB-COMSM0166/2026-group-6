@@ -36,8 +36,13 @@ class ResourceManager {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));
       }
 
+      //BGM:
 
-      // 音效扩展:
+      //IntroUI:
+      this.images.paper = loadImage(`resources/images/paper.png`);
+
+
+      // 音效:
 
       this.sounds.rope = {
          ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
