@@ -176,7 +176,8 @@ class Enemy extends Entity {
 
       // punch sound
       if (!this.punchSound.isPlaying()) this.punchSound.play();
-
+      let dir = (player.x < this.x) ? 1 : -1;
+      this.repel(dir * this.w * 0.5, 0);
       this.takeDamage(1);
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
       gm.addParticles(this.cx(), this.cy());
@@ -216,6 +217,11 @@ class Enemy extends Entity {
    _turn() {
       this.dir *= -1;
       this.jumpTime = 0;
+   }
+
+   repel(repelX, repelY) {
+      this.x += repelX;
+      this.y += repelY;
    }
 
    _tickAnim() {

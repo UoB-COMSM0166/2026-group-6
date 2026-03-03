@@ -14,7 +14,7 @@ This is a non-linear level-based game that combines side-scrolling platforming, 
 (updated in 18/02/26)
 
 <p align="center">
-  <img src="resources/images/week5-snapshot.png" width="500">
+  <img src="resources/images/week7-snapshot.png" width="500">
 </p>
 
 
