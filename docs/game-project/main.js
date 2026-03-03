@@ -94,7 +94,7 @@ function _createMenu() {
    btnContinue.style.opacity = '0.3';
    btnContinue.style.pointerEvents = 'none';
 
-   _makeBtn('Back to Menu', function () {
+   _makeBtn('Leave the Game', function () {
    if (!resources.sounds.click.isPlaying())
       resources.sounds.click.play();
       

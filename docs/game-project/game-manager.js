@@ -38,6 +38,8 @@ class GameManager {
       this._isPreloading;
       this.checkpoint = null; // { levelIndex, x, y }
       this.preload();
+      //
+      this.sideUI = new SideUI(width - 320, 0, 320, height);
    }
 
    // 预加载所有关卡
@@ -198,7 +200,6 @@ class GameManager {
    }
 
 
-
    render() {
       background(color(this.level.bgColor));
 
@@ -242,6 +243,27 @@ class GameManager {
       if (elapsed < this.mapPromptDuration) {
          UI.drawMapPrompt(this.mapPromptText, elapsed, this.mapPromptDuration);
       }
+
+      //Side Keyboard
+      const leftControls = [
+         { key: "W", desc: "Up" },
+         { key: "A", desc: "Left" },
+         { key: "S", desc: "Down" },
+         { key: "D", desc: "Right" },
+         { key: "Left Click", desc: "Firm Rope" },
+         { key: "Right Click", desc: "Soft Rope" },
+         { key: "F", desc: "Interact" },
+      ];
+      
+      const rightControls = [
+         { key: "T", desc: "Change Rope" },
+         { key: "E", desc: "Prolong Rope" },
+         { key: "C", desc: "Shorten Rope" },
+         { key: "M", desc: "Map" },
+         { key: "H", desc: "Help" },
+];
+
+this.sideUI.render(leftControls, rightControls);
    }
 
    //  输入
