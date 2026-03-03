@@ -20,11 +20,9 @@ This is a non-linear level-based game that combines side-scrolling platforming, 
 
 ### TRY TO START GAME
 
-<p align="center">
-  <video src="resources/video/attackmonster.mov" controls width="400">
-    attackmonster
-  </video>
-</p>
+<div align="center">
+  <a href = "https://uob-comsm0166.github.io/2026-group-6/"> Start Game </a>
+</div>
 
 
 VIDEO. Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
