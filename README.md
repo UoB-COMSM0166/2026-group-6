@@ -38,6 +38,9 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
     <td><img src="resources\gifs\purifycore.gif" width="200">Purify pollutoncore</td>
     <td><img src="resources\gifs\rest.gif" width="200">Set a save point and restore hp</td>
   </tr>
+  <tr>
+    <td><img src="resources\gifs\Ropemechanics.gif" width="200">Purify pollutoncore</td>
+  </tr>
 </table>
 
 
