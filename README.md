@@ -95,7 +95,7 @@ The final outcome of the game is determined by the player’s purification progr
 ### Stakeholders and User Stories
 
 <p align="center">
-  <img src="resources/images/stakeholder-onion-model.png" width="650"/>
+  <img src="resources/images/stakeholder-onion-model.svg" width="550"/>
 </p>
 
 <p align="center">
