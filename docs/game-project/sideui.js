@@ -14,6 +14,7 @@
     { key: "Z", desc: "Shorten Blue Rope" },
     { key: "E", desc: "Prolong Red Rope" },
     { key: "C", desc: "Shorten Red Rope" },
+    { key: "Esc", desc: "Stop playing" },
  ];
 }
 
