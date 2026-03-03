@@ -9,9 +9,9 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 ### description
 This is a non-linear level-based game that combines side-scrolling platforming, puzzle-solving, and lightweight RPG elements, with the core theme of "purifying pollution and ecological restoration." Players use rope tools to delve into highly polluted areas, gradually restoring the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world. 
 
-### demo image: v2.1
+### demo image: v2.5
 
-(updated in 18/02/26)
+(updated in 03/03/26)
 
 <p align="center">
   <img src="resources/images/week7-snapshot.png" width="500">
