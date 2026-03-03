@@ -14,11 +14,11 @@ It is suggested to display the full map once at the beginning of the game, after
 
 7.Keyboard shortcuts are provided to improve efficiency. The interface layout is clearly aligned (e.g., strong left alignment), supporting efficient interaction for both novice and experienced players.
 
-8.The interface focuses on simplicity and displays only essential, high-frequency information. Irrelevant or rarely used information is excluded. The layout maintains logical grouping and visual coherence.
-Contrast: Bold text is used for important labels.
-Repetition: Color coding (e.g., orange, blue, green) is consistently used to match media or functional types.
-Alignment: Strong left alignment improves readability; dropdown elements are right-aligned where appropriate.
-Proximity: Visual separators (e.g., light rules) distinguish tags from other options, improving clarity.
+8.The interface focuses on simplicity and displays only essential, high-frequency information. Irrelevant or rarely used information is excluded. The layout maintains logical grouping and visual coherence.   
+Contrast: Bold text is used for important labels.    
+Repetition: Color coding (e.g., orange, blue, green) is consistently used to match media or functional types.    
+Alignment: Strong left alignment improves readability; dropdown elements are right-aligned where appropriate.   
+Proximity: Visual separators (e.g., light rules) distinguish tags from other options, improving clarity.     
 
 9.Currently, there is no dedicated error-diagnosis interface. The game rarely encounters such issues, but future testing may reveal the need for additional error feedback mechanisms.
 The save system already helps recovery. In the future, a forced return to the last save point could be implemented to prevent soft-lock situations. Adding animations to recovery mechanisms could also enhance user experience.
