@@ -208,8 +208,8 @@ class introUI {
 
       // sideui
       const ropeKeys = [
-         { key: "1", desc: "toggle Cyan Material" },
-         { key: "2", desc: "toggle Red Material" },
+         { key: "1", desc: "Toggle Cyan Material" },
+         { key: "2", desc: "Toggle Red Material" },
          { key: "Q", desc: "Prolong Blue Rope" },
          { key: "Z", desc: "Shorten Blue Rope" },
          { key: "E", desc: "Prolong Red Rope" },

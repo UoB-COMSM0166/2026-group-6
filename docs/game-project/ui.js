@@ -1,43 +1,36 @@
 class UI {
 
    static drawHUD(player, level, gm) {
-      fill(255); noStroke(); textSize(12); textAlign(LEFT, TOP);
+      fill(255); noStroke();
+      textSize(20);
+      textAlign(LEFT, TOP);
 
       // player entity
-      text("HP: " + player.hp, 25, 15);
-      text("clean energy: " + player.cleanEnergy, 25, 30);
-
-      let matL = player.ropeL.material;
-      let matR = player.ropeR.material;
-
-      fill(matL === 'HARD' ? 255 : color(0, 255, 255));
-      text(`[1] Left Mode: ${matL}`, 10, 50);
-
-      fill(matR === 'HARD' ? 255 : color(255, 100, 100));
-      text(`[2] Right Mode: ${matR}`, 10, 70);
+      fill("rgb(161, 53, 53)");
+      text("HP  " + player.hp, 25, 15);
+      fill("rgb(31, 139, 143)");
+      text("CleanEnergy  " + player.cleanEnergy, 25, 50);
 
       push();
       textAlign(CENTER, TOP);
       textSize(24);
 
       // 获取当前 Area 的百分比进度（0 到 100）
-      let percentage = gm.getAreaProgress();
+      let progress = gm.getAreaProgress();
       let areaNumber = level.areaNumber;
       if (areaNumber === "5") areaNumber = "Total";
 
-      fill(0, 150);
+      fill("rgba(29, 11, 29, 0.45)");
       // 阴影
-      text(`Area${areaNumber} Purified: ${percentage}%`, width / 2 + 2, 22);
+      text(`Area${areaNumber} Purified: ${progress}%`, width / 2 + 2, 22);
 
       // 文字
-      fill(200, 100, 255);
-      text(`Area${areaNumber} Purified: ${percentage}%`, width / 2, 20);
+      if (progress <= GameConfig.World.PURIFY_CHANGE_THRESHOLD) fill("rgb(119, 14, 119)");
+      else fill("rgb(13, 153, 67)");
+      text(`Area${areaNumber} Purified: ${progress}%`, width / 2, 20);
       pop();
 
       this._drawMouseButtons(player);
-
-      textAlign(CENTER); fill(150); textSize(12);
-      text("[SPACE] Jump   [Q/Z] Left Winch   [E/C] Right Winch", width / 2, height - 16);
    }
 
    static _drawMouseButtons(player) {
@@ -45,28 +38,28 @@ class UI {
       let bw = 50, bh = 40, gap = 5;
       let lActive = player.ropeL.state !== "IDLE";
       let rActive = player.ropeR.state !== "IDLE";
+      let matL = player.ropeL.material;
+      let matR = player.ropeR.material;
 
       push();
-      strokeWeight(2); textAlign(CENTER, CENTER); textSize(14);
+
+      textAlign(CENTER, CENTER); textSize(14);
 
       // 左键
+      strokeWeight(matL === 'HARD' ? 5 : 2);
       if (lActive) { fill(100); stroke(150); }
       else { fill(0, 200, 200, 200); stroke(0, 255, 255); }
       rect(cx - bw - gap / 2, by, bw, bh, 10, 100, 0, 50);
       fill(255); noStroke();
       text("LMB", cx - bw / 2 - gap / 2, by + bh / 2);
-      textSize(10); fill(0, 255, 255);
-      text("CYAN ROPE", cx - bw / 2 - gap / 2, by - 15);
 
       // 右键
-      strokeWeight(2); textSize(14);
+      strokeWeight(matR === 'HARD' ? 5 : 2);
       if (rActive) { fill(100); stroke(150); }
       else { fill(200, 50, 50, 200); stroke(255, 100, 100); }
       rect(cx + gap / 2, by, bw, bh, 100, 10, 50, 0);
       fill(255); noStroke();
       text("RMB", cx + bw / 2 + gap / 2, by + bh / 2);
-      textSize(10); fill(255, 100, 100);
-      text("RED ROPE", cx + bw / 2 + gap / 2, by - 15);
 
       pop();
    }
