@@ -64,9 +64,6 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 
 ## 1. Introduction
 
-- 5% ~250 words
-  
-- Describe of the game:
 - This is a non-linear level-based game that combines side-scrolling platforming, puzzle-solving, and lightweight RPG elements, with the core theme of "purifying pollution and ecological restoration." Players use rope tools to delve into highly polluted areas, gradually restoring the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world. 
 - The game is set on an alien planet on the verge of collapse due to long-term pollution. The indigenous civilization, faced with ecological imbalance, chose to enter a dormant state, waiting to see if the planet could still be repaired. 
 - Players will take on the role of an advanced artificial intelligence purification unit sent to the depths of the planet. Using rope tools and cleaning energy, they will penetrate various highly polluted areas, purify contaminated organisms and the environment, and gradually restore the planet's ecosystem. 
