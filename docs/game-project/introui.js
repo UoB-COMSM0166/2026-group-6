@@ -38,7 +38,7 @@ class introUI {
       textSize(70);
       for (let i = 4; i > 0; i--) {
          fill(100, 150, 255, 30);
-         text("in the natural", width / 2 + i, height / 2 + i);
+         text("Ecological Restoration", width / 2 + i, height / 2 + i);
       }
       fill(255);
       text("Purifying", width / 2, height / 2);
@@ -179,12 +179,10 @@ class introUI {
       let rowHeight = 39;
 
       const singleKeys = [
-         { key: "Space", desc: "Jump" },
          { key: "F", desc: "Interact" },
-         { key: "R", desc: "Restart" },
          { key: "M", desc: "Map" },
          { key: "ESC", desc: "Menu" },
-         { key: "T", desc: "KeyBoards" },
+         { key: "H", desc: "Help" },
          { type: "mouse", desc: "Fire Rope" },//之后记得改成左右键不同
       ];
       const leftX = width / 2 - 60;
@@ -208,10 +206,6 @@ class introUI {
 
       // sideui
       const ropeKeys = [
-         { key: "1", desc: "Toggle Cyan Material" },
-         { key: "2", desc: "Toggle Red Material" },
-         { key: "Q", desc: "Prolong Blue Rope" },
-         { key: "Z", desc: "Shorten Blue Rope" },
          { key: "E", desc: "Prolong Red Rope" },
          { key: "C", desc: "Shorten Red Rope" },
       ];
