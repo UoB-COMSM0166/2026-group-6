@@ -4,7 +4,7 @@
 ## KanBan Link
 https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 
-## PURIFY
+## Echoes of Purity
 
 ### description
 This is a non-linear level-based game that combines side-scrolling platforming, puzzle-solving, and lightweight RPG elements, with the core theme of "purifying pollution and ecological restoration." Players use rope tools to delve into highly polluted areas, gradually restoring the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world. 
