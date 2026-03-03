@@ -189,11 +189,16 @@ class introUI {
 
       // sideui
       const ropeKeys = [
-         { key: "M", desc: "Map" },
-         { key: "H", desc: "Help" },
+         { key: "Left Click", desc: "Firm Rope" },
+         { key: "Right Click", desc: "Soft Rope" },
+
          { key: "T", desc: "Change Rope" },
          { key: "E", desc: "Prolong Rope" },
          { key: "C", desc: "Shorten Rope" },
+
+         { key: "M", desc: "Map" },
+         { key: "H", desc: "Help" },
+
          { key: "ESC", desc: "Menu" },
       ];
 
