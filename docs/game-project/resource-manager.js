@@ -38,16 +38,16 @@ class ResourceManager {
 
       //BGM:
       //这个适合做新手教学背景音乐，level 1
-      this.sounds.begain = loadSound('resources/audios/background/begain.wav');
+      this.sounds.begain = loadSound('resources/audios/background/begain.mp3');
       //boss背景音，记得加间隔循环
-      this.sounds.boss = loadSound('resources/audios/background/boss.wav');
-      this.sounds.forest1 = loadSound('resources/audios/background/forest.wav');
-      this.sounds.forest2 = loadSound('resources/audios/background/forest2.wav');
-      this.sounds.forest3 = loadSound('resources/audios/background/forest3.wav');
-      this.sounds.forest4 = loadSound('resources/audios/background/forestddeep.wav');
-      this.sounds.forest5 = loadSound('resources/audios/background/forestend.wav');
-      this.sounds.river1 = loadSound('resources/audios/background/river.wav');
-      this.sounds.river2 = loadSound('resources/audios/background/river2.wav');
+      this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
+      this.sounds.forest1 = loadSound('resources/audios/background/forest.mp3');
+      this.sounds.forest2 = loadSound('resources/audios/background/forest2.mp3');
+      this.sounds.forest3 = loadSound('resources/audios/background/forest3.mp3');
+      this.sounds.forest4 = loadSound('resources/audios/background/forestdeep.mp3');
+      this.sounds.forest5 = loadSound('resources/audios/background/forestend.mp3');
+      this.sounds.river1 = loadSound('resources/audios/background/river.mp3');
+      this.sounds.river2 = loadSound('resources/audios/background/river2.mp3');
 
       //IntroUI:
       this.images.paper = loadImage(`resources/images/paper.png`);
