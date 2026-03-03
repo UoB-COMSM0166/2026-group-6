@@ -3,7 +3,6 @@ class Tool extends Entity {
       super(x, y, w, h, spawnData);
       this.sprite = resources.images.tools;
       this.toolType = this.fields.toolType;
-      this.sprite = resources.images.tools;
    }
 
    onPlayerContact(player, gm) {

@@ -4,7 +4,6 @@ class PollutionCore extends Entity {
       this.sprite = resources.images.pollutionCore;
       this.polluteDegree = 50; // clear need energy
       this.purifySound = resources.sounds.purify;
-      this.sprite = resources.images.pollutioncore;
    }
 
    onPlayerContact(player, gm) {

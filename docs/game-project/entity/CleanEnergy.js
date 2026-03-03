@@ -3,7 +3,6 @@ class CleanEnergy extends Entity {
       super(x, y, w, h, spawnData);
       this.sprite = resources.images.cleaningEnergy;
       this.energy = 100;
-      this.sprite = resources.images.cleanenergy;
    }
 
    onPlayerContact(player, gm) {

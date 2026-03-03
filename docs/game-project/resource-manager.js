@@ -26,16 +26,14 @@ class ResourceManager {
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
+      this.images.cleaningEnergy = loadImage('resources/images/map_image/cleaningenergy.png');
+      this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
       this.images.tools = loadImage('resources/images/map_image/tools.png');
-      this.images.pollutioncore = loadImage('resources/images/map_image/pollution_core.png');
-      this.images.cleanenergy = loadImage('resources/images/map_image/cleanenergy.png');
       this.images.painting = { paintings: [] };
       for (let i = 1; i <= 5; i++) {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));
       }
-      this.images.cleaningEnergy = loadImage('resources/images/map_image/cleaningenergy.png');
-      this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
-      this.images.tools = loadImage('resources/images/map_image/tools.png');
+      
 
       // 音效扩展:
 
