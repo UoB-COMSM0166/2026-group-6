@@ -15,7 +15,7 @@ class Rope {
       this.stuck = false;
       this.retracting = false;
       this.extending = false
-      this.material = 'SOFT';
+      this.material = (ropeColor.toString() === color(0, 255, 255).toString()) ? 'SOFT' : 'HARD';
 
       // 绳头抛射物
       this.tip = { x: 0, y: 0, vx: 0, vy: 0 };

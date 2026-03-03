@@ -29,6 +29,8 @@ class ResourceManager {
       this.images.cleaningEnergy = loadImage('resources/images/map_image/cleaningenergy.png');
       this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
       this.images.tools = loadImage('resources/images/map_image/tools.png');
+      this.images.rest = loadImage('resources/images/map_image/reset.png');
+      this.images.cover = loadImage('resources/images/map_image/cover.png');
       this.images.painting = { paintings: [] };
       for (let i = 1; i <= 5; i++) {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));

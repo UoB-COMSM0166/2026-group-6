@@ -230,7 +230,7 @@ class GameManager {
       }
 
       // 按下 M 键，屏幕中央放大显示当前及相邻地图
-      if (keyIsDown(Keys.T)) {
+      if (keyIsDown(Keys.H)) {
          intro.drawInstructionPage();
       }
 
@@ -256,8 +256,9 @@ class GameManager {
    onKeyPressed(key) {
       if (this.status === "PLAY") {
          if (key === ' ' || key === 'ArrowUp' || key === 'w' || key === 'W') this.player.jump();
-         if (key === '1') this.player.ropeL.toggleMaterial(this.player);
-         if (key === '2') this.player.ropeR.toggleMaterial(this.player);
+         // if (key === '1') this.player.ropeL.toggleMaterial(this.player);
+         // if (key === '2') this.player.ropeR.toggleMaterial(this.player);
+         if (key === 'T' || key === 't') this.player.changeCurrentRope();
       }
       if (this.status === "GAMEOVER") {
          if (key === 'R' || key === 'r') {

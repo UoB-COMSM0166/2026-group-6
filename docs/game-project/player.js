@@ -22,6 +22,8 @@ class Player {
 
       this.ropeL = new Rope(color(0, 255, 255));
       this.ropeR = new Rope(color(255, 100, 100));
+
+      this.currentRope = this.ropeL;
    }
 
    cx() { return this.x + this.w / 2; }
@@ -53,29 +55,22 @@ class Player {
       let cs = G * GameConfig.Player.CLIMB_SPEED;
       let wf = GameConfig.Player.WINCH_FORCE;
 
-      if (this.ropeL.state === "SWINGING") {
-         // Z: 缩短
-         if (keyIsDown(Keys.Z)) {
-            this.ropeL.changeLength(-cs);
-            let a = atan2(this.ropeL.tip.y - this.cy(), this.ropeL.tip.x - this.cx());
-            this.vx += cos(a) * wf;
-            this.vy += sin(a) * wf;
-         }
-         // Q: 伸长
-         if (keyIsDown(Keys.Q)) this.ropeL.changeLength(cs);
-      }
-
-      if (this.ropeR.state === "SWINGING") {
+      if (this.currentRope.state === "SWINGING") {
          // C: 缩短
          if (keyIsDown(Keys.C)) {
-            this.ropeR.changeLength(-cs);
-            let a = atan2(this.ropeR.tip.y - this.cy(), this.ropeR.tip.x - this.cx());
+            this.currentRope.changeLength(-cs);
+            let a = atan2(this.currentRope.tip.y - this.cy(), this.currentRope.tip.x - this.cx());
             this.vx += cos(a) * wf;
             this.vy += sin(a) * wf;
          }
          // E: 伸长
-         if (keyIsDown(Keys.E)) this.ropeR.changeLength(cs);
+         if (keyIsDown(Keys.E)) this.currentRope.changeLength(cs);
       }
+   }
+
+   changeCurrentRope() {
+      if (this.currentRope.color.toString() === this.ropeL.color.toString()) this.currentRope = this.ropeR;
+      else if (this.currentRope.color.toString() === this.ropeR.color.toString()) this.currentRope = this.ropeL;
    }
 
    // ====== 物理 ======
