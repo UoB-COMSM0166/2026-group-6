@@ -27,6 +27,12 @@ This is a non-linear level-based game that combines side-scrolling platforming, 
 
 VIDEO. Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
 
+<video src="resources\video\attackmonster.mov" controls width="400">
+<video src="resources\video\energySup.mov" controls width="400">
+<video src="resources\video\purifycore.mov" controls width="400">
+<video src="resources\video\rest.mov" controls width="400">
+
+
 ## Your Group
 
 <p align="center">
