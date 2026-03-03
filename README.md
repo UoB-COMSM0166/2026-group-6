@@ -64,8 +64,6 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 
 ## 1. Introduction
 
-## 1. Introduction
-
 Echoes of Purity is a structured non-linear 2D level game that combines side-scrolling platform jumping and lightweight role-playing elements. The core theme of the game is "purifying pollution and ecological restoration." Players will use the rope tool to enter the highly polluted area and gradually restore the Earth's ecology. Different levels of purification completion will determine the future direction and the end of the world.
 
 The game is set on an alien planet on the verge of collapse due to long-term pollution. The indigenous civilization, faced with ecological imbalance, chose to enter a dormant state, waiting to see if the planet could still be repaired.
