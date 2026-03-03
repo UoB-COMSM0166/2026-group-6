@@ -20,17 +20,19 @@ This is a non-linear level-based game that combines side-scrolling platforming, 
 
 ### TRY TO START GAME
 
-<div align="center">
-  <a href = "https://uob-comsm0166.github.io/2026-group-6/"> Start Game </a>
-</div>
+<p align="center">
+  <video src="resources/video/attackmonster.mov" controls width="400">
+    attackmonster
+  </video>
+</p>
 
 
 VIDEO. Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
 
-<video src="resources\video\attackmonster.mov" controls width="400">
-<video src="resources\video\energySup.mov" controls width="400">
-<video src="resources\video\purifycore.mov" controls width="400">
-<video src="resources\video\rest.mov" controls width="400">
+<p align="center">
+  <video src="resources/video/attackmonster.mov" controls width="200">
+</p>
+
 
 
 ## Your Group
