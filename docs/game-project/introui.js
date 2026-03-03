@@ -155,17 +155,6 @@ class introUI {
       this.drawKey("S", sX, secondY, keyWidth, keyHeight, alpha);
       this.drawKey("D", dX, secondY, keyWidth, keyHeight, alpha);
 
-      // Arrows按键
-      let leftArrowX = rightXBase;
-      let downArrowX = rightXBase + keyWidth + horizontalSpacing;
-      let rightArrowX = rightXBase + 2 * (keyWidth + horizontalSpacing);
-      let upX = (leftArrowX + rightArrowX) / 2;
-
-      this.drawKey("↑", upX, startY, keyWidth, keyHeight, alpha);
-      this.drawKey("←", leftArrowX, secondY, keyWidth, keyHeight, alpha);
-      this.drawKey("↓", downArrowX, secondY, keyWidth, keyHeight, alpha);
-      this.drawKey("→", rightArrowX, secondY, keyWidth, keyHeight, alpha);
-
       //  Move 
       let midX = width / 2;
       let midY = startY;
@@ -183,7 +172,7 @@ class introUI {
          { key: "M", desc: "Map" },
          { key: "ESC", desc: "Menu" },
          { key: "H", desc: "Help" },
-         { type: "mouse", desc: "Fire Rope" },//之后记得改成左右键不同
+         { type: "mouse", desc: "Fire Rope" },
       ];
       const leftX = width / 2 - 60;
       const leftDescX = width / 2 - 180;
@@ -206,8 +195,9 @@ class introUI {
 
       // sideui
       const ropeKeys = [
-         { key: "E", desc: "Prolong Red Rope" },
-         { key: "C", desc: "Shorten Red Rope" },
+         { key: "T", desc: "Change Rope" },
+         { key: "E", desc: "Prolong Rope" },
+         { key: "C", desc: "Shorten Rope" },
       ];
 
       let ropeStartY = otherStartY;
