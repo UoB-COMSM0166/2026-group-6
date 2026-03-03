@@ -170,8 +170,8 @@ class introUI {
       const singleKeys = [
          { key: "F", desc: "Interact" },
          { key: "M", desc: "Map" },
-         { key: "ESC", desc: "Menu" },
          { key: "H", desc: "Help" },
+         { key: "ESC", desc: "Menu" },
          { type: "mouse", desc: "Fire Rope" },
       ];
       const leftX = width / 2 - 60;
