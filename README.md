@@ -220,14 +220,14 @@ As the game's scope expanded, requirements continued to evolve. Through the ongo
   <img src="resources/images/ClassDiagram_0221.png" width="90%"/>
 </p>
 <p align="center">
-  <b>Figure.</b>Initial Design Class Diagram
+  <b>Figure. Initial Design Class Diagram</b>
 </p>
 
 <p align="center">
   <img src="resources/images/ClassDiagram_0304.png" width="90%"/>
 </p>
 <p align="center">
-  <b>Figure.</b>Final Design Class Diagram
+  <b>Figure. Final Design Class Diagram</b>
 </p>
 
 The class diagram illustrates the overall architecture of the game system. The `GameManager` acts as the central coordinator, managing the player, level progression, camera, and shared resources. The game world is organised through the `LevelManager`, which maintains the tile-based map structure and manages collections of entities derived from a common abstract `Entity` class.
