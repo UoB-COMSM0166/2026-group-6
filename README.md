@@ -185,7 +185,9 @@ To structure our game requirements, we organised them using **epics, user storie
 
 </table>
 
-<p align="center"><strong>Table 1: Epics, user stories and acceptance criteria used in <em>Echoes of Purity</em> development</strong></p>
+<p align="center">
+<strong>Table 1.</strong> Epics, user stories and acceptance criteria used in <em>Echoes of Purity</em> development
+</p>
 
 
 ## Reflection
