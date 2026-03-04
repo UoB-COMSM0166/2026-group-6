@@ -94,6 +94,8 @@ The final outcome of the game is determined by the player’s purification progr
 
 ### Stakeholders and User Stories
 
+In order to better identify the stakeholders involved or affected by the game, we conducted a stakeholder analysis of the game. The stakeholder onion model in Figure 1 shows different groups that are either involved or affected by the Echoes of Purity, organized according to their level of interaction with the system.
+
 <p align="center">
   <img src="resources/images/stakeholder-onion-model.svg" width="550"/>
 </p>
