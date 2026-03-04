@@ -217,14 +217,14 @@ As the game's scope expanded, requirements continued to evolve. Through the ongo
 - System architecture. Class diagrams, behavioural diagrams. 
 ## Class Diagram
 <p align="center">
-  <img src="resources/images/ClassDiagram_0221.png" width="90%"/>
+  <img src="resources/images/ClassDiagram_0221.png" width="100%"/>
 </p>
 <p align="center">
   <b>Figure. Initial Design Class Diagram</b>
 </p>
 
 <p align="center">
-  <img src="resources/images/ClassDiagram_0304.png" width="90%"/>
+  <img src="resources/images/ClassDiagram_0304.png" width="100%"/>
 </p>
 <p align="center">
   <b>Figure. Final Design Class Diagram</b>
