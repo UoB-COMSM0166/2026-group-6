@@ -72,6 +72,7 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 - [9. Conclusion](#9-conclusion)
 - [10. Contribution Statement](#10-contribution-statement)
 - [11. Additional Marks](#11-additional-marks)
+- [12.References](#12-references)
 
 ## 1. Introduction
 
@@ -119,7 +120,7 @@ In the third-week lab session, we further explored and evaluated our concept by 
 
 ### Stakeholder Analysis
 
-In order to better identify the stakeholders involved or affected by the game, we conducted a stakeholder analysis of the game. The stakeholder onion model in Figure 1 shows different groups that are either involved or affected by the Echoes of Purity, organized according to their level of interaction with the system.
+In order to better identify the stakeholders involved or affected by the game, we conducted a stakeholder analysis of the project. Following the stakeholder taxonomy proposed by Alexander (2005), we adopted the stakeholder onion model to structure and visualise the different stakeholder groups related to the system. This model helps identify stakeholders based on their relationship and level of interaction with the system, enabling the development team to better understand the project context and stakeholder influence.
 
 <p align="center">
   <img src="resources/images/stakeholder-onion-model.svg" width="550"/>
@@ -212,3 +213,9 @@ You can delete this section in your own repo, it's just here for information. in
 - **Documentation** of code (5% of report grade)
   - Organise your code so that it could easily be picked up by another team in the future and developed further.
   - Is your repo clearly organised? Is code well commented throughout?
+
+
+ ### References
+
+Alexander, I. F. (2005). *A taxonomy of stakeholders: Human roles in system development*. International Journal of Technology and Human Interaction, 1(1), 23–59.
+
