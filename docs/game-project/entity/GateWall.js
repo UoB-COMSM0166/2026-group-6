@@ -15,6 +15,7 @@ class GateWall extends Entity {
       this.gateType = spawnData.fields?.Gatetype || null;
       this.blocksPlayer = true;
       this.isOpen = false;
+      this.sprite = (this.gateType === "CleanedTrigger") ? resources.images.door1 : resources.images.door2;
    }
 
    open() {

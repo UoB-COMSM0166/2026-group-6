@@ -242,7 +242,7 @@ class GameManager {
       }
    }
 
-   // 背景（按 areaNumber 自动切换）
+
    drawBackground() {
       const area = Number(this.level.areaNumber) || 1;
       const key = `area${area}`;
@@ -250,70 +250,114 @@ class GameManager {
       const layers = this.resources.images.parallax?.[key];
       if (!layers || layers.length === 0) return;
 
-      // 当前屏幕对应的世界尺寸（因为 render 里有 scale）
+      // 视口尺寸(world pixel)
       const viewW = width / this.scale;
       const viewH = height / this.scale;
 
-      // 视口左上角（世界坐标）
-      const viewLeft = this.camera.x;
-      const viewTop = this.camera.y;
+      // 计算 Area 包围盒 & 中心
+      if (!this._areaBoundsCache || this._areaBoundsCache.area !== area) {
+         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+         const ldtk = this.resources.ldtkData;
+         for (let i = 0; i < ldtk.levels.length; i++) {
+            const lvl = this.levelsInfo[i];
+            if (!lvl || Number(lvl.areaNumber) !== area) continue;
+            const wl = ldtk.levels[i];
+            minX = Math.min(minX, wl.worldX);
+            minY = Math.min(minY, wl.worldY);
+            maxX = Math.max(maxX, wl.worldX + wl.pxWid);
+            maxY = Math.max(maxY, wl.worldY + wl.pxHei);
+         }
+         // 如果找不到同 area 的 level，退回当前 level 自身范围
+         if (minX === Infinity) {
+            minX = this.level.worldX;
+            minY = this.level.worldY;
+            maxX = this.level.worldX + this.level.mapW;
+            maxY = this.level.worldY + this.level.mapH;
+         }
+         this._areaBoundsCache = {
+            area,
+            cx: (minX + maxX) / 2,
+            cy: (minY + maxY) / 2,
+            w: maxX - minX,
+            h: maxY - minY,
+         };
+      }
+      const ab = this._areaBoundsCache;
 
-       // 远景慢、近景快（你也可以微调）
-      const factors = layers.map((_, i) => 0.10 + i * (0.90 / Math.max(1, layers.length - 1)));
+      // ── 摄像机中心的绝对世界坐标 ──
+      const camAbsX = this.level.worldX + this.camera.x + viewW / 2;
+      const camAbsY = this.level.worldY + this.camera.y + viewH / 2;
 
-      // 根据地图方向选择缩放策略
-      const mapAspect = this.level.mapW / this.level.mapH;
-      const isWideMap = mapAspect > 1; // 地图是横着的
+      // 摄像机与 Area 中心的偏移量
+      const dx = camAbsX - ab.cx;
+      const dy = camAbsY - ab.cy;
 
-      // 画的顺序：从远到近（0 -> 5）
+      // ── 各层视差因子：远景 → 近景 ──
+      //   factor = 0  完全不随摄像机移动（无穷远）
+      //   factor = 1  完全跟随摄像机（同步）
+      const factors = layers.map((_, i) =>
+         0.05 + i * (0.85 / Math.max(1, layers.length - 1))
+      );
+
+      // ── 视口边界（本关卡局部坐标）──
+      const vl = this.camera.x;
+      const vt = this.camera.y;
+
+      // ── 逐层绘制 (从远到近) ──
       for (let i = 0; i < layers.length; i++) {
          const img = layers[i];
          if (!img) continue;
 
          const f = factors[i];
 
-         // 根据地图方向选择缩放方式
-         let imgScale;
-         if (isWideMap) {
-            // 横着的地图：用 Math.max 确保完全覆盖，允许平铺
-            imgScale = Math.max(viewW / img.width, viewH / img.height);
+         // 该层中心 —— 在绝对世界坐标中:
+         //   当摄像机在 Area 中心时, 层中心 == Area 中心
+         //   摄像机每偏移 1px, 该层偏移 f px → 产生 (1-f) 的视差
+         const layerAbsCX = ab.cx + dx * f;
+         const layerAbsCY = ab.cy + dy * f;
+
+         // 转为本关卡局部坐标
+         const layerLocalCX = layerAbsCX - this.level.worldX;
+         const layerLocalCY = layerAbsCY - this.level.worldY;
+
+         // ── 缩放：保证覆盖视口 + 最大视差移动量 ──
+         //   最大偏移量 = Area 半宽/半高 × (1-f)
+         const maxShiftX = (ab.w / 2) * (1 - f);
+         const maxShiftY = (ab.h / 2) * (1 - f);
+         const neededW = viewW + maxShiftX * 2;
+         const neededH = viewH + maxShiftY * 2;
+
+         // 取最大缩放比，保证宽高都够
+         const imgScale = Math.max(
+            neededW / img.width,
+            neededH / img.height,
+            viewW / img.width,   // 兜底: 至少填满视口
+            viewH / img.height
+         );
+         const sw = img.width * imgScale;
+         const sh = img.height * imgScale;
+
+         // 图片左上角（以层中心为基准）
+         const bx = layerLocalCX - sw / 2;
+         const by = layerLocalCY - sh / 2;
+
+         // ── 判断单张是否覆盖视口，不够则平铺 ──
+         if (bx <= vl && bx + sw >= vl + viewW &&
+            by <= vt && by + sh >= vt + viewH) {
+            // 单张足够覆盖
+            image(img, bx, by, sw, sh);
          } else {
-            // 竖着的地图：直接拉伸填满，不平铺
-            imgScale = Math.max(viewW / img.width, viewH / img.height);
-         }
+            // 平铺：计算需要铺几行几列
+            const startCol = Math.floor((vl - bx) / sw);
+            const endCol = Math.ceil((vl + viewW - bx) / sw);
+            const startRow = Math.floor((vt - by) / sh);
+            const endRow = Math.ceil((vt + viewH - by) / sh);
 
-         const scaledWidth = img.width * imgScale;
-         const scaledHeight = img.height * imgScale;
-
-          // 让背景跟随镜头，但速度不同（视差）
-         const ox = viewLeft * f;
-         const oy = viewTop * f;
-
-         if (isWideMap) {
-            // 横着的地图：使用网格平铺
-            const gridX = Math.floor(ox / scaledWidth);
-            const gridY = Math.floor(oy / scaledHeight);
-            const baseX = gridX * scaledWidth;
-            const baseY = gridY * scaledHeight;
-
-            const numCols = Math.ceil(viewW / scaledWidth) + 2;
-            const numRows = Math.ceil(viewH / scaledHeight) + 2;
-
-            for (let col = 0; col < numCols; col++) {
-               for (let row = 0; row < numRows; row++) {
-                  const x = baseX + col * scaledWidth - ox;
-                  const y = baseY + row * scaledHeight - oy;
-                  image(img, x, y, scaledWidth, scaledHeight);
+            for (let c = startCol; c < endCol; c++) {
+               for (let r = startRow; r < endRow; r++) {
+                  image(img, bx + c * sw, by + r * sh, sw, sh);
                }
             }
-         } else {
-            // 竖着的地图：直接显示一个放大的背景，底部对齐到地图底端，保留视差
-            // 计算世界坐标下的居中 X 和底部对齐 Y，然后应用视差偏移 (ox/oy)
-            const worldX = (this.level.mapW - scaledWidth) / 2;
-            const worldY = this.level.mapH - scaledHeight; // 与地图底端对齐
-            const x = worldX - ox;
-            const y = worldY - oy;
-            image(img, x, y, scaledWidth, scaledHeight);
          }
       }
    }

@@ -27,6 +27,8 @@ class ResourceManager {
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
       this.images.cleaningEnergy = loadImage('resources/images/map_image/cleaningenergy.png');
+      this.images.door1 = loadImage('resources/images/map_image/door1.png');
+      this.images.door2 = loadImage('resources/images/map_image/door2.png');
       this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
       this.images.tools = loadImage('resources/images/map_image/tools.png');
       this.images.rest = loadImage('resources/images/map_image/reset.png');
