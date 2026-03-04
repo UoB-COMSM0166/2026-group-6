@@ -56,8 +56,8 @@ class Player {
       let wf = GameConfig.Player.WINCH_FORCE;
 
       if (this.currentRope.state === "SWINGING") {
-         // C: 缩短
-         if (keyIsDown(Keys.C)) {
+         // Q: 缩短
+         if (keyIsDown(Keys.Q)) {
             this.currentRope.changeLength(-cs);
             let a = atan2(this.currentRope.tip.y - this.cy(), this.currentRope.tip.x - this.cx());
             this.vx += cos(a) * wf;
