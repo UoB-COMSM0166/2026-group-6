@@ -11,7 +11,6 @@ function preload() {
 }
 
 function setup() {
-   document.body.style.zoom = "100%";
    document.oncontextmenu = () => false;
    let canvas = createCanvas(1000, 700);
 
