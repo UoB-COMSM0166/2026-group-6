@@ -168,7 +168,7 @@ class Enemy extends Entity {
       player.knockTimer = GameConfig.Player.KnockInterval;
 
       // repel
-      player.repel(dir * 3, -2);
+      player.repel(dir * 1.5, -2);
    }
 
    onRopeContact(rope, player, gm) {
