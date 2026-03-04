@@ -201,6 +201,15 @@ Acceptance criteria helped translate abstract design goals into concrete, verifi
 
 As the game's scope expanded, requirements continued to evolve. Through the ongoing addition, adjustment, or removal of user stories, we optimized the requirements system in a more agile manner. This ensured that the final implemented features aligned with the game's theme while also meeting the course's requirements for testability and maintainability.
 
+## Use Case Model
+
+<p align="center">
+  <img src="resources/images/usecase_model.png" width="600">
+</p>
+
+<p align="center">
+  <b>Figure 4. Use Case Model</b>
+</p>
 
 # 4. Design
 
