@@ -107,12 +107,12 @@ In order to better identify the stakeholders involved or affected by the game, w
 ### Ideation Process
 
 <p align="center">
-  <img src="docs/resources/images/Ideation.png" width="700">
+  <img src="./docs/resources/images/Ideation.png" width="700">
 </p>
 
 <p align="center">
-<b>Figure 2.</b> Ideation process for the game design of <i>Echoes of Purity</i>.
-</p>
+<b>Figure 2.</b> Ideation process for the design of <i>Echoes of Purity</i>.
+</p>>
 
 
 
