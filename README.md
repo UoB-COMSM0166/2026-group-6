@@ -124,9 +124,13 @@ As the game's scope expanded, requirements continued to evolve. Through the ongo
   <img src="resources/images/ClassDiagram0304.png" width="80%"/>
 </p>
 
-The class diagram illustrates the overall structure of the game system. The `GameManager` acts as the central coordinator, managing the player, level progression, camera, and shared resources. The game world is organised around a `LevelManager`, which maintains collections of entities derived from a common abstract `Entity` class.  
+The class diagram illustrates the overall architecture of the game system. The `GameManager` acts as the central coordinator, managing the player, level progression, camera, and shared resources. The game world is organised through the `LevelManager`, which maintains the tile-based map structure and manages collections of entities derived from a common abstract `Entity` class.
 
-In addition, the diagram models the rope-based interaction system, which enables traversal, puzzle solving, and pollution purification. This design follows object-oriented principles and promotes modularity and maintainability.
+Different gameplay objects, including `Enem`y, `Boss`, `PollutionCore`, `Rest`, and `CleanEnergy`, extend the Entity class and implement their own interaction behaviours. Among these, `PollutionCore`, `Enemy`, and `Boss` represent polluted elements in the environment that must be purified by the player.
+
+The core gameplay mechanic is a purification system. The `Player` interacts with the environment and entities using two `Rope` objects, which enable movement, puzzle solving, and purification actions. For example, ropes can trigger the purification of `PollutionCore`, or interact with `Enem`y and `Boss` entities to gradually remove pollution and progress through the level.
+
+Overall, the design follows object-oriented principles such as abstraction, inheritance, and modular decomposition, improving the extensibility and maintainability of the system.
 ### Sequence Diagram – Purify
 <p align="center">
   <img src="docs/resources/images/SequenceDiagram_Purify.png" width="80%"/>
