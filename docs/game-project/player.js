@@ -68,6 +68,25 @@ class Player {
       }
    }
 
+   onMouseWheel_handleWinch(delta) {
+      if (this.currentRope.state !== "SWINGING") return;
+      const G = GameConfig.World.GRID_SIZE;
+      let cs = G * GameConfig.Player.CLIMB_SPEED;
+      let wf = GameConfig.Player.WINCH_FORCE;
+      let wheelMultiplier = 3;
+
+      if (delta > 0) {
+         // 滚轮向下 → 伸长
+         this.currentRope.changeLength(cs * wheelMultiplier);
+      } else if (delta < 0) {
+         // 滚轮向上 → 缩短
+         this.currentRope.changeLength(-cs * wheelMultiplier);
+         let a = atan2(this.currentRope.tip.y - this.cy(), this.currentRope.tip.x - this.cx());
+         this.vx += cos(a) * wf * wheelMultiplier;
+         this.vy += sin(a) * wf * wheelMultiplier;
+      }
+   }
+
    changeCurrentRope() {
       if (this.currentRope.color.toString() === this.ropeL.color.toString()) this.currentRope = this.ropeR;
       else if (this.currentRope.color.toString() === this.ropeR.color.toString()) this.currentRope = this.ropeL;

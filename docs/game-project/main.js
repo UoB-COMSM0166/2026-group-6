@@ -11,6 +11,7 @@ function preload() {
 }
 
 function setup() {
+   document.oncontextmenu = () => false;
    let canvas = createCanvas(1000, 700);
 
    canvas.style('display', 'block');
@@ -65,6 +66,13 @@ function keyPressed() {
       if (keyCode === ESCAPE) { _showMenu(); return; }
       if (gm) gm.onKeyPressed(key);
    }
+}
+
+function mouseWheel(event) {
+   if (appState === "PLAYING" && gm && gm.status === "PLAY") {
+      gm.player.onMouseWheel_handleWinch(event.delta);
+   }
+   return false;
 }
 
 

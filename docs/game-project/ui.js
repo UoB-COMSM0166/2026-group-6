@@ -44,20 +44,34 @@ class UI {
       push();
 
       textAlign(CENTER, CENTER); textSize(14);
-
+      let controlRope;
+      if (player.currentRope.color.toString() === player.ropeL.color.toString())
+         controlRope = 'L';
+      else
+         controlRope = 'R';
       // 左键
-      strokeWeight(matL === 'HARD' ? 5 : 2);
+      strokeWeight(controlRope === 'L' ? 5 : 2);
       if (lActive) { fill(100); stroke(150); }
       else { fill(0, 200, 200, 200); stroke(0, 255, 255); }
-      rect(cx - bw - gap / 2, by, bw, bh, 10, 100, 0, 50);
+      beginShape();
+      let lx = cx - bw - gap / 2;
+      let ly = by;
+      let indent = 15;
+      vertex(lx, ly);
+      vertex(lx + bw - indent, ly);
+      vertex(lx + bw, ly + indent);
+      vertex(lx + bw, ly + bh);
+      vertex(lx + indent, ly + bh);
+      vertex(lx, ly + bh - indent);
+      endShape(CLOSE);
       fill(255); noStroke();
       text("LMB", cx - bw / 2 - gap / 2, by + bh / 2);
 
       // 右键
-      strokeWeight(matR === 'HARD' ? 5 : 2);
+      strokeWeight(controlRope === 'R' ? 5 : 2);
       if (rActive) { fill(100); stroke(150); }
       else { fill(200, 50, 50, 200); stroke(255, 100, 100); }
-      rect(cx + gap / 2, by, bw, bh, 100, 10, 50, 0);
+      rect(cx + gap / 2, by, bw, bh, 500, 0, 500, 0);
       fill(255); noStroke();
       text("RMB", cx + bw / 2 + gap / 2, by + bh / 2);
 

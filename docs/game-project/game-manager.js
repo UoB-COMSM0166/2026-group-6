@@ -229,11 +229,6 @@ class GameManager {
          this.level.mapOpen = false;
       }
 
-      // 按下 M 键，屏幕中央放大显示当前及相邻地图
-      if (keyIsDown(Keys.H)) {
-         intro.drawInstructionPage();
-      }
-
       // UI (屏幕空间)
       UI.drawHUD(this.player, this.level, this);
       if (this.status === "WIN") UI.drawWinScreen();
@@ -259,6 +254,10 @@ class GameManager {
          // if (key === '1') this.player.ropeL.toggleMaterial(this.player);
          // if (key === '2') this.player.ropeR.toggleMaterial(this.player);
          if (key === 'T' || key === 't') this.player.changeCurrentRope();
+         if (key === 'H' || key === 'h') {
+            if (intro.sidePanelsVisible) intro.hideSidePanels();
+            else intro.showSidePanels();
+         }
       }
       if (this.status === "GAMEOVER") {
          if (key === 'R' || key === 'r') {
