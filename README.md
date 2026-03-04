@@ -132,10 +132,6 @@ In order to better identify the stakeholders involved or affected by the game, w
 
 To structure our game requirements, we organised them using **epics, user stories, and acceptance criteria**, following the agile requirements format introduced in the lab and lecture.
 
-
-<p align="center"><strong>Table 1</strong></p>
-<p align="center">Epics, user stories and acceptance criteria used in <em>Echoes of Purity</em> development</p>
-
 <table>
 <tr>
 <th>Epic</th>
@@ -188,6 +184,8 @@ To structure our game requirements, we organised them using **epics, user storie
 </tr>
 
 </table>
+
+<p align="center"><strong>Table 1: Epics, user stories and acceptance criteria used in <em>Echoes of Purity</em> development</strong></p>
 
 
 ## Reflection
