@@ -225,7 +225,7 @@ class introUI {
       const ropeKeys = [
          { key: 'T', desc: 'Change Rope' },
          { key: 'E', desc: 'Prolong Rope' },
-         { key: 'C', desc: 'Shorten Rope' },
+         { key: 'Q', desc: 'Shorten Rope' },
       ];
 
       // 小标题
