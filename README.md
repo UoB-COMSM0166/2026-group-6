@@ -130,19 +130,64 @@ In order to better identify the stakeholders involved or affected by the game, w
   <b>Figure 3.</b> Stakeholder Onion Model
 </p>
 
-## Table: Epics, User Stories and Acceptance Criteria for *Echoes of Purity*
+To structure our game requirements, we organised them using **epics, user stories, and acceptance criteria**, following the agile requirements format introduced in the lab and lecture.
 
-| Epic | User Story | Acceptance Criteria |
-|-----|-----|-----|
-| Exploration and Traversal | As a player, I want to use a rope tool to traverse difficult terrain so that I can explore polluted areas of the planet. | Given the player is near a rope anchor point, when they activate the rope tool, then the player can swing or climb to reach higher or distant platforms. |
-| Exploration and Traversal | As a player, I want to explore interconnected areas so that I can gradually uncover the world. | Given the player moves through the environment, when they reach a transition point between areas, then the camera follows the player and loads the connected area smoothly. |
-| Pollution Purification | As a player, I want to purify polluted creatures and cores so that the environment can gradually recover. | Given a polluted creature or core is present, when the player uses cleaning energy, then the pollution entity is removed and the purification progress increases. |
-| Pollution Purification | As a player, I want to purify polluted creatures and pollution cores so that I can clear obstacles in my path. | Given a polluted creature or pollution core is present, when the player uses cleaning energy to purify it, then the entity disappears and the path becomes accessible. |
-| Progression and World State | As a player, I want purification progress to unlock new areas so that exploration feels rewarding. | Given the purification progress reaches a required percentage, when the player approaches a blocked path, then the barrier is removed or a gate opens. |
-| Progression and World State | As a player, I want the final ending to depend on how much pollution I cleaned so that my choices influence the outcome. | Given the player completes the game, when the system evaluates the purification percentage, then the corresponding ending is displayed. |
-| Player Feedback and UI | As a player, I want to see my purification progress so that I understand how much of the world has been restored. | When the player is in the game interface, the percentage of the world's purification will be displayed. |
-| Player Feedback and UI | As a player, I want clear visual feedback when I purify something so that I understand my actions had an effect. | Given the player purifies an enemy or pollution core, when the purification completes, then a visual effect and sound cue are triggered. |
 
+<p align="center"><strong>Table 1</strong></p>
+<p align="center">Epics, user stories and acceptance criteria used in <em>Echoes of Purity</em> development</p>
+
+<table>
+<tr>
+<th>Epic</th>
+<th>User Story</th>
+<th>Acceptance Criterion</th>
+</tr>
+
+<tr>
+<td rowspan="2">Exploration and Traversal</td>
+<td>As a player, I want to use a rope tool to traverse difficult terrain so that I can explore polluted areas of the planet.</td>
+<td>Given the player is near a rope anchor point, when they activate the rope tool, then the player can swing or climb to reach higher or distant platforms.</td>
+</tr>
+
+<tr>
+<td>As a player, I want to explore interconnected areas so that I can gradually uncover the world.</td>
+<td>Given the player moves through the environment, when they reach a transition point between areas, then the camera follows the player and loads the connected area smoothly.</td>
+</tr>
+
+<tr>
+<td rowspan="2">Pollution Purification</td>
+<td>As a player, I want to purify polluted creatures and cores so that the environment can gradually recover.</td>
+<td>Given a polluted creature or core is present, when the player uses cleaning energy, then the pollution entity is removed and the purification progress increases.</td>
+</tr>
+
+<tr>
+<td>As a player, I want to purify polluted creatures and pollution cores so that I can clear obstacles in my path.</td>
+<td>Given a polluted creature or pollution core is present, when the player uses cleaning energy to purify it, then the entity disappears and the path becomes accessible.</td>
+</tr>
+
+<tr>
+<td rowspan="2">Progression and World State</td>
+<td>As a player, I want purification progress to unlock new areas so that exploration feels rewarding.</td>
+<td>Given the purification progress reaches a required percentage, when the player approaches a blocked path, then the barrier is removed or a gate opens.</td>
+</tr>
+
+<tr>
+<td>As a player, I want the final ending to depend on how much pollution I cleaned so that my choices influence the outcome.</td>
+<td>Given the player completes the game, when the system evaluates the purification percentage, then the corresponding ending is displayed.</td>
+</tr>
+
+<tr>
+<td rowspan="2">Player Feedback and UI</td>
+<td>As a player, I want to see my purification progress so that I understand how much of the world has been restored.</td>
+<td>When the player is in the game interface, the percentage of the world's purification will be displayed.</td>
+</tr>
+
+<tr>
+<td>As a player, I want clear visual feedback when I purify something so that I understand my actions had an effect.</td>
+<td>Given the player purifies an enemy or pollution core, when the purification completes, then a visual effect and sound cue are triggered.</td>
+</tr>
+
+</table>
 
 
 ## Reflection
