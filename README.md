@@ -99,7 +99,7 @@ The final outcome of the game is determined by the player’s purification progr
 </p>
 
 <p align="center">
-<b>Figure 2.</b> Ideation process for the design of <i>Echoes of Purity</i>.
+<b>Figure 1.</b> Ideation process for the design of <i>Echoes of Purity</i>.
 </p>
 
 ### Ideation
@@ -107,6 +107,14 @@ The final outcome of the game is determined by the player’s purification progr
 In the early stage of the project, we explored game ideas through team brainstorming sessions. Each member first independently proposed a game concept, and then organized these initial ideas in the *gamelist* file of the project repository. This file was used to record different game types, core mechanisms, and potential design directions. By discussing and comparing these ideas, we found that the team members' interests mainly focused on game types that were more exploratory and had a non-linear structure, such as **Metroidvania**. Therefore, during the team discussions in the second and third weeks, we gradually narrowed down the creative direction. We decided to position the project as a non-linear 2D side-scrolling platform game. Players can freely explore different areas and advance the game by gradually unlocking paths.
 
 Based on the determination of the game type, we then delved into the themes that the game intends to convey. We agreed that the game should not only provide an engaging interactive experience but also communicate a meaningful message. Considering the growing global concern about environmental pollution, we chose **environmental restoration and pollution purification** as the core theme of the game. As a result, we proposed a gameplay centered around purifying pollution sources: Players need to remove pollution sources (such as garbage or pollution cores) in the game world, gradually restoring the environment.
+
+<p align="center">
+  <img src="meetings/week03/game2.gif" width="600">
+</p>
+
+<p align="center">
+  <b>Figure 2.</b> Paper Prototypin
+</p>
 
 In the third-week lab session, we further explored and evaluated our concept by creating a paper prototype of the game. This approach enables low-cost experimentation, making it easier to gather feedback and refine ideas before implementing the system in code. Through this prototype, we were able to visually understand the core gameplay loop, thereby enhancing our comprehension of the player interaction process. This was helpful in guiding the subsequent design and development phases.
 
@@ -120,7 +128,7 @@ In order to better identify the stakeholders involved or affected by the game, w
 </p>
 
 <p align="center">
-  <b>Figure 1.</b> Stakeholder Onion Model
+  <b>Figure 3.</b> Stakeholder Onion Model
 </p>
 
 
