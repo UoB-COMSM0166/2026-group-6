@@ -83,6 +83,42 @@ class ResourceManager {
          attack: loadImage('resources/images/enemy/Monster_Slime_Attack1-Sheet.png'),
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
       };
+
+      //地图背景
+      this.images.parallax = {};
+
+      // Area1: Ephemeral_0..5 (6 layers)
+      this.images.parallax.area1 = [];
+      for (let i = 0; i <= 5; i++) {
+         this.images.parallax.area1.push(
+            loadImage(`resources/images/background/area1bg/Ephemeral_${i}.png`)
+         );
+      }
+
+      // Area2: WCP_1..5 (5 layers)
+      this.images.parallax.area2 = [];
+      for (let i = 1; i <= 5; i++) {
+         this.images.parallax.area2.push(
+            loadImage(`resources/images/background/area2bg/WCP_${i}.png`)
+         );
+      }
+
+      // Area3: 4 layers (order matters: far -> mid -> near -> foreground)
+      this.images.parallax.area3 = [
+      loadImage(`resources/images/background/area3bg/far-buildings.png`),
+      loadImage(`resources/images/background/area3bg/bg.png`),
+      loadImage(`resources/images/background/area3bg/buildings.png`),
+      loadImage(`resources/images/background/area3bg/skill-foreground.png`),
+      ];
+
+      // Area4: 1..5 (5 layers)  (folder name in zip is "aera4bg")
+      this.images.parallax.area4 = [];
+      for (let i = 1; i <= 5; i++) {
+         this.images.parallax.area4.push(
+            loadImage(`resources/images/background/area4bg/${i}.png`)
+         );
+      }
+
    }
 
    /** preload 完成后标记 */
