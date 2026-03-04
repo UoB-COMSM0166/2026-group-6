@@ -12,10 +12,13 @@ function preload() {
 
 function setup() {
    let canvas = createCanvas(1000, 700);
-   canvas.parent("game-container");
 
    canvas.style('display', 'block');
    canvas.style('margin', 'auto');
+   canvas.style('position', 'absolute');
+   canvas.style('top', '50%');
+   canvas.style('left', '50%');
+   canvas.style('transform', 'translate(-50%, -50%)');
 
    document.body.style.backgroundColor = "#1a1a1a";
    document.body.style.margin = "0";
@@ -31,12 +34,6 @@ function setup() {
 }
 
 function draw() {
-   const controls = document.getElementById("controls-ui");
-
-   if (controls) {
-      controls.style.display = (appState === "PLAYING") ? "block" : "none";
-   }
-
    //start
    if (!started) {
       background(0);
@@ -75,7 +72,7 @@ function _createMenu() {
    menuDiv = document.createElement('div');
    menuDiv.id = 'game-menu';
    menuDiv.style.cssText =
-      'position:fixed; top:50%; left:50%; width:750px; height:525px;' +
+      'position:fixed; top:50%; left:50%; width:1000px; height:700px;' +
       'transform:translate(-50%,-50%);' +
       'display:flex; flex-direction:column; justify-content:center; align-items:center;' +
       'gap:20px; background:#1a1a2e; z-index:10;';

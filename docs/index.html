@@ -11,57 +11,6 @@
          margin: 0;
          background-color: #1b1b1b;
       }
-
-   /* 页面布局 */
-      #layout{
-         max-height:100vh;
-         display:flex;
-         justify-content:center;
-         align-items:flex-start;
-         gap:10px;
-         padding-top:40px;
-   
-      }
-
-      #game-container{
-         width:1000px;
-         height:700px;
-
-         transform: scale(0.75);
-         transform-origin: top center;
-      }
-
-      /* canvas */
-      #game-container canvas{
-         display:block;
-      }
-
-      /* 右侧 Controls UI */
-      #controls-ui{
-         width:220px;
-         padding:15px;
-         border-radius:12px;
-         background:rgba(30,30,40,0.9);
-         color:white;
-         font-family:sans-serif;
-
-         display:none;   /* 默认隐藏 */
-      }
-
-      /* 每一行 */
-      .row{
-         margin:6px 0;
-      }
-
-      /* 按键样式 */
-      .key{
-         display:inline-block;
-         width:40px;
-         text-align:center;
-         background:#444;
-         border-radius:5px;
-         margin-right:6px;
-      }
    </style>
 
    <!-- p5.js -->
@@ -108,35 +57,7 @@
 </head>
 
 <body>
-
-<div id="layout">
-
-  <!-- 游戏canvas放这里 -->
-  <div id="game-container"></div>
-
-  <!-- 右侧Controls UI -->
-  <div id="controls-ui">
-    <h3>Controls</h3>
-
-    <div class="row"><span class="key">W</span> Up</div>
-    <div class="row"><span class="key">A</span> Left</div>
-    <div class="row"><span class="key">S</span> Down</div>
-    <div class="row"><span class="key">D</span> Right</div>
-
-    <div class="row"><span class="key">T</span> Change Rope</div>
-    <div class="row"><span class="key">E</span> Prolong Rope</div>
-    <div class="row"><span class="key">C</span> Shorten Rope</div>
-
-    <div class="row"><span class="key">M</span> Map</div>
-    <div class="row"><span class="key">H</span> Help</div>
-    <div class="row"><span class="key">F</span> Interact</div>
-
-    <p>Left Click: Firm Rope</p>
-    <p>Right Click: Soft Rope</p>
-  </div>
-
-</div>
-
+   <main></main>
 </body>
 
 </html>
