@@ -249,7 +249,7 @@ class GameManager {
 
 
       //Side Keyboard
-      const leftControls = [
+      /*const leftControls = [
          { key: "W", desc: "Up" },
          { key: "A", desc: "Left" },
          { key: "S", desc: "Down" },
@@ -266,7 +266,7 @@ class GameManager {
          { key: "M", desc: "Map" },
          { key: "H", desc: "Help" },
       ];
-      this.sideUI.render(leftControls, rightControls);
+      this.sideUI.render(leftControls, rightControls);*/
    }
 
    // 背景（按 areaNumber 自动切换）
