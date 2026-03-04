@@ -107,7 +107,7 @@ In order to better identify the stakeholders involved or affected by the game, w
 ### Ideation Process
 
 <p align="center">
-  <img src="resources/images/Ideation.png" width="700">
+  <img src="resources/images/Ideation_progress.png" width="700">
 </p>
 
 <p align="center">
