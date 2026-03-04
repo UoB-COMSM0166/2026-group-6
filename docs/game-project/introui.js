@@ -1,15 +1,5 @@
 class introUI {
    constructor() {
-      this.stars = [];
-      this.starCount = 200;
-      for (let i = 0; i < this.starCount; i++) {
-         this.stars.push({
-            x: random(width),
-            y: random(height),
-            size: random(1, 3),
-            phase: random(TWO_PI),
-         });
-      }
       this.transition = 0;
       this.transitionSpeed = 0.02;
       this.isTransitioning = false;
@@ -363,47 +353,9 @@ class introUI {
       ctx.fill();
    }
 
-
-   drawBackground() {
-      push();
-      for (let i = 0; i <= height; i++) {
-         let inter = map(i, 0, height, 0, 1);
-         let c = lerpColor(color(100, 210, 180), color(200, 170, 210), inter);
-         stroke(c);
-         line(0, i, width, i);
-      }
-      noStroke();
-      for (let s of this.stars) {
-         let alpha = map(sin(frameCount * 0.02 + s.phase), -1, 1, 80, 255);
-         fill(255, 255, 255, alpha);
-         ellipse(s.x, s.y, s.size, s.size);
-      }
-      pop();
-   }
-
-   drawTitle() {
-      push();
-      textAlign(CENTER, CENTER);
-      textSize(70);
-      for (let i = 4; i > 0; i--) {
-         fill(100, 150, 255, 30);
-         text("Ecological Restoration", width / 2 + i, height / 2 + i);
-      }
-      fill(255);
-      text("Purifying", width / 2, height / 2);
-      textSize(20);
-      fill(200, 220, 255);
-      text("—— Click to see Instruction ——", width / 2, 400);
-      pop();
-   }
-
-   drawFooter() {
-      push();
-      textAlign(CENTER, CENTER);
-      textSize(16);
-      fill(255, 255, 255);
-      text("✨ UoB-COMSM0166/2026-group-6 ✨", width / 2, 570);
-      pop();
+   drawCover() {
+      let cover = resources.images.cover;
+      image(cover, 0, 0, 1000, 700);
    }
 
    drawKey(label, x, y, w, h, alpha) {
@@ -427,10 +379,7 @@ class introUI {
    }
 
    display() {
-      this.drawBackground();
-      this.drawTitle();
-      this.drawFooter();
-
+      this.drawCover();
       if (this.transition > 0) {
          push();
          fill(0, 0, 0, this.transition * 200);

@@ -3,7 +3,7 @@ const GameConfig = {
    World: {
       GRID_SIZE: 16,
       GRAVITY: 0.35,
-      FrictionalForce: 0.83,
+      FrictionalForce: 0.75,
       AirFrictionalForce: 0.9,
       SOLID_TYPES: ["ground", "spaceship", "mechanism"],
       PURIFY_CHANGE_THRESHOLD: 75,
