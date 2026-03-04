@@ -223,7 +223,6 @@ class introUI {
       let descX = 35;
 
       const ropeKeys = [
-         { key: 'T', desc: 'Change Rope' },
          { key: 'E', desc: 'Prolong Rope' },
          { key: 'Q', desc: 'Shorten Rope' },
       ];

@@ -38,19 +38,13 @@ class UI {
       let bw = 50, bh = 40, gap = 5;
       let lActive = player.ropeL.state !== "IDLE";
       let rActive = player.ropeR.state !== "IDLE";
-      let matL = player.ropeL.material;
-      let matR = player.ropeR.material;
 
       push();
 
       textAlign(CENTER, CENTER); textSize(14);
-      let controlRope;
-      if (player.currentRope.color.toString() === player.ropeL.color.toString())
-         controlRope = 'L';
-      else
-         controlRope = 'R';
+      
       // 左键
-      strokeWeight(controlRope === 'L' ? 5 : 2);
+      strokeWeight(player.currentRope.includes(player.ropeL) ? 5 : 2);
       if (lActive) { fill(100); stroke(150); }
       else { fill(0, 200, 200, 200); stroke(0, 255, 255); }
       beginShape();
@@ -68,7 +62,7 @@ class UI {
       text("LMB", cx - bw / 2 - gap / 2, by + bh / 2);
 
       // 右键
-      strokeWeight(controlRope === 'R' ? 5 : 2);
+      strokeWeight(player.currentRope.includes(player.ropeR) ? 5 : 2);
       if (rActive) { fill(100); stroke(150); }
       else { fill(200, 50, 50, 200); stroke(255, 100, 100); }
       rect(cx + gap / 2, by, bw, bh, 500, 0, 500, 0);

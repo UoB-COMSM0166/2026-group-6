@@ -36,6 +36,7 @@ class Player {
     */
    update(gm) {
       this._tickTimers();
+      this._getActiveWinchRopes(gm)
       this._handleWinch();
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
@@ -55,41 +56,72 @@ class Player {
       let cs = G * GameConfig.Player.CLIMB_SPEED;
       let wf = GameConfig.Player.WINCH_FORCE;
 
-      if (this.currentRope.state === "SWINGING") {
+      let count = this.currentRope.length;
+      if (count === 0) return;
+
+      for (let rope of this.currentRope) {
+         if (rope.state !== "SWINGING") continue;
          // Q: 缩短
          if (keyIsDown(Keys.Q)) {
-            this.currentRope.changeLength(-cs);
-            let a = atan2(this.currentRope.tip.y - this.cy(), this.currentRope.tip.x - this.cx());
-            this.vx += cos(a) * wf;
-            this.vy += sin(a) * wf;
+            rope.changeLength(-cs);
+            let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
+            this.vx += cos(a) * wf / count;
+            this.vy += sin(a) * wf / count;
          }
          // E: 伸长
-         if (keyIsDown(Keys.E)) this.currentRope.changeLength(cs);
+         if (keyIsDown(Keys.E)) rope.changeLength(cs);
       }
    }
 
    onMouseWheel_handleWinch(delta) {
-      if (this.currentRope.state !== "SWINGING") return;
       const G = GameConfig.World.GRID_SIZE;
       let cs = G * GameConfig.Player.CLIMB_SPEED;
       let wf = GameConfig.Player.WINCH_FORCE;
       let wheelMultiplier = 3;
 
-      if (delta > 0) {
-         // 滚轮向下 → 伸长
-         this.currentRope.changeLength(cs * wheelMultiplier);
-      } else if (delta < 0) {
-         // 滚轮向上 → 缩短
-         this.currentRope.changeLength(-cs * wheelMultiplier);
-         let a = atan2(this.currentRope.tip.y - this.cy(), this.currentRope.tip.x - this.cx());
-         this.vx += cos(a) * wf * wheelMultiplier;
-         this.vy += sin(a) * wf * wheelMultiplier;
+      let count = this.currentRope.length;
+      if (count === 0) return;
+
+      for (let rope of this.currentRope) {
+         if (rope.state !== "SWINGING") continue;
+         // Q: 缩短
+         if (delta < 0) {
+            rope.changeLength(-cs * wheelMultiplier);
+            let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
+            this.vx += cos(a) * wf * wheelMultiplier / count;
+            this.vy += sin(a) * wf * wheelMultiplier / count;
+         }
+         // E: 伸长
+         if (delta > 0) rope.changeLength(cs * wheelMultiplier);
       }
    }
 
-   changeCurrentRope() {
-      if (this.currentRope.color.toString() === this.ropeL.color.toString()) this.currentRope = this.ropeR;
-      else if (this.currentRope.color.toString() === this.ropeR.color.toString()) this.currentRope = this.ropeL;
+
+
+   _getActiveWinchRopes(gm) {
+      let lSwinging = this.ropeL.state === "SWINGING";
+      let rSwinging = this.ropeR.state === "SWINGING";
+
+      if (lSwinging && rSwinging) {
+         let midLeftPoint = { x: (this.ropeL.tip.x + this.cx()) / 2, y: (this.ropeL.tip.y + this.cy()) / 2 };
+         let midRightPoint = { x: (this.ropeR.tip.x + this.cx()) / 2, y: (this.ropeR.tip.y + this.cy()) / 2 };
+         let mouseWp = gm.camera.screenToWorld(mouseX, mouseY, gm.scale);
+         let dL = dist(mouseWp.x, mouseWp.y, midLeftPoint.x, midLeftPoint.y);
+         let dR = dist(mouseWp.x, mouseWp.y, midRightPoint.x, midRightPoint.y);
+         let threshold = GameConfig.World.GRID_SIZE * 0.5;
+
+         if (Math.abs(dL - dR) < threshold) {
+            this.currentRope = [this.ropeL, this.ropeR];
+         } else {
+            this.currentRope = (dL < dR ? [this.ropeL] : [this.ropeR]);
+         }
+      } else if (lSwinging) {
+         this.currentRope = [this.ropeL];
+      } else if (rSwinging) {
+         this.currentRope = [this.ropeR];
+      } else {
+         this.currentRope = [];
+      }
    }
 
    // ====== 物理 ======

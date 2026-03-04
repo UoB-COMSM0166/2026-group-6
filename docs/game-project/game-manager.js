@@ -270,6 +270,7 @@ class GameManager {
 
    onMousePressed(button) {
       if (this.status !== "PLAY") return;
+      // world point
       let wp = this.camera.screenToWorld(mouseX, mouseY, this.scale);
       if (button === LEFT) this.player.fireRope("LEFT", wp.x, wp.y);
       if (button === RIGHT) this.player.fireRope("RIGHT", wp.x, wp.y);
@@ -280,7 +281,6 @@ class GameManager {
          if (key === ' ' || key === 'ArrowUp' || key === 'w' || key === 'W') this.player.jump();
          // if (key === '1') this.player.ropeL.toggleMaterial(this.player);
          // if (key === '2') this.player.ropeR.toggleMaterial(this.player);
-         if (key === 'T' || key === 't') this.player.changeCurrentRope();
          if (key === 'H' || key === 'h') {
             if (intro.sidePanelsVisible) intro.hideSidePanels();
             else intro.showSidePanels();
