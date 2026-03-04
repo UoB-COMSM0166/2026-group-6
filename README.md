@@ -11,11 +11,11 @@ This is a non-linear level-based game that combines side-scrolling platforming, 
 
 ### demo image: v2.5
 
-(updated in 03/03/26)
 
 <p align="center">
-  <img src="resources/images/week7-snapshot.png" width="500">
+  <img src="docs/resources/images/map_image/cover.png" width="600">
 </p>
+
 
 
 ### TRY TO START GAME
