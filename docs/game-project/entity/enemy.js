@@ -18,9 +18,13 @@ class Enemy extends Entity {
       this.purified = false;
       this.alpha = 255;
 
-      this.dir = 1;
+      this.dir = 1; // 想要前往的方向
       this.speed = GameConfig.Enemy.SPEED;
       this.vy = 0;
+      this.vx = 0; // 实际移动方向
+      this.accel = 0.02;       // 每帧加速量
+      this.friction = 0.85;     // 击退后的摩擦衰减
+      this.knockback = false;   // 是否处于击退状态
       this.grounded = false;
       this.jumpForce = -0.8 * GameConfig.Enemy.JUMPFORCE;
 
@@ -101,15 +105,34 @@ class Enemy extends Entity {
 
       // --- X 轴 ---
       const G = GameConfig.World.GRID_SIZE;
-      let nextX = this.x + this.speed * this.dir * 0.8;
 
-      // 撞墙检测 (空间查询)
-      let hitWall = false;
-      hitWall = !!level.isRectOverlappingTile(nextX, this.y, this.w, this.h,
+      if (this.knockback) {
+         // 击退状态：摩擦衰减，速度足够小时恢复正常
+         this.vx *= this.friction;
+         if (Math.abs(this.vx) < this.speed * 0.5) {
+            this.knockback = false;
+         }
+      } else {
+         // 正常状态：向目标速度加速
+         let targetVx = this.speed * this.dir * 0.8;
+         if (Math.abs(this.vx - targetVx) < this.accel) {
+            this.vx = targetVx;
+         } else if (this.vx < targetVx) {
+            this.vx += this.accel;
+         } else {
+            this.vx -= this.accel;
+         }
+      }
+
+      let nextX = this.x + this.vx;
+
+      // 撞墙检测（不变）
+      let hitWall = !!level.isRectOverlappingTile(nextX, this.y, this.w, this.h,
          { solidOnly: true, margin: 0.1 });
 
-      // 悬崖检测: 利用 LevelManager 列查询
-      let probeX = (this.dir === 1) ? (nextX + 0.5 * this.w + 0.1) : (nextX + 0.5 * this.w - 0.1);
+      // 悬崖检测（不变）
+      let moveDir = (this.vx >= 0) ? 1 : -1;
+      let probeX = (moveDir === 1) ? (nextX + 0.5 * this.w + 0.1) : (nextX + 0.5 * this.w - 0.1);
       let feetRow = level.worldToGrid(0, this.y + this.h).row;
       let maxDropRow = level.worldToGrid(0, this.y + this.h + G * GameConfig.Enemy.DROP_DEPTH_TILES).row;
       let probeCol = level.worldToGrid(probeX, 0).col;
@@ -118,7 +141,8 @@ class Enemy extends Entity {
       let aboutToFall = !safeToDrop;
 
       if (hitWall) {
-         if (this.grounded) {
+         this.vx = 0;  // 撞墙速度归零
+         if (this.grounded && !this.knockback) {
             this.vy = this.jumpForce;
             this.jumpTime += 1;
             this.grounded = false;
@@ -127,11 +151,10 @@ class Enemy extends Entity {
             if (this.vy > 2.0) this._turn();
          }
       }
-      else if (aboutToFall && this.grounded) {
+      else if (aboutToFall && this.grounded && !this.knockback) {
          this._turn();
       }
-      // 接近地图边缘转向
-      else if (this._isCrossMap(level)) {
+      else if (this._isCrossMap(level) && !this.knockback) {
          this._turn();
       }
       else {
@@ -177,7 +200,7 @@ class Enemy extends Entity {
       // punch sound
       if (!this.punchSound.isPlaying()) this.punchSound.play();
       let dir = (player.x < this.x) ? 1 : -1;
-      this.repel(dir * this.w * 0.5, 0);
+      this.repel(dir * 1.5, 0);
       this.takeDamage(1);
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
       gm.addParticles(this.cx(), this.cy());
@@ -207,21 +230,23 @@ class Enemy extends Entity {
 
    // 超出地图
    _isCrossMap(level) {
-      let nextX = this.x + this.speed * this.dir * 0.8;
+      let nextX = this.x + this.vx;
       const G = GameConfig.World.GRID_SIZE;
       let margin = G * 0.5;
-      return ((this.dir === -1 && nextX < margin) ||
-         (this.dir === 1 && nextX + this.w > level.mapW - margin));
+      return ((this.vx < 0 && nextX < margin) ||
+         (this.vx > 0 && nextX + this.w > level.mapW - margin));
    }
 
    _turn() {
       this.dir *= -1;
       this.jumpTime = 0;
+      this.vx = this.speed * this.dir * 0.3;  // 立即给一个新方向的初速度
    }
 
    repel(repelX, repelY) {
-      this.x += repelX;
-      this.y += repelY;
+      this.vx += repelX;
+      this.vy += repelY;
+      this.knockback = true;
    }
 
    _tickAnim() {

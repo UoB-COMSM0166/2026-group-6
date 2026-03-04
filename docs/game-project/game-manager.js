@@ -247,22 +247,74 @@ class GameManager {
       const area = Number(this.level.areaNumber) || 1;
       const key = `area${area}`;
 
-      // 用 this.resources
       const layers = this.resources.images.parallax?.[key];
       if (!layers || layers.length === 0) return;
 
-      // 自动生成视差系数：层越靠前移动越快
-      // 例如 5 层 -> 0.15,0.30,0.45,0.60,0.75
-      const factors = layers.map((_, i) => 0.15 + i * (0.75 / Math.max(1, layers.length - 1)));
+      // 当前屏幕对应的世界尺寸（因为 render 里有 scale）
+      const viewW = width / this.scale;
+      const viewH = height / this.scale;
 
+      // 视口左上角（世界坐标）
+      const viewLeft = this.camera.x;
+      const viewTop = this.camera.y;
+
+       // 远景慢、近景快（你也可以微调）
+      const factors = layers.map((_, i) => 0.10 + i * (0.90 / Math.max(1, layers.length - 1)));
+
+      // 根据地图方向选择缩放策略
+      const mapAspect = this.level.mapW / this.level.mapH;
+      const isWideMap = mapAspect > 1; // 地图是横着的
+
+      // 画的顺序：从远到近（0 -> 5）
       for (let i = 0; i < layers.length; i++) {
          const img = layers[i];
+         if (!img) continue;
+
          const f = factors[i];
 
-         const x = this.camera.x * (1 - f);
-         const y = this.camera.y * (1 - f);
+         // 根据地图方向选择缩放方式
+         let imgScale;
+         if (isWideMap) {
+            // 横着的地图：用 Math.max 确保完全覆盖，允许平铺
+            imgScale = Math.max(viewW / img.width, viewH / img.height);
+         } else {
+            // 竖着的地图：直接拉伸填满，不平铺
+            imgScale = Math.max(viewW / img.width, viewH / img.height);
+         }
 
-         image(img, x, y);
+         const scaledWidth = img.width * imgScale;
+         const scaledHeight = img.height * imgScale;
+
+          // 让背景跟随镜头，但速度不同（视差）
+         const ox = viewLeft * f;
+         const oy = viewTop * f;
+
+         if (isWideMap) {
+            // 横着的地图：使用网格平铺
+            const gridX = Math.floor(ox / scaledWidth);
+            const gridY = Math.floor(oy / scaledHeight);
+            const baseX = gridX * scaledWidth;
+            const baseY = gridY * scaledHeight;
+
+            const numCols = Math.ceil(viewW / scaledWidth) + 2;
+            const numRows = Math.ceil(viewH / scaledHeight) + 2;
+
+            for (let col = 0; col < numCols; col++) {
+               for (let row = 0; row < numRows; row++) {
+                  const x = baseX + col * scaledWidth - ox;
+                  const y = baseY + row * scaledHeight - oy;
+                  image(img, x, y, scaledWidth, scaledHeight);
+               }
+            }
+         } else {
+            // 竖着的地图：直接显示一个放大的背景，底部对齐到地图底端，保留视差
+            // 计算世界坐标下的居中 X 和底部对齐 Y，然后应用视差偏移 (ox/oy)
+            const worldX = (this.level.mapW - scaledWidth) / 2;
+            const worldY = this.level.mapH - scaledHeight; // 与地图底端对齐
+            const x = worldX - ox;
+            const y = worldY - oy;
+            image(img, x, y, scaledWidth, scaledHeight);
+         }
       }
    }
 
