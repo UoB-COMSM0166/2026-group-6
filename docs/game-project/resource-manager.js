@@ -36,24 +36,9 @@ class ResourceManager {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));
       }
 
-      //BGM:
-      //这个适合做新手教学背景音乐，level 1
-      this.sounds.begain = loadSound('resources/audios/background/begain.mp3');
-      //boss背景音，记得加间隔循环
-      this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
-      this.sounds.forest1 = loadSound('resources/audios/background/forest.mp3');
-      this.sounds.forest2 = loadSound('resources/audios/background/forest2.mp3');
-      this.sounds.forest3 = loadSound('resources/audios/background/forest3.mp3');
-      this.sounds.forest4 = loadSound('resources/audios/background/forestdeep.mp3');
-      this.sounds.forest5 = loadSound('resources/audios/background/forestend.mp3');
-      this.sounds.river1 = loadSound('resources/audios/background/river.mp3');
-      this.sounds.river2 = loadSound('resources/audios/background/river2.mp3');
 
-      //IntroUI:
-      this.images.paper = loadImage(`resources/images/paper.png`);
+      // 音效扩展:
 
-
-      // 音效:
       this.sounds.rope = {
          ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
          ropered: loadSound('resources/audios/sides/redwhoosh.wav')
@@ -83,42 +68,6 @@ class ResourceManager {
          attack: loadImage('resources/images/enemy/Monster_Slime_Attack1-Sheet.png'),
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
       };
-
-      //地图背景
-      this.images.parallax = {};
-
-      // Area1: Ephemeral_0..5 (6 layers)
-      this.images.parallax.area1 = [];
-      for (let i = 0; i <= 5; i++) {
-         this.images.parallax.area1.push(
-            loadImage(`resources/images/background/area1bg/Ephemeral_${i}.png`)
-         );
-      }
-
-      // Area2: WCP_1..5 (5 layers)
-      this.images.parallax.area2 = [];
-      for (let i = 1; i <= 5; i++) {
-         this.images.parallax.area2.push(
-            loadImage(`resources/images/background/area2bg/WCP_${i}.png`)
-         );
-      }
-
-      // Area3: 4 layers (order matters: far -> mid -> near -> foreground)
-      this.images.parallax.area3 = [
-      loadImage(`resources/images/background/area3bg/far-buildings.png`),
-      loadImage(`resources/images/background/area3bg/bg.png`),
-      loadImage(`resources/images/background/area3bg/buildings.png`),
-      loadImage(`resources/images/background/area3bg/skill-foreground.png`),
-      ];
-
-      // Area4: 1..5 (5 layers)  (folder name in zip is "aera4bg")
-      this.images.parallax.area4 = [];
-      for (let i = 1; i <= 5; i++) {
-         this.images.parallax.area4.push(
-            loadImage(`resources/images/background/area4bg/${i}.png`)
-         );
-      }
-
    }
 
    /** preload 完成后标记 */

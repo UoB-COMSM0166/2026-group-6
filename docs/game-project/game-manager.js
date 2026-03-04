@@ -38,8 +38,6 @@ class GameManager {
       this._isPreloading;
       this.checkpoint = null; // { levelIndex, x, y }
       this.preload();
-      //
-      this.sideUI = new SideUI(width - 320, 0, 320, height);
    }
 
    // 预加载所有关卡
@@ -200,15 +198,13 @@ class GameManager {
    }
 
 
+
    render() {
       background(color(this.level.bgColor));
 
       push();
       scale(this.scale);
       translate(-this.camera.x, -this.camera.y);
-
-      //渲染地图背景
-      this.drawBackground();
 
       //  统一渲染: LevelManager 按图层顺序绘制所有 Tile + 装饰
       this.level.draw(this.resources.tilesetImage);
@@ -245,51 +241,6 @@ class GameManager {
       let elapsed = millis() - this.mapPromptStartTime;
       if (elapsed < this.mapPromptDuration) {
          UI.drawMapPrompt(this.mapPromptText, elapsed, this.mapPromptDuration);
-      }
-
-
-      //Side Keyboard
-      /*const leftControls = [
-         { key: "W", desc: "Up" },
-         { key: "A", desc: "Left" },
-         { key: "S", desc: "Down" },
-         { key: "D", desc: "Right" },
-         { key: "Left Click", desc: "Firm Rope" },
-         { key: "Right Click", desc: "Soft Rope" },
-         { key: "F", desc: "Interact" },
-      ];
-
-      const rightControls = [
-         { key: "T", desc: "Change Rope" },
-         { key: "E", desc: "Prolong Rope" },
-         { key: "C", desc: "Shorten Rope" },
-         { key: "M", desc: "Map" },
-         { key: "H", desc: "Help" },
-      ];
-      this.sideUI.render(leftControls, rightControls);*/
-   }
-
-   // 背景（按 areaNumber 自动切换）
-   drawBackground() {
-      const area = Number(this.level.areaNumber) || 1;
-      const key = `area${area}`;
-
-      // 用 this.resources
-      const layers = this.resources.images.parallax?.[key];
-      if (!layers || layers.length === 0) return;
-
-      // 自动生成视差系数：层越靠前移动越快
-      // 例如 5 层 -> 0.15,0.30,0.45,0.60,0.75
-      const factors = layers.map((_, i) => 0.15 + i * (0.75 / Math.max(1, layers.length - 1)));
-
-      for (let i = 0; i < layers.length; i++) {
-         const img = layers[i];
-         const f = factors[i];
-
-         const x = this.camera.x * (1 - f);
-         const y = this.camera.y * (1 - f);
-
-         image(img, x, y);
       }
    }
 
