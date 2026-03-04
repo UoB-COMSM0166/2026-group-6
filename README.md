@@ -141,7 +141,7 @@ The class diagram illustrates the overall architecture of the game system. The `
 
 Different gameplay objects, including `Enemy`, `Boss`, `PollutionCore`, `Rest`, and `CleanEnergy`, extend the Entity class and implement their own interaction behaviours. Among these, `PollutionCore`, `Enemy`, and `Boss` represent polluted elements in the environment that must be purified by the player.
 
-The core gameplay mechanic is a purification system. The `Player` interacts with the environment and entities using two `Rope` objects, which enable movement, puzzle solving, and purification actions. For example, ropes can trigger the purification of `PollutionCore`, or interact with `Enem`y and `Boss` entities to gradually remove pollution and progress through the level.
+The core gameplay mechanic is a purification system. The `Player` interacts with the environment and entities using two `Rope` objects, which enable movement, puzzle solving, and purification actions. For example, ropes can trigger the purification of `PollutionCore`, or interact with `Enemy` and `Boss` entities to gradually remove pollution and progress through the level.
 
 Overall, the design follows object-oriented principles such as abstraction, inheritance, and modular decomposition, improving the extensibility and maintainability of the system.
 ### Sequence Diagram – Purify
