@@ -123,7 +123,7 @@ In the third-week lab session, we further explored and evaluated our concept by 
 In order to better identify the stakeholders involved or affected by the game, we conducted a stakeholder analysis of the project. Following the stakeholder taxonomy proposed by Alexander (2005), we adopted the stakeholder onion model to structure and visualise the different stakeholder groups related to the system. This model helps identify stakeholders based on their relationship and level of interaction with the system, enabling the development team to better understand the project context and stakeholder influence.
 
 <p align="center">
-  <img src="resources/images/stakeholder-onion-model.svg" width="550"/>
+  <img src="resources/images/Stakeholder_Onion_Model.drawio.svg" width="550"/>
 </p>
 
 <p align="center">
