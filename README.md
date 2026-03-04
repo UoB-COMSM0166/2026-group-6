@@ -1,15 +1,15 @@
 # 2026-group-6
 2026 COMSM0166 group 6
 
-## KanBan Link
+# KanBan Link
 https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 
-## Echoes of Purity
+# Echoes of Purity
 
-### description
+## description
 This is a non-linear level-based game that combines side-scrolling platforming, puzzle-solving, and lightweight RPG elements, with the core theme of "purifying pollution and ecological restoration." Players use rope tools to delve into highly polluted areas, gradually restoring the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world. 
 
-### demo image: v2.5
+## demo image: v2.5
 
 
 <p align="center">
@@ -18,7 +18,7 @@ This is a non-linear level-based game that combines side-scrolling platforming, 
 
 
 
-### TRY TO START GAME
+## TRY TO START GAME
 
 <div align="center">
   <a href = "https://uob-comsm0166.github.io/2026-group-6/"> Start Game </a>
@@ -44,7 +44,7 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 </table>
 
 
-## Your Group
+# Your Group
 
 <p align="center">
   <img src="resources/images/group_photo.jpg" width="400">
@@ -60,7 +60,7 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 | Jiaying Wang | jiaying2000wang | zb25795@bristol.ac.uk | UI design, feedback, experience, sound effects, summary meeting |
 
 
-## Project Report
+# Project Report
 - [1. Introduction](#1-introduction)
 - [2. Game Content](#2-game-content)
 - [3. Requirements](#3-requirements)
@@ -87,13 +87,13 @@ The final outcome of the game is determined by the player’s purification progr
 
 
 
-## 2. Game Content
+# 2. Game Content
 
 
 
-## 3. Requirements
+# 3. Requirements
 
-### Ideation
+## Ideation
 
 <p align="center">
   <img src="resources/images/Ideation_progress.png" width="700">
@@ -118,7 +118,7 @@ Based on the determination of the game type, we then delved into the themes that
 In the third-week lab session, we further explored and evaluated our concept by creating a paper prototype of the game. This approach enables low-cost experimentation, making it easier to gather feedback and refine ideas before implementing the system in code. Through this prototype, we were able to visually understand the core gameplay loop, thereby enhancing our comprehension of the player interaction process. This was helpful in guiding the subsequent design and development phases.
 
 
-### Stakeholder Analysis
+## Stakeholder Analysis
 
 In order to better identify the stakeholders involved or affected by the game, we conducted a stakeholder analysis of the project. Following the stakeholder taxonomy proposed by Alexander (2005), we adopted the stakeholder onion model to structure and visualise the different stakeholder groups related to the system. This model helps identify stakeholders based on their relationship and level of interaction with the system, enabling the development team to better understand the project context and stakeholder influence.
 
@@ -133,7 +133,7 @@ In order to better identify the stakeholders involved or affected by the game, w
 
 
 
-### Reflection
+## Reflection
 In this project, our team progressively understood and mastered the roles of epics, user stories, and acceptance criteria in software engineering through the example of Running App in the workshop, and how they integrate with our game's context. Early in the project, frequent communication among team members led us to believe we had reached consensus on functional requirements, causing us to underestimate the necessity of formalized requirement descriptions.
 
 This assumption was gradually corrected as requirements were systematically organized and discussed. Organizing requirements into epics enabled high-level, structured planning of game systems—such as the core purification mechanism, exploration and ability unlocking, and world state feedback with ending systems. This approach helped define system boundaries during design and maintain logical consistency between features.
@@ -145,11 +145,11 @@ Acceptance criteria helped translate abstract design goals into concrete, verifi
 As the game's scope expanded, requirements continued to evolve. Through the ongoing addition, adjustment, or removal of user stories, we optimized the requirements system in a more agile manner. This ensured that the final implemented features aligned with the game's theme while also meeting the course's requirements for testability and maintainability.
 
 
-## 4. Design
+# 4. Design
 
 - 15% ~750 words 
 - System architecture. Class diagrams, behavioural diagrams. 
-### Class Diagram
+## Class Diagram
 <p align="center">
   <img src="resources/images/ClassDiagram0304.png" width="90%"/>
 </p>
@@ -161,21 +161,21 @@ Different gameplay objects, including `Enemy`, `Boss`, `PollutionCore`, `Rest`, 
 The core gameplay mechanic is a purification system. The `Player` interacts with the environment and entities using two `Rope` objects, which enable movement, puzzle solving, and purification actions. For example, ropes can trigger the purification of `PollutionCore`, or interact with `Enemy` and `Boss` entities to gradually remove pollution and progress through the level.
 
 Overall, the design follows object-oriented principles such as abstraction, inheritance, and modular decomposition, improving the extensibility and maintainability of the system.
-### Sequence Diagram – Purify
+## Sequence Diagram – Purify
 <p align="center">
   <img src="docs/resources/images/SequenceDiagram_Purify.png" width="80%"/>
 </p>
 
 The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification notifies the LevelManager, which checks whether enough pollution cores in the current area have been purified to allow level progression. If energy is insufficient, the purification attempt fails and no core state is changed.
 
-## 5. Implementation
+# 5. Implementation
 
 - 15% ~750 words
 
 - Describe implementation of your game, in particular highlighting the TWO areas of *technical challenge* in developing your game.
 
 
-## 6. Evaluation
+# 6. Evaluation
 
 - 15% ~750 words
 
@@ -185,26 +185,26 @@ The sequence diagram shows the process of purifying a pollution core using the r
 
 - Description of how code was tested. 
 
-## 7. Process 
+# 7. Process 
 
 - 15% ~750 words
 
 - Teamwork. How did you work together, what tools and methods did you use? Did you define team roles? Reflection on how you worked together. Be honest, we want to hear about what didn't work as well as what did work, and importantly how your team adapted throughout the project.
 
-## 8. Sustainability
+# 8. Sustainability
 
 
-## 9. Conclusion
+# 9. Conclusion
 
 - 10% ~500 words
 
 - Reflect on the project as a whole. Lessons learnt. Reflect on challenges. Future work, describe both immediate next steps for your current game and also what you would potentially do if you had chance to develop a sequel.
 
-## 10. Contribution Statement
+# 10. Contribution Statement
 
 - Provide a table of everyone's contribution, which *may* be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Please let us know as soon as possible if there are any issues with teamwork as soon as they are apparent and we will do our best to help your team work harmoniously together.
 
-## 11. Additional Marks
+# 11. Additional Marks
 
 You can delete this section in your own repo, it's just here for information. in addition to the marks above, we will be marking you on the following two points:
 
@@ -215,7 +215,7 @@ You can delete this section in your own repo, it's just here for information. in
   - Is your repo clearly organised? Is code well commented throughout?
 
 
- ## 12. References
+ # 12. References
 
 Alexander, I. F. (2005). *A taxonomy of stakeholders: Human roles in system development*. International Journal of Technology and Human Interaction, 1(1), 23–59.
 
