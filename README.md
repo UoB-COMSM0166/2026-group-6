@@ -92,7 +92,7 @@ The final outcome of the game is determined by the player’s purification progr
 
 ## 3. Requirements
 
-### Ideation Process
+### Ideation
 
 <p align="center">
   <img src="resources/images/Ideation_progress.png" width="700">
@@ -101,8 +101,6 @@ The final outcome of the game is determined by the player’s purification progr
 <p align="center">
 <b>Figure 1.</b> Ideation process for the design of <i>Echoes of Purity</i>.
 </p>
-
-### Ideation
 
 In the early stage of the project, we explored game ideas through team brainstorming sessions. Each member first independently proposed a game concept, and then organized these initial ideas in the *gamelist* file of the project repository. This file was used to record different game types, core mechanisms, and potential design directions. By discussing and comparing these ideas, we found that the team members' interests mainly focused on game types that were more exploratory and had a non-linear structure, such as **Metroidvania**. Therefore, during the team discussions in the second and third weeks, we gradually narrowed down the creative direction. We decided to position the project as a non-linear 2D side-scrolling platform game. Players can freely explore different areas and advance the game by gradually unlocking paths.
 
