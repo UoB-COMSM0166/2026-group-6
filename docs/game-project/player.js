@@ -84,15 +84,21 @@ class Player {
 
       for (let rope of this.currentRope) {
          if (rope.state !== "SWINGING") continue;
-         // Q: 缩短
-         if (delta < 0) {
+         // 根据绳头相对玩家的位置翻转滚轮方向:
+         let tipAbove = rope.tip.y < this.cy();
+         let effectiveDelta = tipAbove ? delta : -delta;
+
+         if (effectiveDelta < 0) {
+            // 缩短
             rope.changeLength(-cs * wheelMultiplier);
             let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
             this.vx += cos(a) * wf * wheelMultiplier / count;
             this.vy += sin(a) * wf * wheelMultiplier / count;
          }
-         // E: 伸长
-         if (delta > 0) rope.changeLength(cs * wheelMultiplier);
+         if (effectiveDelta > 0) {
+            // 伸长
+            rope.changeLength(cs * wheelMultiplier);
+         }
       }
    }
 

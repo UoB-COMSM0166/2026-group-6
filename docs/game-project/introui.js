@@ -142,7 +142,7 @@ class introUI {
 
       for (let i = 0; i < keys.length; i++) {
          let item = keys[i];
-         let y = listStartY + i * rowH;
+         let y = listStartY + i * rowH + 20;
 
          if (item.type === 'mouse') {
             this._drawMouseIconCtx(ctx, keyX, y, 28, 36, a);
@@ -206,7 +206,7 @@ class introUI {
       ctx.fillText('LMB', w / 2 - 50, mouseY - 10);
       ctx.font = '12px sans-serif';
       ctx.fillStyle = `rgba(200, 220, 255, ${a})`;
-      ctx.fillText('Blue Rope', w / 2 - 50, mouseY + 8);
+      ctx.fillText('Cyan Rope', w / 2 - 50, mouseY + 8);
 
       // 右键标注
       ctx.font = '14px sans-serif';
@@ -235,7 +235,7 @@ class introUI {
 
       for (let i = 0; i < ropeKeys.length; i++) {
          let item = ropeKeys[i];
-         let y = listStartY + 20 + i * rowH;
+         let y = listStartY + 40 + i * rowH;
 
          this._drawKeyCtx(ctx, item.key, keyX, y, 44, 30, a);
 
@@ -263,14 +263,17 @@ class introUI {
       ctx.fillStyle = `rgba(200, 200, 220, ${0.9 * a})`;
       ctx.font = '13px sans-serif';
       let tips = [
-         '1.Click to fire rope at surfaces',
-         '2.Use E/C to adjust rope length',
-         '3.Press T to switch the rope that',
-         'can be controlled to extend or',
-         'shorten',
+         '1. Click Left or Right Button to Fire',
+         ' Rope',
+         '2. Use E/C or Mouse Wheel to adjust ',
+         'rope length',
+         '3. You can change the Length of the',
+         'rope near the Mouse Cursor, and the ',
+         'icon represented by this rope will be',
+         'Bolded at the bottom of the screen.',
       ];
       for (let i = 0; i < tips.length; i++) {
-         ctx.fillText(tips[i], w / 2, tipY + 55 + i * 22);
+         ctx.fillText(tips[i], w / 2, tipY + 55 + i * 29);
       }
    }
 
