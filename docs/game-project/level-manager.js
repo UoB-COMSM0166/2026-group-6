@@ -43,6 +43,7 @@ class LevelManager {
       this.pollutionCoreCount = 0;
 
       // 实体数据 (解析后的原始数据, 由 GameManager 消费)
+      this.areaNumber;
       this.playerStart = null;  // {x, y}
       this.enemySpawns = [];    // [{x, y, hp, damage}]
       this.entitySpawns = [];   // [{x, y, w, h, identifier, color, fields}] 所有其他实体
@@ -50,6 +51,7 @@ class LevelManager {
       this.levelIndex = levelIndex;
       this.totalPollutionCore = 0;
       this.toalEnemies = 0;
+      this.totalBoss = 0;
       this.toxicConverted = false;
       this.mapOpen = false;
    }
@@ -537,6 +539,16 @@ class LevelManager {
       let enemyCount = 0;
       for (let e of this.entities) {
          if (e.type === GameConfig.Entity.Enemy && e.active) {
+            enemyCount += 1;
+         }
+      }
+      return enemyCount;
+   }
+
+   getBossCount() {
+      let enemyCount = 0;
+      for (let e of this.entities) {
+         if (e.type === "Boss" && e.active) {
             enemyCount += 1;
          }
       }

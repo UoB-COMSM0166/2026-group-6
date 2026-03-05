@@ -126,6 +126,7 @@ class GameManager {
          this.levelsInfo[this.levelIndex] = this.level;
          this.level.totalPollutionCore = this.level.getPollutionCoreCount();
          this.level.totalEnemies = this.level.getEnemiesCount();
+         this.level.totalBoss = this.level.getBossCount();
       }
       else {
          this.entities = this.levelsInfo[this.levelIndex].entities;
@@ -523,26 +524,36 @@ class GameManager {
       // 定义净化值权重
       let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
       let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
+      let BOSS_WEIGHT = GameConfig.Level.BOSS_WEIGHT;
       let remainingCores = 0;
       let remainingEnemies = 0;
+      let remainingBoss = 0;
       let initialCores = 0;
       let initialEnemies = 0;
-      // 不算最终关
-      for (let i = 0; i < ldtk.levels.length - 1; i++) {
+      let initialBoss = 0;
+
+      for (let i = 0; i < ldtk.levels.length; i++) {
          let lvl = this.levelsInfo[i];
          // 筛选出所有areaNumber为当前Level的areaNumber的level，当到达结尾关时为整张地图的progress
          if (Number(lvl.areaNumber) === currentAreaNumber || currentAreaNumber === 5) {
             initialCores += lvl.totalPollutionCore;
             initialEnemies += lvl.totalEnemies;
+            initialBoss += lvl.totalBoss;
             remainingCores += lvl.getPollutionCoreCount();
             remainingEnemies += lvl.getEnemiesCount();
+            remainingBoss += lvl.getBossCount();
             // 累加该关卡能提供的总净化值
          }
       }
       let currentPurifiedEnemies = initialEnemies - remainingEnemies;
       let currentPurifiedCores = initialCores - remainingCores;
-      let currentPurifiedValue = currentPurifiedEnemies * ENEMY_WEIGHT + currentPurifiedCores * CORE_WEIGHT;
-      let totalValue = (initialCores * CORE_WEIGHT) + (initialEnemies * ENEMY_WEIGHT);
+      let currentPurifiedBoss = initialBoss - remainingBoss;
+      let currentPurifiedValue = currentPurifiedEnemies * ENEMY_WEIGHT
+         + currentPurifiedCores * CORE_WEIGHT
+         + currentPurifiedBoss * BOSS_WEIGHT;
+      let totalValue = (initialCores * CORE_WEIGHT)
+         + (initialEnemies * ENEMY_WEIGHT)
+         + (initialBoss * BOSS_WEIGHT);
       // 计算百分比 (向下取整，并且防止除以 0 导致报错)
       let percentage = (totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100));
       return percentage;
