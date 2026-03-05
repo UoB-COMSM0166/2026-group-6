@@ -71,7 +71,7 @@ VIDEO. Include a demo video of your game here (you don't have to wait until the 
 - [8. Sustainability](#8-sustainability)
 - [9. Conclusion](#9-conclusion)
 - [10. Contribution Statement](#10-contribution-statement)
-- [11. Additional Marks](#11-additional-marks)
+- [11. Appendix](#11-appendix)
 - [12.References](#12-references)
 
 ## 1. Introduction
@@ -287,7 +287,114 @@ The sequence diagram shows the process of purifying a pollution core using the r
 
 - Provide a table of everyone's contribution, which *may* be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Please let us know as soon as possible if there are any issues with teamwork as soon as they are apparent and we will do our best to help your team work harmoniously together.
 
-# 11. Additional Marks
+# 11. Appendix
+
+## **Use Case Specification**
+
+**System:** *Echoes of Purity*
+
+### **UC-01: Explore Polluted Area**
+
+**Primary Actor**  
+Player  
+
+**Goal**  
+Allow the player to explore interconnected areas of the game world and discover polluted zones that require purification.
+
+**Stakeholders**
+
+- Player – wants to explore the world and access new areas.
+- Game system – maintains world state, environment loading, and player position.
+
+**Preconditions**
+
+1. The game session has started or a saved game has been loaded.
+2. The player character is present in a playable area of the map.
+
+**Trigger**
+
+The player provides keyboard controls to move the character.
+
+**Main Success Scenario**
+
+1. The player moves the character using directional controls.
+2. The game system updates the character’s position in the current area.
+3. The camera follows the player as they traverse the environment.
+4. When the player reaches the boundary of a connected area, the system loads the next area.
+5. The player continues exploration within the new area.
+
+**Alternative Flows**
+
+**A1 – Area Locked by Pollution**
+
+1. The player reaches a blocked passage or polluted gate.
+2. The system checks purification progress.
+3. If the purification condition is not satisfied, the passage remains inaccessible.
+
+**A2 – Player Falls or Cannot Reach Platform**
+
+1. The player attempts to traverse terrain but fails.
+2. The character returns to a reachable platform.
+3. The player continues exploration.
+
+**Postconditions**
+
+- The player may discover polluted entities, purification cores, or new traversal paths.
+- The current world state and player position are updated.
+
+### **UC-02: Purify Pollution Entities**
+
+**Primary Actor**  
+Player  
+
+**Goal**  
+Allow the player to remove pollution from enemies or environmental cores to restore parts of the ecosystem.
+
+**Stakeholders**
+
+- Player – wants to restore the environment and progress through the game.
+- Game system – tracks pollution entities and purification progress.
+
+**Preconditions**
+
+1. The player is located near a pollution entity or pollution core.
+2. The player has access to purification energy.
+
+**Trigger**
+
+The player activates the purification ability.
+
+**Main Success Scenario**
+
+1. The player targets a polluted entity or core.
+2. The player activates cleaning energy.
+3. The purification action is executed.
+4. The pollution entity is removed or transformed.
+5. The global purification progress value increases.
+6. Visual feedback reflects the purification result.
+
+**Alternative Flows**
+
+**A1 – Target Out of Range**
+
+1. The player activates purification.
+2. The system detects no valid target.
+3. The action fails and no purification occurs.
+
+**A2 – Interrupted Purification**
+
+1. The player begins purification.
+2. The player moves away or stops the action.
+3. The purification process is cancelled.
+
+**Postconditions**
+
+- The polluted entity or core is removed or transformed.
+- The world’s purification progress is updated.
+
+
+
+# . Additional Marks
 
 You can delete this section in your own repo, it's just here for information. in addition to the marks above, we will be marking you on the following two points:
 
