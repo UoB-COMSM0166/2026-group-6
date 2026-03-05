@@ -201,14 +201,16 @@ Acceptance criteria helped translate abstract design goals into concrete, verifi
 
 As the game's scope expanded, requirements continued to evolve. Through the ongoing addition, adjustment, or removal of user stories, we optimized the requirements system in a more agile manner. This ensured that the final implemented features aligned with the game's theme while also meeting the course's requirements for testability and maintainability.
 
-## Use Case Model
+## Use Case
+
+To better understand how players interact with the game system, we model the main functional interactions using a UML Use Case diagram. By identifying the main participants (players) and key game activities such as exploration, purification and progression, this model provides our team with a structured overview of the system's behavior. This kind of diagram helps to ensure that the main game features are systematically captured, improves communication among team members, and supports consistency between requirements, design decisions and implementation. In addition, a detailed use-case specification is provided in the Appendix.
 
 <p align="center">
   <img src="resources/images/usecase_model.png" width="600">
 </p>
 
 <p align="center">
-  <b>Figure 4. Use Case Model</b>
+  <b>Figure 4. Use Case Diagram</b>
 </p>
 
 # 4. Design
