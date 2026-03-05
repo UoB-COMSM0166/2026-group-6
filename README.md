@@ -227,7 +227,7 @@ To better understand how players interact with the game system, we model the mai
 
 
 <p align="center">
-  <img src="resources/images/ClassDiagram_0304.png" width="70%"/>
+  <img src="resources/images/ClassDiagram_0304.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure. Final Design Class Diagram</b>
@@ -250,7 +250,7 @@ Overall, the design follows object-oriented principles such as abstraction, inhe
 </p>
 
 <p align="center">
-  <img src="resources/images/SequenceDiagram_0305_2.png" width="80%"/>
+  <img src="resources/images/SequenceDiagram_0305_2.png" width="70%"/>
 </p>
 <p align="center">
   <b>Figure. Unlock New Area</b>
