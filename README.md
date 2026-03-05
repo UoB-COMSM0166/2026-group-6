@@ -241,7 +241,7 @@ Overall, the design follows object-oriented principles such as abstraction, inhe
 
 ## Sequence Diagram
 <p align="center">
-  <img src="resources/images/SequenceDiagram_0305_1.png" width="80%"/>
+  <img src="resources/images/SequenceDiagram_0305.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure. Rope Interaction and Pollution Purification</b>
