@@ -46,7 +46,8 @@ class Tool extends Entity {
    _getHp(player) {
       gm.addParticles(this.cx(), this.cy());
       let restoreHp = 20;
-      player.hp += restoreHp;
+      player.maxHp += restoreHp;
+      player.restoreHp(restoreHp);
       this.destroy();
    }
 

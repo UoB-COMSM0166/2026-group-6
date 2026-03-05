@@ -321,6 +321,11 @@ class Player {
       return (this.cleanEnergy - consume) >= 0;
    }
 
+   restoreHp(restore) {
+      let nextHp = this.hp + restore;
+      this.hp = (nextHp > this.maxHp) ? this.maxHp : nextHp;
+   }
+
 
    /**
     * 世界碰撞解算后, 重新钳制玩家到绳长范围内
