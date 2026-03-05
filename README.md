@@ -238,7 +238,9 @@ Different gameplay objects, including `Enemy`, `Boss`, `PollutionCore`, `Rest`, 
 The core gameplay mechanic is a purification system. The `Player` interacts with the environment and entities using two `Rope` objects, which enable movement, puzzle solving, and purification actions. For example, ropes can trigger the purification of `PollutionCore`, or interact with `Enemy` and `Boss` entities to gradually remove pollution and progress through the level.
 
 Overall, the design follows object-oriented principles such as abstraction, inheritance, and modular decomposition, improving the extensibility and maintainability of the system.
-## Sequence Diagram – Purify
+
+## Sequence Diagram
+#### Rope Interaction and Pollution Purification
 <p align="center">
   <img src="resources/images/SequenceDiagram_0305_1.png" width="80%"/>
 </p>
