@@ -240,7 +240,7 @@ The core gameplay mechanic is a purification system. The `Player` interacts with
 Overall, the design follows object-oriented principles such as abstraction, inheritance, and modular decomposition, improving the extensibility and maintainability of the system.
 ## Sequence Diagram – Purify
 <p align="center">
-  <img src="docs/resources/images/SequenceDiagram_Purify.png" width="80%"/>
+  <img src="resources/images/SequenceDiagram_0305_1.png" width="80%"/>
 </p>
 
 The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification notifies the LevelManager, which checks whether enough pollution cores in the current area have been purified to allow level progression. If energy is insufficient, the purification attempt fails and no core state is changed.
