@@ -243,11 +243,19 @@ Overall, the design follows object-oriented principles such as abstraction, inhe
 
 ## Sequence Diagram
 <p align="center">
-  <img src="resources/images/SequenceDiagram_0305.png" width="80%"/>
+  <img src="resources/images/SequenceDiagram_0305_1.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure. Rope Interaction and Pollution Purification</b>
 </p>
+
+<p align="center">
+  <img src="resources/images/SequenceDiagram_0305_2.png" width="80%"/>
+</p>
+<p align="center">
+  <b>Figure. Unlock New Area</b>
+</p>
+
 
 The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification notifies the LevelManager, which checks whether enough pollution cores in the current area have been purified to allow level progression. If energy is insufficient, the purification attempt fails and no core state is changed.
 
