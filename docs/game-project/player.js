@@ -60,7 +60,7 @@ class Player {
       if (count === 0) return;
 
       for (let rope of this.currentRope) {
-         if (rope.state !== "SWINGING") continue;
+         if (rope.state !== "SWINGING" && rope.state !== 'STRAND') continue;
          // Q: 缩短
          if (keyIsDown(Keys.Q)) {
             rope.changeLength(-cs);
@@ -83,7 +83,7 @@ class Player {
       if (count === 0) return;
 
       for (let rope of this.currentRope) {
-         if (rope.state !== "SWINGING") continue;
+         if (rope.state !== "SWINGING" && rope.state !== 'STRAND') continue;
          // 根据绳头相对玩家的位置翻转滚轮方向:
          let tipAbove = rope.tip.y < this.cy();
          let effectiveDelta = tipAbove ? delta : -delta;
@@ -105,8 +105,8 @@ class Player {
 
 
    _getActiveWinchRopes(gm) {
-      let lSwinging = this.ropeL.state === "SWINGING";
-      let rSwinging = this.ropeR.state === "SWINGING";
+      let lSwinging = this.ropeL.state === "SWINGING" || this.ropeL.state === "STRAND";
+      let rSwinging = this.ropeR.state === "SWINGING" || this.ropeR.state === "STRAND";
 
       if (lSwinging && rSwinging) {
          let midLeftPoint = { x: (this.ropeL.tip.x + this.cx()) / 2, y: (this.ropeL.tip.y + this.cy()) / 2 };

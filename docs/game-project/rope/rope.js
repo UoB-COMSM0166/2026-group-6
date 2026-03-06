@@ -200,7 +200,9 @@ class Rope {
    }
 
    changeLength(amount) {
-      if (!this.stuck || this.nodes.length < 2) return;
+      if (this.nodes.length < 2) return;
+      let s = this.state;
+      if (s !== 'SWINGING' && s !== 'STRAND') return;
       this.ropeLength = constrain(this.ropeLength + amount, this.minLen, this.maxLen);
       this._syncNodeCount();
    }
