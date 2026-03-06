@@ -216,7 +216,19 @@ To better understand how players interact with the game system, we model the mai
 # 4. Design
 
 - 15% ~750 words 
-- System architecture. Class diagrams, behavioural diagrams. 
+- System architecture. Class diagrams, behavioural diagrams.
+
+###System Architecture
+This system adopts a modular, object-oriented architecture with `GameManager` as the core control component, responsible for coordinating interactions among various subsystems during gameplay. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, resource management, and player interaction, thus enhancing system maintainability and scalability.    
+
+During runtime, the `GameManager` maintains the overall game state and coordinates the main update loop of the game. In each frame, the GameManager updates the player, the current level, and other active components before triggering the rendering process. The camera system is also controlled at this level to ensure the correct part of the game world is displayed.
+
+The `ResourceManager` handles loading and managing game resources such as images, map data, and audio files. All resources are loaded during the initialization phase and reused during gameplay. Centralizing resource loading helps avoid redundant operations and improves runtime efficiency.
+
+Level-related logic is managed by the `LevelManager`. This component oversees the map structure and all entities within the current level, including enemies, pollution cores, and other interactive objects. By separating level logic from main game controller, the system more easily supports multi-level structures and area transitions.
+
+This layered architecture establishes clear responsibilities between modules and reduces coupling between system components, providing a solid foundation for future feature expansion.
+
 ## Class Diagram
 <p align="center">
   <img src="resources/images/ClassDiagram_0221.png" width="80%"/>
