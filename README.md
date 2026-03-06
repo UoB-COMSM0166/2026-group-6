@@ -100,81 +100,81 @@ The final outcome of the game is determined by the player’s purification progr
 <tr>
 <td>Player</td>
 <td>Robot</td>
-<td><img src="resources/images/contentplayer.png" width="64"></td>
+<td><img src="resources/images/contentplayer.png" width="64" style="image-rendering: pixelated;"></td>
 <td>The player character, a small robot that explores the world and purifies pollution.</td>
 </tr>
 
 <tr>
 <td>Ability</td>
 <td>Energy Rope</td>
-<td><img src="resources/images/contentrope.png" width="64"></td>
+<td><img src="resources/images/contentrope.png" width="64" style="image-rendering: pixelated;"></td>
 <td>A rope that can be fired to purify pollution or help the player traverse difficult terrain.</td>
 </tr>
 
 <tr>
 <td rowspan="2">Interactable</td>
 <td>Energy Pillar</td>
-<td><img src="docs/resources/images/map_image/cleaningenergy.png" width="64"></td>
+<td><img src="docs/resources/images/map_image/cleaningenergy.png" width="64" style="image-rendering: pixelated;"></td>
 <td>A station where the player can recharge purification energy.</td>
 </tr>
 
 <tr>
 <td>Button</td>
-<td><img src="docs/resources/images/map_image/button.png" width="64"></td>
+<td><img src="docs/resources/images/map_image/button.png" width="64" style="image-rendering: pixelated;"></td>
 <td>A switch that can be pressed to open certain doors.</td>
 </tr>
 
 <tr>
 <td>Checkpoint</td>
 <td>Respawn Point</td>
-<td><img src="docs/resources/images/map_image/reset.png" width="64"></td>
+<td><img src="docs/resources/images/map_image/reset.png" width="64" style="image-rendering: pixelated;"></td>
 <td>The location where the player respawns after death.</td>
 </tr>
 
 <tr>
 <td>Objective</td>
 <td>Pollution Source</td>
-<td><img src="docs/resources/images/map_image/pollution_core.png" width="64"></td>
+<td><img src="docs/resources/images/map_image/pollution_core.png" width="64" style="image-rendering: pixelated;"></td>
 <td>A pollution node that must be purified to restore the environment.</td>
 </tr>
 
 <tr>
 <td>Enemy</td>
 <td>Monster</td>
-<td><img src="resources/images/contentenemy.png" width="64"></td>
+<td><img src="resources/images/contentenemy.png" width="64" style="image-rendering: pixelated;"></td>
 <td>Hostile creatures that attack the player but can also be purified.</td>
 </tr>
 
 <tr>
 <td rowspan="2">Gate</td>
 <td>Area Gate</td>
-<td><img src="docs/resources/images/map_image/door1.png" width="64"></td>
+<td><img src="docs/resources/images/map_image/door1.png" width="64" style="image-rendering: pixelated;"></td>
 <td>A gate between areas that opens when the area's purification level reaches 80%.</td>
 </tr>
 
 <tr>
 <td>Mechanism Door</td>
-<td><img src="docs/resources/images/map_image/door2.png" width="64"></td>
+<td><img src="docs/resources/images/map_image/door2.png" width="64" style="image-rendering: pixelated;"></td>
 <td>A door inside the area that opens after pressing a button.</td>
 </tr>
 
 <tr>
 <td rowspan="2">Environment</td>
 <td>Polluted Water</td>
-<td><img src="resources/images/contentpollutedwater.png" width="64"></td>
+<td><img src="resources/images/contentpollutedwater.png" width="64" style="image-rendering: pixelated;"></td>
 <td>Deadly polluted water that kills the player on contact.</td>
 </tr>
 
 <tr>
 <td>Clean Water</td>
-<td><img src="resources/images/contentwater.png" width="64"></td>
+<td><img src="resources/images/contentwater.png" width="64" style="image-rendering: pixelated;"></td>
 <td>Safe water that does not harm the player.</td>
 </tr>
 
 <tr>
 <td>Collectible</td>
 <td>Energy Crystal</td>
-<td><img src="docs/resources/images/map_image/tools.png" width="64"></td>
+<td><img src="docs/resources/images/map_image/tools.png" width="64" style="image-rendering: pixelated;"></td>
 <td>Scattered crystals that restore the player's purification energy.</td>
 </tr>
 
