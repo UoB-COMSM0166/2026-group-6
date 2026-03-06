@@ -272,7 +272,7 @@ Finally, the interaction methods between entities have also been standardized. W
 ### 4.4 Pollution Purification Sequence Diagram
 Figure X shows the player's interaction process for purifying the contaminated core via the rope system. This sequence diagram depicts the primary system interaction flow from player input to the purification of the contaminated core.
 <p align="center">
-  <img src="resources/images/Sequence_0305_1.png" width="80%"/>
+  <img src="resources/images/Sequence_0305_1.png" width="70%"/>
 </p>
 <p align="center">
   <b>Figure X. Rope Interaction and Pollution Purification</b>
@@ -288,7 +288,7 @@ If the player's current purification energy satisfies the purification condition
 Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
 
 <p align="center">
-  <img src="resources/images/Sequence_0305_2.png" width="60%"/>
+  <img src="resources/images/Sequence_0305_2.png" width="45%"/>
 </p>
 <p align="center">
   <b>Figure X. Unlock New Area</b>
