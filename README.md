@@ -257,7 +257,7 @@ This foundational design establishes the game's core operational framework, prov
 
 As development progressed, the game gradually added more features, such as enemy types, environmental interaction objects, and area teleportation mechanisms. To support these new features, the system architecture was further expanded. The final class diagram (Figure X) illustrates the relationships between the main classes in the system.
 <p align="center">
-  <img src="resources/images/Class_0304.png" width="80%"/>
+  <img src="resources/images/Class_0305.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure X. Final Class Diagram</b>
@@ -288,7 +288,7 @@ If the player's current purification energy satisfies the purification condition
 Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
 
 <p align="center">
-  <img src="resources/images/Sequence0305_2.png" width="80%"/>
+  <img src="resources/images/Sequence_0305_2.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure X. Unlock New Area</b>
