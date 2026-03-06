@@ -60,13 +60,16 @@ class Player {
       if (count === 0) return;
 
       for (let rope of this.currentRope) {
-         if (rope.state !== "SWINGING" && rope.state !== 'STRAND') continue;
+         if (rope.state !== "SWINGING" && rope.state !== "STRAND") continue;
          // Q: 缩短
          if (keyIsDown(Keys.Q)) {
             rope.changeLength(-cs);
-            let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
-            this.vx += cos(a) * wf / count;
-            this.vy += sin(a) * wf / count;
+            // SWINGING: tip固定，拉玩家向锚点; STRAND: tip自由，只收绳不拉玩家
+            if (rope.state === "SWINGING") {
+               let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
+               this.vx += cos(a) * wf / count;
+               this.vy += sin(a) * wf / count;
+            }
          }
          // E: 伸长
          if (keyIsDown(Keys.E)) rope.changeLength(cs);
@@ -83,17 +86,21 @@ class Player {
       if (count === 0) return;
 
       for (let rope of this.currentRope) {
-         if (rope.state !== "SWINGING" && rope.state !== 'STRAND') continue;
+         if (rope.state !== "SWINGING" && rope.state !== "STRAND") continue;
          // 根据绳头相对玩家的位置翻转滚轮方向:
          let tipAbove = rope.tip.y < this.cy();
+         let fixPlayer = rope.state === "STRAND";
          let effectiveDelta = tipAbove ? delta : -delta;
+         effectiveDelta = fixPlayer ? -effectiveDelta : effectiveDelta;
 
          if (effectiveDelta < 0) {
             // 缩短
             rope.changeLength(-cs * wheelMultiplier);
-            let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
-            this.vx += cos(a) * wf * wheelMultiplier / count;
-            this.vy += sin(a) * wf * wheelMultiplier / count;
+            if (rope.state === "SWINGING") {
+               let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
+               this.vx += cos(a) * wf * wheelMultiplier / count;
+               this.vy += sin(a) * wf * wheelMultiplier / count;
+            }
          }
          if (effectiveDelta > 0) {
             // 伸长

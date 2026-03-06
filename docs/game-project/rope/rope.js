@@ -28,6 +28,7 @@ class Rope {
       this.minLen = this.G * RC.MIN_LENGTH_GRIDS;
       this.launchSpeed = this.G * RC.LAUNCH_SPEED_GRIDS;
       this.ropeLength = 0;
+      this._effectiveMaxLen = this.maxLen;
 
       // sound
       this.fireSound = resources.sounds.rope;
@@ -82,6 +83,7 @@ class Rope {
          let chainLen = this.nodeDist * (this.nodes.length - 1);
          let directDist = dist(this.nodes[0].x, this.nodes[0].y, this.tip.x, this.tip.y);
          this.ropeLength = Math.max(chainLen, directDist, this._getChainPathLength());
+         this._effectiveMaxLen = Math.max(this.ropeLength, this.maxLen);
       }
 
       let pathLen = this._getChainPathLength();
@@ -192,6 +194,7 @@ class Rope {
       this.retracting = false;
       this.extending = false;
       this.ropeLength = 0;
+      this._effectiveMaxLen = this.maxLen;
       this._retractTimer = 0;
    }
 
@@ -203,7 +206,12 @@ class Rope {
       if (this.nodes.length < 2) return;
       let s = this.state;
       if (s !== 'SWINGING' && s !== 'STRAND') return;
-      this.ropeLength = constrain(this.ropeLength + amount, this.minLen, this.maxLen);
+      if (amount > 0 && this.ropeLength >= this._effectiveMaxLen) return;
+      if (amount < 0 && this.ropeLength <= this.minLen) {
+         if (s === 'STRAND') this.state = "RETRACTING";
+         return;
+      }
+      this.ropeLength = constrain(this.ropeLength + amount, this.minLen, this._effectiveMaxLen);
       this._syncNodeCount();
    }
 
@@ -336,9 +344,8 @@ class Rope {
       let chainLen = this.nodeDist * (this.nodes.length - 1);
       let directDist = dist(this.nodes[0].x, this.nodes[0].y, x, y);
       this.ropeLength = Math.max(chainLen, directDist);
+      this._effectiveMaxLen = Math.max(this.ropeLength, this.maxLen);
    }
-
-   // 内部: 收回
 
    _retractOneNode() {
       if (++this._retractTimer < RC.RETRACT_INTERVAL) return;
