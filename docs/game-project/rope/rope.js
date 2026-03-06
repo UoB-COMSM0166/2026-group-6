@@ -81,38 +81,50 @@ class Rope {
       if (this.ropeLength <= 0) {
          let chainLen = this.nodeDist * (this.nodes.length - 1);
          let directDist = dist(this.nodes[0].x, this.nodes[0].y, this.tip.x, this.tip.y);
-         this.ropeLength = Math.max(chainLen, directDist);
-         this.ropeLength = Math.max(this.ropeLength, this._getChainPathLength());
+         this.ropeLength = Math.max(chainLen, directDist, this._getChainPathLength());
       }
 
       let pathLen = this._getChainPathLength();
-      let excess = pathLen - this.ropeLength;
+      let diff = pathLen - this.ropeLength;
 
-      if (excess <= 0) return;
+      if (diff > 0) {
+         // 超出绳长: 从 tip 端沿链条将节点向 player 侧收拢 (不删除节点)
+         let excess = diff;
+         for (let i = this.nodes.length - 1; i > 0 && excess > 0; i--) {
+            let curr = this.nodes[i];
+            let prev = this.nodes[i - 1];
+            let segLen = dist(prev.x, prev.y, curr.x, curr.y);
 
-      // 从 tip 端沿轨迹收回 excess 的长度
-      while (excess > 0 && this.nodes.length > 1) {
+            if (segLen <= excess) {
+               // 整段收拢: 将节点折叠到前一节点位置
+               curr.x = prev.x;
+               curr.y = prev.y;
+               curr.oldx = curr.x;
+               curr.oldy = curr.y;
+               excess -= segLen;
+            } else {
+               let ratio = excess / segLen;
+               curr.x = lerp(curr.x, prev.x, ratio);
+               curr.y = lerp(curr.y, prev.y, ratio);
+               curr.oldx = curr.x;
+               curr.oldy = curr.y;
+               excess = 0;
+            }
+         }
+      } else if (diff < 0 && this.material === 'HARD') {
+         // HARD 低于绳长: 将 tip 沿 prev→last 方向延伸补足差值
          let last = this.lastNode;
          let prev = this.nodes[this.nodes.length - 2];
-         let segLen = dist(prev.x, prev.y, last.x, last.y);
+         let dx = last.x - prev.x;
+         let dy = last.y - prev.y;
+         let segLen = Math.sqrt(dx * dx + dy * dy);
 
-         if (segLen <= excess) {
-            // 整段都需要收回，移除末端节点
-            this.nodes.pop();
-            excess -= segLen;
-
-            if (this.nodes.length <= 1) {
-               this.reset();
-               return;
-            }
-         } else {
-            // 只需收回该段的一部分：将末端节点向前一节点移动
-            let ratio = excess / segLen;
-            last.x = lerp(last.x, prev.x, ratio);
-            last.y = lerp(last.y, prev.y, ratio);
+         if (segLen > 0) {
+            let extend = -diff;
+            last.x += (dx / segLen) * extend;
+            last.y += (dy / segLen) * extend;
             last.oldx = last.x;
             last.oldy = last.y;
-            excess = 0;
          }
       }
 
@@ -219,7 +231,9 @@ class Rope {
 
       this._simulate(player, level);
 
-      if (this.state === "STRAND") this._maintainStrandLength();
+      if (this.state === "STRAND") {
+         this._maintainStrandLength();
+      }
 
       this.tip.x = this.lastNode.x;
       this.tip.y = this.lastNode.y;
