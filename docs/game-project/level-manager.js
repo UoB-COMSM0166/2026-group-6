@@ -40,8 +40,6 @@ class LevelManager {
       // 每个条目: { type: 'tiles' } 或 { type: 'decor', layer: ldtkLayerData }
       this.renderLayers = [];
 
-      this.pollutionCoreCount = 0;
-
       // 实体数据 (解析后的原始数据, 由 GameManager 消费)
       this.areaNumber;
       this.playerStart = null;  // {x, y}
@@ -525,34 +523,14 @@ class LevelManager {
       }
    }
 
-   getPollutionCoreCount() {
-      let pollutionCoreCount = 0;
+   getEntityCount(type) {
+      let entityCount = 0;
       for (let e of this.entities) {
-         if (e.type === GameConfig.Entity.PollutionCore && e.active) {
-            pollutionCoreCount += 1;
+         if (e.type === type && e.active) {
+            entityCount += 1;
          }
       }
-      return pollutionCoreCount;
-   }
-
-   getEnemiesCount() {
-      let enemyCount = 0;
-      for (let e of this.entities) {
-         if (e.type === GameConfig.Entity.Enemy && e.active) {
-            enemyCount += 1;
-         }
-      }
-      return enemyCount;
-   }
-
-   getBossCount() {
-      let enemyCount = 0;
-      for (let e of this.entities) {
-         if (e.type === "Boss" && e.active) {
-            enemyCount += 1;
-         }
-      }
-      return enemyCount;
+      return entityCount;
    }
 
    _getAreaNumber(level) {

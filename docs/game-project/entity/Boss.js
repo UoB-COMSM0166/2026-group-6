@@ -91,7 +91,7 @@ class Boss extends Entity {
       if (rope.state === "EXTENDING") rope.state = "RETRACTING";
 
       if (this.hp <= 0) {
-         this.purified = true;
+         this.destroy();
          // 触发游戏胜利或掉落大量清洁能量
       }
    }

@@ -124,9 +124,9 @@ class GameManager {
          this._createEntities();
          this.level.entities = this.entities;
          this.levelsInfo[this.levelIndex] = this.level;
-         this.level.totalPollutionCore = this.level.getPollutionCoreCount();
-         this.level.totalEnemies = this.level.getEnemiesCount();
-         this.level.totalBoss = this.level.getBossCount();
+         this.level.totalPollutionCore = this.level.getEntityCount(GameConfig.Entity.PollutionCore);
+         this.level.totalEnemies = this.level.getEntityCount(GameConfig.Entity.Enemy);
+         this.level.totalBoss = this.level.getEntityCount(GameConfig.Entity.Boss);
       }
       else {
          this.entities = this.levelsInfo[this.levelIndex].entities;
@@ -427,9 +427,6 @@ class GameManager {
          });
          if (ent.isDead) this.entities.splice(i, 1);
       }
-      this.level.pollutionCoreCount = this.level.getPollutionCoreCount();
-
-
    }
 
    _updateParticles() {
@@ -539,9 +536,9 @@ class GameManager {
             initialCores += lvl.totalPollutionCore;
             initialEnemies += lvl.totalEnemies;
             initialBoss += lvl.totalBoss;
-            remainingCores += lvl.getPollutionCoreCount();
-            remainingEnemies += lvl.getEnemiesCount();
-            remainingBoss += lvl.getBossCount();
+            remainingCores += lvl.getEntityCount(GameConfig.Entity.PollutionCore);
+            remainingEnemies += lvl.getEntityCount(GameConfig.Entity.Enemy);
+            remainingBoss += lvl.getEntityCount(GameConfig.Entity.Boss);
             // 累加该关卡能提供的总净化值
          }
       }
