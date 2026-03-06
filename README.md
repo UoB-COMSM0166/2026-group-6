@@ -218,7 +218,7 @@ To better understand how players interact with the game system, we model the mai
 - 15% ~750 words 
 - System architecture. Class diagrams, behavioural diagrams.
 
-### System Architecture
+### 4.1 System Architecture
 
 This system employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between subsystems during gameplay. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management, thereby enhancing the system's maintainability and scalability.
 
@@ -226,7 +226,7 @@ During gameplay, the `GameManager` maintains the overall game state and schedule
 
 Resource loading is centrally managed by the `ResourceManager`, while level structure and in-level objects are maintained by the `LevelManager`. By separating these functional modules from core control logic, the system gains greater flexibility in supporting multi-level structures and area transitions. 
 
-### Initial Class Diagram
+### 4.2 Initial Class Diagram
 
 After identifying the user's core requirements, we designed the system's initial class structure. The initial design primarily revolves around the core components essential for game operation, and Figure X illustrates this initial class diagram.
 <p align="center">
@@ -236,24 +236,24 @@ After identifying the user's core requirements, we designed the system's initial
   <b>Figure X. Initial Class Diagram</b>
 </p>
 
-###### 1. GameManager
+##### 1. GameManager
 `GameManager` serves as the system's central control class, responsible for maintaining key components required for game operation, such as `LevelManager`, `Camera`, `ResourceManager`, and `Player`. This class governs the game flow by invoking methods like loadLevel(), update(), and render(), coordinating component updates and rendering within each frame.
 
-###### 2. LevelManager
+##### 2. LevelManager
 `LevelManager` loads level data and manages entities within the current level. It maintains an entity collection to store all objects in the level. Additionally, `LevelManager` detects map boundaries and triggers area transitions when necessary.
 
-###### 3. Player
+##### 3. Player
 Player-related logic is implemented by `Player`. This class encapsulates attributes such as the player's health, maximum health, and purification energy, whilst providing functions for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
 
-###### 4. Rope
+##### 4. Rope
 The rope mechanism is implemented by `Rope`. This class manages rope state, length, and energy transfer behaviours, providing methods for deploying ropes, updating rope state, and adjusting length. Each rope associates with a `RopeHead` object to handle interaction logic when the rope head contacts target objects.
 
-###### 5. Entity
+##### 5. Entity
 To centrally manage interactive objects within levels, the system employs the abstract class `Entity`. Different game object types inherit from this class to implement specific behaviours. For instance, `Enemy` represents hostile characters, while `PollutionCore` denotes environmental targets requiring purification. This inheritance structure enables shared interfaces across objects while preserving distinct behavioural logic.
 
 This foundational design establishes the game's core operational framework, providing a basis for subsequent system functionality expansion.
 
-### Final Class Diagram
+### 4.3 Final Class Diagram
 
 As development progressed, the game gradually added more features, such as enemy types, environmental interaction objects, and area teleportation mechanisms. To support these new features, the system architecture was further expanded. The final class diagram (Figure X) illustrates the relationships between the main classes in the system.
 <p align="center">
@@ -269,23 +269,37 @@ Furthermore, the level system was optimized. `LevelManager` uses a `Tile` grid s
 
 Finally, the interaction methods between entities have also been standardized. When a player or rope comes into contact with an entity, the interaction methods defined by that entity are called, such as onPlayerContact() or onRopeContact(). Different entities can implement different behaviors based on their own type, such as restoring player resources, triggering teleportation, or updating the polluted core state. This polymorphic interaction method reduces coupling between systems and makes it easier to add new entity types to the system.
 
-## Sequence Diagram
+## 4.4 Pollution Purification Sequence Diagram
+Figure X shows the player's interaction process for purifying the contaminated core via the rope system. This sequence diagram depicts the primary system interaction flow from player input to the purification of the contaminated core.
 <p align="center">
   <img src="resources/images/SequenceDiagram_0305_1.png" width="80%"/>
 </p>
 <p align="center">
-  <b>Figure. Rope Interaction and Pollution Purification</b>
+  <b>Figure X. Rope Interaction and Pollution Purification</b>
 </p>
+
+When the player performs an input action, the input event is first received by the GameManager, triggering the fireRope() method. Subsequently, the Player calls the Rope's fire() method, causing the rope to be fired towards the target direction.
+
+During each frame update loop, the GameManager continuously calls the Player's update() method, which in turn updates the Rope's state. When the rope contacts an environmental object, it triggers the target object's onRopeContact() method. In this instance, contact with the PollutionCore initiates the pollution purification logic.
+
+If the player's current purification energy satisfies the purification conditions (player.cleanEnergy ≥ purificationCost), the player first expends the corresponding energy. Subsequently, the PollutionCore executes the purifyPollution() method and updates its state. Otherwise, the system triggers the insufficient energy handling logic, maintaining the PollutionCore's current state unchanged.
+
+### 4.5 Unlock New Area Sequence Diagram
+Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
 
 <p align="center">
   <img src="resources/images/SequenceDiagram_0305_2.png" width="70%"/>
 </p>
 <p align="center">
-  <b>Figure. Unlock New Area</b>
+  <b>Figure X. Unlock New Area</b>
 </p>
 
+During gameplay, the GameManager calls the Player's update() method within each frame's update loop to continuously refresh the player's state. Concurrently, the system invokes the LevelManager's checkUnlockCondition() method to assess whether the unlock criteria are currently met.
 
-The sequence diagram shows the process of purifying a pollution core using the rope system. Player input triggers the rope deployment, which interacts with a pollution core upon contact. An `alt` fragment is used to model the energy-dependent outcome of the purification attempt. Successful purification notifies the LevelManager, which checks whether enough pollution cores in the current area have been purified to allow level progression. If energy is insufficient, the purification attempt fails and no core state is changed.
+Should the player's purification progress meet the preset requirement (purifiedProgress ≥ requiredProgress), the system triggers the unlockNewArea() method to unlock the new area. Subsequently, the GameManager loads the new level data and invokes the loadNewArea() method to complete the area transition.
+
+Upon completion of the new area's loading, the system resets the player's position via the resetPosition() method to ensure correct entry into the new zone. Should the unlock conditions remain unmet, the system maintains the current state and continues executing the game loop.
+
 
 # 5. Implementation
 
