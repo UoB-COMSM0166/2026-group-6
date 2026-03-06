@@ -230,7 +230,7 @@ Resource loading is centrally managed by the `ResourceManager`, while level stru
 
 After identifying the user's core requirements, we designed the system's initial class structure. The initial design primarily revolves around the core components essential for game operation, and Figure X illustrates this initial class diagram.
 <p align="center">
-  <img src="resources/images/Class_0221.png" width="80%"/>
+  <img src="resources/images/Class_0221.png" width="65%"/>
 </p>
 <p align="center">
   <b>Figure X. Initial Class Diagram</b>
