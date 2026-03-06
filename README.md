@@ -218,40 +218,56 @@ To better understand how players interact with the game system, we model the mai
 - 15% ~750 words 
 - System architecture. Class diagrams, behavioural diagrams.
 
-###System Architecture
-This system adopts a modular, object-oriented architecture with `GameManager` as the core control component, responsible for coordinating interactions among various subsystems during gameplay. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, resource management, and player interaction, thus enhancing system maintainability and scalability.    
+### System Architecture
 
-During runtime, the `GameManager` maintains the overall game state and coordinates the main update loop of the game. In each frame, the GameManager updates the player, the current level, and other active components before triggering the rendering process. The camera system is also controlled at this level to ensure the correct part of the game world is displayed.
+This system employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between subsystems during gameplay. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management, thereby enhancing the system's maintainability and scalability.
 
-The `ResourceManager` handles loading and managing game resources such as images, map data, and audio files. All resources are loaded during the initialization phase and reused during gameplay. Centralizing resource loading helps avoid redundant operations and improves runtime efficiency.
+During gameplay, the `GameManager` maintains the overall game state and schedules module execution within each frame's update loop. For instance, it updates current game logic, invokes the level management module to refresh level content, and controls screen refreshes. This centralised scheduling mechanism ensures unified progression of game logic per frame.
 
-Level-related logic is managed by the `LevelManager`. This component oversees the map structure and all entities within the current level, including enemies, pollution cores, and other interactive objects. By separating level logic from main game controller, the system more easily supports multi-level structures and area transitions.
+Resource loading is centrally managed by the `ResourceManager`, while level structure and in-level objects are maintained by the `LevelManager`. By separating these functional modules from core control logic, the system gains greater flexibility in supporting multi-level structures and area transitions. 
 
-This layered architecture establishes clear responsibilities between modules and reduces coupling between system components, providing a solid foundation for future feature expansion.
+### Initial Class Diagram
 
-## Class Diagram
+After identifying the user's core requirements, we designed the system's initial class structure. The initial design primarily revolves around the core components essential for game operation, and Figure X illustrates this initial class diagram.
 <p align="center">
   <img src="resources/images/ClassDiagram_0221.png" width="80%"/>
 </p>
 <p align="center">
-  <b>Figure. Initial Design Class Diagram</b>
+  <b>Figure X. Initial Class Diagram</b>
 </p>
 
+###### 1. GameManager
+`GameManager` serves as the system's central control class, responsible for maintaining key components required for game operation, such as `LevelManager`, `Camera`, `ResourceManager`, and `Player`. This class governs the game flow by invoking methods like loadLevel(), update(), and render(), coordinating component updates and rendering within each frame.
 
+###### 2. LevelManager
+`LevelManager` loads level data and manages entities within the current level. It maintains an entity collection to store all objects in the level. Additionally, `LevelManager` detects map boundaries and triggers area transitions when necessary.
+
+###### 3. Player
+Player-related logic is implemented by `Player`. This class encapsulates attributes such as the player's health, maximum health, and purification energy, whilst providing functions for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
+
+###### 4. Rope
+The rope mechanism is implemented by `Rope`. This class manages rope state, length, and energy transfer behaviours, providing methods for deploying ropes, updating rope state, and adjusting length. Each rope associates with a `RopeHead` object to handle interaction logic when the rope head contacts target objects.
+
+###### 5. Entity
+To centrally manage interactive objects within levels, the system employs the abstract class `Entity`. Different game object types inherit from this class to implement specific behaviours. For instance, `Enemy` represents hostile characters, while `PollutionCore` denotes environmental targets requiring purification. This inheritance structure enables shared interfaces across objects while preserving distinct behavioural logic.
+
+This foundational design establishes the game's core operational framework, providing a basis for subsequent system functionality expansion.
+
+### Final Class Diagram
+
+As development progressed, the game gradually added more features, such as enemy types, environmental interaction objects, and area teleportation mechanisms. To support these new features, the system architecture was further expanded. The final class diagram (Figure X) illustrates the relationships between the main classes in the system.
 <p align="center">
   <img src="resources/images/ClassDiagram_0304.png" width="80%"/>
 </p>
 <p align="center">
-  <b>Figure. Final Design Class Diagram</b>
+  <b>Figure X. Final Class Diagram</b>
 </p>
 
-The class diagram illustrates the overall architecture of the game system. The `GameManager` acts as the central coordinator, managing the player, level progression, camera, and shared resources. The game world is organised through the `LevelManager`, which maintains the tile-based map structure and manages collections of entities derived from a common abstract `Entity` class.
+In the final design, `Entity` became the core abstract class of the game object system, extending into several subclasses, such as `Enemy`, `Boss`, `PollutionCore`, `TeleportationGate`, `CleanEnergy`, and `GateWall`. These classes represent different types of game objects and implement their respective interactive behaviors. For example, `Enemy` and `Boss` are used to implement enemy characters, while `CleanEnergy` represents resource objects that players can collect.
 
-Different gameplay objects, including `Enemy`, `Boss`, `PollutionCore`, `Rest`, and `CleanEnergy`, extend the Entity class and implement their own interaction behaviours. Among these, `PollutionCore`, `Enemy`, and `Boss` represent polluted elements in the environment that must be purified by the player.
+Furthermore, the level system was optimized. `LevelManager` uses a `Tile` grid structure to represent the map environment, with each tile recording its position, size, and whether it is solid terrain. This grid-based structure makes level loading, collision detection, and map rendering more efficient.
 
-The core gameplay mechanic is a purification system. The `Player` interacts with the environment and entities using two `Rope` objects, which enable movement, puzzle solving, and purification actions. For example, ropes can trigger the purification of `PollutionCore`, or interact with `Enemy` and `Boss` entities to gradually remove pollution and progress through the level.
-
-Overall, the design follows object-oriented principles such as abstraction, inheritance, and modular decomposition, improving the extensibility and maintainability of the system.
+Finally, the interaction methods between entities have also been standardized. When a player or rope comes into contact with an entity, the interaction methods defined by that entity are called, such as onPlayerContact() or onRopeContact(). Different entities can implement different behaviors based on their own type, such as restoring player resources, triggering teleportation, or updating the polluted core state. This polymorphic interaction method reduces coupling between systems and makes it easier to add new entity types to the system.
 
 ## Sequence Diagram
 <p align="center">
