@@ -230,25 +230,25 @@ Resource loading is centrally managed by the `ResourceManager`, while level stru
 
 After identifying the user's core requirements, we designed the system's initial class structure. The initial design primarily revolves around the core components essential for game operation, and Figure X illustrates this initial class diagram.
 <p align="center">
-  <img src="resources/images/ClassDiagram_0221.png" width="80%"/>
+  <img src="resources/images/Class_0221.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure X. Initial Class Diagram</b>
 </p>
 
-##### 1. GameManager
+#### 1. GameManager
 `GameManager` serves as the system's central control class, responsible for maintaining key components required for game operation, such as `LevelManager`, `Camera`, `ResourceManager`, and `Player`. This class governs the game flow by invoking methods like loadLevel(), update(), and render(), coordinating component updates and rendering within each frame.
 
-##### 2. LevelManager
+#### 2. LevelManager
 `LevelManager` loads level data and manages entities within the current level. It maintains an entity collection to store all objects in the level. Additionally, `LevelManager` detects map boundaries and triggers area transitions when necessary.
 
-##### 3. Player
+#### 3. Player
 Player-related logic is implemented by `Player`. This class encapsulates attributes such as the player's health, maximum health, and purification energy, whilst providing functions for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
 
-##### 4. Rope
+#### 4. Rope
 The rope mechanism is implemented by `Rope`. This class manages rope state, length, and energy transfer behaviours, providing methods for deploying ropes, updating rope state, and adjusting length. Each rope associates with a `RopeHead` object to handle interaction logic when the rope head contacts target objects.
 
-##### 5. Entity
+#### 5. Entity
 To centrally manage interactive objects within levels, the system employs the abstract class `Entity`. Different game object types inherit from this class to implement specific behaviours. For instance, `Enemy` represents hostile characters, while `PollutionCore` denotes environmental targets requiring purification. This inheritance structure enables shared interfaces across objects while preserving distinct behavioural logic.
 
 This foundational design establishes the game's core operational framework, providing a basis for subsequent system functionality expansion.
@@ -257,7 +257,7 @@ This foundational design establishes the game's core operational framework, prov
 
 As development progressed, the game gradually added more features, such as enemy types, environmental interaction objects, and area teleportation mechanisms. To support these new features, the system architecture was further expanded. The final class diagram (Figure X) illustrates the relationships between the main classes in the system.
 <p align="center">
-  <img src="resources/images/ClassDiagram_0304.png" width="80%"/>
+  <img src="resources/images/Class_0304.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure X. Final Class Diagram</b>
@@ -269,10 +269,10 @@ Furthermore, the level system was optimized. `LevelManager` uses a `Tile` grid s
 
 Finally, the interaction methods between entities have also been standardized. When a player or rope comes into contact with an entity, the interaction methods defined by that entity are called, such as onPlayerContact() or onRopeContact(). Different entities can implement different behaviors based on their own type, such as restoring player resources, triggering teleportation, or updating the polluted core state. This polymorphic interaction method reduces coupling between systems and makes it easier to add new entity types to the system.
 
-## 4.4 Pollution Purification Sequence Diagram
+### 4.4 Pollution Purification Sequence Diagram
 Figure X shows the player's interaction process for purifying the contaminated core via the rope system. This sequence diagram depicts the primary system interaction flow from player input to the purification of the contaminated core.
 <p align="center">
-  <img src="resources/images/SequenceDiagram_0305_1.png" width="80%"/>
+  <img src="resources/images/Sequence_0305_1.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure X. Rope Interaction and Pollution Purification</b>
@@ -288,7 +288,7 @@ If the player's current purification energy satisfies the purification condition
 Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
 
 <p align="center">
-  <img src="resources/images/SequenceDiagram_0305_2.png" width="70%"/>
+  <img src="resources/images/Sequence0305_2.png" width="80%"/>
 </p>
 <p align="center">
   <b>Figure X. Unlock New Area</b>
