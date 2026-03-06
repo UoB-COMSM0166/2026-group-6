@@ -300,7 +300,7 @@ To better understand how players interact with the game system, we model the mai
 </p>
 
 <p align="center">
-  <b>Figure 4. Use-Case Diagram</b>
+  <b>Figure 4.</b> Use-Case Diagram
 </p>
 
 # 4. Design
@@ -323,7 +323,7 @@ After identifying the user's core requirements, we designed the system's initial
   <img src="resources/images/Class_0221.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure X. Initial Class Diagram</b>
+  <b>Figure X.</b> Initial Class Diagram
 </p>
 
 #### 1. GameManager
@@ -350,7 +350,7 @@ As development progressed, the game gradually added more features, such as enemy
   <img src="resources/images/Class_0305.png" width="80%"/>
 </p>
 <p align="center">
-  <b>Figure X. Final Class Diagram</b>
+  <b>Figure X.</b> Final Class Diagram
 </p>
 
 In the final design, `Entity` became the core abstract class of the game object system, extending into several subclasses, such as `Enemy`, `Boss`, `PollutionCore`, `TeleportationGate`, `CleanEnergy`, and `GateWall`. These classes represent different types of game objects and implement their respective interactive behaviors. For example, `Enemy` and `Boss` are used to implement enemy characters, while `CleanEnergy` represents resource objects that players can collect.
@@ -365,7 +365,7 @@ Figure X shows the player's interaction process for purifying the contaminated c
   <img src="resources/images/Sequence_0305_1.png" width="70%"/>
 </p>
 <p align="center">
-  <b>Figure X. Rope Interaction and Pollution Purification</b>
+  <b>Figure X.</b> Rope Interaction and Pollution Purification
 </p>
 
 When the player performs an input action, the input event is first received by the GameManager, triggering the fireRope() method. Subsequently, the Player calls the Rope's fire() method, causing the rope to be fired towards the target direction.
@@ -381,7 +381,7 @@ Figure X shows the interaction flow for unlocking new areas. This sequence diagr
   <img src="resources/images/Sequence_0305_2.png" width="45%"/>
 </p>
 <p align="center">
-  <b>Figure X. Unlock New Area</b>
+  <b>Figure X.</b> Unlock New Area
 </p>
 
 During gameplay, the GameManager calls the Player's update() method within each frame's update loop to continuously refresh the player's state. Concurrently, the system invokes the LevelManager's checkUnlockCondition() method to assess whether the unlock criteria are currently met.
@@ -400,12 +400,12 @@ Upon completion of the new area's loading, the system resets the player's positi
 All the levels and maps in this game were manually designed by the team members and created using LDtk (Level Designer Toolkit). Each area of the game world is composed of several connected levels. In this way, we can more flexibly control the layout of the levels, the exploration paths of the players, and the gameplay pacing.
 
 <p align="center">
-  <img src="resources/images/ldtk1.png" width="45%">
   <img src="resources/images/ldtk3.png" width="45%">
+  <img src="resources/images/ldtk1.png" width="45%">
 </p>
 
 <p align="center">
-  <b>Figure . Ldtk Map</b>
+  <b>Figure .</b> Ldtk Map
 </p>
 
 During the map design process, we not only designed the visual layout of the levels, but also defined the logical structure within the levels. Each level contains multiple layers that describe different aspects of the game world. The two most important layers are the Collision Layer and the Entity Layer.
@@ -417,7 +417,7 @@ The collision layer defines the physical boundaries of the environment. Elements
 </p>
 
 <p align="center">
-  <b>Figure . Collision Layer and the Entity Layer</b>
+  <b>Figure .</b> Collision Layer and the Entity Layer
 </p>
 
 To support interactive gameplay, we implemented a button–gate control mechanism using the entity system in LDtk. Each button entity can reference a target gate through a field defined in the level editor. This reference uses the unique entity identifier (iid), which creates a link between the button and the corresponding gate.
@@ -427,7 +427,7 @@ To support interactive gameplay, we implemented a button–gate control mechanis
 </p>
 
 <p align="center">
-  <b>Figure . Button–gate Control Mechanism</b>
+  <b>Figure .</b> Button–gate Control Mechanism
 </p>
 
 
