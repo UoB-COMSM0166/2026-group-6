@@ -288,7 +288,7 @@ If the player's current purification energy satisfies the purification condition
 Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
 
 <p align="center">
-  <img src="resources/images/Sequence_0305_2.png" width="80%"/>
+  <img src="resources/images/Sequence_0305_2.png" width="60%"/>
 </p>
 <p align="center">
   <b>Figure X. Unlock New Area</b>
