@@ -316,7 +316,11 @@ Upon completion of the new area's loading, the system resets the player's positi
 
 - One quantitative evaluation (of your choice) 
 
-- Description of how code was tested. 
+- Description of how code was tested.
+
+### 6.1 Qualitative Evaluation
+### 6.2 Quantitative Evaluation
+
 
 # 7. Process 
 
