@@ -432,6 +432,10 @@ To support interactive gameplay, we implemented a button–gate control mechanis
 ### 6.1 Qualitative Evaluation
 We invited several evaluators to trial the game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective method for identifying usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we documented primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
+<p align="center">
+<b>Table X.</b> Heuristic Evaluation of <i>Echoes of Purity</i>
+</p>
+
 <table>
 <tr>
 <th>Interface</th>
@@ -452,7 +456,6 @@ We invited several evaluators to trial the game and assessed the interface accor
 <td>2</td>
 <td>2.33</td>
 </tr>
-</table>
 
 <tr>
 <td>Game objective</td>
@@ -513,10 +516,8 @@ We invited several evaluators to trial the game and assessed the interface accor
 <td>3</td>
 <td>3.7</td>
 </tr>
+</table>
 
-<p align="center">
-<b>Table X.</b> Heuristic Evaluation of <i>Echoes of Purity</i>
-</p>
 
 Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will incorporate more intuitive HUD designs, such as employing progress bars or icons to represent health and energy. For controls, we will reduce players' cognitive load by simplifying operations or providing key prompts. Additionally, we will introduce straightforward tutorials and hints to assist new players in understanding the rope mechanics and game objectives. Finally, we will appropriately adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience for players.
 
