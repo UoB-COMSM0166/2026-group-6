@@ -65,6 +65,19 @@ class Rope {
       }
    }
 
+   _insertAfterFirst() {
+      let first = this.nodes[0];
+      let second = this.nodes[1];
+      this.nodes.splice(1, 0,
+         this._node((first.x + second.x) / 2, (first.y + second.y) / 2));
+   }
+
+   _removeAfterFirst() {
+      if (this.nodes.length > 2) {
+         this.nodes.splice(1, 1);
+      }
+   }
+
    _getChainPathLength() {
       let total = 0;
       for (let i = 0; i < this.nodes.length - 1; i++) {
@@ -224,8 +237,15 @@ class Rope {
          Math.floor(this.ropeLength / this.nodeDist) + 1,
          2, this.maxNodes
       );
-      while (this.nodes.length > target) this._removeBeforeLast();
-      while (this.nodes.length < target) this._insertBeforeLast();
+      // SWINGING: tip 钉在墙上, 从玩家端增减节点 (放绳/收绳)
+      // 其他状态: 从 tip 端增减 (发射/strand)
+      if (this.stuck) {
+         while (this.nodes.length > target) this._removeAfterFirst();
+         while (this.nodes.length < target) this._insertAfterFirst();
+      } else {
+         while (this.nodes.length > target) this._removeBeforeLast();
+         while (this.nodes.length < target) this._insertBeforeLast();
+      }
    }
 
    // 每帧更新
