@@ -126,13 +126,13 @@ class Enemy extends Entity {
 
       let nextX = this.x + this.vx;
 
-      // 撞墙检测（不变）
+      // 撞墙检测
       let hitWall = !!level.isRectOverlappingTile(nextX, this.y, this.w, this.h,
          { solidOnly: true, margin: 0.1 });
 
-      // 悬崖检测（不变）
+      // 悬崖检测
       let moveDir = (this.vx >= 0) ? 1 : -1;
-      let probeX = (moveDir === 1) ? (nextX + 0.5 * this.w + 0.1) : (nextX + 0.5 * this.w - 0.1);
+      let probeX = (moveDir === 1) ? (nextX + this.w + 0.1) : (nextX - 0.1);
       let feetRow = level.worldToGrid(0, this.y + this.h).row;
       let maxDropRow = level.worldToGrid(0, this.y + this.h + G * GameConfig.Enemy.DROP_DEPTH_TILES).row;
       let probeCol = level.worldToGrid(probeX, 0).col;

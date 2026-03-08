@@ -520,13 +520,40 @@ class Rope {
       let right = (tile.x + tile.w) - node.x;
       let top = node.y - tile.y;
       let bottom = (tile.y + tile.h) - node.y;
-      let minD = Math.min(left, right, top, bottom);
 
-      // 沿最小穿透方向推出
-      if (minD === top) node.y = tile.y;
-      else if (minD === bottom) node.y = tile.y + tile.h;
-      else if (minD === left) node.x = tile.x;
-      else node.x = tile.x + tile.w;
+      // 检查相邻格子是否也是固体，判断是否在角落
+      let solidLeft = level.isSolidAt(col - 1, row);
+      let solidRight = level.isSolidAt(col + 1, row);
+      let solidUp = level.isSolidAt(col, row - 1);
+      let solidDown = level.isSolidAt(col, row + 1);
+
+      // 统计可推出的方向 (相邻不是固体的方向才能推出)
+      let canPushLeft = !solidLeft;
+      let canPushRight = !solidRight;
+      let canPushUp = !solidUp;
+      let canPushDown = !solidDown;
+
+      // 候选推出方向及其穿透深度
+      let candidates = [];
+      if (canPushUp) candidates.push({ axis: 'y', depth: top, target: tile.y });
+      if (canPushDown) candidates.push({ axis: 'y', depth: bottom, target: tile.y + tile.h });
+      if (canPushLeft) candidates.push({ axis: 'x', depth: left, target: tile.x });
+      if (canPushRight) candidates.push({ axis: 'x', depth: right, target: tile.x + tile.w });
+
+      if (candidates.length === 0) {
+         // 四面都是固体，被完全包围 → 尝试推到最近的表面
+         let minD = Math.min(left, right, top, bottom);
+         if (minD === top) node.y = tile.y;
+         else if (minD === bottom) node.y = tile.y + tile.h;
+         else if (minD === left) node.x = tile.x;
+         else node.x = tile.x + tile.w;
+      } else {
+         // 选穿透深度最小的可行方向
+         candidates.sort((a, b) => a.depth - b.depth);
+         let best = candidates[0];
+         if (best.axis === 'x') node.x = best.target;
+         else node.y = best.target;
+      }
 
       // 钉住: 消除隐含速度, 防止振荡穿墙
       node.oldx = node.x;

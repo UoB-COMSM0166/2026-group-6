@@ -22,7 +22,7 @@ class ResourceManager {
     * 所有 loadImage / loadJSON 都写在这里
     */
    preload() {
-      this.data.ldtk = loadJSON('map/map-easy.ldtk');
+      this.data.ldtk = loadJSON('map/map-main.ldtk');
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
