@@ -21,6 +21,9 @@ class Rope {
       this.tip = { x: 0, y: 0, vx: 0, vy: 0 };
       this._retractTimer = 0;
 
+      // 表面接触节点索引 (由 _solveConstraints 更新)
+      this._pinnedIndices = [];
+
       // 派生常量
       this.nodeDist = this.G * RC.NODE_SPACING_GRIDS;
       this.maxNodes = Math.floor((this.G * RC.MAX_LENGTH_GRIDS) / this.nodeDist);
@@ -196,6 +199,7 @@ class Rope {
       this.ropeLength = 0;
       this._effectiveMaxLen = this.maxLen;
       this._retractTimer = 0;
+      this._pinnedIndices = [];
    }
 
    toggleMaterial() {
@@ -404,12 +408,25 @@ class Rope {
 
       for (let i = 1; i < endIdx; i++) {
          let n = this.nodes[i];
-         let vx = (n.x - n.oldx) * RC.VERLET_DAMPING;
-         let vy = (n.y - n.oldy) * RC.VERLET_DAMPING;
+
+         // 上一帧被钉在表面上的节点: 抑制 Verlet 隐含速度
+         // 只保留重力, 让约束求解器决定它是否应该脱离表面
+         let wasPinned = this._pinnedIndices.includes(i);
+
+         let vx, vy;
+         if (wasPinned) {
+            // 表面接触节点: 不使用 Verlet 惯性, 仅施加重力测试是否应脱离
+            vx = 0;
+            vy = gravity;
+         } else {
+            vx = (n.x - n.oldx) * RC.VERLET_DAMPING;
+            vy = (n.y - n.oldy) * RC.VERLET_DAMPING + gravity;
+         }
+
          let prevX = n.x, prevY = n.y;
 
          let newX = n.x + vx;
-         let newY = n.y + vy + gravity;
+         let newY = n.y + vy;
 
          // 当RETRACTING时进行分轴碰撞: 允许沿表面滑动而非完全回退
          let solidXY = level.isPointSolid(newX, newY);
@@ -504,6 +521,12 @@ class Rope {
             }
          }
       }
+
+      // 持久化 pinned 状态, 供 applyPhysics / _getEffectiveAnchor 使用
+      this._pinnedIndices = [];
+      for (let i = 0; i < count; i++) {
+         if (pinned[i]) this._pinnedIndices.push(i);
+      }
    }
 
    /**
@@ -514,6 +537,10 @@ class Rope {
       let { col, row } = level.worldToGrid(node.x, node.y);
       let tile = level.getTileAt(col, row);
       if (!tile || !tile.isSolid) return;
+
+      // Verlet 隐含速度 (切向分量)
+      let impliedVx = node.x - node.oldx;
+      let impliedVy = node.y - node.oldy;
 
       // 四个方向的穿透深度
       let left = node.x - tile.x;
@@ -540,53 +567,117 @@ class Rope {
       if (canPushLeft) candidates.push({ axis: 'x', depth: left, target: tile.x });
       if (canPushRight) candidates.push({ axis: 'x', depth: right, target: tile.x + tile.w });
 
+      let pushAxis = null; // 'x' 或 'y'，记录推出方向
+
       if (candidates.length === 0) {
          // 四面都是固体，被完全包围 → 尝试推到最近的表面
          let minD = Math.min(left, right, top, bottom);
-         if (minD === top) node.y = tile.y;
-         else if (minD === bottom) node.y = tile.y + tile.h;
-         else if (minD === left) node.x = tile.x;
-         else node.x = tile.x + tile.w;
+         if (minD === top) { node.y = tile.y; pushAxis = 'y'; }
+         else if (minD === bottom) { node.y = tile.y + tile.h; pushAxis = 'y'; }
+         else if (minD === left) { node.x = tile.x; pushAxis = 'x'; }
+         else { node.x = tile.x + tile.w; pushAxis = 'x'; }
       } else {
          // 选穿透深度最小的可行方向
          candidates.sort((a, b) => a.depth - b.depth);
          let best = candidates[0];
+         pushAxis = best.axis;
          if (best.axis === 'x') node.x = best.target;
          else node.y = best.target;
       }
 
-      // 钉住: 消除隐含速度, 防止振荡穿墙
-      node.oldx = node.x;
-      node.oldy = node.y;
+      // 保留切向速度、消除法向速度
+      // pushAxis 是法线方向，另一个轴是切线方向
+      // 切向速度允许节点沿表面滑动 (带阻尼防止抖动)
+      let tangentialDamp = 0.4;
+      if (pushAxis === 'x') {
+         // 法向是 X → 消除 X 速度, 保留 Y 速度 (沿表面滑动)
+         node.oldx = node.x;
+         node.oldy = node.y - impliedVy * tangentialDamp;
+      } else {
+         // 法向是 Y → 消除 Y 速度, 保留 X 速度 (沿表面滑动)
+         node.oldx = node.x - impliedVx * tangentialDamp;
+         node.oldy = node.y;
+      }
    }
 
    // 内部: 玩家约束
 
+   /**
+    * 获取"有效锚点": 绳子绕过拐角时, 最近的表面接触节点充当滑轮
+    * 玩家应从该接触点摆荡, 而非从远端 tip 直接拉
+    *
+    * @returns {{ x:number, y:number, freeLength:number } | null}
+    *   x, y     — 有效锚点的位置
+    *   freeLength — 从有效锚点到玩家的可用绳长
+    */
+   _getEffectiveAnchor() {
+      if (this.nodes.length < 2) return null;
+
+      // 从玩家端 (index 1) 向 tip 端遍历, 找第一个表面接触节点
+      let anchorIdx = this.nodes.length - 1; // 默认: tip
+      for (let i = 1; i < this.nodes.length; i++) {
+         if (this._pinnedIndices.includes(i)) {
+            anchorIdx = i;
+            break;
+         }
+      }
+
+      let anchor = this.nodes[anchorIdx];
+
+      // 计算从有效锚点到 tip 的已用绳长
+      let usedLen = 0;
+      for (let i = anchorIdx; i < this.nodes.length - 1; i++) {
+         let a = this.nodes[i], b = this.nodes[i + 1];
+         usedLen += Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
+      }
+
+      // 可用绳长 = 总绳长 - 已用绳长 (至少为一个节点间距, 防止退化)
+      let freeLen = Math.max(this.nodeDist, this.ropeLength - usedLen);
+
+      return { x: anchor.x, y: anchor.y, freeLength: freeLen };
+   }
+
+   /** 对玩家施加绳索约束 (粘住时生效) */
+   applyPhysics(player) {
+      if (!this.stuck || this.nodes.length < 2) return;
+
+      let anchor = this._getEffectiveAnchor();
+      if (!anchor) return;
+
+      let d = dist(player.cx(), player.cy(), anchor.x, anchor.y);
+
+      if (this.material === 'HARD') {
+         this._applyHardSpring(player, d, anchor);
+      } else {
+         this._applySoftConstraint(player, d, anchor);
+      }
+   }
+
    /** 硬绳: 双向弹簧 (太远拉回, 太近推开) */
-   _applyHardSpring(player, curDist) {
-      let diff = curDist - this.ropeLength;
+   _applyHardSpring(player, curDist, anchor) {
+      let diff = curDist - anchor.freeLength;
       if (abs(diff) <= RC.HARD_SPRING_THRESHOLD) return;
 
-      let a = atan2(this.tip.y - player.cy(), this.tip.x - player.cx());
+      let a = atan2(anchor.y - player.cy(), anchor.x - player.cx());
       let f = diff * RC.HARD_SPRING_STRENGTH;
       player.vx = (player.vx + cos(a) * f) * RC.HARD_SPRING_DAMPING;
       player.vy = (player.vy + sin(a) * f) * RC.HARD_SPRING_DAMPING;
    }
 
    /** 软绳: Rope Joint — 超出绳长时硬约束 */
-   _applySoftConstraint(player, curDist) {
-      if (curDist <= this.ropeLength) return;
+   _applySoftConstraint(player, curDist, anchor) {
+      if (curDist <= anchor.freeLength) return;
 
-      // 方向: 锚点 → 玩家
-      let dx = player.cx() - this.tip.x;
-      let dy = player.cy() - this.tip.y;
+      // 方向: 有效锚点 → 玩家
+      let dx = player.cx() - anchor.x;
+      let dy = player.cy() - anchor.y;
       if (curDist === 0) return;
       let nx = dx / curDist;
       let ny = dy / curDist;
 
-      // 硬约束: 直接把玩家钳制到绳长圆上
-      let targetCX = this.tip.x + nx * this.ropeLength;
-      let targetCY = this.tip.y + ny * this.ropeLength;
+      // 硬约束: 直接把玩家钳制到绳长圆上 (以有效锚点为圆心)
+      let targetCX = anchor.x + nx * anchor.freeLength;
+      let targetCY = anchor.y + ny * anchor.freeLength;
       player.x = targetCX - player.w / 2;
       player.y = targetCY - player.h / 2;
 

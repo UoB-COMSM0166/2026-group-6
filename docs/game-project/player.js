@@ -348,20 +348,25 @@ class Player {
    /**
     * 对单根绳子执行硬长度约束
     * 只在软绳 SWINGING 状态下生效
+    * 使用有效锚点
     */
    _clampToRope(rope) {
       if (rope.material !== 'SOFT' || !rope.stuck || rope.nodes.length < 2) return;
-      let dx = this.cx() - rope.tip.x;
-      let dy = this.cy() - rope.tip.y;
-      let d = Math.sqrt(dx * dx + dy * dy);
-      if (d <= rope.ropeLength) return;
 
-      // 方向: 锚点 → 玩家
+      let anchor = rope._getEffectiveAnchor();
+      if (!anchor) return;
+
+      let dx = this.cx() - anchor.x;
+      let dy = this.cy() - anchor.y;
+      let d = Math.sqrt(dx * dx + dy * dy);
+      if (d <= anchor.freeLength) return;
+
+      // 方向: 有效锚点 → 玩家
       let nx = dx / d, ny = dy / d;
 
-      // 硬钳制到绳长圆上
-      let targetCX = rope.tip.x + nx * rope.ropeLength;
-      let targetCY = rope.tip.y + ny * rope.ropeLength;
+      // 硬钳制到可用绳长圆上
+      let targetCX = anchor.x + nx * anchor.freeLength;
+      let targetCY = anchor.y + ny * anchor.freeLength;
       this.x = targetCX - this.w / 2;
       this.y = targetCY - this.h / 2;
 
