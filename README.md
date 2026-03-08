@@ -430,6 +430,7 @@ To support interactive gameplay, we implemented a button–gate control mechanis
 - Description of how code was tested.
 
 ### 6.1 Qualitative Evaluation
+We invited several evaluators to trial the game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective method for identifying usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we documented primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
 <table>
 <tr>
@@ -446,15 +447,79 @@ To support interactive gameplay, we implemented a button–gate control mechanis
 <td>HUD (Player Status)</td>
 <td>The HP and CleanEnergy values are displayed only as plain text without visual indicators such as bars or icons, making it difficult for players to quickly interpret their current status during gameplay.</td>
 <td>Visibility of system status; Recognition rather than recall</td>
-<td>4</td>
 <td>3</td>
-<td>3</td>
-<td>3.33</td>
+<td>2</td>
+<td>2</td>
+<td>2.33</td>
 </tr>
 </table>
 
+<tr>
+<td>Game objective</td>
+<td>The purification progress indicator may not clearly explain how players can increase the purification percentage.</td>
+<td>Match between system and real world</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
 
-  
+<tr>
+<td>Controls</td>
+<td>The game requires players to remember multiple keyboard controls (e.g., WASD, Q, E), which may increase cognitive load and make it difficult for new players to learn the controls quickly.</td>
+<td>Recognition rather than recall; Help and documentation</td>
+<td>4</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>Gameplay introduction</td>
+<td>The game does not provide a tutorial or clear instructions for new players, which may make it difficult for them to understand the rope mechanics and purification system.</td>
+<td>Help and documentation</td>
+<td>2</td>
+<td>4</td>
+<td>2</td>
+<td>2.7</td>
+</tr>
+
+<tr>
+<td>Rope mechanics</td>
+<td>The rope mechanics are not clearly explained to the player, making it difficult for new players to understand how to use the rope for traversal.</td>
+<td>Help and documentation; Recognition rather than recall</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+<td>3.33</td>
+</tr>
+
+<tr>
+<td>Combat feedback</td>
+<td>Monsters do not appear to be knocked back when hit by the player, while the player is knocked back when attacked. This creates inconsistent combat feedback and may make the interaction feel unfair.</td>
+<td>Visibility of system status; Consistency and standards</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>Game difficulty</td>
+<td>The game may be too difficult for new players, as the mechanics and challenges require significant practice before players can progress.</td>
+<td>Flexibility and efficiency of use</td>
+<td>4</td>
+<td>4</td>
+<td>3</td>
+<td>3.7</td>
+</tr>
+
+<p align="center">
+<b>Table X.</b> Heuristic Evaluation of <i>Echoes of Purity</i>
+</p>
+
+Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will incorporate more intuitive HUD designs, such as employing progress bars or icons to represent health and energy. For controls, we will reduce players' cognitive load by simplifying operations or providing key prompts. Additionally, we will introduce straightforward tutorials and hints to assist new players in understanding the rope mechanics and game objectives. Finally, we will appropriately adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience for players.
+
 ### 6.2 Quantitative Evaluation
 
 
@@ -598,4 +663,8 @@ You can delete this section in your own repo, it's just here for information. in
  # 12. References
 
 Alexander, I. F. (2005). *A taxonomy of stakeholders: Human roles in system development*. International Journal of Technology and Human Interaction, 1(1), 23–59.
+
+Nielsen, J. and Molich, R. (1990). Heuristic evaluation of user interfaces. Proceedings of the SIGCHI Conference on Human Factors in Computing Systems.
+
+Nielsen, J. (1994). Heuristic Evaluation. In: Nielsen, J. and Mack, R.L. (eds.) Usability Inspection Methods. New York: John Wiley & Sons.
 
