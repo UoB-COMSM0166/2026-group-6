@@ -441,6 +441,19 @@ To support interactive gameplay, we implemented a button–gate control mechanis
 <th>Persistence</th>
 <th>Severity</th>
 </tr>
+
+<tr>
+<td>HUD (Player Status)</td>
+<td>The HP and CleanEnergy values are displayed only as plain text without visual indicators such as bars or icons, making it difficult for players to quickly interpret their current status during gameplay.</td>
+<td>Visibility of system status; Recognition rather than recall</td>
+<td>4</td>
+<td>3</td>
+<td>3</td>
+<td>3.33</td>
+</tr>
+</table>
+
+
   
 ### 6.2 Quantitative Evaluation
 
