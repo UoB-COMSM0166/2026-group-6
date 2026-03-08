@@ -21,7 +21,7 @@ class Rope {
       this.tip = { x: 0, y: 0, vx: 0, vy: 0 };
       this._retractTimer = 0;
 
-      // 表面接触节点索引 (由 _solveConstraints 更新)
+      // 表面接触节点索引 (每帧由 _solveConstraints 更新)
       this._pinnedIndices = [];
 
       // 派生常量
@@ -253,18 +253,6 @@ class Rope {
       this.tip.y = this.lastNode.y;
    }
 
-   /** 对玩家施加绳索约束 (粘住时生效) */
-   applyPhysics(player) {
-      if (!this.stuck || this.nodes.length < 2) return;
-      let d = dist(player.cx(), player.cy(), this.tip.x, this.tip.y);
-
-      if (this.material === 'HARD') {
-         this._applyHardSpring(player, d);
-      } else {
-         this._applySoftConstraint(player, d);
-      }
-   }
-
    // 查询
 
    getTip() {
@@ -344,10 +332,11 @@ class Rope {
       this.tip.x = x;
       this.tip.y = y;
       this.nodes.push(this._node(x, y));
-      //  绳长限制为理论和实际长度的较大值
+      //  绳长限制为理论长度、直线距离、实际路径长度中的最大值
       let chainLen = this.nodeDist * (this.nodes.length - 1);
       let directDist = dist(this.nodes[0].x, this.nodes[0].y, x, y);
-      this.ropeLength = Math.max(chainLen, directDist);
+      let pathLen = this._getChainPathLength();
+      this.ropeLength = Math.max(chainLen, directDist, pathLen);
       this._effectiveMaxLen = Math.max(this.ropeLength, this.maxLen);
    }
 
@@ -415,7 +404,6 @@ class Rope {
 
          let vx, vy;
          if (wasPinned) {
-            // 表面接触节点: 不使用 Verlet 惯性, 仅施加重力测试是否应脱离
             vx = 0;
             vy = gravity;
          } else {
@@ -428,26 +416,22 @@ class Rope {
          let newX = n.x + vx;
          let newY = n.y + vy;
 
-         // 当RETRACTING时进行分轴碰撞: 允许沿表面滑动而非完全回退
+         // 分轴碰撞: 允许沿表面滑动而非完全回退
          let solidXY = level.isPointSolid(newX, newY);
          if (solidXY && this.state !== "EXTENDING") {
             let solidX = level.isPointSolid(newX, prevY);
             let solidY = level.isPointSolid(prevX, newY);
             if (!solidX && solidY) {
-               // Y方向被挡, 只移动X
                n.x = newX;
                n.y = prevY;
             } else if (solidX && !solidY) {
-               // X方向被挡, 只移动Y
                n.x = prevX;
                n.y = newY;
             } else {
-               // 两个方向都被挡, 不移动
                n.x = prevX;
                n.y = prevY;
             }
          }
-         // 正常绳子轨迹
          else {
             n.x = newX;
             n.y = newY;
@@ -515,14 +499,14 @@ class Rope {
                for (let i = 1; i < endIdx; i++) {
                   if (level.isPointSolid(this.nodes[i].x, this.nodes[i].y)) {
                      this._pushNodeOutOfSolid(this.nodes[i], level);
-                     pinned[i] = true;   // 标记为地表接触 → 后续迭代视为固定点
+                     pinned[i] = true;
                   }
                }
             }
          }
       }
 
-      // 持久化 pinned 状态, 供 applyPhysics / _getEffectiveAnchor 使用
+      // 持久化 pinned 状态, 供 _getEffectiveAnchor 使用
       this._pinnedIndices = [];
       for (let i = 0; i < count; i++) {
          if (pinned[i]) this._pinnedIndices.push(i);
@@ -538,7 +522,7 @@ class Rope {
       let tile = level.getTileAt(col, row);
       if (!tile || !tile.isSolid) return;
 
-      // Verlet 隐含速度 (切向分量)
+      // 保存推出前的 Verlet 隐含速度
       let impliedVx = node.x - node.oldx;
       let impliedVy = node.y - node.oldy;
 
@@ -548,36 +532,26 @@ class Rope {
       let top = node.y - tile.y;
       let bottom = (tile.y + tile.h) - node.y;
 
-      // 检查相邻格子是否也是固体，判断是否在角落
       let solidLeft = level.isSolidAt(col - 1, row);
       let solidRight = level.isSolidAt(col + 1, row);
       let solidUp = level.isSolidAt(col, row - 1);
       let solidDown = level.isSolidAt(col, row + 1);
 
-      // 统计可推出的方向 (相邻不是固体的方向才能推出)
-      let canPushLeft = !solidLeft;
-      let canPushRight = !solidRight;
-      let canPushUp = !solidUp;
-      let canPushDown = !solidDown;
-
-      // 候选推出方向及其穿透深度
       let candidates = [];
-      if (canPushUp) candidates.push({ axis: 'y', depth: top, target: tile.y });
-      if (canPushDown) candidates.push({ axis: 'y', depth: bottom, target: tile.y + tile.h });
-      if (canPushLeft) candidates.push({ axis: 'x', depth: left, target: tile.x });
-      if (canPushRight) candidates.push({ axis: 'x', depth: right, target: tile.x + tile.w });
+      if (!solidUp) candidates.push({ axis: 'y', depth: top, target: tile.y });
+      if (!solidDown) candidates.push({ axis: 'y', depth: bottom, target: tile.y + tile.h });
+      if (!solidLeft) candidates.push({ axis: 'x', depth: left, target: tile.x });
+      if (!solidRight) candidates.push({ axis: 'x', depth: right, target: tile.x + tile.w });
 
-      let pushAxis = null; // 'x' 或 'y'，记录推出方向
+      let pushAxis = null;
 
       if (candidates.length === 0) {
-         // 四面都是固体，被完全包围 → 尝试推到最近的表面
          let minD = Math.min(left, right, top, bottom);
          if (minD === top) { node.y = tile.y; pushAxis = 'y'; }
          else if (minD === bottom) { node.y = tile.y + tile.h; pushAxis = 'y'; }
          else if (minD === left) { node.x = tile.x; pushAxis = 'x'; }
          else { node.x = tile.x + tile.w; pushAxis = 'x'; }
       } else {
-         // 选穿透深度最小的可行方向
          candidates.sort((a, b) => a.depth - b.depth);
          let best = candidates[0];
          pushAxis = best.axis;
@@ -585,16 +559,12 @@ class Rope {
          else node.y = best.target;
       }
 
-      // 保留切向速度、消除法向速度
-      // pushAxis 是法线方向，另一个轴是切线方向
-      // 切向速度允许节点沿表面滑动 (带阻尼防止抖动)
+      // 保留切向速度、消除法向速度 (允许沿表面滑动)
       let tangentialDamp = 0.4;
       if (pushAxis === 'x') {
-         // 法向是 X → 消除 X 速度, 保留 Y 速度 (沿表面滑动)
          node.oldx = node.x;
          node.oldy = node.y - impliedVy * tangentialDamp;
       } else {
-         // 法向是 Y → 消除 Y 速度, 保留 X 速度 (沿表面滑动)
          node.oldx = node.x - impliedVx * tangentialDamp;
          node.oldy = node.y;
       }
@@ -605,10 +575,6 @@ class Rope {
    /**
     * 获取"有效锚点": 绳子绕过拐角时, 最近的表面接触节点充当滑轮
     * 玩家应从该接触点摆荡, 而非从远端 tip 直接拉
-    *
-    * @returns {{ x:number, y:number, freeLength:number } | null}
-    *   x, y     — 有效锚点的位置
-    *   freeLength — 从有效锚点到玩家的可用绳长
     */
    _getEffectiveAnchor() {
       if (this.nodes.length < 2) return null;
@@ -631,7 +597,6 @@ class Rope {
          usedLen += Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
       }
 
-      // 可用绳长 = 总绳长 - 已用绳长 (至少为一个节点间距, 防止退化)
       let freeLen = Math.max(this.nodeDist, this.ropeLength - usedLen);
 
       return { x: anchor.x, y: anchor.y, freeLength: freeLen };
@@ -668,20 +633,17 @@ class Rope {
    _applySoftConstraint(player, curDist, anchor) {
       if (curDist <= anchor.freeLength) return;
 
-      // 方向: 有效锚点 → 玩家
       let dx = player.cx() - anchor.x;
       let dy = player.cy() - anchor.y;
       if (curDist === 0) return;
       let nx = dx / curDist;
       let ny = dy / curDist;
 
-      // 硬约束: 直接把玩家钳制到绳长圆上 (以有效锚点为圆心)
       let targetCX = anchor.x + nx * anchor.freeLength;
       let targetCY = anchor.y + ny * anchor.freeLength;
       player.x = targetCX - player.w / 2;
       player.y = targetCY - player.h / 2;
 
-      // 去除径向外推速度分量, 只保留切向 (允许摆荡)
       let radialV = player.vx * nx + player.vy * ny;
       if (radialV > 0) {
          player.vx -= radialV * nx;
