@@ -316,7 +316,7 @@ During gameplay, the `GameManager` maintains the overall game state and schedule
 
 Resource loading is centrally managed by the `ResourceManager`, while level structure and in-level objects are maintained by the `LevelManager`. By separating these functional modules from core control logic, the system gains greater flexibility in supporting multi-level structures and area transitions. 
 
-### 4.2 Initial Class Diagram
+## 4.2 Initial Class Diagram
 
 After identifying the user's core requirements, we designed the system's initial class structure. The initial design primarily revolves around the core components essential for game operation, and Figure X illustrates this initial class diagram.
 <p align="center">
@@ -430,6 +430,18 @@ To support interactive gameplay, we implemented a button–gate control mechanis
 - Description of how code was tested.
 
 ### 6.1 Qualitative Evaluation
+
+<table>
+<tr>
+<th>Interface</th>
+<th>Issue</th>
+<th>Heuristic(s)</th>
+<th>Frequency</th>
+<th>Impact</th>
+<th>Persistence</th>
+<th>Severity</th>
+</tr>
+  
 ### 6.2 Quantitative Evaluation
 
 
