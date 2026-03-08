@@ -73,7 +73,6 @@ class introUI {
    }
 
    // 左面版
-
    _drawLeftPanel(ctx, w, h, alpha) {
       let a = alpha;
       ctx.clearRect(0, 0, w, h);
@@ -83,6 +82,8 @@ class introUI {
       ctx.beginPath();
       this._roundRect(ctx, 0, 0, w, h, 16);
       ctx.fill();
+      //效果
+      this._drawPanelFx(ctx, w, h, a, 'left');
 
       // 边框
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.6 * a})`;
@@ -160,7 +161,6 @@ class introUI {
    }
 
    // 右面板
-
    _drawRightPanel(ctx, w, h, alpha) {
       let a = alpha;
       ctx.clearRect(0, 0, w, h);
@@ -170,6 +170,8 @@ class introUI {
       ctx.beginPath();
       this._roundRect(ctx, 0, 0, w, h, 16);
       ctx.fill();
+      //效果
+      this._drawPanelFx(ctx, w, h, a, 'right');
 
       // 边框
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.6 * a})`;
@@ -354,6 +356,87 @@ class introUI {
       ctx.closePath();
       ctx.fill();
    }
+
+   _drawGlowSquare(ctx, x, y, size, alpha, dir = 'right') {
+   const a = alpha;
+
+   // 拖尾
+   for (let i = 4; i >= 1; i--) {
+      let tailAlpha = 0.06 * i * a;
+      ctx.fillStyle = `rgba(80, 220, 255, ${tailAlpha})`;
+
+      if (dir === 'right') {
+         ctx.fillRect(x - i * size * 0.8, y, size, size);
+      } else if (dir === 'left') {
+         ctx.fillRect(x + i * size * 0.8, y, size, size);
+      } else if (dir === 'down') {
+         ctx.fillRect(x, y - i * size * 0.8, size, size);
+      } else if (dir === 'up') {
+         ctx.fillRect(x, y + i * size * 0.8, size, size);
+      }
+   }
+
+   // 外发光
+   ctx.fillStyle = `rgba(80, 220, 255, ${0.18 * a})`;
+   ctx.fillRect(x - 2, y - 2, size + 4, size + 4);
+
+   // 主体
+   ctx.fillStyle = `rgba(110, 240, 255, ${0.9 * a})`;
+   ctx.fillRect(x, y, size, size);
+}
+
+_drawPixelCluster(ctx, x, y, count, spreadX, spreadY, alpha) {
+   for (let i = 0; i < count; i++) {
+      let px = x + Math.random() * spreadX;
+      let py = y + Math.random() * spreadY;
+      let s = 4 + Math.random() * 8;
+
+      ctx.fillStyle = `rgba(80, 220, 255, ${0.14 * alpha})`;
+      ctx.fillRect(px - 2, py - 2, s + 4, s + 4);
+
+      ctx.fillStyle = `rgba(110, 240, 255, ${0.75 * alpha})`;
+      ctx.fillRect(px, py, s, s);
+   }
+}
+
+_drawPanelFx(ctx, w, h, alpha, side = 'left') {
+   const a = alpha;
+
+   // ===== 外侧密集角落像素 =====
+   if (side === 'left') {
+      // 左上 / 左下：贴 panel 外边
+      this._drawPixelCluster(ctx, 6, 8, 14, 24, 70, a);
+      this._drawPixelCluster(ctx, 6, h - 78, 14, 24, 70, a);
+
+      // 左侧中段少量点缀
+      this._drawPixelCluster(ctx, 10, h * 0.35, 5, 14, 120, a);
+
+      // 上下少量拖尾方块（靠外侧）
+      this._drawGlowSquare(ctx, 18, 24, 8, a, 'right');
+      this._drawGlowSquare(ctx, 24, 42, 6, a, 'right');
+      this._drawGlowSquare(ctx, 18, h - 32, 8, a, 'right');
+      this._drawGlowSquare(ctx, 24, h - 50, 6, a, 'right');
+   } else {
+      // 右上 / 右下：贴 panel 外边
+      this._drawPixelCluster(ctx, w - 30, 8, 14, 24, 70, a);
+      this._drawPixelCluster(ctx, w - 30, h - 78, 14, 24, 70, a);
+
+      // 右侧中段少量点缀
+      this._drawPixelCluster(ctx, w - 22, h * 0.35, 5, 14, 120, a);
+
+      // 少量拖尾方块（外侧）
+      this._drawGlowSquare(ctx, w - 26, 24, 8, a, 'left');
+      this._drawGlowSquare(ctx, w - 32, 42, 6, a, 'left');
+      this._drawGlowSquare(ctx, w - 26, h - 32, 8, a, 'left');
+      this._drawGlowSquare(ctx, w - 32, h - 50, 6, a, 'left');
+   }
+
+   // ===== 上下边缘的减少 =====
+   this._drawGlowSquare(ctx, w * 0.18, 10, 6, a, 'down');
+   this._drawGlowSquare(ctx, w * 0.28, 16, 5, a, 'down');
+   this._drawGlowSquare(ctx, w * 0.72, h - 16, 5, a, 'up');
+   this._drawGlowSquare(ctx, w * 0.82, h - 10, 6, a, 'up');
+}
 
    drawCover() {
       let cover = resources.images.cover;
