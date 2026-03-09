@@ -99,7 +99,7 @@ function _createMenu() {
       gm = null;
       //测试用临时修改
       // gm = new GameManager(resources);
-      gm = new GameMangaer(resources, selectedDifficulty);
+      gm = new GameManager(resources, selectedDifficulty);
       gm.loadLevel();
       _hideMenu();
    });
@@ -131,7 +131,7 @@ function _createMenu() {
    let btnMedium = _makeDifficultyBtn('Medium', 'medium');
    let btnHard = _makeDifficultyBtn('Hard', 'hard');
    
-   // 初始选中中等难度
+   // 初始选中Easy难度
    _setActiveDifficultyBtn(btnEasy);
 
    // 组装难度区域
@@ -196,10 +196,9 @@ function _setInactiveDifficultyBtn(btn) {
    btn.style.boxShadow = 'none';
 }
    //测试用临时增加
-
-   menuDiv.appendChild(btnStart);
-   menuDiv.appendChild(btnContinue);
-   document.body.appendChild(menuDiv);
+   //menuDiv.appendChild(btnStart);
+   //menuDiv.appendChild(btnContinue);
+   //document.body.appendChild(menuDiv);
 
 function _makeBtn(label, onClick) {
    let btn = document.createElement('button');
