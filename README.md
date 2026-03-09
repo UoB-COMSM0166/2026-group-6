@@ -421,12 +421,40 @@ Level connections are achieved through the world position information (`worldX`,
 
 ## 5.2 Rope Mechanic Implementation
 
-The rope system is one of the most important gameplay mechanisms in this game. Players can use ropes for movement, attacking enemies, and purifying pollution sources. Therefore, the rope system needs to be closely integrated with the players movement and map collision systems. At the same time, it must remain stable and responsive during gameplay.
+The rope system is one of the most important gameplay mechanisms in this game. Players can use ropes for movement, attacking enemies, and purifying pollution sources. Therefore, the rope system needs to be closely integrated with the player's movement and map collision systems. At the same time, it must remain stable and responsive during gameplay.
 
 To achieve this mechanism, we have designed the rope as a state machine-based system. The rope includes several states such as `IDLE`, `EXTENDING`, `STRAND`, `SWINGING`, and `RETRACTING`. When the player fires the rope, the rope tip moves forward like a projectile. A ray-casting method is used to detect collisions with solid tiles. If the ray hits a valid surface, that position becomes the anchor point of the rope. The rope is not represented as a simple straight line. Instead, it is modeled as a chain of nodes. This node structure can more naturally simulate the shape of the rope and allow for dynamic adjustment of the rope length during the game. Players can adjust the length of the rope by inputting commands, thereby enabling actions such as swinging, getting closer, or descending.
 
-The game also offers two different types of rope materials: soft rope and hard rope. The soft rope supports swinging movement, while the hard rope can provide additional collision support. Another technical difficulty was ensuring that the rope physics system works correctly with the platform collision system. If both systems modify the player position independently, unstable movement may occur. To solve this issue, the update process follows a clear order. First, rope constraints are applied to the player. Then world collision detection is performed using the tile grid. Finally, the player position is clamped again to maintain the allowed rope length. This process keeps both the rope system and the platform physics stable. Therefore, the rope system becomes a flexible tool that supports exploration, combat and puzzle interaction in the game.
+To simulate realistic rope behavior, distance constraints are applied between neighboring nodes. These constraints ensure that the distance between adjacent nodes remains close to a predefined rope segment length.
 
+The rope physics is based on a distance constraint model.
+
+Assume two connected nodes **A** and **B** with positions `pA` and `pB`.  
+Let **L** be the desired distance between them (the rope segment length).
+
+**Step 1: Compute the current distance**
+
+```
+Δ = pB - pA
+d = |Δ|
+```
+
+**Step 2: Compute the correction offset**
+
+```
+offset = (d - L) / d
+```
+
+**Step 3: Update node positions**
+
+If both nodes have equal mass, the correction is distributed equally:
+
+```
+pA = pA + Δ * offset * 0.5
+pB = pB - Δ * offset * 0.5
+```
+
+The game also offers two different types of rope materials: soft rope and hard rope. The soft rope supports swinging movement, while the hard rope can provide additional collision support. Another technical difficulty was ensuring that the rope physics system works correctly with the platform collision system. If both systems modify the player position independently, unstable movement may occur. To solve this issue, the update process follows a clear order. First, rope constraints are applied to the player. Then world collision detection is performed using the tile grid. Finally, the player position is clamped again to maintain the allowed rope length. This process keeps both the rope system and the platform physics stable. Therefore, the rope system becomes a flexible tool that supports exploration, combat and puzzle interaction in the game.
 
 
 
