@@ -393,30 +393,36 @@ Upon completion of the new area's loading, the system resets the player's positi
 
 # 5. Implementation
 
-## 1.	Multi-level World State Management
+## 5.1	Multi-level World State Management
 
-### 1.1	Level Design and Map Structure
+### Level Design and Map Structure
 
 All the levels and maps in this game were manually designed by the team members and created using LDtk (Level Designer Toolkit). Each area of the game world is composed of several connected levels. In this way, we can more flexibly control the layout of the levels, the exploration paths of the players, and the gameplay pacing.
-
-
 
 During the map design process, we not only designed the visual layout of the levels, but also defined the logical structure within the levels. Each level contains multiple layers that describe different aspects of the game world. The two most important layers are the Collision Layer and the Entity Layer.
 
 The collision layer defines the physical boundaries of the environment. Elements such as ground, walls, platforms, and other solid structures are placed in this layer. Then, the entity layer defines interactive objects in the game world. Examples include pollution cores, buttons, gates, teleportation points, rest points, and enemies. These objects are defined as entities in LDtk and are instantiated as game objects when the level is loaded.
 
-
-
 To support interactive gameplay, we implemented a button–gate control mechanism using the entity system in LDtk. Each button entity can reference a target gate through a field defined in the level editor. This reference uses the unique entity identifier (iid), which creates a link between the button and the corresponding gate.
 
+### Connected Levels and Persistent State
+
+The world of this game is not composed of independent levels, but rather consists of multiple interconnected map areas. Players can move between these levels, and their actions will affect the environmental state of the entire area.To achieve this goal, we implemented a level caching system in the `GameManager`. Levels that had already been loaded were stored in the `levelsInfo` data structure. When the player re-enters the level, the system can restore the state of the entities in that level instead of generating all the objects anew. This ensures that the world state remains persistent.
+
+In terms of map parsing, `LevelManager` reads the collision layers and entity layers in the LDtk file and converts the collision data into a two-dimensional grid structure. This structure allows efficient local collision checks instead of scanning the entire map each frame.
+
+Level connections are achieved through the world position information (`worldX`, `worldY`) and neighbour data (`__neighbours`) provided by LDtk. When the player reaches the boundary of a level, the system calculates the correct neighbouring level and performs a smooth transition. At the same time, the game also implements an area-based purification progress system. Different objects contribute different weights to the purification value of this area. When the purification progress reaches a certain level, the environment will change. For example, some gates open automatically and toxic water areas may become safe water. Additionally, to support interactions between objects across different levels, the entities establish reference relationships through the identifiers(iid) provided by LDtk.
+
+##5.2 Rope Mechanic Implementation
+The rope system is one of the most important gameplay mechanisms in this game. Players can use ropes for movement, attacking enemies, and purifying pollution sources. Therefore, the rope system needs to be closely integrated with the players movement and map collision systems. At the same time, it must remain stable and responsive during gameplay.
+
+To achieve this mechanism, we have designed the rope as a state machine-based system. The rope includes several states such as `IDLE`, `EXTENDING`, `STRAND`, `SWINGING`, and `RETRACTING`. When the player fires the rope, the rope tip moves forward like a projectile. A ray-casting method is used to detect collisions with solid tiles. If the ray hits a valid surface, that position becomes the anchor point of the rope.
+
+The rope is not represented as a simple straight line. Instead, it is modeled as a chain of nodes. This node structure can more naturally simulate the shape of the rope and allow for dynamic adjustment of the rope length during the game. Players can adjust the length of the rope by inputting commands, thereby enabling actions such as swinging, getting closer, or descending.
+
+The game also offers two different types of rope materials: soft rope and hard rope. The soft rope supports swinging movement, while the hard rope can provide additional collision support. Another technical difficulty was ensuring that the rope physics system works correctly with the platform collision system. If both systems modify the player position independently, unstable movement may occur. To solve this issue, the update process follows a clear order. First, rope constraints are applied to the player. Then world collision detection is performed using the tile grid. Finally, the player position is clamped again to maintain the allowed rope length. This process keeps both the rope system and the platform physics stable. Therefore, the rope system becomes a flexible tool that supports exploration, combat and puzzle interaction in the game
 
 
-
-
-
-- 15% ~750 words
-
-- Describe implementation of your game, in particular highlighting the TWO areas of *technical challenge* in developing your game.
 
 
 # 6. Evaluation
