@@ -22,7 +22,10 @@ class ResourceManager {
     * 所有 loadImage / loadJSON 都写在这里
     */
    preload() {
-      this.data.ldtk = loadJSON('map/map-main.ldtk');
+      this.data.ldtk = this.data.ldtk || {};
+      this.data.ldtk.difficult = loadJSON('map/map-main.ldtk');
+      this.data.ldtk.normal = loadJSON('map/map-normal.ldtk');
+      this.data.ldtk.easy = loadJSON('map/map-easy.ldtk');
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
@@ -117,6 +120,6 @@ class ResourceManager {
    }
 
    // 便捷访问器
-   get ldtkData() { return this.data.ldtk; }
+   get ldtkData() { return this.data.ldtk.easy; }
    get tilesetImage() { return this.images.tileset; }
 }
