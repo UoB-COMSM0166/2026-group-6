@@ -48,16 +48,24 @@ function draw() {
 }
 
 function mousePressed() {
-   //UI part
    if (!started) {
-      if (intro.transition < 1) {
+
+      if (intro.page === 0) {
          intro.startTransition();
-      } else {
+         return false;
+      }
+
+      if (intro.page === 1 && intro.transition < 1) {
+         return false;
+      }
+
+      if (intro.page === 1 && intro.transition >= 1) {
          started = true;
          _createMenu();
+         return false;
       }
-      return false;
    }
+
    if (appState === "PLAYING" && gm) gm.onMousePressed(mouseButton);
 }
 
