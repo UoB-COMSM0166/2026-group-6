@@ -399,11 +399,17 @@ Upon completion of the new area's loading, the system resets the player's positi
 
 All the levels and maps in this game were manually designed by the team members and created using LDtk (Level Designer Toolkit). Each area of the game world is composed of several connected levels. In this way, we can more flexibly control the layout of the levels, the exploration paths of the players, and the gameplay pacing.
 
+(Picture to be added)
+
 During the map design process, we not only designed the visual layout of the levels, but also defined the logical structure within the levels. Each level contains multiple layers that describe different aspects of the game world. The two most important layers are the Collision Layer and the Entity Layer.
 
 The collision layer defines the physical boundaries of the environment. Elements such as ground, walls, platforms, and other solid structures are placed in this layer. Then, the entity layer defines interactive objects in the game world. Examples include pollution cores, buttons, gates, teleportation points, rest points, and enemies. These objects are defined as entities in LDtk and are instantiated as game objects when the level is loaded.
 
+(Picture to be added)
+
 To support interactive gameplay, we implemented a button–gate control mechanism using the entity system in LDtk. Each button entity can reference a target gate through a field defined in the level editor. This reference uses the unique entity identifier (iid), which creates a link between the button and the corresponding gate.
+
+(Picture to be added)
 
 ### Connected Levels and Persistent State
 
