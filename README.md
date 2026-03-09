@@ -432,27 +432,35 @@ The rope physics is based on a distance constraint model.
 Assume two connected nodes **A** and **B** with positions `pA` and `pB`.  
 Let **L** be the desired distance between them (the rope segment length).
 
+### Distance Constraint Resolution
+
 **Step 1: Compute the current distance**
 
-Δ = pB - pA
+$$
+\Delta = \mathbf{p_B} - \mathbf{p_A}
+$$
 
-d = |Δ|
+$$
+d = \|\Delta\|
+$$
 
 **Step 2: Compute the correction offset**
 
-
-offset = (d - L) / d
-
+$$
+\text{offset} = \frac{d - L}{d}
+$$
 
 **Step 3: Update node positions**
 
 If both nodes have equal mass, the correction is distributed equally:
 
+$$
+\mathbf{p_A} = \mathbf{p_A} + \Delta \cdot \text{offset} \cdot 0.5
+$$
 
-pA = pA + Δ * offset * 0.5
-
-pB = pB - Δ * offset * 0.5
-
+$$
+\mathbf{p_B} = \mathbf{p_B} - \Delta \cdot \text{offset} \cdot 0.5
+$$
 
 The game also offers two different types of rope materials: soft rope and hard rope. The soft rope supports swinging movement, while the hard rope can provide additional collision support. Another technical difficulty was ensuring that the rope physics system works correctly with the platform collision system. If both systems modify the player position independently, unstable movement may occur. To solve this issue, the update process follows a clear order. First, rope constraints are applied to the player. Then world collision detection is performed using the tile grid. Finally, the player position is clamped again to maintain the allowed rope length. This process keeps both the rope system and the platform physics stable. Therefore, the rope system becomes a flexible tool that supports exploration, combat and puzzle interaction in the game.
 
