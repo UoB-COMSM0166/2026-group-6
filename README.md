@@ -413,7 +413,7 @@ In terms of map parsing, `LevelManager` reads the collision layers and entity la
 
 Level connections are achieved through the world position information (`worldX`, `worldY`) and neighbour data (`__neighbours`) provided by LDtk. When the player reaches the boundary of a level, the system calculates the correct neighbouring level and performs a smooth transition. At the same time, the game also implements an area-based purification progress system. Different objects contribute different weights to the purification value of this area. When the purification progress reaches a certain level, the environment will change. For example, some gates open automatically and toxic water areas may become safe water. Additionally, to support interactions between objects across different levels, the entities establish reference relationships through the identifiers(iid) provided by LDtk.
 
-### 5.2 Rope Mechanic Implementation
+## 5.2 Rope Mechanic Implementation
 
 The rope system is one of the most important gameplay mechanisms in this game. Players can use ropes for movement, attacking enemies, and purifying pollution sources. Therefore, the rope system needs to be closely integrated with the players movement and map collision systems. At the same time, it must remain stable and responsive during gameplay.
 
