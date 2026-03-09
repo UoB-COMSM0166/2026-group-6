@@ -104,6 +104,7 @@ class LevelManager {
          }
       }
    }
+
    // 推荐的画布尺寸
 
    getCanvasSize() {

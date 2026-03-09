@@ -14,9 +14,8 @@ class GameManager {
    /**
     * @param {ResourceManager} resources
     */
-   constructor(resources, difficulty = "easy") {
+   constructor(resources) {
       this.resources = resources;
-      this.difficulty = difficulty;
       this.scale = GameConfig.Display.GAME_SCALE;
       this.levelIndex = GameConfig.Level.START_INDEX;
 
@@ -36,68 +35,46 @@ class GameManager {
       this.mapPromptStartTime;
       this.mapPromptDuration;
       this.pendingTeleport = null;
-      //this._isPreloading;
-      this._isPreloading = false;
+      this._isPreloading;
       this.checkpoint = null; // { levelIndex, x, y }
-      //this.preload();
-      this.initCurrentDifficultyLevel();
+      this.preload();
    }
 
-   //测试暂时修改
-   initCurrentDifficultyLevel() {
-   const ldtk = this.resources.getLdtkData(this.difficulty);
-   if (!ldtk) return;
-   this.levelIndex = GameConfig.Level.START_INDEX;
-   this.loadLevel();
-   const levelKey = `${this.difficulty}_${this.levelIndex}`;
-   let playerStart = this.levelsInfo[levelKey]?.playerStart || GameConfig.Player.DefaultStartPoint;
-   this.saveCheckpoint(this.levelIndex, playerStart.x, playerStart.y);
-}
    // 预加载所有关卡
-   //preload() {
-      //this._isPreloading = true;
-      //let ldtk = this.resources.ldtkData;
-      //const lastIndex = ldtk.levels.length;
-      //for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
-         //this.levelIndex = levelIndex;
-         //this.loadLevel();
-      //}
-      //this.levelIndex = GameConfig.Level.START_INDEX;
-      //let playerStart = this.levelsInfo[this.levelIndex].playerStart || GameConfig.Player.DefaultStartPoint;
-      //this.saveCheckpoint(this.levelIndex, playerStart.x, playerStart.y);
-   //}
+
+   preload() {
+      this._isPreloading = true;
+      let ldtk = this.resources.ldtkData;
+      const lastIndex = ldtk.levels.length;
+      for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
+         this.levelIndex = levelIndex;
+         this.loadLevel();
+      }
+      this.levelIndex = GameConfig.Level.START_INDEX;
+      let playerStart = this.levelsInfo[this.levelIndex].playerStart || GameConfig.Player.DefaultStartPoint;
+      this.saveCheckpoint(this.levelIndex, playerStart.x, playerStart.y);
+   }
 
    /**
     * 加载关卡
     * @param {Object} [transition]  关卡过渡数据 {x, y, vx, vy}
     */
    loadLevel(transition) {
-      //let ldtk = this.resources.ldtkData();
-      const ldtk = this.resources.getLdtkData(this.difficulty);
-      if (!ldtk) return;
+      let ldtk = this.resources.ldtkData;
 
-      //if (this.levelIndex in this.levelsInfo) {
-         //this.level = this.levelsInfo[this.levelIndex];
-         //}
-      //else {
-         //this.level = new LevelManager(this.levelIndex);
-         //this.level.load(ldtk, this.levelIndex);
-      //}
-      //测试暂时修改
-       const levelKey = `${this.difficulty}_${this.levelIndex}`;
-       if (levelKey in this.levelsInfo) {
-         this.level = this.levelsInfo[levelKey];
-      } else {
+      if (this.levelIndex in this.levelsInfo) {
+         this.level = this.levelsInfo[this.levelIndex];
+      }
+      else {
          this.level = new LevelManager(this.levelIndex);
          this.level.load(ldtk, this.levelIndex);
-         this.levelsInfo[levelKey] = this.level;
       }
       // 1. LevelManager 解析地图
 
       // 创建恢复读取地图的实体
       this._loadEntities();
 
-      //if (this._isPreloading) {
+      if (this._isPreloading) {
          // 2. 调整画布
          let size = this.level.getCanvasSize();
          resizeCanvas(size.w, size.h);
@@ -110,6 +87,7 @@ class GameManager {
          this.mapPromptText = ldtk.levels[this.levelIndex].identifier;
          this.mapPromptStartTime = millis();
          this.mapPromptDuration = 3000;
+      }
    }
 
 
@@ -141,21 +119,17 @@ class GameManager {
    }
 
    _loadEntities() {
-      const levelKey = `${this.difficulty}_${this.levelIndex}`;
-      const savedLevel = this.levelsInfo[levelKey];
-      
-      if (!savedLevel || !savedLevel.entities) {
+      if (!(this.levelIndex in this.levelsInfo)) {
          // 创建实体
          this._createEntities();
          this.level.entities = this.entities;
-         //this.levelsInfo[this.levelIndex] = this.level;
-         this.levelsInfo[levelKey] = this.level;
+         this.levelsInfo[this.levelIndex] = this.level;
          this.level.totalPollutionCore = this.level.getEntityCount(GameConfig.Entity.PollutionCore);
          this.level.totalEnemies = this.level.getEntityCount(GameConfig.Entity.Enemy);
          this.level.totalBoss = this.level.getEntityCount(GameConfig.Entity.Boss);
       }
       else {
-         this.entities = this.levelsInfo[levelKey].entities;
+         this.entities = this.levelsInfo[this.levelIndex].entities;
       }
    }
 
@@ -163,7 +137,7 @@ class GameManager {
       // 关卡过渡: 保留 HP、绳索材质等状态
       if (transition && this.player) {
          // 切换地图无敌帧
-         this.player.invulnerableTimer = GameConfig.Player.InvulInterval;
+         this.player.invulnerableTimer = GameConfig.Player.InvulInterval
          this.player.x = transition.x;
          this.player.y = transition.y;
          // 保留移动方向的速度, 过渡更流畅
@@ -197,7 +171,6 @@ class GameManager {
    // main loop
 
    update() {
-      if (!this.level || !this.player) return;
       if (this.status !== "PLAY") return;
 
       // 玩家更新 (传入 GameManager 引用)
@@ -228,10 +201,6 @@ class GameManager {
 
 
    render() {
-      if (!this.level || !this.player) {
-      background(0);
-      return;
-   }
       background(color(this.level.bgColor));
 
       push();
@@ -289,10 +258,9 @@ class GameManager {
       // 计算 Area 包围盒 & 中心
       if (!this._areaBoundsCache || this._areaBoundsCache.area !== area) {
          let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-         const ldtk = this.resources.getLdtkData(this.difficulty);
+         const ldtk = this.resources.ldtkData;
          for (let i = 0; i < ldtk.levels.length; i++) {
-            const levelKey = `${this.difficulty}_${i}`;
-            const lvl = this.levelsInfo[levelKey];
+            const lvl = this.levelsInfo[i];
             if (!lvl || Number(lvl.areaNumber) !== area) continue;
             const wl = ldtk.levels[i];
             minX = Math.min(minX, wl.worldX);
@@ -547,7 +515,7 @@ class GameManager {
        * 权重规则：污染核心 = 5, 怪物 = 1
        */
    getAreaProgress(areaNumber) {
-      let ldtk = this.resources.getLdtkData(this.difficulty);
+      let ldtk = this.resources.ldtkData;
       let currentAreaNumber = areaNumber || this.level.areaNumber;
       currentAreaNumber = Number(currentAreaNumber);
       // 定义净化值权重
@@ -562,14 +530,12 @@ class GameManager {
       let initialBoss = 0;
 
       for (let i = 0; i < ldtk.levels.length; i++) {
-         const levelKey = `${this.difficulty}_${i}`;
-         let lvl = this.levelsInfo[levelKey];
-         if (!lvl) continue;
+         let lvl = this.levelsInfo[i];
          // 筛选出所有areaNumber为当前Level的areaNumber的level，当到达结尾关时为整张地图的progress
          if (Number(lvl.areaNumber) === currentAreaNumber || currentAreaNumber === 5) {
-            initialCores += lvl.totalPollutionCore || 0;
-            initialEnemies += lvl.totalEnemies|| 0;
-            initialBoss += lvl.totalBoss|| 0;
+            initialCores += lvl.totalPollutionCore;
+            initialEnemies += lvl.totalEnemies;
+            initialBoss += lvl.totalBoss;
             remainingCores += lvl.getEntityCount(GameConfig.Entity.PollutionCore);
             remainingEnemies += lvl.getEntityCount(GameConfig.Entity.Enemy);
             remainingBoss += lvl.getEntityCount(GameConfig.Entity.Boss);

@@ -15,25 +15,14 @@ class ResourceManager {
       this.data = {};
       this.sounds = {};
       this._loaded = false;
+   }
 
-   //测试用新增加
-   //地图难度preload
-   this.data.ldtk = {
-      easy: null,
-      medium: null,
-      hard: null
-   };
-}
    /**
     * 在 p5.js preload() 中调用
     * 所有 loadImage / loadJSON 都写在这里
     */
    preload() {
-      //this.data.ldtk = loadJSON('map/map-main.ldtk');
-      this.data.ldtk.easy = loadJSON('map/map-easy.ldtk');
-      this.data.ldtk.medium = loadJSON('map/map-normal.ldtk');
-      this.data.ldtk.hard = loadJSON('map/map-main.ldtk');
-
+      this.data.ldtk = loadJSON('map/map-main.ldtk');
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
@@ -50,7 +39,8 @@ class ResourceManager {
       }
 
 
-      // 音效：
+      // 音效扩展:
+
       this.sounds.rope = {
          ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
          ropered: loadSound('resources/audios/sides/redwhoosh.wav')
@@ -126,22 +116,7 @@ class ResourceManager {
       return this._loaded;
    }
 
-   //测试用新增
-   /**按难度获取对应地图
-   * @param {string} difficulty - 难度分级: easy/medium/hard
-   * @returns {object} 
-   */
-  getLdtkData(difficulty = "easy") {
-   if (!this.data.ldtk[difficulty]) {
-      console.warn(`[ResourceManager] 未找到${difficulty}难度对应地图则回到easy`);
-      return this.data.ldtk.easy;
-   }
-   return this.data.ldtk[difficulty];
-  }
-
-  //兼顾访问器
-  //测试临时改动
-   get ldtkData() { return this.data.ldtk.easy; }
-
+   // 便捷访问器
+   get ldtkData() { return this.data.ldtk; }
    get tilesetImage() { return this.images.tileset; }
 }
