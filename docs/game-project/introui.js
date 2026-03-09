@@ -11,6 +11,9 @@ class introUI {
       this.fxH = 900;
       this.fxOffsetX = 300;
       this.fxOffsetY = 100;
+      this.pixelParticles = [];       
+      this.particleCount = 150;      
+      this.initParticles();
 
       // 侧边栏 canvas
       this.leftCanvas = null;
@@ -82,6 +85,7 @@ class introUI {
       if (!this.fxCreated) this.createFxCanvas();
       
       this.fxCanvas.style.display = 'block';
+      this.updateParticles();
       this._drawFxLayer(alpha);
    }
    
@@ -117,7 +121,13 @@ class introUI {
       h: this.panelHeight
    };
 
-   //测试临时
+   // ========== 新增：先绘制背景像素粒子 ==========
+   this._drawBackgroundPixelParticles(ctx, a);
+   // ========== 新增：绘制面板像素化发光边框 ==========
+   this._drawPixelGlowBorder(ctx, leftPanel, a, 'left');
+   this._drawPixelGlowBorder(ctx, rightPanel, a, 'right');
+   // ===============================================
+
    this._drawFxStars(ctx, a, main);
    //Left
    this._drawPixelMass(ctx, leftPanel.x - 95, leftPanel.y - 10, 110, 180, 20, a);
@@ -130,9 +140,9 @@ class introUI {
    this._drawShortStreak(ctx, main.x + main.w - 48, main.y - 12, 100, a * 0.55);
    this._drawShortStreak(ctx, main.x - 35, main.y + main.h +14, 90, a * 0.42);
    this._drawShortStreak(ctx, main.x + main.w - 46, main.y + main.h + 16, 105, a * 0.42);
-   //测试临时
+
 }
-//测试临时
+
    _drawPixelMass(ctx, x, y, w, h, count, alpha) {
       let seed = Math.floor(x + y + w + h);
       function rand() {
@@ -165,7 +175,6 @@ class introUI {
          ctx.fillRect(x + len * 0.22, y, len * 0.42, 2);
          ctx.restore();
       }
-//测试临时
 
 _drawFxStars(ctx, alpha, main) {
    let seed = 7;
@@ -230,6 +239,83 @@ _drawPanelWrapFx(ctx, r, alpha, side = 'left') {
    ctx.restore();
 }
 
+// ========== 新增：初始化背景像素粒子 ==========
+initParticles() {
+   this.pixelParticles = [];
+   for (let i = 0; i < this.particleCount; i++) {
+      this.pixelParticles.push({
+         x: Math.random() * this.fxW,       // 随机X坐标
+         y: Math.random() * this.fxH,       // 随机Y坐标
+         size: Math.random() > 0.8 ? 2 : 1, // 粒子大小（1/2像素）
+         alpha: Math.random() * 0.5 + 0.1,  // 初始透明度
+         speedX: (Math.random() - 0.5) * 0.2, // 移动速度X
+         speedY: (Math.random() - 0.5) * 0.2, // 移动速度Y
+         pulseSpeed: Math.random() * 0.01 + 0.005 // 呼吸闪烁速度
+      });
+   }
+}
+
+// ========== 新增：更新粒子位置和透明度 ==========
+updateParticles() {
+   for (let p of this.pixelParticles) {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      // 呼吸效果：透明度随时间波动
+      p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.01;
+      p.alpha = Math.max(0.1, Math.min(0.8, p.alpha)); // 限制透明度范围
+
+      // 边界回弹：粒子超出画布后回到另一侧
+      if (p.x < 0) p.x = this.fxW;
+      if (p.x > this.fxW) p.x = 0;
+      if (p.y < 0) p.y = this.fxH;
+      if (p.y > this.fxH) p.y = 0;
+   }
+}
+
+   // ========== 新增：绘制背景像素粒子 ==========
+_drawBackgroundPixelParticles(ctx, alpha) {
+   ctx.save();
+   for (let p of this.pixelParticles) {
+      // 粒子颜色：青蓝色（匹配参考图）
+      ctx.fillStyle = `rgba(80, 220, 255, ${p.alpha * alpha})`;
+      ctx.fillRect(p.x, p.y, p.size, p.size); // 绘制像素粒子
+   }
+   ctx.restore();
+}
+
+// ========== 新增：核心效果 - 像素化发光边框 ==========
+_drawPixelGlowBorder(ctx, panel, alpha, side) {
+   const a = alpha;
+   const glowSize = 8;    // 发光范围（越大边框越宽）
+   const pixelSize = 4;   // 像素块大小（越小越细腻）
+
+   ctx.save();
+   // 外层像素发光：用小方块组成渐变发光边框
+   for (let i = -glowSize; i < panel.w + glowSize; i += pixelSize) {
+      for (let j = -glowSize; j < panel.h + glowSize; j += pixelSize) {
+         // 只绘制边框区域（内部不画）
+         if (i < 0 || i > panel.w || j < 0 || j > panel.h) {
+            // 计算距离面板的距离，实现渐变透明度
+            const dist = Math.min(
+               Math.min(i, panel.w - i),
+               Math.min(j, panel.h - j)
+            );
+            const glowAlpha = (1 - dist / glowSize) * 0.3 * a;
+            if (glowAlpha > 0.01) { // 过滤透明度过低的像素
+               ctx.fillStyle = `rgba(0, 255, 255, ${glowAlpha})`; // 高亮青色
+               ctx.fillRect(
+                  panel.x + i - pixelSize/2,
+                  panel.y + j - pixelSize/2,
+                  pixelSize,
+                  pixelSize
+               );
+            }
+         }
+      }
+   }
+}
+   // 内层高亮边框：强化面板
+
 _drawMainFrameFx(ctx, r, alpha) {
    return;
  }
@@ -241,7 +327,6 @@ _drawMainStreaks(ctx, r, alpha) {
    this._drawFxStreak(ctx, r.x + 170, r.y + r.h - 40, 58, alpha * 0.45);
    this._drawFxStreak(ctx, r.x + 805, r.y + r.h - 44, 70, alpha * 0.50);
 }
-
 
 _drawFxStreak(ctx, x, y, len, alpha) {
    ctx.save();
