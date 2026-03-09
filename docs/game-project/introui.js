@@ -21,6 +21,7 @@ class introUI {
       this.sidePanelsVisible = false;
       this.panelWidth = 260;
       this.panelHeight = 700;
+      this.panelGap = 24;
    }
 
    // 侧边栏
@@ -38,7 +39,7 @@ class introUI {
       this.leftCanvas.style.cssText =
       'position:absolute; top:50%; left:50%;' +
       'transform:translate(-50%, -50%);' +
-      'margin-left:-' + (500 + pw / 2 + 10) + 'px;' +
+      'margin-left:-' + (500 + pw / 2 + this.panelGap) + 'px;' +
       'border-radius:16px; display:none;';
       document.body.appendChild(this.leftCanvas);
       this.leftCtx = this.leftCanvas.getContext('2d');
@@ -51,7 +52,7 @@ class introUI {
       this.rightCanvas.style.cssText =
          'position:absolute; top:50%; left:50%;' +
          'transform:translate(-50%, -50%);' +
-         'margin-left:' + (500 + pw / 2 + 10) + 'px;' +
+         'margin-left:' + (500 + pw / 2 + this.panelGap) + 'px;' +
          'border-radius:16px; display:none;';
       document.body.appendChild(this.rightCanvas);
       this.rightCtx = this.rightCanvas.getContext('2d');
@@ -103,25 +104,68 @@ class introUI {
    };
 
    const leftPanel = {
-      x: this.fxOffsetX - this.panelWidth - 10,
+      x: this.fxOffsetX - this.panelWidth - this.panelGap,
       y: this.fxOffsetY,
       w: this.panelWidth,
       h: this.panelHeight
    };
 
    const rightPanel = {
-      x: this.fxOffsetX + 1000 + 10,
+      x: this.fxOffsetX + 1000 + this.panelGap,
       y: this.fxOffsetY,
       w: this.panelWidth,
       h: this.panelHeight
    };
 
+   //测试临时
    this._drawFxStars(ctx, a, main);
-   this._drawPanelWrapFx(ctx, leftPanel, a, 'left');
-   this._drawPanelWrapFx(ctx, rightPanel, a, 'right');
-   this._drawMainFrameFx(ctx, main, a);
-   this._drawMainStreaks(ctx, main, a);
+   //Left
+   this._drawPixelMass(ctx, leftPanel.x - 95, leftPanel.y - 10, 110, 180, 20, a);
+   this._drawPixelMass(ctx, leftPanel.x - 115, leftPanel.y + 520, 145, 175, 24, a);
+   //Right
+   this._drawPixelMass(ctx, rightPanel.x + rightPanel.w - 15, rightPanel.y - 10, 110, 180, 20, a);
+   this._drawPixelMass(ctx, rightPanel.x + rightPanel.w - 35, rightPanel.y + 520, 145, 175, 24, a);
+   
+   this._drawShortStreak(ctx, main.x - 45, main.y - 12, 95, a * 0.55);
+   this._drawShortStreak(ctx, main.x + main.w - 48, main.y - 12, 100, a * 0.55);
+   this._drawShortStreak(ctx, main.x - 35, main.y + main.h +14, 90, a * 0.42);
+   this._drawShortStreak(ctx, main.x + main.w - 46, main.y + main.h + 16, 105, a * 0.42);
+   //测试临时
 }
+//测试临时
+   _drawPixelMass(ctx, x, y, w, h, count, alpha) {
+      let seed = Math.floor(x + y + w + h);
+      function rand() {
+         seed = (seed * 9301 + 49297) % 233280;
+         return seed / 233280;
+      }
+
+      for (let i = 0; i < count; i++) {
+         let px = x + rand() * w;
+         let py = y + rand() * h;
+         let s = rand() < 0.55 ? 8 : (rand() < 0.8 ? 10 : 14);
+         ctx.fillStyle = `rgba(80, 220, 255, ${0.08 * alpha})`;
+         ctx.fillRect(px - 3, py - 3, s + 6, s + 6);
+         ctx.fillStyle = `rgba(110, 240, 255, ${0.08 * alpha})`;
+         ctx.fillRect(px, py, s, s);
+      }
+   }
+
+   _drawShortStreak(ctx, x, y, len, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      for (let i = 0; i < 5; i++) {
+         ctx.fillStyle = `rgba(80, 220, 255, ${0.03 * (5 - i)})`;
+         ctx.fillRect(x - i * 14, y, len, 3);
+      }
+         ctx.fillStyle = 'rgba(230, 245, 255, 0.58)';
+         ctx.fillRect(x, y, len * 0.22, 2);
+         ctx.fillStyle = 'rgba(80, 220, 255, 0.38)';
+         ctx.fillRect(x + len * 0.22, y, len * 0.42, 2);
+         ctx.restore();
+      }
+//测试临时
 
 _drawFxStars(ctx, alpha, main) {
    let seed = 7;
@@ -187,22 +231,8 @@ _drawPanelWrapFx(ctx, r, alpha, side = 'left') {
 }
 
 _drawMainFrameFx(ctx, r, alpha) {
-   ctx.save();
-
-   ctx.strokeStyle = `rgba(120,220,255,${0.22 * alpha})`;
-   ctx.lineWidth = 1;
-   ctx.shadowBlur = 10;
-   ctx.shadowColor = `rgba(80,220,255,${0.22 * alpha})`;
-   ctx.strokeRect(r.x, r.y, r.w, r.h);
-
-   this._drawFxSquare(ctx, r.x - 6, r.y + 140, 7, alpha * 0.7);
-   this._drawFxSquare(ctx, r.x - 6, r.y + 470, 7, alpha * 0.7);
-
-   this._drawFxSquare(ctx, r.x + r.w - 1, r.y + 180, 7, alpha * 0.7);
-   this._drawFxSquare(ctx, r.x + r.w - 1, r.y + 520, 7, alpha * 0.7);
-
-   ctx.restore();
-}
+   return;
+ }
 
 _drawMainStreaks(ctx, r, alpha) {
    this._drawFxStreak(ctx, r.x + 120, r.y + 18, 64, alpha * 0.50);
@@ -277,7 +307,11 @@ _drawFxSquare(ctx, x, y, s, alpha) {
    showSidePanels(alpha) {
       if (!this.sidePanelsCreated) this.createSidePanels();
       alpha = alpha || 1;
+      //测试临时增加
+      this.leftCanvas.style.marginLeft = '-' +(500 + this.panelWidth /2 + this.panelGap) + 'px';
+      this.rightCanvas.style.marginLeft = (500 + this.panelWidth /2 + this.panelGap) + 'px';
 
+      //测试临时增加
       this.leftCanvas.style.display = 'block';
       this.rightCanvas.style.display = 'block';
       this.sidePanelsVisible = true;
