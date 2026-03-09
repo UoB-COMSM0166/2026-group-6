@@ -425,14 +425,10 @@ The rope system is one of the most important gameplay mechanisms in this game. P
 
 To achieve this mechanism, we have designed the rope as a state machine-based system. The rope includes several states such as `IDLE`, `EXTENDING`, `STRAND`, `SWINGING`, and `RETRACTING`. When the player fires the rope, the rope tip moves forward like a projectile. A ray-casting method is used to detect collisions with solid tiles. If the ray hits a valid surface, that position becomes the anchor point of the rope. The rope is not represented as a simple straight line. Instead, it is modeled as a chain of nodes. This node structure can more naturally simulate the shape of the rope and allow for dynamic adjustment of the rope length during the game. Players can adjust the length of the rope by inputting commands, thereby enabling actions such as swinging, getting closer, or descending.
 
-To simulate realistic rope behavior, distance constraints are applied between neighboring nodes. These constraints ensure that the distance between adjacent nodes remains close to a predefined rope segment length.
-
-The rope physics is based on a distance constraint model.
+To simulate realistic rope behavior, distance constraints are applied between neighboring nodes. These constraints ensure that the distance between adjacent nodes remains close to a predefined rope segment length. The rope physics is based on a distance constraint model.
 
 Assume two connected nodes **A** and **B** with positions `pA` and `pB`.  
 Let **L** be the desired distance between them (the rope segment length).
-
-### Distance Constraint Resolution
 
 **Step 1: Compute the current distance**
 
