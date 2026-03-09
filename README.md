@@ -434,25 +434,25 @@ Let **L** be the desired distance between them (the rope segment length).
 
 **Step 1: Compute the current distance**
 
-```
 Δ = pB - pA
+
 d = |Δ|
-```
 
 **Step 2: Compute the correction offset**
 
-```
+
 offset = (d - L) / d
-```
+
 
 **Step 3: Update node positions**
 
 If both nodes have equal mass, the correction is distributed equally:
 
-```
+
 pA = pA + Δ * offset * 0.5
+
 pB = pB - Δ * offset * 0.5
-```
+
 
 The game also offers two different types of rope materials: soft rope and hard rope. The soft rope supports swinging movement, while the hard rope can provide additional collision support. Another technical difficulty was ensuring that the rope physics system works correctly with the platform collision system. If both systems modify the player position independently, unstable movement may occur. To solve this issue, the update process follows a clear order. First, rope constraints are applied to the player. Then world collision detection is performed using the tile grid. Finally, the player position is clamped again to maintain the allowed rope length. This process keeps both the rope system and the platform physics stable. Therefore, the rope system becomes a flexible tool that supports exploration, combat and puzzle interaction in the game.
 
