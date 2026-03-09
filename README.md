@@ -368,11 +368,7 @@ Figure X shows the player's interaction process for purifying the contaminated c
   <b>Figure X.</b> Rope Interaction and Pollution Purification
 </p>
 
-When the player performs an input action, the input event is first received by the GameManager, triggering the fireRope() method. Subsequently, the Player calls the Rope's fire() method, causing the rope to be fired towards the target direction.
-
-During each frame update loop, the GameManager continuously calls the Player's update() method, which in turn updates the Rope's state. When the rope contacts an environmental object, it triggers the target object's onRopeContact() method. In this instance, contact with the PollutionCore initiates the pollution purification logic.
-
-If the player's current purification energy satisfies the purification conditions (player.cleanEnergy ≥ purificationCost), the player first expends the corresponding energy. Subsequently, the PollutionCore executes the purifyPollution() method and updates its state. Otherwise, the system triggers the insufficient energy handling logic, maintaining the PollutionCore's current state unchanged.
+When the player performs an input action, the input event is first received by the GameManager, triggering the fireRope() method. Subsequently, the Player calls the Rope's fire() method, causing the rope to be fired towards the target direction. During each frame update loop, the GameManager continuously calls the Player's update() method, which in turn updates the Rope's state. When the rope contacts an environmental object, it triggers the target object's onRopeContact() method. In this instance, contact with the PollutionCore initiates the pollution purification logic. If the player's current purification energy satisfies the purification conditions (player.cleanEnergy ≥ purificationCost), the player first expends the corresponding energy. Subsequently, the PollutionCore executes the purifyPollution() method and updates its state. Otherwise, the system triggers the insufficient energy handling logic, maintaining the PollutionCore's current state unchanged.
 
 ## 4.5 Unlock New Area Sequence Diagram
 Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
@@ -384,11 +380,7 @@ Figure X shows the interaction flow for unlocking new areas. This sequence diagr
   <b>Figure X.</b> Unlock New Area
 </p>
 
-During gameplay, the GameManager calls the Player's update() method within each frame's update loop to continuously refresh the player's state. Concurrently, the system invokes the LevelManager's checkUnlockCondition() method to assess whether the unlock criteria are currently met.
-
-Should the player's purification progress meet the preset requirement (purifiedProgress ≥ requiredProgress), the system triggers the unlockNewArea() method to unlock the new area. Subsequently, the GameManager loads the new level data and invokes the loadNewArea() method to complete the area transition.
-
-Upon completion of the new area's loading, the system resets the player's position via the resetPosition() method to ensure correct entry into the new zone. Should the unlock conditions remain unmet, the system maintains the current state and continues executing the game loop.
+During gameplay, the GameManager calls the Player's update() method within each frame's update loop to continuously refresh the player's state. Concurrently, the system invokes the LevelManager's checkUnlockCondition() method to assess whether the unlock criteria are currently met. If the player's purification progress meet the preset requirement (purifiedProgress ≥ requiredProgress), the system triggers the unlockNewArea() method to unlock the new area. Subsequently, the GameManager loads the new level data and invokes the loadNewArea() method to complete the area transition. Upon completion of the new area's loading, the system resets the player's position via the resetPosition() method to ensure correct entry into the new zone. Should the unlock conditions remain unmet, the system maintains the current state and continues executing the game loop.
 
 
 # 5. Implementation
