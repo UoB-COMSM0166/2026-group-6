@@ -142,7 +142,9 @@ class GameManager {
 
    _loadEntities() {
       const levelKey = `${this.difficulty}_${this.levelIndex}`;
-      if (!(levelKey in this.levelsInfo)) {
+      const savedLevel = this.levelsInfo[levelKey];
+      
+      if (!savedLevel || !savedLevel.entities) {
          // 创建实体
          this._createEntities();
          this.level.entities = this.entities;
@@ -195,6 +197,7 @@ class GameManager {
    // main loop
 
    update() {
+      if (!this.level || !this.player) return;
       if (this.status !== "PLAY") return;
 
       // 玩家更新 (传入 GameManager 引用)
@@ -225,6 +228,10 @@ class GameManager {
 
 
    render() {
+      if (!this.level || !this.player) {
+      background(0);
+      return;
+   }
       background(color(this.level.bgColor));
 
       push();
@@ -557,11 +564,12 @@ class GameManager {
       for (let i = 0; i < ldtk.levels.length; i++) {
          const levelKey = `${this.difficulty}_${i}`;
          let lvl = this.levelsInfo[levelKey];
+         if (!lvl) continue;
          // 筛选出所有areaNumber为当前Level的areaNumber的level，当到达结尾关时为整张地图的progress
          if (Number(lvl.areaNumber) === currentAreaNumber || currentAreaNumber === 5) {
-            initialCores += lvl.totalPollutionCore;
-            initialEnemies += lvl.totalEnemies;
-            initialBoss += lvl.totalBoss;
+            initialCores += lvl.totalPollutionCore || 0;
+            initialEnemies += lvl.totalEnemies|| 0;
+            initialBoss += lvl.totalBoss|| 0;
             remainingCores += lvl.getEntityCount(GameConfig.Entity.PollutionCore);
             remainingEnemies += lvl.getEntityCount(GameConfig.Entity.Enemy);
             remainingBoss += lvl.getEntityCount(GameConfig.Entity.Boss);
