@@ -308,7 +308,7 @@ To better understand how players interact with the game system, we model the mai
 - 15% ~750 words 
 - System architecture. Class diagrams, behavioural diagrams.
 
-### 4.1 System Architecture
+## 4.1 System Architecture
 
 This system employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between subsystems during gameplay. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management, thereby enhancing the system's maintainability and scalability.
 
@@ -343,7 +343,7 @@ To centrally manage interactive objects within levels, the system employs the ab
 
 This foundational design establishes the game's core operational framework, providing a basis for subsequent system functionality expansion.
 
-### 4.3 Final Class Diagram
+## 4.3 Final Class Diagram
 
 As development progressed, the game gradually added more features, such as enemy types, environmental interaction objects, and area teleportation mechanisms. To support these new features, the system architecture was further expanded. The final class diagram (Figure X) illustrates the relationships between the main classes in the system.
 <p align="center">
@@ -359,7 +359,7 @@ Furthermore, the level system was optimized. `LevelManager` uses a `Tile` grid s
 
 Finally, the interaction methods between entities have also been standardized. When a player or rope comes into contact with an entity, the interaction methods defined by that entity are called, such as onPlayerContact() or onRopeContact(). Different entities can implement different behaviors based on their own type, such as restoring player resources, triggering teleportation, or updating the polluted core state. This polymorphic interaction method reduces coupling between systems and makes it easier to add new entity types to the system.
 
-### 4.4 Pollution Purification Sequence Diagram
+## 4.4 Pollution Purification Sequence Diagram
 Figure X shows the player's interaction process for purifying the contaminated core via the rope system. This sequence diagram depicts the primary system interaction flow from player input to the purification of the contaminated core.
 <p align="center">
   <img src="resources/images/Sequence_0305_1.png" width="70%"/>
@@ -374,7 +374,7 @@ During each frame update loop, the GameManager continuously calls the Player's u
 
 If the player's current purification energy satisfies the purification conditions (player.cleanEnergy ≥ purificationCost), the player first expends the corresponding energy. Subsequently, the PollutionCore executes the purifyPollution() method and updates its state. Otherwise, the system triggers the insufficient energy handling logic, maintaining the PollutionCore's current state unchanged.
 
-### 4.5 Unlock New Area Sequence Diagram
+## 4.5 Unlock New Area Sequence Diagram
 Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
 
 <p align="center">
@@ -473,7 +473,7 @@ The game also offers two different types of rope materials: soft rope and hard r
 
 - Description of how code was tested.
 
-### 6.1 Qualitative Evaluation
+## 6.1 Qualitative Evaluation
 We invited several evaluators to trial the game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective method for identifying usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we documented primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
 <p align="center">
@@ -565,7 +565,8 @@ We invited several evaluators to trial the game and assessed the interface accor
 
 Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will incorporate more intuitive HUD designs, such as employing progress bars or icons to represent health and energy. For controls, we will reduce players' cognitive load by simplifying operations or providing key prompts. Additionally, we will introduce straightforward tutorials and hints to assist new players in understanding the rope mechanics and game objectives. Finally, we will appropriately adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience for players.
 
-### 6.2 Quantitative Evaluation
+## 6.2 Quantitative Evaluation
+## 6.3 How Code Was Tested.
 
 
 # 7. Process 
