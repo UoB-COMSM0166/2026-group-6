@@ -574,6 +574,49 @@ Based on the results of the heuristic evaluation, we propose the following impro
 
 - Teamwork. How did you work together, what tools and methods did you use? Did you define team roles? Reflection on how you worked together. Be honest, we want to hear about what didn't work as well as what did work, and importantly how your team adapted throughout the project.
 
+This section describes the development process of our game. In this project, we adopted an **Agile development approach** to organise team collaboration and project development. The game was gradually improved through **iterative development**, while tasks and development progress were managed using a **Jira Kanban board**. During development, the design was continuously adjusted based on feedback from testing.
+
+## Teamwork
+
+At the beginning of the project, each team member proposed a game idea. After discussion, the final idea was selected through a group vote.
+
+To ensure smooth development, the team maintained a weekly routine:
+
+- **Monday** – Review the progress of the previous week's tasks  
+- **Tuesday** – Determine the goals for the current week and assign new tasks  
+- **Thursday** – Discuss difficulties encountered during implementation and attempt to resolve them  
+- **Friday–Sunday** – Focus on completing the assigned tasks  
+
+During the early stage of the project, the team discussed and determined the overall concept of the game and gradually formed the core functional requirements, such as the **rope interaction system**, **pollution purification mechanics**, and **level exploration**. These features were discussed collectively, and the game design was gradually refined through continuous discussion.
+
+Throughout the development process, the team followed an **iterative development approach** to progressively implement the game system. As the project progressed, new features and improvements were continuously added to the development plan, allowing the game system to gradually evolve and improve.
+
+## Tools and Methods
+
+During the development process, we adopted an **Agile development approach** to organise the project workflow.
+
+Specifically, the development process was divided into multiple development cycles. In each cycle, the team discussed the features that needed to be implemented and assigned tasks to different members. Each member then worked on their respective functional modules, such as gameplay mechanics, level structures, or user interface components. After implementation, the team conducted testing and discussions, and the system was improved based on the feedback obtained.
+
+To manage development tasks more effectively, we used a **Jira Kanban board** to track project progress. The board divided tasks into several stages:
+
+- **To Do** – Tasks that need to be completed  
+- **In Progress** – Tasks currently being developed  
+- **Done** – Tasks that have been completed and tested  
+
+This visual task management approach allowed the team to clearly understand the current state of the project and ensured that all members were aware of the development progress.
+
+In addition, we used **GitHub** for code management and version control. Team members developed different modules independently and regularly pushed their code to the repository. This allowed the team to gradually integrate different parts of the system while maintaining code consistency.
+
+We also used **Visual Studio Code** as the main development environment and **LDtk** for map and level design.
+
+## Reflection
+
+During the development process, the team encountered several challenges. For example, in the early stage of the project, the responsibilities for some tasks were not clearly defined, which led to multiple members attempting to implement the same functionality simultaneously. To address this issue, the team later clarified task ownership and used the Kanban board more effectively to track task status.
+
+In addition, while collaborating through GitHub, the team occasionally encountered **merge conflicts**. By synchronising the repository more frequently and communicating changes in advance, these issues were gradually reduced.
+
+Overall, through the use of **Agile development practices and Kanban-based task management**, the team was able to organise development activities effectively and successfully implement the main features of the game.
+
 # 8. Sustainability
 
 
