@@ -314,7 +314,7 @@ _drawPixelGlowBorder(ctx, panel, alpha, side) {
       }
    }
 }
-   // 内层高亮边框：强化面板
+// 内层高亮边框：强化面板
 
 _drawMainFrameFx(ctx, r, alpha) {
    return;
