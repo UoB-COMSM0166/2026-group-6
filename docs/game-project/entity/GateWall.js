@@ -26,6 +26,8 @@ class GateWall extends Entity {
    }
 
    onPlayerContact(player, gm) {
+      // setprompt after last prompt disappear
+      if (millis() - gm.mapPromptStartTime < gm.mapPromptDuration) return;
       if (this.gateType === "CleanedTrigger") gm.setMapPrompt("Continue exploring this area, return to explore the previous level.", 5000);
       else gm.setMapPrompt("Find button to open the door.", 5000);
    }
