@@ -25,7 +25,7 @@ class UI {
       text(`Area${areaNumber} Purified: ${progress}%`, width / 2 + 2, 22);
 
       // 文字
-      if (progress <= GameConfig.World.PURIFY_CHANGE_THRESHOLD) fill("rgb(119, 14, 119)");
+      if (progress <= GameConfig.World.PURIFY_CHANGE_THRESHOLD) fill("rgb(210, 205, 210)");
       else fill("rgb(13, 153, 67)");
       text(`Area${areaNumber} Purified: ${progress}%`, width / 2, 20);
       pop();
