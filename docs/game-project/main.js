@@ -5,6 +5,7 @@ let menuDiv;
 let intro;
 let started = false;
 let selectedDifficulty = "easy"; //默认选中easy难度开始
+let btnContinue;
 
 function preload() {
    resources = new ResourceManager();
@@ -97,14 +98,12 @@ function _createMenu() {
    let btnStart = _makeBtn('Start Game', function () {
       if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
       gm = null;
-      //测试用临时修改
-      // gm = new GameManager(resources);
-      gm = new GameManager(resources, selectedDifficulty);
+      gm = new GameManager(resources);
       gm.loadLevel();
       _hideMenu();
    });
 
-   let btnContinue = _makeBtn('Continue Game', function () {
+   btnContinue = _makeBtn('Continue Game', function () {
       if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
       if (!gm) return;
       _hideMenu();
@@ -120,17 +119,17 @@ function _createMenu() {
    difficultyTitle.textContent = "Select Difficulty";
    difficultyTitle.style.cssText =
       'font-size:20px; font-weight:bold; color:#fff; margin-top:10px; margin-bottom:-10px;';
-   
+
    // 2. 难度按钮容器（横向排列）
    let difficultyContainer = document.createElement('div');
    difficultyContainer.style.cssText =
       'display:flex; gap:15px; margin-bottom:10px;';
-   
+
    // 3. 创建三个难度按钮
    let btnEasy = _makeDifficultyBtn('Easy', 'easy');
    let btnMedium = _makeDifficultyBtn('Medium', 'medium');
    let btnHard = _makeDifficultyBtn('Hard', 'hard');
-   
+
    // 初始选中Easy难度
    _setActiveDifficultyBtn(btnEasy);
 
@@ -142,10 +141,15 @@ function _createMenu() {
    // ========== 组装菜单 ==========
    menuDiv.appendChild(btnStart);
    menuDiv.appendChild(btnContinue);
-   menuDiv.appendChild(difficultyTitle); // 新增
-   menuDiv.appendChild(difficultyContainer); // 新增
+   menuDiv.appendChild(difficultyTitle);
+   menuDiv.appendChild(difficultyContainer);
 
    document.body.appendChild(menuDiv);
+}
+
+function banBtnContinue() {
+   btnContinue.style.opacity = '0.3';
+   btnContinue.style.pointerEvents = 'none';
 }
 
 // ========== 新增：创建难度按钮的专用方法 ==========
@@ -157,7 +161,7 @@ function _makeDifficultyBtn(label, difficulty) {
       'width:120px; height:50px; font-size:18px; font-weight:bold; color:#fff;' +
       'background:#2a2a4e; border:none; border-radius:8px; cursor:pointer;' +
       'transition: all 0.2s;';
-   
+
    // 鼠标悬停效果
    btn.onmouseenter = function () {
       if (this.dataset.difficulty !== selectedDifficulty) {
@@ -169,17 +173,19 @@ function _makeDifficultyBtn(label, difficulty) {
          this.style.background = '#2a2a4e';
       }
    };
-   
+
    // 点击切换难度
    btn.onclick = function () {
       if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
       selectedDifficulty = this.dataset.difficulty;
+      resources.setLdtkData(selectedDifficulty);
+      banBtnContinue();
       // 重置所有难度按钮样式，高亮当前选中
       let allDiffBtns = document.querySelectorAll('[data-difficulty]');
       allDiffBtns.forEach(b => _setInactiveDifficultyBtn(b));
       _setActiveDifficultyBtn(this);
    };
-   
+
    return btn;
 }
 
@@ -195,10 +201,6 @@ function _setInactiveDifficultyBtn(btn) {
    btn.style.transform = 'scale(1)';
    btn.style.boxShadow = 'none';
 }
-   //测试用临时增加
-   //menuDiv.appendChild(btnStart);
-   //menuDiv.appendChild(btnContinue);
-   //document.body.appendChild(menuDiv);
 
 function _makeBtn(label, onClick) {
    let btn = document.createElement('button');
