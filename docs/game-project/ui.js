@@ -179,20 +179,36 @@ class UI {
       let yPos = 80 + slideOffset;
 
       push();
-      textAlign(CENTER, TOP);
+      textAlign(CENTER, CENTER);
+      textSize(22);
 
-      // 半透明黑色背景条
+      const lines = prompt.split('\n');
+      const lineH = 30;
+      const paddingX = 40;
+      const paddingY = 20;
+
+      let maxW = 0;
+      for (let line of lines) {
+         let w = textWidth(line);
+         if (w > maxW) maxW = w;
+      }
+
+      const boxW = maxW + paddingX;
+      const boxH = lineH * lines.length + paddingY;
+      const boxCenterY = yPos + boxH / 2;
+
+      // 半透明黑色背景
       noStroke();
       fill(0, 0, 0, alpha * 0.8);
       rectMode(CENTER);
-      textSize(22);
-      let tw = textWidth(prompt) + 40;
-      rect(width / 2, yPos + 10, tw, 40, 8);
+      rect(width / 2, boxCenterY, boxW, boxH, 8);
 
-      // 白色区域：地图名
+      // 白色文字
       fill(255, 255, 255, alpha);
-      textSize(22);
-      text(prompt, width / 2, yPos);
+      for (let i = 0; i < lines.length; i++) {
+         let ly = yPos + paddingY / 2 + lineH * i + lineH / 2;
+         text(lines[i], width / 2, ly);
+      }
 
       pop();
    }
