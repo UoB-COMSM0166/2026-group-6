@@ -330,7 +330,11 @@ class Player {
    }
 
    checkRemainCleanEnergy(consume) {
-      return (this.cleanEnergy - consume) >= 0;
+      if ((this.cleanEnergy - consume) >= 0) return true;
+      else {
+         if (this.floatingTexts.length === 0) this.addFloatingText("energy is not enough", color(219, 38, 38), 8);
+         return false;
+      }
    }
 
    restoreHp(restore) {

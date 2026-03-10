@@ -62,41 +62,42 @@ class UI {
 
       push();
       rectMode(CORNER);
-
+      let textLen = 50;
       // shadow
       noStroke();
       fill(0, 0, 0, 80);
-      rect(x + 2, y + 2, w, h, 4);
+      rect(x + 2 + textLen, y + 2, w, h, 4);
 
       // background
       fill(bgColor[0], bgColor[1], bgColor[2], 200);
       stroke(borderColor[0], borderColor[1], borderColor[2], 180);
       strokeWeight(1.5);
-      rect(x, y, w, h, 4);
+      rect(x + textLen, y, w, h, 4);
 
       // filled portion
       noStroke();
       if (ratio > 0) {
          // gradient-like effect: brighter at top
          fill(barColor[0], barColor[1], barColor[2], 220);
-         rect(x + 2, y + 2, (w - 4) * ratio, h - 4, 3);
+         rect(x + 2 + textLen, y + 2, (w - 4) * ratio, h - 4, 3);
 
          // highlight strip on top half
          fill(255, 255, 255, 45);
-         rect(x + 2, y + 2, (w - 4) * ratio, (h - 4) * 0.4, 3, 3, 0, 0);
+         rect(x + 2 + textLen, y + 2, (w - 4) * ratio, (h - 4) * 0.4, 3, 3, 0, 0);
       }
 
       // label (left) + value (right)
-      fill(255, 255, 255, 240);
+      fill(barColor[0], barColor[1], barColor[2], 240);
       noStroke();
       textSize(12);
       textAlign(LEFT, CENTER);
       text(label, x + 6, y + h / 2);
-      textAlign(RIGHT, CENTER);
-      textSize(11);
-      fill(255, 255, 255, 200);
-      text(valueText, x + w - 5, y + h / 2);
-
+      if (w > 15) {
+         textAlign(RIGHT, CENTER);
+         textSize(11);
+         fill(255, 255, 255, 200);
+         text(valueText, x + w - 5 + textLen, y + h / 2);
+      }
       pop();
    }
 
