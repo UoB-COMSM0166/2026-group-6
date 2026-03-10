@@ -47,6 +47,17 @@ class ResourceManager {
       this.images.toolsOther = loadImage('resources/images/map_image/tools_other.png');
       this.images.rest = loadImage('resources/images/map_image/reset.png');
       this.images.cover = loadImage('resources/images/map_image/cover.png');
+      this.images.storyIntro = [];
+      for (let i = 1; i <= 4; i++) {
+         this.images.storyIntro.push(
+            loadImage(`resources/images/map_image/background_information/${i}.png`)
+         );
+      }
+
+      this.images.storyCard = loadImage(
+         'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Card X3/Card X5.png'
+      );
+
       this.images.painting = { paintings: [] };
       for (let i = 1; i <= 5; i++) {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));

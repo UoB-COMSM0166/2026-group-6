@@ -3,8 +3,10 @@ let gm;
 let appState = "MENU";  // MENU | PLAYING
 let menuDiv;
 let intro;
-let started = false;
-let selectedDifficulty = "easy"; //默认选中easy难度开始
+let storyIntro;
+let storyStarted = false;   
+let storyFinished = false; 
+let selectedDifficulty = "easy"; 
 
 function preload() {
    resources = new ResourceManager();
@@ -28,46 +30,72 @@ function setup() {
 
    canvas.elt.oncontextmenu = () => false;
    noSmooth();
-   //Cover
+   // Cover
+   // Story intro first
+   storyIntro = new StoryIntro(resources, function () {
+      storyFinished = true;
+
+      intro.page = 1;
+      intro.transition = 1;
+      intro.isTransitioning = false;
+
+      intro.showFx(1);
+      intro.showSidePanels(1);
+
+      if (!menuDiv) {
+         _createMenu();
+      }
+      menuDiv.style.display = 'flex';
+      appState = "MENU";
+   });
+
+   // Original intro UI
    intro = new introUI();
+
    if (resources.ldtkData) {
       resources.markLoaded();
    }
 }
 
 function draw() {
-   //start
-   if (!started) {
+   if (!storyStarted) {
       background(0);
-      intro.updateTransition();
       intro.display();
       return;
    }
+
+   if (!storyFinished) {
+      background(0);
+      storyIntro.update();
+      storyIntro.display();
+      return;
+   }
+
+   if (appState === "MENU") {
+      background(0);
+      intro.display();
+      return;
+   }
+
    if (appState !== "PLAYING" || !gm) return;
    gm.update();
    gm.render();
 }
 
 function mousePressed() {
-   if (!started) {
-
-      if (intro.page === 0) {
-         intro.startTransition();
-         return false;
-      }
-
-      if (intro.page === 1 && intro.transition < 1) {
-         return false;
-      }
-
-      if (intro.page === 1 && intro.transition >= 1) {
-         started = true;
-         _createMenu();
-         return false;
-      }
+   if (!storyStarted) {
+      storyStarted = true;
+      return false;
    }
 
-   if (appState === "PLAYING" && gm) gm.onMousePressed(mouseButton);
+   if (!storyFinished) {
+      storyIntro.handleMousePressed();
+      return false;
+   }
+
+   if (appState === "PLAYING" && gm) {
+      gm.onMousePressed(mouseButton);
+   }
 }
 
 function keyPressed() {
@@ -94,17 +122,27 @@ function _createMenu() {
       'display:flex; flex-direction:column; justify-content:center; align-items:center;' +
       'gap:20px; background:#1a1a2e; z-index:10;';
 
-   let btnStart = _makeBtn('Start Game', function () {
-      if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
-      gm = null;
+   let btnStart = _makeBtn('Start Game', function (e) {
+      if (e) {
+         e.preventDefault();
+         e.stopPropagation();
+      }
+
+     
+       _hideMenu();
+
       gm = new GameManager(resources);
-      gm.loadLevel();
-      _hideMenu();
    });
 
-   let btnContinue = _makeBtn('Continue Game', function () {
+   let btnContinue = _makeBtn('Continue Game', function (e) {
+      if (e) {
+         e.preventDefault();
+         e.stopPropagation();
+      }
+
       if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
       if (!gm) return;
+
       _hideMenu();
    });
    btnContinue.id = 'btn-continue';
@@ -209,9 +247,26 @@ function _makeBtn(label, onClick) {
       'width:280px; height:60px; font-size:24px; font-weight:bold; color:#fff;' +
       'background:#1eb47a; border:none; border-radius:12px; cursor:pointer;' +
       'transition: background 0.2s;';
+
    btn.onmouseenter = function () { btn.style.background = '#32d696'; };
    btn.onmouseleave = function () { btn.style.background = '#1eb47a'; };
-   btn.onclick = onClick;
+
+   btn.onmousedown = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+   };
+
+   btn.onmouseup = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+   };
+
+   btn.onclick = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      onClick(e);
+   };
+
    return btn;
 }
 
@@ -226,6 +281,14 @@ function _showMenu() {
       bc.style.opacity = '1';
       bc.style.pointerEvents = 'auto';
    }
+
+   intro.page = 1;
+   intro.transition = 1;
+   intro.isTransitioning = false;
+
+   intro.showFx(1);
+   intro.showSidePanels(1);
+
    menuDiv.style.display = 'flex';
    appState = "MENU";
 }
