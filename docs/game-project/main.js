@@ -5,7 +5,6 @@ let menuDiv;
 let intro;
 let started = false;
 let selectedDifficulty = "easy"; //默认选中easy难度开始
-let btnContinue;
 
 function preload() {
    resources = new ResourceManager();
@@ -103,7 +102,7 @@ function _createMenu() {
       _hideMenu();
    });
 
-   btnContinue = _makeBtn('Continue Game', function () {
+   let btnContinue = _makeBtn('Continue Game', function () {
       if (!resources.sounds.click.isPlaying()) resources.sounds.click.play();
       if (!gm) return;
       _hideMenu();
@@ -148,8 +147,9 @@ function _createMenu() {
 }
 
 function banBtnContinue() {
-   btnContinue.style.opacity = '0.3';
-   btnContinue.style.pointerEvents = 'none';
+   let bc = document.getElementById('btn-continue')
+   bc.style.opacity = '0.3';
+   bc.style.pointerEvents = 'none';
 }
 
 // ========== 新增：创建难度按钮的专用方法 ==========
