@@ -43,6 +43,8 @@ class ResourceManager {
       this.images.door2 = loadImage('resources/images/map_image/door2.png');
       this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
       this.images.tools = loadImage('resources/images/map_image/tools.png');
+      this.images.toolsHp = loadImage('resources/images/map_image/tools_hp.png');
+      this.images.toolsOther = loadImage('resources/images/map_image/tools_other.png');
       this.images.rest = loadImage('resources/images/map_image/reset.png');
       this.images.cover = loadImage('resources/images/map_image/cover.png');
       this.images.painting = { paintings: [] };

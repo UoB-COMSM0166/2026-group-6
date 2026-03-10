@@ -339,6 +339,11 @@ class Player {
       if (restore > 0) this.addFloatingText("+" + restore, color(50, 230, 80), 6);
    }
 
+   addJumpForce(enhance) {
+      this.jumpForce += enhance;
+      if (enhance > 0) this.addFloatingText("jumpforce +" + enhance, color(199, 115, 37), 8, 110);
+   }
+
 
    /**
     * 世界碰撞解算后, 重新钳制玩家到绳长范围内

@@ -1,8 +1,19 @@
 class Tool extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
-      this.sprite = resources.images.tools;
       this.toolType = this.fields.toolType;
+      switch (this.toolType) {
+         case "Clean":
+            this.sprite = resources.images.tools;
+            break;
+         case "Hp":
+            this.sprite = resources.images.toolsHp;
+            break;
+         default: {
+            this.sprite = resources.images.toolsOther;
+            break;
+         }
+      }
    }
 
    onPlayerContact(player, gm) {
@@ -40,6 +51,7 @@ class Tool extends Entity {
       [player.ropeL, player.ropeR].forEach(rope => {
          rope.maxLen += G;
       });
+      player.addFloatingText("rope length +" + G, color(199, 115, 37), 8, 110);
       this.destroy();
    }
 
@@ -53,8 +65,7 @@ class Tool extends Entity {
 
    _getJumpEnhance(player) {
       gm.addParticles(this.cx(), this.cy());
-      let enhance = 0.3;
-      player.jumpForce += enhance;
+      player.addJumpForce(0.3);
       this.destroy();
    }
 }

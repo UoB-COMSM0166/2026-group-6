@@ -4906,6 +4906,28 @@
 							"fieldInstances": [{ "__identifier": "Float", "__type": "Float", "__value": 0, "__tile": null, "defUid": 151, "realEditorValues": [] }],
 							"__worldX": 40,
 							"__worldY": 1296
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [30,23],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "fdd44b90-fa90-11f0-b6e4-6168834c7b59",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [244,188],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "RopeLength", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["RopeLength"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 196,
+							"__worldY": 1396
 						}
 					]
 				},
