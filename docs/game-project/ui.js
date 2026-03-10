@@ -1,15 +1,39 @@
 class UI {
 
+
    static drawHUD(player, level, gm) {
       fill(255); noStroke();
       textSize(20);
       textAlign(LEFT, TOP);
 
-      // player entity
-      fill("rgb(161, 53, 53)");
-      text("HP  " + player.hp, 25, 15);
-      fill("rgb(31, 139, 143)");
-      text("CleanEnergy  " + player.cleanEnergy, 25, 50);
+      // ── HP Bar ──
+      let hpBarWidth = 100;
+      hpBarWidth = hpBarWidth * player.maxHp / GameConfig.Player.MAX_HP;
+      this._drawBar(
+         20, 15, hpBarWidth, 22,
+         player.hp, player.maxHp,
+         [180, 40, 40],
+         [80, 10, 10],
+         [220, 60, 60],
+         "HP",
+         player.hp + " / " + player.maxHp
+      );
+
+      // ── CleanEnergy Bar ──
+      let currentEnergy = player.cleanEnergy;
+      let maxEnergy = GameConfig.Player.MAXCleanEnergy;
+      let logRatio = (currentEnergy > 0) ? Math.log(1 + currentEnergy / maxEnergy) / Math.log(2) : 0;
+      let energyBarWidth = 100;
+      energyBarWidth = logRatio * energyBarWidth;
+      this._drawBar(
+         20, 48, energyBarWidth, 22,
+         currentEnergy, currentEnergy,
+         [30, 160, 170],
+         [10, 50, 55],
+         [50, 200, 210],
+         "Energy",
+         currentEnergy
+      );
 
       push();
       textAlign(CENTER, TOP);
@@ -33,6 +57,49 @@ class UI {
       this._drawMouseButtons(player);
    }
 
+   static _drawBar(x, y, w, h, current, max, barColor, bgColor, borderColor, label, valueText) {
+      let ratio = constrain(current / max, 0, 1);
+
+      push();
+      rectMode(CORNER);
+
+      // shadow
+      noStroke();
+      fill(0, 0, 0, 80);
+      rect(x + 2, y + 2, w, h, 4);
+
+      // background
+      fill(bgColor[0], bgColor[1], bgColor[2], 200);
+      stroke(borderColor[0], borderColor[1], borderColor[2], 180);
+      strokeWeight(1.5);
+      rect(x, y, w, h, 4);
+
+      // filled portion
+      noStroke();
+      if (ratio > 0) {
+         // gradient-like effect: brighter at top
+         fill(barColor[0], barColor[1], barColor[2], 220);
+         rect(x + 2, y + 2, (w - 4) * ratio, h - 4, 3);
+
+         // highlight strip on top half
+         fill(255, 255, 255, 45);
+         rect(x + 2, y + 2, (w - 4) * ratio, (h - 4) * 0.4, 3, 3, 0, 0);
+      }
+
+      // label (left) + value (right)
+      fill(255, 255, 255, 240);
+      noStroke();
+      textSize(12);
+      textAlign(LEFT, CENTER);
+      text(label, x + 6, y + h / 2);
+      textAlign(RIGHT, CENTER);
+      textSize(11);
+      fill(255, 255, 255, 200);
+      text(valueText, x + w - 5, y + h / 2);
+
+      pop();
+   }
+
    static _drawMouseButtons(player) {
       let cx = width / 2, by = height - 60;
       let bw = 50, bh = 40, gap = 5;
@@ -42,7 +109,7 @@ class UI {
       push();
 
       textAlign(CENTER, CENTER); textSize(14);
-      
+
       // 左键
       strokeWeight(player.currentRope.includes(player.ropeL) ? 5 : 2);
       if (lActive) { fill(100); stroke(150); }

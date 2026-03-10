@@ -5,7 +5,7 @@ class Rest extends Entity {
    }
 
    onPlayerContact(player, gm) {
-      player.hp = player.maxHp;
+      player.restoreHp(player.maxHp - player.hp);
       gm.saveCheckpoint(gm.levelIndex, this.x + this.w * 0.15, this.y - player.h);
       gm.addParticles(this.cx(), this.cy());
    }

@@ -19,6 +19,7 @@ class Player {
       this.inwater = false;
 
       this.showPrompt = null;  // 显示按键提示
+      this.floatingTexts = []; // floating text
 
       this.ropeL = new Rope(color(0, 255, 255));
       this.ropeR = new Rope(color(255, 100, 100));
@@ -42,6 +43,7 @@ class Player {
       this._resolveWorld(gm.level);
       this._clampToRopes();  // 世界碰撞后重新执行绳长约束
       this._isInToxicPool(gm);
+      this._updateFloatingTexts();
    }
 
    // ====== 输入 ======
@@ -301,6 +303,7 @@ class Player {
 
    takeDamage(damage, gm) {
       this.hp -= damage;
+      this.addFloatingText("-" + damage, color(255, 60, 60), 7);
       if (this.hp <= 0) { this.die(gm); return; }
       this.invulnerableTimer = GameConfig.Player.InvulInterval;
    }
@@ -311,6 +314,7 @@ class Player {
    reduceCleanEnergy(consume) {
       if (this.checkRemainCleanEnergy(consume)) {
          this.cleanEnergy -= consume;
+         this.addFloatingText("-" + consume, color(50, 220, 230), 6);
       }
       else {
          return;
@@ -322,6 +326,7 @@ class Player {
    */
    supplyCleanEnergy(supply) {
       this.cleanEnergy += supply;
+      this.addFloatingText("+" + supply, color(50, 220, 230), 6);
    }
 
    checkRemainCleanEnergy(consume) {
@@ -331,6 +336,7 @@ class Player {
    restoreHp(restore) {
       let nextHp = this.hp + restore;
       this.hp = (nextHp > this.maxHp) ? this.maxHp : nextHp;
+      if (restore > 0) this.addFloatingText("+" + restore, color(50, 230, 80), 6);
    }
 
 
@@ -435,6 +441,7 @@ class Player {
       rect(this.cx() + cos(a) * off - sz / 2,
          this.cy() + sin(a) * off - sz / 2, sz, sz);
       this._showPrompt();
+      this._drawFloatingTexts();
    }
 
    setPrompt(prompt) {
@@ -457,5 +464,89 @@ class Player {
          text(this.showPrompt, px, py);
          this.showPrompt = null;  // 在每帧在其他地方重新设置
       }
+   }
+
+   // floatingtext
+
+   /**
+    * 从玩家头顶缓慢上升并渐隐的文字
+    *
+    * @param {string}  content   text showing
+    * @param {Array}   col       color(0, 0, 0)
+    * @param {number}  [fontSize]  字体大小, default 6
+    * @param {number}  [duration]  持续帧数，default 60
+    */
+   addFloatingText(content, col, fontSize, duration) {
+      this.floatingTexts.push(
+         new Player.FloatingText(this, content, col, fontSize, duration)
+      );
+   }
+
+   _updateFloatingTexts() {
+      for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
+         this.floatingTexts[i].update();
+         if (this.floatingTexts[i].isDead) this.floatingTexts.splice(i, 1);
+      }
+   }
+
+   _drawFloatingTexts() {
+      for (let ft of this.floatingTexts) ft.display();
+   }
+}
+
+/**
+ * Player.FloatingText — inner class of Player
+ */
+Player.FloatingText = class {
+   /**
+    * @param {Player}  owner     所属的 Player 实例
+    * @param {string}  content   文字内容
+    * @param {Array}   col       color(0,0,0)
+    * @param {number}  fontSize  字体大小
+    * @param {number}  duration  持续帧数
+    */
+   constructor(owner, content, col, fontSize, duration) {
+      this.owner = owner;
+      this.text = content;
+      this.color = col || color(0, 0, 0);
+      this.fontSize = fontSize || 6;
+      this.duration = duration || 60;
+      this.timer = 0;
+      this.offsetX = random(-4, 4);
+      this.offsetY = 0;
+      this.rise = 0.15;
+   }
+
+   get isDead() { return this.timer >= this.duration; }
+
+   update() {
+      this.timer++;
+      this.offsetY -= this.rise;
+   }
+
+   display() {
+      let progress = this.timer / this.duration;
+      let alpha;
+      if (progress < 0.2) alpha = map(progress, 0, 0.2, 0, 255);
+      else if (progress > 0.6) alpha = map(progress, 0.6, 1, 255, 0);
+      else alpha = 255;
+
+      // 通过 owner 引用直接读取玩家坐标
+      let px = this.owner.cx() + this.offsetX;
+      let py = this.owner.y - 8 + this.offsetY;
+
+      push();
+      noStroke();
+      textAlign(CENTER, CENTER);
+      textSize(this.fontSize);
+      // 阴影
+      fill(0, 0, 0, alpha * 0.5);
+      text(this.text, px + 0.5, py + 0.5);
+      // 正文
+      let c = color(this.color);
+      c.setAlpha(alpha);
+      fill(c);
+      text(this.text, px, py);
+      pop();
    }
 }
