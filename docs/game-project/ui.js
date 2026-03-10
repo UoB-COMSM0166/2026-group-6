@@ -175,14 +175,14 @@ class UI {
          slideOffset = map(elapsed, 0, fadeIn, -20, 0);
       }
 
-      let yPos = 50 + slideOffset;
+      let yPos = 80 + slideOffset;
 
       push();
       textAlign(CENTER, TOP);
 
       // 半透明黑色背景条
       noStroke();
-      fill(0, 0, 0, alpha * 0.4);
+      fill(0, 0, 0, alpha * 0.8);
       rectMode(CENTER);
       textSize(22);
       let tw = textWidth(prompt) + 40;

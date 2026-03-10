@@ -84,9 +84,7 @@ class GameManager {
          this.camera.reset();
          this.status = "PLAY";
          // The prompt above the map
-         this.mapPromptText = ldtk.levels[this.levelIndex].identifier;
-         this.mapPromptStartTime = millis();
-         this.mapPromptDuration = 3000;
+         this.setMapPrompt(ldtk.levels[this.levelIndex].identifier, 3000);
       }
    }
 
@@ -470,9 +468,7 @@ class GameManager {
    _checkProcess() {
       if (this.getAreaProgress() > GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
          if (!resources.sounds.upgrade.isPlaying()) resources.sounds.upgrade.play();
-         this.mapPromptText = "Some things have changed due to purification.";
-         this.mapPromptStartTime = millis();
-         this.mapPromptDuration = 3000;
+         this.setMapPrompt("Some things have changed due to purification.", 3000);
          this.environmentChanged = true;
          // 本area净化程度到达一定值后，毒池变为水
          if (!this.level.toxicConverted) {
@@ -569,5 +565,12 @@ class GameManager {
          if (hit) return { entity: hit, levelIndex: Number(key) };
       }
       return null;
+   }
+
+   setMapPrompt(text, duration) {
+      // if (millis() - this.mapPromptStartTime < this.mapPromptDuration) return;
+      this.mapPromptText = text;
+      this.mapPromptStartTime = millis();
+      this.mapPromptDuration = duration;
    }
 }

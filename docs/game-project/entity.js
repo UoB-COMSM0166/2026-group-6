@@ -69,7 +69,7 @@ class Entity {
       if (!this.active) return false;
       return Physics.rectIntersect(
          this.x, this.y, this.w, this.h,
-         player.x, player.y, player.w, player.h
+         player.x, player.y, player.w + 0.1, player.h + 0.1
       );
    }
 

@@ -3,7 +3,7 @@
  * Gatetype = "CleanedTrigger"：区域净化>=80 自动打开
  * Gatetype = "MechanismTrigger"：按钮触发打开
  */
-// 净化达到80%开门
+// 净化达到75%开门
 const PURIFY_OPEN_THRESHOLD = GameConfig.World.PURIFY_CHANGE_THRESHOLD;
 
 class GateWall extends Entity {
@@ -22,7 +22,12 @@ class GateWall extends Entity {
       if (this.isOpen) return;
       if (!resources.sounds.door.isPlaying()) resources.sounds.door.play();
       this.isOpen = true;
-      this.active = false;
+      this.destroy();
+   }
+
+   onPlayerContact(player, gm) {
+      if (this.gateType === "CleanedTrigger") gm.setMapPrompt("Continue exploring this area, return to explore the previous level.", 5000);
+      else gm.setMapPrompt("Find button to open the door.", 5000);
    }
 
    updateWithGM(gm) {
