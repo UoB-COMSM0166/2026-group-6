@@ -78,9 +78,9 @@ const GameConfig = {
 
       // 发射
       LAUNCH_SPEED_GRIDS: 1,        // 发射初速度 (格/帧)
-      TIP_GRAVITY: 0.12,              // 绳头重力 (像素/帧²)
+      TIP_GRAVITY: 0.07,              // 绳头重力 (像素/帧²)
       TIP_AIR_DRAG: 0.995,            // 绳头空气阻力
-      HEAD_MASS: 4.0,                 // 绳头质量  可变
+      HEAD_MASS: 3.0,                 // 绳头质量  可变
       EXTENDING_GRAVITY_SCALE: 0.09,  // 发射阶段节点重力缩放
 
       // Verlet 模拟
