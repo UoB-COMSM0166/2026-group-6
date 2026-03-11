@@ -521,9 +521,9 @@ Player.FloatingText = class {
       this.fontSize = fontSize || 6;
       this.duration = duration || 60;
       this.timer = 0;
-      this.offsetX = random(-4, 4);
-      this.offsetY = 0;
-      this.rise = 0.15;
+      this.offsetX = random(-6, 6);
+      this.offsetY = random(-4, 8);
+      this.rise = 0.17;
    }
 
    get isDead() { return this.timer >= this.duration; }
