@@ -3,6 +3,9 @@
  *
  * 集中管理所有资源（图片、JSON、音效）的加载。
  * 保证每个素材只加载一次，所有模块从这里获取资源引用。
+ * 
+ * 
+ * =========images文件需放置在audios的资源之前，添加images文件需注意=====
  *
  * 用法:
  *   preload() 中调用 resources.preload()
@@ -13,10 +16,12 @@ class ResourceManager {
       // (dict)
       this.images = {};
       this.data = {};
-      this.sounds = {};
+      this.sounds = {
+         rope: {},
+         enemy: {}
+      };
       this._loaded = false;
 
-      //测试用新增加
       //地图难度preload
       this.data.ldtk = {
          easy: null,
@@ -24,7 +29,16 @@ class ResourceManager {
          hard: null
       };
       this.data.currentLdtk;
+
+    // 提前初始化背景对象，避免渲染时undefined
+      this.images.parallax = {
+         area1: [],
+         area2: [],
+         area3: [],
+         area4: []
+      };
    }
+
    /**
     * 在 p5.js preload() 中调用
     * 所有 loadImage / loadJSON 都写在这里
@@ -36,6 +50,7 @@ class ResourceManager {
       this.data.ldtk.hard = loadJSON('map/map-main.ldtk');
       this.data.currentLdtk = this.data.ldtk.easy;
 
+      //images
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
@@ -64,29 +79,6 @@ class ResourceManager {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));
       }
 
-
-      // 音效：
-      this.sounds.rope = {
-         ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
-         ropered: loadSound('resources/audios/sides/redwhoosh.wav')
-      };
-
-      this.sounds.ladder = loadSound('resources/audios/sides/climbladder.wav');
-      this.sounds.doorfail = loadSound('resources/audios/sides/doornotopen.wav');
-      this.sounds.door = loadSound('resources/audios/sides/dooropen.wav');
-      this.sounds.failure = loadSound('resources/audios/sides/failure.wav');
-      this.sounds.intowater = loadSound('resources/audios/sides/intowater.wav');
-      this.sounds.underwater = loadSound('resources/audios/sides/underwatermove.wav');
-      this.sounds.map = loadSound('resources/audios/sides/map.wav');
-      this.sounds.click = loadSound('resources/audios/sides/menuclick.wav');
-      // 后续剧情用
-      this.sounds.enemy = this.sounds.enemy || {};
-      this.sounds.paper = loadSound('resources/audios/sides/paper.wav');
-      this.sounds.enemy.punch = loadSound('resources/audios/sides/punch.wav');
-      this.sounds.purify = loadSound('resources/audios/sides/purify.wav');
-      this.sounds.tool = loadSound('resources/audios/sides/tools.wav');
-      this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.wav');
-
       //怪物
       this.images.enemy = this.images.enemy || {};
       this.images.enemy.slime = {
@@ -96,7 +88,7 @@ class ResourceManager {
       };
 
       //地图背景
-      this.images.parallax = {};
+      //this.images.parallax = {};
 
       // Area1: Ephemeral_0..5 (6 layers)
       this.images.parallax.area1 = [];
@@ -130,8 +122,47 @@ class ResourceManager {
          );
       }
 
+      // 音效：
+      this.sounds.rope = {
+         ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
+         ropered: loadSound('resources/audios/sides/redwhoosh.wav')
+      };
+
+      this.sounds.ladder = loadSound('resources/audios/sides/climbladder.wav');
+      this.sounds.doorfail = loadSound('resources/audios/sides/doornotopen.wav');
+      this.sounds.door = loadSound('resources/audios/sides/dooropen.wav');
+      this.sounds.failure = loadSound('resources/audios/sides/failure.wav');
+      this.sounds.intowater = loadSound('resources/audios/sides/intowater.wav');
+      this.sounds.underwater = loadSound('resources/audios/sides/underwatermove.wav');
+      this.sounds.map = loadSound('resources/audios/sides/map.wav');
+      this.sounds.click = loadSound('resources/audios/sides/menuclick.wav');
+      
+      this.sounds.enemy = this.sounds.enemy || {};
+      this.sounds.paper = loadSound('resources/audios/sides/paper.wav');
+      this.sounds.enemy.punch = loadSound('resources/audios/sides/punch.wav');
+      this.sounds.purify = loadSound('resources/audios/sides/purify.wav');
+      this.sounds.tool = loadSound('resources/audios/sides/tools.wav');
+      this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.wav');
+
+      //bgm:
+      this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
+      //this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
+      this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
+
+      //Boss
+      //Boss音效
+      //this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
+      //this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
+
+      //END之后用
+      //this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
+      //this.sounds.better = loadSound('resources/audios/game_once/betterend.mp3');
+      //this.sounds.happy = loadSound('resources/audios/game_once/happyend.mp3');
+      //this.sounds.normal = loadSound('resources/audios/game_once/normalend.mp3');
+      //this.sounds.sad = loadSound('resources/audios/game_once/sadend.mp3');
    }
 
+      
    /** preload 完成后标记 */
    markLoaded() {
       this._loaded = true;
@@ -141,7 +172,6 @@ class ResourceManager {
       return this._loaded;
    }
 
-   //测试用新增
    /**按难度获取对应地图
    * @param {string} difficulty - 难度分级: easy/medium/hard
    * @returns {object} 
