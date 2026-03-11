@@ -123,13 +123,15 @@ function showMenuPage(page) {
    const mainPanel = document.getElementById('menu-main-panel');
    const difficultyPanel = document.getElementById('menu-difficulty-panel');
    const audioPanel = document.getElementById('menu-audio-panel');
+   const instructionsPanel = document.getElementById('menu-instructions-panel');
    const backBtn = document.getElementById('menu-back-btn');
 
-   if (!mainPanel || !difficultyPanel || !audioPanel || !backBtn) return;
+   if (!mainPanel || !difficultyPanel || !audioPanel || !instructionsPanel || !backBtn) return;
 
    mainPanel.style.display = 'none';
    difficultyPanel.style.display = 'none';
    audioPanel.style.display = 'none';
+   instructionsPanel.style.display = 'none';
 
    if (page === 'main') {
       mainPanel.style.display = 'flex';
@@ -140,8 +142,12 @@ function showMenuPage(page) {
    } else if (page === 'audio') {
       audioPanel.style.display = 'flex';
       backBtn.style.display = 'block';
+   } else if (page === 'instructions') {
+      instructionsPanel.style.display = 'flex';
+      backBtn.style.display = 'block';
    }
 }
+
 
 function _createMenu() {
    menuDiv = document.createElement('div');
@@ -252,12 +258,23 @@ const btnAudio = _makeBtn('Audio Settings', function (e) {
    }
    showMenuPage('audio');
 });
+// ====== Instructions ======
+const btnInstructions = _makeBtn('Instructions', function (e) {
+   e.preventDefault();
+   e.stopPropagation();
+
+   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+      resources.sounds.click.play();
+   }
+   showMenuPage('instructions');
+});
 
 // 组装主面板
 mainPanel.appendChild(btnStart);
 mainPanel.appendChild(btnContinue);
 mainPanel.appendChild(btnDifficulty);
 mainPanel.appendChild(btnAudio);
+mainPanel.appendChild(btnInstructions);
 menuDiv.appendChild(mainPanel);
 
 // 新增：难度面板（默认隐藏）
@@ -299,6 +316,22 @@ const audioTitle = document.createElement('div');
 audioTitle.textContent = "Audio Settings";
 audioTitle.style.cssText =
    'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
+
+// 新增：说明面板（默认隐藏）
+const instructionsPanel = document.createElement('div');
+instructionsPanel.id = 'menu-instructions-panel';
+instructionsPanel.style.cssText =
+   'display:none;' +
+   'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
+
+const instructionsTitle = document.createElement('div');
+instructionsTitle.textContent = "Instructions";
+instructionsTitle.style.cssText =
+   'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
+
+instructionsPanel.appendChild(instructionsTitle);
+menuDiv.appendChild(instructionsPanel);
+
 
 // BGM控制行
 const bgmRow = document.createElement('div');
