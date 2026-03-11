@@ -45,6 +45,7 @@ class ResourceManager {
     */
    preload() {
       this.data.ldtk.easy = loadJSON('map/map-easy.ldtk');
+      //this.data.ldtk.easy = loadJSON('map/help.ldtk');
       this.data.ldtk.medium = loadJSON('map/map-normal.ldtk');
       this.data.ldtk.hard = loadJSON('map/map-main.ldtk');
       this.data.currentLdtk = this.data.ldtk.easy;
