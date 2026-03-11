@@ -813,7 +813,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
   <b>Figure X.</b> Mean SUS scores for the Easy and Hard difficulty levels.
 </p>
 
-According to table X, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard, suggesting slightly better usability for the Easy level.
+According to firgue X, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard, suggesting slightly better usability for the Easy level.
 
 ### Statistical Analysis
 <p>
@@ -847,8 +847,7 @@ According to table X, the mean NASA-TLX workload score was **4.57** for the Easy
 
 </table>
 
-The Wilcoxon Signed-Rank Test results (Table X) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels.
-
+The Wilcoxon Signed-Rank Test results (Table X) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
 
 ## 6.3 How Code Was Tested.
 
