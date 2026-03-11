@@ -110,6 +110,7 @@ class ResourceManager {
       //this.sounds.happy = loadSound('resources/audios/game_once/happyend');
       //this.sounds.normal = loadSound('resources/audios/game_once/normalend');
       //this.sounds.sad = loadSound('resources/audios/game_once/sadend');
+      this.sounds.story = loadSound('resources/audios/background/boss');
 
       //地图背景
       this.images.parallax = {};
