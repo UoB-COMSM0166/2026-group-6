@@ -1,12 +1,13 @@
 let resources;
 let gm;
-let appState = "MENU";  // MENU | PLAYING
+let appState = "MENU";  // MENU | VIDEO | PLAYING 
 let menuDiv;
 let intro;
 let storyIntro;
-let storyStarted = false;   
-let storyFinished = false; 
-let selectedDifficulty = "easy"; 
+let storyStarted = false;
+let storyFinished = false;
+let selectedDifficulty = "easy";
+let demoVideo = null;
 
 function preload() {
    resources = new ResourceManager();
@@ -35,18 +36,8 @@ function setup() {
    storyIntro = new StoryIntro(resources, function () {
       storyFinished = true;
 
-      intro.page = 1;
-      intro.transition = 1;
-      intro.isTransitioning = false;
-
-      intro.showFx(1);
-      intro.showSidePanels(1);
-
-      if (!menuDiv) {
-         _createMenu();
-      }
-      menuDiv.style.display = 'flex';
-      appState = "MENU";
+      appState = "VIDEO";
+      playDemoVideo();
    });
 
    // Original intro UI
@@ -68,6 +59,11 @@ function draw() {
       background(0);
       storyIntro.update();
       storyIntro.display();
+      return;
+   }
+
+   if (appState === "VIDEO") {
+      background(0);
       return;
    }
 
@@ -99,6 +95,11 @@ function mousePressed() {
 }
 
 function keyPressed() {
+   if (appState === "VIDEO") {
+      endDemoVideo();
+      return;
+   }
+
    if (appState === "PLAYING") {
       if (keyCode === ESCAPE) { _showMenu(); return; }
       if (gm) gm.onKeyPressed(key);
@@ -289,6 +290,60 @@ function _showMenu() {
    intro.showFx(1);
    intro.showSidePanels(1);
 
+   menuDiv.style.display = 'flex';
+   appState = "MENU";
+}
+
+function playDemoVideo() {
+   demoVideo = document.createElement('video');
+   // 使用你提供的准确路径
+   demoVideo.src = 'resources/videos/helpvideo.mp4'; 
+   demoVideo.controls = false;
+   
+   // 关键：静音播放可以绕过浏览器的自动播放拦截
+   demoVideo.muted = true;  
+   demoVideo.playsInline = true; 
+   
+   // 设置视频样式，覆盖在画布上方
+   demoVideo.style.cssText =
+      'position:absolute; top:50%; left:50%; width:1000px; height:700px;' +
+      'transform:translate(-50%, -50%); z-index:20; background:black; object-fit:contain; cursor:pointer;';
+
+   document.body.appendChild(demoVideo);
+
+   // 视频自然播放结束，或者玩家点击视频画面，都会触发结束视频并进入菜单
+   demoVideo.onended = endDemoVideo;
+   demoVideo.onclick = endDemoVideo;
+
+   // 尝试播放视频
+   let playPromise = demoVideo.play();
+   if (playPromise !== undefined) {
+      playPromise.catch(e => {
+         console.error("视频播放失败，原因：", e);
+         endDemoVideo(); // 如果还是报错，就直接进菜单防卡死
+      });
+   }
+}
+
+function endDemoVideo() {
+   if (!demoVideo) return;
+   
+   // 停止并移除视频元素
+   demoVideo.pause();
+   demoVideo.remove();
+   demoVideo = null;
+
+   // 视频结束后，执行原本进入难度选择菜单的逻辑
+   intro.page = 1;
+   intro.transition = 1;
+   intro.isTransitioning = false;
+
+   intro.showFx(1);
+   intro.showSidePanels(1);
+
+   if (!menuDiv) {
+      _createMenu();
+   }
    menuDiv.style.display = 'flex';
    appState = "MENU";
 }
