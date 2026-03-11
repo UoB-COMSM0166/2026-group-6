@@ -361,6 +361,7 @@ function endDemoVideo() {
    }
    menuDiv.style.display = 'flex';
    appState = "MENU";
+}
 
    // ========== 新增：音量控制UI（粘贴到main.js末尾） ==========
 function createVolumeControlUI() {
@@ -387,7 +388,7 @@ function createVolumeControlUI() {
       <span>BGM</span>
       <button id="bgm-mute-btn" style="width: 30px; height: 30px; border: none; border-radius: 50%; background: #2a2a4e; color: #fff; cursor: pointer;">
       ${audioManager.getState().bgm.isMuted ? '🔇' : '🔊'}
-      <button>
+      </button>
       <input id="bgm-volume-slider" type="range" min="0" max="1" step="0.01" value="${audioManager.getState().bgm.volume}" style="flex: 1;">
       `;
 
@@ -431,6 +432,4 @@ function createVolumeControlUI() {
    document.getElementById('sfx-volume-slider').addEventListener('input', (e) => {
       audioManager.setSfxVolume(parseFloat(e.target.value));
    });
-}
-
 }
