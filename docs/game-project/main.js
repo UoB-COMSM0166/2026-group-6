@@ -296,7 +296,7 @@ function _showMenu() {
 
 function playDemoVideo() {
    demoVideo = document.createElement('video');
-   // 使用你提供的准确路径
+   // 视频路径
    demoVideo.src = 'resources/videos/helpvideo.mp4'; 
    demoVideo.controls = false;
    
@@ -307,9 +307,17 @@ function playDemoVideo() {
    // 设置视频样式，覆盖在画布上方
    demoVideo.style.cssText =
       'position:absolute; top:50%; left:50%; width:1000px; height:700px;' +
-      'transform:translate(-50%, -50%); z-index:20; background:black; object-fit:contain; cursor:pointer;';
+      'transform:translate(-50%, -50%); z-index:10; background:black; object-fit:contain; cursor:pointer;';
 
    document.body.appendChild(demoVideo);
+
+   intro.page = 1;
+   intro.showFx(1);
+   intro.showSidePanels(1);
+
+   // 强制提高侧边栏的层级（z-index: 20），确保它们浮在视频（z-index: 10）上方
+   if(intro.leftCanvas) intro.leftCanvas.style.zIndex = "20";
+   if(intro.rightCanvas) intro.rightCanvas.style.zIndex = "20";
 
    // 视频自然播放结束，或者玩家点击视频画面，都会触发结束视频并进入菜单
    demoVideo.onended = endDemoVideo;
@@ -332,14 +340,6 @@ function endDemoVideo() {
    demoVideo.pause();
    demoVideo.remove();
    demoVideo = null;
-
-   // 视频结束后，执行原本进入难度选择菜单的逻辑
-   intro.page = 1;
-   intro.transition = 1;
-   intro.isTransitioning = false;
-
-   intro.showFx(1);
-   intro.showSidePanels(1);
 
    if (!menuDiv) {
       _createMenu();
