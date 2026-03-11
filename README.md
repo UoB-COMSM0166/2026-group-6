@@ -80,9 +80,9 @@ Echoes of Purity is a structured non-linear 2D level game that combines side-scr
 
 The game is set on an alien planet on the verge of collapse due to long-term pollution. After severe environmental imbalance, the planet’s native civilization entered a dormant state. The possibility of restoring the planet's ecosystem remains uncertain.Players will take on the role of an advanced artificial intelligence purification unit sent to the severely polluted planet. Using rope tools and cleaning energy, they will penetrate various highly polluted areas, purify contaminated organisms and the environment, and gradually restore the planet's ecosystem.
 
-As players advance through levels and complete purification objectives, the planet’s environmental structure, accessible routes, and ecological conditions gradually evolve. These changes reflect the player’s impact on the world and strengthen the restoration theme.
+As players advance through levels and complete purification objectives, the planet’s environmental structure, accessible routes, and ecological conditions gradually evolve. These changes reflect the impact that players have on the world and further reinforce the game's theme of "ecological restoration".
 
-The final outcome of the game is determined by the player’s purification progress. Each area of the game has many pollution cores and enemies. Successfully purify at least 80% of the pollution cores and the enemies will reach the standard level of completion. Purifying all pollution cores and enemies unlocks a full restoration ending, representing complete ecological recovery.
+The final outcome of the game will depend on the progress of purifying the world. In each area, there are many pollution cores and enemies. When the player successfully cleans up at least 80% of the pollution cores and enemies, they can meet the basic completion criteria for that area. If the player can purify all the contaminated cores and enemies, they will unlock the final outcome, symbolizing that the ecological environment has been completely restored.
 
 
 
@@ -205,7 +205,7 @@ Based on the determination of the game type, we then delved into the themes that
   <b>Figure 2.</b> Paper Prototypin
 </p>
 
-In the third-week lab session, we further explored and evaluated our concept by creating a paper prototype of the game. This approach enables low-cost experimentation, making it easier to gather feedback and refine ideas before implementing the system in code. Through this prototype, we were able to visually understand the core gameplay loop, thereby enhancing our comprehension of the player interaction process. This was helpful in guiding the subsequent design and development phases.
+In the third-week lab session, we further explored and evaluated our concept by creating a paper prototype of the game. This method enables us to gather some feedback before the idea is implemented, and it can also further assist us in improving the design of the game. Through this prototype, we can gain a clear and intuitive understanding of the core gameplay process of the game, thereby deepening our comprehension of the player interaction process. This was helpful in guiding the subsequent design and development phases.
 
 
 ## Stakeholder Analysis
@@ -293,7 +293,7 @@ As the game's scope expanded, requirements continued to evolve. Through the ongo
 
 ## Use-Cases
 
-To better understand how players interact with the game system, we model the main functional interactions using a UML Use Case diagram. By identifying the main participants (players) and key game activities such as exploration, purification and progression, this model provides our team with a structured overview of the system's behavior. This kind of diagram helps to ensure that the main game features are systematically captured, improves communication among team members, and supports consistency between requirements, design decisions and implementation. In addition, a detailed use-case specification is provided in the [Appendix](#11-appendix).
+In order to understand the players' behaviors in the game and the interaction between them and the system, we use UML use case diagrams to analyze the main functions of the game. This diagram focuses on the players as the main participants and incorporates several core activities within the game, such as exploring the map, purifying pollution sources, and advancing the game progress, etc. In this way, our team can have a more intuitive understanding of the overall structure of the game system and the relationships between different functions. At the same time, this also provides a reference for the team members during the development process, which helps everyone to have a clearer discussion on the system design. For more detailed explanations of each use case, we have provided further information in the [Appendix](#11-appendix).
 
 <p align="center">
   <img src="resources/images/usecase_model.png" width="600">
@@ -389,17 +389,17 @@ During gameplay, the GameManager calls the Player's update() method within each 
 
 ### Level Design and Map Structure
 
-All the levels and maps in this game were manually designed by the team members and created using LDtk (Level Designer Toolkit). Each area of the game world is composed of several connected levels. In this way, we can more flexibly control the layout of the levels, the exploration paths of the players, and the gameplay pacing.
+The team members independently designed all the levels and maps of this game using LDtk. (Level Designer Toolkit). The entire game world is divided into multiple areas, and each area contains several interconnected levels. Through this design, team members can more flexibly arrange the connection relationships between levels. At the same time, it is also easier to control the exploration routes of players and the overall game pace.
 
 (Picture to be added)
 
-During the map design process, we not only designed the visual layout of the levels, but also defined the logical structure within the levels. Each level contains multiple layers that describe different aspects of the game world. The two most important layers are the Collision Layer and the Entity Layer.
+During the process of map design, we not only needed to complete the visual layout of the levels, but also had to simultaneously plan the logical structure within the levels. Each level is composed of multiple layers, which are used to represent the objects in the game. And the two most important layers are Collision Layer and Entity Layer.
 
-The collision layer defines the physical boundaries of the environment. Elements such as ground, walls, platforms, and other solid structures are placed in this layer. Then, the entity layer defines interactive objects in the game world. Examples include pollution cores, buttons, gates, teleportation points, rest points, and enemies. These objects are defined as entities in LDtk and are instantiated as game objects when the level is loaded.
+The Collision Layer is mainly used to define the boundaries of entities in the environment, such as the ground, walls, platforms, and other objects that can impede the player's movement. Based on these collision data, the system can determine the physical interactions between the players and the environment. The Entity Layer is used to create various objects that can interact with the player, such as pollution cores, buttons, mechanism doors, and enemies, etc.
 
 (Picture to be added)
 
-To support interactive gameplay, we implemented a button–gate control mechanism using the entity system in LDtk. Each button entity can reference a target gate through a field defined in the level editor. This reference uses the unique entity identifier (iid), which creates a link between the button and the corresponding gate.
+To implement some of the mechanism settings in the level, we also designed the control relationship between the buttons and the mechanism doors. In LDtk, each button can be linked to a target door through the fields in the level editor. This reference is connected using the unique identifier (iid) of the entity, thereby establishing a link between the button and the mechanism door.
 
 (Picture to be added)
 
