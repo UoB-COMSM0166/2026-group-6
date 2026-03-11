@@ -86,6 +86,10 @@ class ResourceManager {
       this.sounds.tool = loadSound('resources/audios/sides/tools.wav');
       this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.wav');
 
+      //bgm:
+      this.sounds.story = loadSound('resources/audios/background/forestdeep');
+      this.sounds.begain = loadSound('resources/audios/background/begain');
+
       //怪物
       this.images.enemy = this.images.enemy || {};
       this.images.enemy.slime = {
@@ -93,6 +97,10 @@ class ResourceManager {
          attack: loadImage('resources/images/enemy/Monster_Slime_Attack1-Sheet.png'),
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
       };
+
+      //Boss
+      //Boss音效
+      this.sounds.story = loadSound('resources/audios/background/boss');
 
       //地图背景
       this.images.parallax = {};
