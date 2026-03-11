@@ -165,13 +165,33 @@ function _createMenu() {
    backBtn.style.cssText =
       'display:none;' +
       'position:absolute; top:30px; left:30px;' +
-      'width:100px; height:40px; font-size:18px; font-weight:bold; color:#fff;' +
-      'background:#2a2a4e; border:none; border-radius:8px; cursor:pointer;' +
+      'width:180px; height:60px; font-size:20px; font-weight:bold; color:white;' +
+      `background-image:url("${BTN_NORMAL}");` +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'background-color:transparent;' +
+      'border:none; cursor:pointer;' +
       'transition:all 0.2s;' +
       // ===== 增加 z-index，避免被遮挡 =====
       'z-index:100;';
-   backBtn.onmouseenter = function () { this.style.background = '#3a3a6e'; };
-   backBtn.onmouseleave = function () { this.style.background = '#2a2a4e'; };
+
+   backBtn.onmouseenter = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
+   backBtn.onmouseleave = function () {
+      this.style.backgroundImage = `url("${BTN_NORMAL}")`;
+   };
+
+   backBtn.onmousedown = function () {
+      this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
+   };
+
+   backBtn.onmouseup = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
    backBtn.onclick = function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -427,19 +447,26 @@ function _makeDifficultyBtn(label, difficulty) {
    btn.textContent = label;
    btn.dataset.difficulty = difficulty; // 存储难度标识
    btn.style.cssText =
-      'width:120px; height:50px; font-size:18px; font-weight:bold; color:#fff;' +
-      'background:#2a2a4e; border:none; border-radius:8px; cursor:pointer;' +
+      'width:180px; height:60px; font-size:20px; font-weight:bold; color:white;' +
+      `background-image:url("${BTN_NORMAL}");` +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'background-color:transparent;' +
+      'border:none; cursor:pointer;' +
       'transition: all 0.2s;';
+
 
    // 鼠标悬停效果
    btn.onmouseenter = function () {
       if (this.dataset.difficulty !== selectedDifficulty) {
-         this.style.background = '#3a3a6e';
+         this.style.backgroundImage = `url("${BTN_HOVER}")`;
       }
    };
+
    btn.onmouseleave = function () {
       if (this.dataset.difficulty !== selectedDifficulty) {
-         this.style.background = '#2a2a4e';
+         this.style.backgroundImage = `url("${BTN_NORMAL}")`;
       }
    };
 
@@ -462,27 +489,51 @@ function _makeDifficultyBtn(label, difficulty) {
 
 // ========== 新增：设置选中/未选中难度按钮样式 ==========
 function _setActiveDifficultyBtn(btn) {
-   btn.style.background = '#1eb47a'; // 和Start按钮同色系
-   btn.style.transform = 'scale(1.05)'; // 轻微放大
-   btn.style.boxShadow = '0 0 10px rgba(30, 180, 122, 0.8)'; // 发光效果
+   btn.style.backgroundImage = `url("${BTN_ACTIVE}")`;
+   btn.style.transform = 'scale(1.02)';
+   btn.style.boxShadow = '0 0 6px rgba(30, 180, 122, 0.45)';
 }
 
+
 function _setInactiveDifficultyBtn(btn) {
-   btn.style.background = '#2a2a4e';
+   btn.style.backgroundImage = `url("${BTN_NORMAL}")`;
    btn.style.transform = 'scale(1)';
    btn.style.boxShadow = 'none';
 }
 
+const BTN_NORMAL = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png';
+const BTN_HOVER  = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png';
+const BTN_ACTIVE = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Active.png';
+
 function _makeBtn(label, onClick) {
+
    let btn = document.createElement('button');
    btn.textContent = label;
-   btn.style.cssText =
-      'width:320px; height:60px; font-size:24px; font-weight:bold; color:#fff;' +
-      'background:#1eb47a; border:none; border-radius:12px; cursor:pointer;' +
-      'transition: background 0.2s;';
 
-   btn.onmouseenter = function () { btn.style.background = '#32d696'; };
-   btn.onmouseleave = function () { btn.style.background = '#1eb47a'; };
+   btn.style.cssText =
+      'width:320px; height:70px; font-size:22px; font-weight:bold; color:white;' +
+      'background-image:url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png");' +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-color:transparent;' +
+      'border:none; cursor:pointer;' +
+      'text-align:center;';
+
+   btn.onmouseenter = function () {
+      btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png")';
+   };
+
+   btn.onmouseleave = function () {
+      btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png")';
+   };
+
+   btn.onmousedown = function () {
+      btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Active.png")';
+   };
+
+   btn.onmouseup = function () {
+      btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png")';
+   };
 
    btn.onclick = function (e) {
       e.preventDefault();
@@ -492,6 +543,7 @@ function _makeBtn(label, onClick) {
 
    return btn;
 }
+
 
 function _hideMenu() {
    menuDiv.style.display = 'none';
