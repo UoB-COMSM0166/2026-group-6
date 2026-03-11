@@ -470,7 +470,7 @@ The game also offers two different types of rope materials: soft rope and hard r
 We invited several evaluators to trial the game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective method for identifying usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we documented primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
 <p align="center">
-<b>Table X.</b> Heuristic Evaluation of <i>Echoes of Purity</i>
+<b>Table X. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
 </p>
 
 <table>
@@ -559,8 +559,20 @@ We invited several evaluators to trial the game and assessed the interface accor
 Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will incorporate more intuitive HUD designs, such as employing progress bars or icons to represent health and energy. For controls, we will reduce players' cognitive load by simplifying operations or providing key prompts. Additionally, we will introduce straightforward tutorials and hints to assist new players in understanding the rope mechanics and game objectives. Finally, we will appropriately adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience for players.
 
 ## 6.2 Quantitative Evaluation
-## GAME EASY LEVEL
+To evaluate the user experience of the game under different difficulty levels, we conducted a quantitative evaluation using questionnaire-based measures and statistical analysis:
+
+- **NASA TLX** – measure players’ perceived workload during gameplay  
+- **System Usability Scale (SUS)** – evaluate the overall usability of the system  
+- **Wilcoxon Signed-Rank Test** – examine whether there are statistically significant differences between the two difficulty levels  
+
+A total of 10 participants took part in the evaluation. Each participant played the game in both **Easy** and **Hard** difficulty modes. After completing each difficulty level, participants filled out the NASA TLX and SUS questionnaires to report their perceived workload and usability experience. The collected scores were then analysed using the Wilcoxon Signed-Rank Test to determine whether the differences between the two difficulty levels were statistically significant.
+
+### GAME EASY LEVEL
 ### NASA TLX
+<p align="center">
+<b>Table X. </b>NASA TLX workload scores for the Easy difficulty level.
+</p>
+
 <table>
 <tr>
 <th>Player</th>
@@ -587,6 +599,9 @@ Based on the results of the heuristic evaluation, we propose the following impro
 </table>
 
 ### System Usability Scale
+<p align="center">
+<b>Table X. </b>SUS scores for the Easy difficulty level.
+</p>
 <table>
 <tr>
 <th>Question No \ Player No</th>
@@ -668,9 +683,11 @@ Based on the results of the heuristic evaluation, we propose the following impro
 
 </table>
 
-
-## GAME Hard LEVEL
+### GAME HARD LEVEL
 ### NASA TLX
+<p align="center">
+<b>Table X. </b>NASA TLX workload scores for the Hard difficulty level.
+</p>
 <table>
 <tr>
 <th>Player</th>
@@ -697,6 +714,9 @@ Based on the results of the heuristic evaluation, we propose the following impro
 </table>
 
 ### System Usability Scale
+<p align="center">
+<b>Table X. </b>SUS scores for the Hard difficulty level.
+</p>
 <table>
 <tr>
 <th>Question No \ Player No</th>
@@ -778,22 +798,56 @@ Based on the results of the heuristic evaluation, we propose the following impro
 
 </table>
 
+### Mean Results for NASA-TLX and SUS
 <p align="center">
-  <img src="resources/images/NASA TLX.png" width="60%"/>
+  <img src="resources/images/NASA TLX.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b>
+  <b>Figure X.</b> Mean NASA-TLX workload scores for the Easy and Hard difficulty levels.
 </p>
 
 <p align="center">
-  <img src="resources/images/SUS.png" width="60%"/>
+  <img src="resources/images/SUS.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> 
+  <b>Figure X.</b> Mean SUS scores for the Easy and Hard difficulty levels.
 </p>
+
+According to table X, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard, suggesting slightly better usability for the Easy level.
 
 ### Statistical Analysis
-To compare the Easy and Hard difficulty levels, we conducted a Wilcoxon signed-rank test. For NASA-TLX workload scores, the critical value was set at **5** (**n = 9, α = 0.05**),as one participant reported identical workload scores for both difficulty levels and was therefore excluded as a tied pair. The calculated W test statistic was **6**, indicating no statistically significant difference between the two difficulty levels in perceived workload. Similarly, a Wilcoxon signed-rank test was applied to the SUS usability scores. The critical value was **8** (**n = 10, α = 0.05**), and the calculated W test statistic was **12**, indicating that there was also no statistically significant difference in perceived system usability between the two difficulty levels. Although the mean scores indicated that the Hard difficulty level produced slightly higher workload and slightly lower usability, these differences were not statistically significant at the sample size used in this study.
+<p>
+<b>Table X. </b>Wilcoxon Signed-Rank Test results comparing difficulty levels
+</p>
+
+<table>
+<tr>
+<th>Measure</th>
+<th>n</th>
+<th>W</th>
+<th>Critical Value</th>
+<th>Significant</th>
+</tr>
+
+<tr>
+<td>NASA TLX</td>
+<td>9</td>
+<td>6</td>
+<td>5</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>SUS</td>
+<td>10</td>
+<td>12</td>
+<td>8</td>
+<td>No</td>
+</tr>
+
+</table>
+
+The Wilcoxon Signed-Rank Test results (Table X) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels.
 
 
 ## 6.3 How Code Was Tested.
