@@ -69,6 +69,28 @@ class StoryIntro {
       this.boxStrokeColor = [0, 235, 220];
       this.boxGlowColor = [0, 235, 220];
       this.boxFillColor = [0, 0, 0, 125];
+
+      //new: bgm
+      this.bgmPlayed = false;
+   }
+
+   playStoryBgm() {
+      // stop others(if add more in the future)
+      this.resources.sounds.gameBgm?.stop();
+      //
+      const storyBgm = this.resources.sounds.story;
+      if (storyBgm && !storyBgm.isPlaying()) {
+         storyBgm.loop(false); // no loop playing
+         storyBgm.setVolume(0.55); //volume change
+         storyBgm.play();
+      }
+   }
+
+   stopStoryBgm() {
+      const storyBgm = this.resources.sounds.storyBgm;
+      if (storyBgm && storyBgm.isPlaying()) {
+         storyBgm.stop();
+      }
    }
 
    update() {
@@ -134,6 +156,8 @@ class StoryIntro {
 
    finish() {
       this.finished = true;
+      // new: bgm
+      this.stopStoryBgm();
       if (typeof this.onFinish === "function") {
          this.onFinish();
       }
@@ -141,6 +165,12 @@ class StoryIntro {
 
    display() {
       background(0);
+      //new: bgm
+      if (!this.bgmPlayed && !this.finished) {
+         this.playStoryBgm();
+         this.bgmPlayed = true;
+      }
+      
       this.drawImage();
       this.drawImageOverlay();
       this.drawTextBox();
