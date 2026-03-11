@@ -44,14 +44,21 @@ class GameManager {
 
    preload() {
       this._isPreloading = true;
+
       let ldtk = this.resources.ldtkData;
       const lastIndex = ldtk.levels.length;
+
       for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
-         this.levelIndex = levelIndex;
-         this.loadLevel();
+          this.levelIndex = levelIndex;
+          this.loadLevel();
       }
+
+      this._isPreloading = false;
+
       this.levelIndex = GameConfig.Level.START_INDEX;
-      let playerStart = this.levelsInfo[this.levelIndex].playerStart || GameConfig.Player.DefaultStartPoint;
+      this.loadLevel();
+
+      let playerStart = this.level.playerStart || GameConfig.Player.DefaultStartPoint;
       this.saveCheckpoint(this.levelIndex, playerStart.x, playerStart.y);
    }
 
@@ -74,16 +81,15 @@ class GameManager {
       // 创建恢复读取地图的实体
       this._loadEntities();
 
-      if (this._isPreloading) {
-         // 2. 调整画布
+      if (!this._isPreloading) {
          let size = this.level.getCanvasSize();
          resizeCanvas(size.w, size.h);
-         // 3. 创建/恢复玩家
+
          this._loadPlayer(transition);
          this.particles = [];
          this.camera.reset();
          this.status = "PLAY";
-         // The prompt above the map
+
          this.setMapPrompt(ldtk.levels[this.levelIndex].identifier, 3000);
       }
    }
@@ -466,23 +472,30 @@ class GameManager {
    }
 
    _checkProcess() {
-      if (this.getAreaProgress() > GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
+      if (!this.level) return;
+
+      const progress = this.getAreaProgress();
+
+      if (progress > GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
          if (!resources.sounds.upgrade.isPlaying()) resources.sounds.upgrade.play();
          this.setMapPrompt("Some things have changed due to purification.", 3000);
          this.environmentChanged = true;
-         // 本area净化程度到达一定值后，毒池变为水
+
          if (!this.level.toxicConverted) {
             for (let key in this.levelsInfo) {
                let level = this.levelsInfo[key];
-               if (level.areaNumber === this.level.areaNumber) level.convertToxicToWater();
+               if (!level) continue;
+               if (level.areaNumber === this.level.areaNumber) {
+                  level.convertToxicToWater();
+               }
             }
          }
       }
-      if (this.getAreaProgress() < GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == true) {
-         this.environmentChanged = false;
-      }
-   }
 
+   if (progress < GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == true) {
+      this.environmentChanged = false;
+   }
+}
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
@@ -512,43 +525,56 @@ class GameManager {
        */
    getAreaProgress(areaNumber) {
       let ldtk = this.resources.ldtkData;
+      if (!ldtk || !ldtk.levels || !this.level) return 0;
+
       let currentAreaNumber = areaNumber || this.level.areaNumber;
       currentAreaNumber = Number(currentAreaNumber);
-      // 定义净化值权重
+   
       let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
       let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
       let BOSS_WEIGHT = GameConfig.Level.BOSS_WEIGHT;
+
       let remainingCores = 0;
       let remainingEnemies = 0;
       let remainingBoss = 0;
       let initialCores = 0;
       let initialEnemies = 0;
       let initialBoss = 0;
-
+  
       for (let i = 0; i < ldtk.levels.length; i++) {
          let lvl = this.levelsInfo[i];
-         // 筛选出所有areaNumber为当前Level的areaNumber的level，当到达结尾关时为整张地图的progress
+
+         if (!lvl) continue;
+
          if (Number(lvl.areaNumber) === currentAreaNumber || currentAreaNumber === 5) {
-            initialCores += lvl.totalPollutionCore;
-            initialEnemies += lvl.totalEnemies;
-            initialBoss += lvl.totalBoss;
+            initialCores += lvl.totalPollutionCore || 0;
+            initialEnemies += lvl.totalEnemies || 0;
+            initialBoss += lvl.totalBoss || 0;
+
             remainingCores += lvl.getEntityCount(GameConfig.Entity.PollutionCore);
             remainingEnemies += lvl.getEntityCount(GameConfig.Entity.Enemy);
             remainingBoss += lvl.getEntityCount(GameConfig.Entity.Boss);
-            // 累加该关卡能提供的总净化值
          }
       }
+
       let currentPurifiedEnemies = initialEnemies - remainingEnemies;
       let currentPurifiedCores = initialCores - remainingCores;
       let currentPurifiedBoss = initialBoss - remainingBoss;
-      let currentPurifiedValue = currentPurifiedEnemies * ENEMY_WEIGHT
-         + currentPurifiedCores * CORE_WEIGHT
-         + currentPurifiedBoss * BOSS_WEIGHT;
-      let totalValue = (initialCores * CORE_WEIGHT)
-         + (initialEnemies * ENEMY_WEIGHT)
-         + (initialBoss * BOSS_WEIGHT);
-      // 计算百分比 (向下取整，并且防止除以 0 导致报错)
-      let percentage = (totalValue === 0 ? 100 : Math.floor((currentPurifiedValue / totalValue) * 100));
+
+      let currentPurifiedValue =
+         currentPurifiedEnemies * ENEMY_WEIGHT +
+         currentPurifiedCores * CORE_WEIGHT +
+         currentPurifiedBoss * BOSS_WEIGHT;
+
+      let totalValue =
+         initialCores * CORE_WEIGHT +
+         initialEnemies * ENEMY_WEIGHT +
+         initialBoss * BOSS_WEIGHT;
+
+      let percentage = (totalValue === 0)
+         ? 100
+         : Math.floor((currentPurifiedValue / totalValue) * 100);
+
       return percentage;
    }
 
