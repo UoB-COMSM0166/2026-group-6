@@ -76,20 +76,20 @@ class StoryIntro {
 
    playStoryBgm() {
       // stop others(if add more in the future)
-      this.resources.sounds.gameBgm?.stop();
+      this.resources.sounds.bgm?.stop();
       //
-      const storyBgm = this.resources.sounds.story;
-      if (storyBgm && !storyBgm.isPlaying()) {
-         storyBgm.loop(false); // no loop playing
-         storyBgm.setVolume(0.55); //volume change
-         storyBgm.play();
+      const story = this.resources.sounds.story;
+      if (story && !story.isPlaying()) {
+         story.loop(false); // no loop playing
+         story.setVolume(0.55); //volume change
+         story.play();
       }
    }
 
    stopStoryBgm() {
-      const storyBgm = this.resources.sounds.storyBgm;
-      if (storyBgm && storyBgm.isPlaying()) {
-         storyBgm.stop();
+      const story = this.resources.sounds.storyBgm;
+      if (story && storyBgm.isPlaying()) {
+         story.stop();
       }
    }
 

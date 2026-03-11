@@ -147,9 +147,6 @@ class ResourceManager {
       this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
       //this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
       this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
-      this.sounds.bgm.on('loadeddata', () => {
-         this.sounds.bgm.loop(true);
-      });
 
       //Boss
       //Boss音效

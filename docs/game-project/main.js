@@ -8,6 +8,8 @@ let storyStarted = false;
 let storyFinished = false;
 let selectedDifficulty = "easy";
 let demoVideo = null;
+//add: audiocontrol
+let audioManager;
 
 function preload() {
    resources = new ResourceManager();
@@ -31,11 +33,14 @@ function setup() {
 
    canvas.elt.oncontextmenu = () => false;
    noSmooth();
+
+   //new: audiocontrol
+   audioManager = new AudioManager(resources);
    // Cover
    // Story intro first
    storyIntro = new StoryIntro(resources, function () {
       storyFinished = true;
-
+      resources.sounds.story?.stop();
       appState = "VIDEO";
       playDemoVideo();
    });
@@ -46,6 +51,8 @@ function setup() {
    if (resources.ldtkData) {
       resources.markLoaded();
    }
+   //add: audiocontrol
+   createVolumeControlUI();
 }
 
 function draw() {
@@ -133,6 +140,10 @@ function _createMenu() {
        _hideMenu();
 
       gm = new GameManager(resources);
+      //new: add bgm
+      resources.sounds.bgm?.loop(true);
+      resources.sounds.bgm?.setVolume(0.6);
+      resources.sounds.bgm?.play();
    });
 
    let btnContinue = _makeBtn('Continue Game', function (e) {
@@ -145,12 +156,15 @@ function _createMenu() {
       if (!gm) return;
 
       _hideMenu();
+      //add: bgm
+      resources.sounds.bgm?.loop(true);
+      resources.sounds.bgm?.setVolume(0.6);
+      resources.sounds.bgm?.play();
    });
    btnContinue.id = 'btn-continue';
    btnContinue.style.opacity = '0.3';
    btnContinue.style.pointerEvents = 'none';
 
-   //测试用临时增加
    // ========== 难度选择区域 ==========
    // 1. 难度标题
    let difficultyTitle = document.createElement('div');
@@ -292,6 +306,7 @@ function _showMenu() {
 
    menuDiv.style.display = 'flex';
    appState = "MENU";
+   resources.sounds.bgm?.pause();
 }
 
 function playDemoVideo() {
@@ -346,4 +361,76 @@ function endDemoVideo() {
    }
    menuDiv.style.display = 'flex';
    appState = "MENU";
+
+   // ========== 新增：音量控制UI（粘贴到main.js末尾） ==========
+function createVolumeControlUI() {
+   // 1. 音量面板容器（右下角悬浮）
+   const volumePanel = document.createElement('div');
+   volumePanel.id = 'volume-panel';
+   volumePanel.style.cssText = `
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   background: #1a1a2e;
+   padding: 15px;
+   border-radius: 10px;
+   z-index: 999;
+   color: #fff;
+   font-family: Arial, sans-serif;
+   box-shadow: 0 0 10px rgba(0,0,0,0.5);
+   `;
+
+  // 2. BGM控制区域
+   const bgmDiv = document.createElement('div');
+   bgmDiv.style.cssText = 'margin-bottom: 10px; display: flex; align-items: center; gap: 10px;';
+   bgmDiv.innerHTML = `
+      <span>BGM</span>
+      <button id="bgm-mute-btn" style="width: 30px; height: 30px; border: none; border-radius: 50%; background: #2a2a4e; color: #fff; cursor: pointer;">
+      ${audioManager.getState().bgm.isMuted ? '🔇' : '🔊'}
+      <button>
+      <input id="bgm-volume-slider" type="range" min="0" max="1" step="0.01" value="${audioManager.getState().bgm.volume}" style="flex: 1;">
+      `;
+
+  // 3. 音效控制区域
+   const sfxDiv = document.createElement('div');
+   sfxDiv.style.cssText = 'display: flex; align-items: center; gap: 10px;';
+   sfxDiv.innerHTML = `
+   <span>SFX</span>
+   <button id="sfx-mute-btn" style="width: 30px; height: 30px; border: none; border-radius: 50%; background: #2a2a4e; color: #fff; cursor: pointer;">
+      ${audioManager.getState().sfx.isMuted ? '🔇' : '🔊'}
+    </button>
+    <input id="sfx-volume-slider" type="range" min="0" max="1" step="0.01" value="${audioManager.getState().sfx.volume}" style="flex: 1;">
+  `;
+
+  // 组装面板
+   volumePanel.appendChild(bgmDiv);
+   volumePanel.appendChild(sfxDiv);
+   document.body.appendChild(volumePanel);
+
+  // 4. 绑定交互事件
+  // BGM静音按钮
+   document.getElementById('bgm-mute-btn').addEventListener('click', () => {
+   audioManager.toggleBgmMute();
+   const btn = document.getElementById('bgm-mute-btn');
+   btn.textContent = audioManager.getState().bgm.isMuted ? '🔇' : '🔊';
+  });
+
+  // BGM音量滑块
+   document.getElementById('bgm-volume-slider').addEventListener('input', (e) => {
+      audioManager.setBgmVolume(parseFloat(e.target.value));
+  });
+
+  // 音效静音按钮
+   document.getElementById('sfx-mute-btn').addEventListener('click', () => {
+      audioManager.toggleSfxMute();
+      const btn = document.getElementById('sfx-mute-btn');
+      btn.textContent = audioManager.getState().sfx.isMuted ? '🔇' : '🔊';
+  });
+
+  // 音效音量滑块
+   document.getElementById('sfx-volume-slider').addEventListener('input', (e) => {
+      audioManager.setSfxVolume(parseFloat(e.target.value));
+   });
+}
+
 }
