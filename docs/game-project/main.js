@@ -231,41 +231,27 @@ function _createMenu() {
    btnContinue.style.opacity = '0.3';
    btnContinue.style.pointerEvents = 'none';
 
-   // 新增：Choose Difficulty 按钮
-const btnDifficulty = document.createElement('button');
-btnDifficulty.textContent = 'Choose Difficulty';
-btnDifficulty.style.cssText =
-   'width:320px; height:50px; font-size:20px; font-weight:bold; color:#fff;' +
-   'background:#2a2a4e; border:none; border-radius:12px; cursor:pointer;' +
-   'transition:background 0.2s;';
-btnDifficulty.onmouseenter = function () { this.style.background = '#3a3a6e'; };
-btnDifficulty.onmouseleave = function () { this.style.background = '#2a2a4e'; };
-btnDifficulty.onclick = function (e) {
+// ===== Choose Difficulty =====
+const btnDifficulty = _makeBtn('Choose Difficulty', function (e) {
    e.preventDefault();
    e.stopPropagation();
+
    if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
       resources.sounds.click.play();
    }
    showMenuPage('difficulty');
-};
+});
 
-// 新增：Audio Settings 按钮
-const btnAudio = document.createElement('button');
-btnAudio.textContent = 'Audio Settings';
-btnAudio.style.cssText =
-   'width:320px; height:50px; font-size:20px; font-weight:bold; color:#fff;' +
-   'background:#2a2a4e; border:none; border-radius:12px; cursor:pointer;' +
-   'transition:background 0.2s;';
-btnAudio.onmouseenter = function () { this.style.background = '#3a3a6e'; };
-btnAudio.onmouseleave = function () { this.style.background = '#2a2a4e'; };
-btnAudio.onclick = function (e) {
+//======Audio Settings=====
+const btnAudio = _makeBtn('Audio Settings', function (e) {
    e.preventDefault();
    e.stopPropagation();
+
    if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
       resources.sounds.click.play();
    }
    showMenuPage('audio');
-};
+});
 
 // 组装主面板
 mainPanel.appendChild(btnStart);
