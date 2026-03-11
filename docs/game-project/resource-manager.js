@@ -88,7 +88,8 @@ class ResourceManager {
 
       //bgm:
       this.sounds.story = loadSound('resources/audios/background/forestdeep');
-      this.sounds.begain = loadSound('resources/audios/background/begain');
+      this.sounds.begin = loadSound('resources/audios/background/begin');
+      this.sounds.bgm = loadSound('resources/audios/background/forest');
 
       //怪物
       this.images.enemy = this.images.enemy || {};
@@ -100,7 +101,15 @@ class ResourceManager {
 
       //Boss
       //Boss音效
-      this.sounds.story = loadSound('resources/audios/background/boss');
+      //this.sounds.boss = loadSound('resources/audios/background/boss');
+      //this.sounds.alarm = loadSound('resources/audios/game_once/alarm');
+
+      //END之后用
+      //this.sounds.bad = loadSound('resources/audios/game_once/badend');
+      //this.sounds.better = loadSound('resources/audios/game_once/betterend');
+      //this.sounds.happy = loadSound('resources/audios/game_once/happyend');
+      //this.sounds.normal = loadSound('resources/audios/game_once/normalend');
+      //this.sounds.sad = loadSound('resources/audios/game_once/sadend');
 
       //地图背景
       this.images.parallax = {};
