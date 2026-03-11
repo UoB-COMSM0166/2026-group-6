@@ -78,7 +78,7 @@ class ResourceManager {
       this.sounds.underwater = loadSound('resources/audios/sides/underwatermove.wav');
       this.sounds.map = loadSound('resources/audios/sides/map.wav');
       this.sounds.click = loadSound('resources/audios/sides/menuclick.wav');
-      // 后续剧情用
+      
       this.sounds.enemy = this.sounds.enemy || {};
       this.sounds.paper = loadSound('resources/audios/sides/paper.wav');
       this.sounds.enemy.punch = loadSound('resources/audios/sides/punch.wav');
@@ -87,9 +87,10 @@ class ResourceManager {
       this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.wav');
 
       //bgm:
-      this.sounds.story = loadSound('resources/audios/background/forestdeep');
-      this.sounds.begin = loadSound('resources/audios/background/begin');
-      this.sounds.bgm = loadSound('resources/audios/background/forest');
+      this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
+      //this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
+      this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
+      this.sounds.bgm.loop(true);
 
       //怪物
       this.images.enemy = this.images.enemy || {};
@@ -101,15 +102,15 @@ class ResourceManager {
 
       //Boss
       //Boss音效
-      //this.sounds.boss = loadSound('resources/audios/background/boss');
-      //this.sounds.alarm = loadSound('resources/audios/game_once/alarm');
+      //this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
+      //this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
       //END之后用
-      //this.sounds.bad = loadSound('resources/audios/game_once/badend');
-      //this.sounds.better = loadSound('resources/audios/game_once/betterend');
-      //this.sounds.happy = loadSound('resources/audios/game_once/happyend');
-      //this.sounds.normal = loadSound('resources/audios/game_once/normalend');
-      //this.sounds.sad = loadSound('resources/audios/game_once/sadend');
+      //this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
+      //this.sounds.better = loadSound('resources/audios/game_once/betterend.mp3');
+      //this.sounds.happy = loadSound('resources/audios/game_once/happyend.mp3');
+      //this.sounds.normal = loadSound('resources/audios/game_once/normalend.mp3');
+      //this.sounds.sad = loadSound('resources/audios/game_once/sadend.mp3');
 
       //地图背景
       this.images.parallax = {};
