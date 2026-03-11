@@ -466,6 +466,7 @@ The game also offers two different types of rope materials: soft rope and hard r
 - Description of how code was tested.
 
 ## 6.1 Qualitative Evaluation
+### Heuristic Evaluation
 We invited several evaluators to trial the game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective method for identifying usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we documented primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
 <p align="center">
@@ -558,6 +559,243 @@ We invited several evaluators to trial the game and assessed the interface accor
 Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will incorporate more intuitive HUD designs, such as employing progress bars or icons to represent health and energy. For controls, we will reduce players' cognitive load by simplifying operations or providing key prompts. Additionally, we will introduce straightforward tutorials and hints to assist new players in understanding the rope mechanics and game objectives. Finally, we will appropriately adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience for players.
 
 ## 6.2 Quantitative Evaluation
+## GAME EASY LEVEL
+### NASA TLX
+<table>
+<tr>
+<th>Player</th>
+<th>Mental Demand</th>
+<th>Physical Demand</th>
+<th>Temporal Demand</th>
+<th>Performance</th>
+<th>Effort</th>
+<th>Frustration</th>
+<th>Average</th>
+</tr>
+
+<tr><td>1</td><td>5</td><td>2</td><td>2</td><td>7</td><td>7</td><td>5</td><td>4.67</td></tr>
+<tr><td>2</td><td>4</td><td>4</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5.00</td></tr>
+<tr><td>3</td><td>7</td><td>6</td><td>2</td><td>8</td><td>8</td><td>7</td><td>6.33</td></tr>
+<tr><td>4</td><td>6</td><td>6</td><td>6</td><td>3</td><td>8</td><td>3</td><td>5.33</td></tr>
+<tr><td>5</td><td>6</td><td>1</td><td>1</td><td>0</td><td>7</td><td>1</td><td>2.67</td></tr>
+<tr><td>6</td><td>4</td><td>2</td><td>3</td><td>3</td><td>7</td><td>3</td><td>3.67</td></tr>
+<tr><td>7</td><td>6</td><td>6</td><td>5</td><td>2</td><td>5</td><td>2</td><td>4.33</td></tr>
+<tr><td>8</td><td>6</td><td>6</td><td>3</td><td>4</td><td>7</td><td>4</td><td>5.00</td></tr>
+<tr><td>9</td><td>3</td><td>5</td><td>3</td><td>8</td><td>2</td><td>2</td><td>3.83</td></tr>
+<tr><td>10</td><td>5</td><td>8</td><td>2</td><td>5</td><td>7</td><td>2</td><td>4.83</td></tr>
+
+</table>
+
+### System Usability Scale
+<table>
+<tr>
+<th>Question No \ Player No</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+
+<tr>
+<td>1. I think that I would like to use this system frequently.</td>
+<td>3</td><td>4</td><td>4</td><td>4</td><td>5</td><td>4</td><td>4</td><td>4</td><td>3</td><td>5</td>
+</tr>
+
+<tr>
+<td>2. I found the system unnecessarily complex.</td>
+<td>3</td><td>3</td><td>4</td><td>3</td><td>1</td><td>2</td><td>2</td><td>2</td><td>3</td><td>1</td>
+</tr>
+
+<tr>
+<td>3. I thought the system was easy to use.</td>
+<td>3</td><td>4</td><td>1</td><td>3</td><td>5</td><td>3</td><td>4</td><td>4</td><td>2</td><td>4</td>
+</tr>
+
+<tr>
+<td>4. I think that I would need the support of a technical person to be able to use this system.</td>
+<td>1</td><td>4</td><td>4</td><td>4</td><td>4</td><td>3</td><td>4</td><td>2</td><td>4</td><td>2</td>
+</tr>
+
+<tr>
+<td>5. I found the various functions in this system were well integrated.</td>
+<td>4</td><td>4</td><td>3</td><td>4</td><td>5</td><td>5</td><td>4</td><td>4</td><td>5</td><td>4</td>
+</tr>
+
+<tr>
+<td>6. I thought there was too much inconsistency in this system.</td>
+<td>2</td><td>1</td><td>2</td><td>3</td><td>1</td><td>1</td><td>2</td><td>1</td><td>1</td><td>2</td>
+</tr>
+
+<tr>
+<td>7. I would imagine that most people would learn to use this system very quickly.</td>
+<td>3</td><td>2</td><td>1</td><td>4</td><td>4</td><td>3</td><td>3</td><td>4</td><td>3</td><td>4</td>
+</tr>
+
+<tr>
+<td>8. I found the system very cumbersome to use.</td>
+<td>3</td><td>1</td><td>3</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td><td>1</td><td>2</td>
+</tr>
+
+<tr>
+<td>9. I felt very confident using the system.</td>
+<td>3</td><td>2</td><td>2</td><td>4</td><td>5</td><td>2</td><td>4</td><td>3</td><td>2</td><td>4</td>
+</tr>
+
+<tr>
+<td>10. I needed to learn a lot of things before I could get going with this system.</td>
+<td>2</td><td>3</td><td>3</td><td>3</td><td>2</td><td>3</td><td>4</td><td>4</td><td>3</td><td>2</td>
+</tr>
+
+<tr>
+<td><b>System Usability Survey Score</b></td>
+<td>62.5</td>
+<td>60</td>
+<td>37.5</td>
+<td>60</td>
+<td>87.5</td>
+<td>65</td>
+<td>62.5</td>
+<td>70</td>
+<td>57.5</td>
+<td>80</td>
+</tr>
+
+</table>
+
+
+## GAME Hard LEVEL
+### NASA TLX
+<table>
+<tr>
+<th>Player</th>
+<th>Mental Demand</th>
+<th>Physical Demand</th>
+<th>Temporal Demand</th>
+<th>Performance</th>
+<th>Effort</th>
+<th>Frustration</th>
+<th>Average</th>
+</tr>
+
+<tr><td>1</td><td>6</td><td>2</td><td>1</td><td>5</td><td>8</td><td>6</td><td>4.67</td></tr>
+<tr><td>2</td><td>8</td><td>6</td><td>2</td><td>1</td><td>8</td><td>7</td><td>5.33</td></tr>
+<tr><td>3</td><td>6</td><td>7</td><td>3</td><td>7</td><td>6</td><td>6</td><td>5.83</td></tr>
+<tr><td>4</td><td>8</td><td>8</td><td>6</td><td>6</td><td>8</td><td>3</td><td>6.50</td></tr>
+<tr><td>5</td><td>7</td><td>1</td><td>2</td><td>0</td><td>8</td><td>2</td><td>3</td></tr>
+<tr><td>6</td><td>5</td><td>7</td><td>2</td><td>9</td><td>3</td><td>6</td><td>5.33</td></tr>
+<tr><td>7</td><td>6</td><td>5</td><td>8</td><td>6</td><td>7</td><td>2</td><td>5.67</td></tr>
+<tr><td>8</td><td>8</td><td>6</td><td>3</td><td>6</td><td>7</td><td>5</td><td>5.83</td></tr>
+<tr><td>9</td><td>5</td><td>6</td><td>4</td><td>8</td><td>7</td><td>7</td><td>6.17</td></tr>
+<tr><td>10</td><td>7</td><td>6</td><td>3</td><td>6</td><td>4</td><td>1</td><td>4.50</td></tr>
+
+</table>
+
+### System Usability Scale
+<table>
+<tr>
+<th>Question No \ Player No</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+
+<tr>
+<td>1. I think that I would like to use this system frequently.</td>
+<td>2</td><td>3</td><td>4</td><td>3</td><td>5</td><td>4</td><td>5</td><td>4</td><td>4</td><td>4</td>
+</tr>
+
+<tr>
+<td>2. I found the system unnecessarily complex.</td>
+<td>3</td><td>5</td><td>4</td><td>3</td><td>1</td><td>4</td><td>2</td><td>4</td><td>1</td><td>4</td>
+</tr>
+
+<tr>
+<td>3. I thought the system was easy to use.</td>
+<td>2</td><td>1</td><td>2</td><td>2</td><td>5</td><td>2</td><td>5</td><td>2</td><td>2</td><td>3</td>
+</tr>
+
+<tr>
+<td>4. I think that I would need the support of a technical person to be able to use this system.</td>
+<td>2</td><td>4</td><td>4</td><td>4</td><td>3</td><td>3</td><td>4</td><td>4</td><td>2</td><td>3</td>
+</tr>
+
+<tr>
+<td>5. I found the various functions in this system were well integrated.</td>
+<td>4</td><td>3</td><td>2</td><td>4</td><td>5</td><td>3</td><td>4</td><td>5</td><td>5</td><td>4</td>
+</tr>
+
+<tr>
+<td>6. I thought there was too much inconsistency in this system.</td>
+<td>1</td><td>1</td><td>2</td><td>3</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>3</td>
+</tr>
+
+<tr>
+<td>7. I would imagine that most people would learn to use this system very quickly.</td>
+<td>4</td><td>1</td><td>1</td><td>3</td><td>5</td><td>3</td><td>4</td><td>1</td><td>2</td><td>3</td>
+</tr>
+
+<tr>
+<td>8. I found the system very cumbersome to use.</td>
+<td>3</td><td>1</td><td>3</td><td>3</td><td>1</td><td>2</td><td>2</td><td>4</td><td>1</td><td>3</td>
+</tr>
+
+<tr>
+<td>9. I felt very confident using the system.</td>
+<td>3</td><td>1</td><td>2</td><td>3</td><td>5</td><td>2</td><td>3</td><td>2</td><td>4</td><td>2</td>
+</tr>
+
+<tr>
+<td>10. I needed to learn a lot of things before I could get going with this system.</td>
+<td>2</td><td>4</td><td>4</td><td>4</td><td>1</td><td>4</td><td>4</td><td>4</td><td>4</td><td>3</td>
+</tr>
+
+<tr>
+<td><b>System Usability Survey Score</b></td>
+<td>60</td>
+<td>35</td>
+<td>35</td>
+<td>45</td>
+<td>95</td>
+<td>50</td>
+<td>67.5</td>
+<td>42.5</td>
+<td>67.5</td>
+<td>50</td>
+</tr>
+
+</table>
+
+<p align="center">
+  <img src="resources/images/NASA TLX.png" width="60%"/>
+</p>
+<p align="center">
+  <b>Figure X.</b>
+</p>
+
+<p align="center">
+  <img src="resources/images/SUS.png" width="60%"/>
+</p>
+<p align="center">
+  <b>Figure X.</b> 
+</p>
+
+### Statistical Analysis
+To compare the Easy and Hard difficulty levels, we conducted a Wilcoxon signed-rank test. For NASA-TLX workload scores, the critical value was set at **5** (**n = 9, α = 0.05**),as one participant reported identical workload scores for both difficulty levels and was therefore excluded as a tied pair. The calculated W test statistic was **6**, indicating no statistically significant difference between the two difficulty levels in perceived workload. Similarly, a Wilcoxon signed-rank test was applied to the SUS usability scores. The critical value was **8** (**n = 10, α = 0.05**), and the calculated W test statistic was **12**, indicating that there was also no statistically significant difference in perceived system usability between the two difficulty levels. Although the mean scores indicated that the Hard difficulty level produced slightly higher workload and slightly lower usability, these differences were not statistically significant at the sample size used in this study.
+
+
 ## 6.3 How Code Was Tested.
 
 
