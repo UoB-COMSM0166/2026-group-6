@@ -14,7 +14,7 @@ class Player {
       this.vy = 0;
       this.cleanEnergy = GameConfig.Player.MAXCleanEnergy;
       this.jumpForce = GameConfig.Player.JUMPFORCE;
-
+      this.attackDmg = 1;
       this.grounded = false;
       this.inwater = false;
 
@@ -25,6 +25,8 @@ class Player {
       this.ropeR = new Rope(color(255, 100, 100));
 
       this.currentRope = this.ropeL;
+
+      this.resourcePanel = new Resourcepanel(this.maxHp, this.jumpForce, this.ropeL.maxLen, this.attackDmg);
    }
 
    cx() { return this.x + this.w / 2; }

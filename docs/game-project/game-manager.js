@@ -49,8 +49,8 @@ class GameManager {
       const lastIndex = ldtk.levels.length;
 
       for (let levelIndex = 0; levelIndex < lastIndex; levelIndex++) {
-          this.levelIndex = levelIndex;
-          this.loadLevel();
+         this.levelIndex = levelIndex;
+         this.loadLevel();
       }
 
       this._isPreloading = false;
@@ -244,6 +244,10 @@ class GameManager {
          this.level.mapOpen = false;
       }
 
+      if (this.player.resourcePanel.visible) {
+         this.player.resourcePanel.display(this.player);
+      }
+
       // UI (屏幕空间)
       UI.drawHUD(this.player, this.level, this);
       if (this.status === "WIN") UI.drawWinScreen();
@@ -387,11 +391,12 @@ class GameManager {
    onKeyPressed(key) {
       if (this.status === "PLAY") {
          if (key === ' ' || key === 'ArrowUp' || key === 'w' || key === 'W') this.player.jump();
-         // if (key === '1') this.player.ropeL.toggleMaterial(this.player);
-         // if (key === '2') this.player.ropeR.toggleMaterial(this.player);
          if (key === 'H' || key === 'h') {
             if (intro.sidePanelsVisible) intro.hideSidePanels();
             else intro.showSidePanels();
+         }
+         if (key === 'C' || key === 'c') {
+            this.player.resourcePanel.toggle();
          }
       }
       if (this.status === "GAMEOVER") {
@@ -499,10 +504,10 @@ class GameManager {
          }
       }
 
-   if (progress < GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == true) {
-      this.environmentChanged = false;
+      if (progress < GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == true) {
+         this.environmentChanged = false;
+      }
    }
-}
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
@@ -536,7 +541,7 @@ class GameManager {
 
       let currentAreaNumber = areaNumber || this.level.areaNumber;
       currentAreaNumber = Number(currentAreaNumber);
-   
+
       let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
       let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
       let BOSS_WEIGHT = GameConfig.Level.BOSS_WEIGHT;
@@ -547,7 +552,7 @@ class GameManager {
       let initialCores = 0;
       let initialEnemies = 0;
       let initialBoss = 0;
-  
+
       for (let i = 0; i < ldtk.levels.length; i++) {
          let lvl = this.levelsInfo[i];
 

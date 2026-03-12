@@ -29,8 +29,6 @@ class ResourceManager {
          hard: null
       };
       this.data.currentLdtk;
-
-    // 提前初始化背景对象，避免渲染时undefined
       this.images.parallax = {
          area1: [],
          area2: [],
@@ -73,6 +71,7 @@ class ResourceManager {
       this.images.storyCard = loadImage(
          'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Card X3/Card X5.png'
       );
+      this.images.resourcePanelCard = loadImage("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Card X2/Card X3.png");
 
       this.images.painting = { paintings: [] };
       for (let i = 1; i <= 5; i++) {
@@ -145,7 +144,7 @@ class ResourceManager {
       this.sounds.underwater = loadSound('resources/audios/sides/underwatermove.wav');
       this.sounds.map = loadSound('resources/audios/sides/map.wav');
       this.sounds.click = loadSound('resources/audios/sides/menuclick.wav');
-      
+
       this.sounds.enemy = this.sounds.enemy || {};
       this.sounds.paper = loadSound('resources/audios/sides/paper.wav');
       this.sounds.enemy.punch = loadSound('resources/audios/sides/punch.wav');
@@ -171,7 +170,7 @@ class ResourceManager {
       //this.sounds.sad = loadSound('resources/audios/game_once/sadend.mp3');
    }
 
-      
+
    /** preload 完成后标记 */
    markLoaded() {
       this._loaded = true;

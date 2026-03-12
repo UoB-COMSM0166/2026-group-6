@@ -492,6 +492,7 @@ class introUI {
          { key: 'M', desc: 'Map' },
          { key: 'H', desc: 'Help' },
          { key: 'ESC', desc: 'Menu' },
+         { key: 'C', desc: 'State' },
       ];
 
       for (let i = 0; i < keys.length; i++) {
@@ -586,7 +587,7 @@ class introUI {
       // 绳索按键
       let listStartY = 200;
       let rowH = 55;
-      let keyX = w / 2 + 30;
+      let keyX = w / 2 + 40;
       let descX = 35;
 
       const ropeKeys = [

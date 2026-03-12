@@ -201,7 +201,7 @@ class Enemy extends Entity {
       if (!this.punchSound.isPlaying()) this.punchSound.play();
       let dir = (player.x < this.x) ? 1 : -1;
       this.repel(dir * 1.5, 0);
-      this.takeDamage(1);
+      this.takeDamage(player.attackDmg);
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
       gm.addParticles(this.cx(), this.cy());
 
