@@ -145,6 +145,19 @@ function showMenuPage(page) {
    } else if (page === 'instructions') {
       instructionsPanel.style.display = 'flex';
       backBtn.style.display = 'block';
+      instructionPageIndex = 1;
+
+      const page1 = instructionsPanel.children[0];
+      const page2 = instructionsPanel.children[1];
+      const page3 = instructionsPanel.children[2];
+      const page4 = instructionsPanel.children[3];
+      const nextBtn = document.getElementById('menu-next-page-btn');
+
+      if (page1) page1.style.display = 'flex';
+      if (page2) page2.style.display = 'none';
+      if (page3) page3.style.display = 'none';
+      if (page4) page4.style.display = 'none';
+      if (nextBtn) nextBtn.style.backgroundImage = 'url("resources/images/instructions/next.png")';
    }
 }
 
@@ -337,20 +350,513 @@ audioTitle.textContent = "Audio Settings";
 audioTitle.style.cssText =
    'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
 
-// 新增：说明面板（默认隐藏）
+// ===============================
+// Instructions Panel
+// ===============================
+
 const instructionsPanel = document.createElement('div');
 instructionsPanel.id = 'menu-instructions-panel';
 instructionsPanel.style.cssText =
    'display:none;' +
-   'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
+   'flex-direction:column;' +
+   'align-items:center;' +
+   'justify-content:flex-start;' +
+   'width:100%;' +
+   'height:100%;' +
+   'padding:110px 24px 24px 24px;' +
+   'box-sizing:border-box;' +
+   'overflow:hidden;' +
+   'color:#fff;' +
+   'position:relative;';
 
-const instructionsTitle = document.createElement('div');
-instructionsTitle.textContent = "Instructions";
-instructionsTitle.style.cssText =
-   'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
 
-instructionsPanel.appendChild(instructionsTitle);
+// ===============================
+// Page Containers
+// ===============================
+
+const instructionsPage1 = document.createElement('div');
+instructionsPage1.style.cssText =
+   'width:100%; display:flex; justify-content:center;';
+
+const instructionsPage2 = document.createElement('div');
+instructionsPage2.style.cssText =
+   'width:100%; display:none; justify-content:center;';
+
+const instructionsPage3 = document.createElement('div');
+instructionsPage3.style.cssText =
+   'width:100%; display:none; justify-content:center;';
+
+const instructionsPage4 = document.createElement('div');
+instructionsPage4.style.cssText =
+   'width:100%; display:none; justify-content:center;';
+
+
+// ===============================
+// Background Card
+// ===============================
+
+function createInstructionCard() {
+
+   const wrap = document.createElement('div');
+
+   wrap.style.cssText =
+      'width:96%;' +
+      'max-width:1080px;' +
+      'background-image:url("resources/images/instructions/cardX3.png");' +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'padding:20px;' +
+      'box-sizing:border-box;';
+
+   return wrap;
+}
+
+const instructionsTableWrap1 = createInstructionCard();
+const instructionsTableWrap2 = createInstructionCard();
+
+
+// ===============================
+// Table Style
+// ===============================
+
+const tableStyle =
+   'width:100%;' +
+   'border-collapse:collapse;' +
+   'table-layout:fixed;' +
+   'color:white;' +
+   'font-size:16px;';
+
+const thStyle =
+   'border:1px solid rgba(255,255,255,0.18);' +
+   'padding:14px 12px;' +
+   'text-align:center;' +
+   'background:rgba(0,0,0,0.25);' +
+   'font-weight:bold;';
+
+const tdStyle =
+   'border:1px solid rgba(255,255,255,0.12);' +
+   'padding:12px 12px;' +
+   'text-align:left;' +
+   'vertical-align:middle;' +
+   'background:rgba(0,0,0,0.18);';
+
+const imgStyle =
+   'display:block;' +
+   'margin:0 auto;' +
+   'max-width:56px;' +
+   'max-height:56px;' +
+   'object-fit:contain;' +
+   'image-rendering:pixelated;';
+
+
+// ===============================
+// Page 1 Table
+// ===============================
+
+const instructionsTable1 = document.createElement('table');
+instructionsTable1.style.cssText = tableStyle;
+
+instructionsTable1.innerHTML = `
+<thead>
+<tr>
+<th style="${thStyle} width:13%;">Category</th>
+<th style="${thStyle} width:17%;">Name</th>
+<th style="${thStyle} width:10%;">Image</th>
+<th style="${thStyle} width:60%;">Description</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td style="${tdStyle}">Player</td>
+<td style="${tdStyle}">Robot</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/contentplayer.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">The player character, a small robot that explores the world and purifies pollution.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}">Ability</td>
+<td style="${tdStyle}">Energy Rope</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/contentrope.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">A rope that can be fired to purify pollution or help the player traverse difficult terrain.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}" rowspan="2">Interactable</td>
+<td style="${tdStyle}">Energy Pillar</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/cleaningenergy.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">A station where the player can recharge purification energy.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}">Button</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/button.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">A switch that can be pressed to open certain doors.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}">Checkpoint</td>
+<td style="${tdStyle}">Respawn Point</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/reset.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">The location where the player respawns after death.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}">Objective</td>
+<td style="${tdStyle}">Pollution Source</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/pollution_core.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">Hostile creatures that attack the player and block progress.</td>
+</tr>
+
+</tbody>
+`;
+
+
+// ===============================
+// Page 2 Table
+// ===============================
+
+const instructionsTable2 = document.createElement('table');
+instructionsTable2.style.cssText = tableStyle;
+
+instructionsTable2.innerHTML = `
+<thead>
+<tr>
+<th style="${thStyle} width:13%;">Category</th>
+<th style="${thStyle} width:17%;">Name</th>
+<th style="${thStyle} width:10%;">Image</th>
+<th style="${thStyle} width:60%;">Description</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td style="${tdStyle}">Enemy</td>
+<td style="${tdStyle}">Monster</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/contentenemy.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">Hostile creatures that attack the player but can also be purified.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}" rowspan="2">Gate</td>
+<td style="${tdStyle}">Area Gate</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/door1.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">A gate between areas that opens when the area's purification level reaches 80%.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}">Mechanism Door</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/door2.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">A door inside the area that opens after pressing a button.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}" rowspan="2">Environment</td>
+<td style="${tdStyle}">Polluted Water</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/contentpollutedwater.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">Deadly polluted water that kills the player on contact.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}">Clean Water</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/contentwater.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">Safe water that does not harm the player.</td>
+</tr>
+
+<tr>
+<td style="${tdStyle}">Collectible</td>
+<td style="${tdStyle}">Energy Crystal</td>
+<td style="${tdStyle}"><img src="resources/images/instructions/tools.png" style="${imgStyle}"></td>
+<td style="${tdStyle}">Scattered crystals that restore the player's purification energy.</td>
+</tr>
+
+</tbody>
+`;
+
+
+// ===============================
+// Page 3 Controls
+// ===============================
+
+const controlsPanel = document.createElement('div');
+controlsPanel.style.cssText =
+   'width:96%;' +
+   'max-width:1080px;' +
+   'min-height:590px;' +
+   'display:grid;' +
+   'grid-template-columns:repeat(2, minmax(0, 1fr));' +
+   'grid-template-rows:repeat(2, auto);' +
+   'column-gap:22px;' +
+   'row-gap:18px;' +
+   'padding:36px 26px 28px 26px;' +
+   'box-sizing:border-box;' +
+   'background-image:url("resources/images/instructions/cardX3.png");' +
+   'background-size:100% 100%;' +
+   'background-repeat:no-repeat;' +
+   'background-position:center;' +
+   'align-content:start;';
+
+const controlsPanelSingle = document.createElement('div');
+controlsPanelSingle.style.cssText =
+   'width:96%;' +
+   'max-width:1080px;' +
+   'min-height:590px;' +
+   'display:flex;' +
+   'justify-content:center;' +
+   'align-items:flex-start;' +
+   'padding:24px 26px 28px 26px;' +
+   'box-sizing:border-box;' +
+   'background-image:url("resources/images/instructions/cardX3.png");' +
+   'background-size:100% 100%;' +
+   'background-repeat:no-repeat;' +
+   'background-position:center;';
+
+function createControlItem(imageName, label) {
+   const item = document.createElement('div');
+   item.style.cssText =
+      'display:flex;' +
+      'flex-direction:column;' +
+      'align-items:center;' +
+      'justify-content:flex-start;' +
+      'gap:10px;' +
+      'min-height:230px;';
+
+   const preview = document.createElement('img');
+   preview.src = `resources/images/instructions/${imageName}`;
+   preview.alt = label;
+   preview.style.cssText =
+      'width:100%;' +
+      'height:185px;' +
+      'object-fit:contain;' +
+      'flex-shrink:0;';
+
+   const text = document.createElement('div');
+   text.textContent = label;
+   text.style.cssText =
+      'color:#fff;' +
+      'font-size:15px;' +
+      'font-weight:600;' +
+      'line-height:1.2;' +
+      'text-align:center;' +
+      'text-shadow:0 0 8px rgba(0,0,0,0.35);';
+
+   item.appendChild(preview);
+   item.appendChild(text);
+   return item;
+}
+
+controlsPanel.appendChild(createControlItem('attackmonster.gif', 'Attack monster'));
+controlsPanel.appendChild(createControlItem('energySup.gif', 'Energy Supply'));
+controlsPanel.appendChild(createControlItem('purifycore.gif', 'Purify pollutioncore'));
+controlsPanel.appendChild(createControlItem('rest.gif', 'Set a save point and restore hp'));
+
+const ropeMechanicsItem = createControlItem('Ropemechanics.gif', 'Ropemechanics');
+ropeMechanicsItem.style.cssText +=
+   'width:min(420px, 100%);' +
+   'margin-top:8px;';
+controlsPanelSingle.appendChild(ropeMechanicsItem);
+
+
+// ===============================
+// Assemble Pages
+// ===============================
+
+instructionsTableWrap1.appendChild(instructionsTable1);
+instructionsTableWrap2.appendChild(instructionsTable2);
+
+instructionsPage1.appendChild(instructionsTableWrap1);
+instructionsPage2.appendChild(instructionsTableWrap2);
+instructionsPage3.appendChild(controlsPanel);
+instructionsPage4.appendChild(controlsPanelSingle);
+
+instructionsPanel.appendChild(instructionsPage1);
+instructionsPanel.appendChild(instructionsPage2);
+instructionsPanel.appendChild(instructionsPage3);
+instructionsPanel.appendChild(instructionsPage4);
+
 menuDiv.appendChild(instructionsPanel);
+
+
+// ===============================
+// Next Page Button
+// ===============================
+
+let instructionPageIndex = 1;
+
+function showInstructionsContentPage(pageIndex) {
+   instructionPageIndex = pageIndex;
+   instructionsPage1.style.display = pageIndex === 1 ? 'flex' : 'none';
+   instructionsPage2.style.display = pageIndex === 2 ? 'flex' : 'none';
+   instructionsPage3.style.display = pageIndex === 3 ? 'flex' : 'none';
+   instructionsPage4.style.display = pageIndex === 4 ? 'flex' : 'none';
+   nextPageButton.style.backgroundImage = (pageIndex === 2 || pageIndex === 4)
+      ? 'url("resources/images/instructions/prev.png")'
+      : 'url("resources/images/instructions/next.png")';
+}
+
+const nextPageButton = document.createElement('button');
+nextPageButton.id = 'menu-next-page-btn';
+
+nextPageButton.style.cssText =
+   'position:absolute;' +
+   'right:18px;' +
+   'bottom:12px;' +
+   'width:56px;' +
+   'height:56px;' +
+   'padding:0;' +
+   'background-image:url("resources/images/instructions/next.png");' +
+   'background-size:contain;' +
+   'background-repeat:no-repeat;' +
+   'background-position:center;' +
+   'background-color:transparent;' +
+   'border:none;' +
+   'cursor:pointer;' +
+   'transition:opacity 0.2s;' +
+   'z-index:100;';
+
+nextPageButton.onmouseenter = function () {
+   this.style.opacity = '0.85';
+};
+
+nextPageButton.onmouseleave = function () {
+   this.style.opacity = '1';
+};
+
+nextPageButton.onmousedown = function () {
+   this.style.opacity = '0.7';
+};
+
+nextPageButton.onmouseup = function () {
+   this.style.opacity = '0.85';
+};
+
+const contentButton = document.createElement('button');
+contentButton.id = 'menu-content-btn';
+contentButton.textContent = 'Content';
+
+contentButton.style.cssText =
+   'position:absolute;' +
+   'top:30px;' +
+   'right:40px;' +
+   'width:200px;' +
+   'height:60px;' +
+   'font-size:20px;' +
+   'font-weight:bold;' +
+   'color:white;' +
+   `background-image:url("${BTN_NORMAL}");` +
+   'background-size:100% 100%;' +
+   'background-repeat:no-repeat;' +
+   'background-position:center;' +
+   'background-color:transparent;' +
+   'border:none;' +
+   'cursor:pointer;' +
+   'transition:all 0.2s;' +
+   'z-index:100;';
+
+contentButton.onmouseenter = function () {
+   this.style.backgroundImage = `url("${BTN_HOVER}")`;
+};
+
+contentButton.onmouseleave = function () {
+   this.style.backgroundImage = `url("${BTN_NORMAL}")`;
+};
+
+contentButton.onmousedown = function () {
+   this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
+};
+
+contentButton.onmouseup = function () {
+   this.style.backgroundImage = `url("${BTN_HOVER}")`;
+};
+
+const operationPageButton = document.createElement('button');
+operationPageButton.id = 'menu-operation-page-btn';
+operationPageButton.textContent = 'Controls';
+
+operationPageButton.style.cssText =
+   'position:absolute;' +
+   'top:30px;' +
+   'left:50%;' +
+   'transform:translateX(-50%);' +
+   'width:200px;' +
+   'height:60px;' +
+   'font-size:20px;' +
+   'font-weight:bold;' +
+   'color:white;' +
+   `background-image:url("${BTN_NORMAL}");` +
+   'background-size:100% 100%;' +
+   'background-repeat:no-repeat;' +
+   'background-position:center;' +
+   'background-color:transparent;' +
+   'border:none;' +
+   'cursor:pointer;' +
+   'transition:all 0.2s;' +
+   'z-index:100;';
+
+operationPageButton.onmouseenter = function () {
+   this.style.backgroundImage = `url("${BTN_HOVER}")`;
+};
+
+operationPageButton.onmouseleave = function () {
+   this.style.backgroundImage = `url("${BTN_NORMAL}")`;
+};
+
+operationPageButton.onmousedown = function () {
+   this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
+};
+
+operationPageButton.onmouseup = function () {
+   this.style.backgroundImage = `url("${BTN_HOVER}")`;
+};
+
+operationPageButton.onclick = function (e) {
+   e.preventDefault();
+   e.stopPropagation();
+
+   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+      resources.sounds.click.play();
+   }
+
+   showInstructionsContentPage(3);
+};
+
+contentButton.onclick = function (e) {
+   e.preventDefault();
+   e.stopPropagation();
+
+   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+      resources.sounds.click.play();
+   }
+
+   showInstructionsContentPage(1);
+};
+
+nextPageButton.onclick = function (e) {
+   e.preventDefault();
+   e.stopPropagation();
+
+   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+      resources.sounds.click.play();
+   }
+
+   if (instructionPageIndex === 1) {
+      showInstructionsContentPage(2);
+   } else if (instructionPageIndex === 2) {
+      showInstructionsContentPage(1);
+   } else if (instructionPageIndex === 3) {
+      showInstructionsContentPage(4);
+   } else {
+      showInstructionsContentPage(3);
+   }
+
+};
+
+instructionsPanel.appendChild(operationPageButton);
+instructionsPanel.appendChild(contentButton);
+instructionsPanel.appendChild(nextPageButton);
 
 
 // BGM控制行
