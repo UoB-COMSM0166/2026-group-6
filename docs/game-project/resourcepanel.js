@@ -15,7 +15,7 @@ class Resourcepanel {
         this.cellGap = 2;
         this.barOffsetX = 175;
         this.rowHeight = 40;
-        this.startY = 70;
+        this.startY = 75;
         this.maxCells = 9;
 
         this.attrs = [
@@ -54,7 +54,7 @@ class Resourcepanel {
         noStroke();
         fill(255);
         textAlign(CENTER, CENTER);
-        textSize(18);
+        textSize(27);
         text('Player State', px + this.panelW / 2, py + 40);
 
         // draw attribute every row
@@ -67,13 +67,13 @@ class Resourcepanel {
             fill(220);
             noStroke();
             textAlign(LEFT, CENTER);
-            textSize(13);
+            textSize(21);
             text(attr.label, px + 30, rowY + this.cellSize / 2);
 
             // number text
             let valStr = this.getStrofNum(stat.current) + ' / ' + this.getStrofNum(stat.max);
             textAlign(RIGHT, CENTER);
-            textSize(11);
+            textSize(19);
             fill(200);
             text(valStr, px + this.barOffsetX - 8, rowY + this.cellSize / 2);
 
@@ -85,7 +85,7 @@ class Resourcepanel {
 
             for (let c = 0; c < this.maxCells + 1; c++) {
                 let cx = px + this.barOffsetX + c * (this.cellSize + this.cellGap);
-                let cy = rowY;
+                let cy = rowY + 2.5;
 
                 if (c < filledCount + 1) {
                     // fill bars
@@ -106,7 +106,7 @@ class Resourcepanel {
         noStroke();
         fill(140);
         textAlign(CENTER, CENTER);
-        textSize(10);
+        textSize(13);
         text('Press C to close', px + this.panelW / 2, py + this.panelH - 22);
 
         pop();

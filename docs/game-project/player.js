@@ -18,8 +18,8 @@ class Player {
       this.grounded = false;
       this.inwater = false;
 
-      this.showPrompt = null;  // 显示按键提示
-      this.floatingTexts = []; // floating text
+      this.showPrompt = null;
+      this.floatingTexts = [];
 
       this.ropeL = new Rope(color(0, 255, 255));
       this.ropeR = new Rope(color(255, 100, 100));
@@ -32,10 +32,10 @@ class Player {
    cx() { return this.x + this.w / 2; }
    cy() { return this.y + this.h / 2; }
 
-   // ====== 主更新 ======
+   // update
 
    /**
-    * @param {GameManager} gm  游戏管理器引用 (访问 gm.level, gm.entities)
+    * @param {GameManager} gm
     */
    update(gm) {
       this._tickTimers();
@@ -43,12 +43,12 @@ class Player {
       this._handleWinch();
       this._applyPhysics(gm.level);
       this._resolveWorld(gm.level);
-      this._clampToRopes();  // 世界碰撞后重新执行绳长约束
+      this._clampToRopes();
       this._isInToxicPool(gm);
       this._updateFloatingTexts();
    }
 
-   // ====== 输入 ======
+   // input
 
    _tickTimers() {
       if (this.invulnerableTimer > 0) this.invulnerableTimer--;
@@ -65,17 +65,14 @@ class Player {
 
       for (let rope of this.currentRope) {
          if (rope.state !== "SWINGING" && rope.state !== "STRAND") continue;
-         // Q: 缩短
          if (keyIsDown(Keys.Q)) {
             rope.changeLength(-cs);
-            // SWINGING: tip固定，拉玩家向锚点; STRAND: tip自由，只收绳不拉玩家
             if (rope.state === "SWINGING") {
                let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
                this.vx += cos(a) * wf / count;
                this.vy += sin(a) * wf / count;
             }
          }
-         // E: 伸长
          if (keyIsDown(Keys.E)) rope.changeLength(cs);
       }
    }
@@ -91,14 +88,13 @@ class Player {
 
       for (let rope of this.currentRope) {
          if (rope.state !== "SWINGING" && rope.state !== "STRAND") continue;
-         // 根据绳头相对玩家的位置翻转滚轮方向:
+         // flip the direction of the roller according to the position of the rope end relative to the player.
          let tipAbove = rope.tip.y < this.cy();
          let fixPlayer = rope.state === "STRAND";
          let effectiveDelta = tipAbove ? delta : -delta;
          effectiveDelta = fixPlayer ? -effectiveDelta : effectiveDelta;
 
          if (effectiveDelta < 0) {
-            // 缩短
             rope.changeLength(-cs * wheelMultiplier);
             if (rope.state === "SWINGING") {
                let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
@@ -107,7 +103,6 @@ class Player {
             }
          }
          if (effectiveDelta > 0) {
-            // 伸长
             rope.changeLength(cs * wheelMultiplier);
          }
       }
@@ -141,22 +136,21 @@ class Player {
       }
    }
 
-   // ====== 物理 ======
+   // physics
 
    /**
     * @param {LevelManager} level
     */
    _applyPhysics(level) {
       if (this.grounded) {
-         this.vx *= GameConfig.World.FrictionalForce; // 摩擦力
+         this.vx *= GameConfig.World.FrictionalForce;
       }
       else {
-         this.vx *= GameConfig.World.AirFrictionalForce; // 摩擦力
+         this.vx *= GameConfig.World.AirFrictionalForce;
       }
       this.vy += GameConfig.World.GRAVITY;
       this._isInWater(gm);
 
-      // 绳索物理 (传入 LevelManager)
       this.ropeL.update(this, level);
       this.ropeR.update(this, level);
       this.ropeL.applyPhysics(this);
@@ -168,14 +162,13 @@ class Player {
     */
    _resolveWorld(level) {
       const G = GameConfig.World.GRID_SIZE;
-      const maxStep = G * 0.1; // 每次判断的步数
+      const maxStep = G * 0.1; // judge step len
 
-      // 收集绳索碰撞盒
       let heldRopes = [];
       if (this.ropeL.state === "SWINGING" && this.ropeL.material === 'HARD') heldRopes.push(this.ropeL);
       if (this.ropeR.state === "SWINGING" && this.ropeR.material === 'HARD') heldRopes.push(this.ropeR);
 
-      // X轴分步检测
+      // X
       let stepsX = Math.ceil(Math.abs(this.vx) / maxStep);
       let dx = this.vx / stepsX;
       for (let i = 0; i < stepsX; i++) {
@@ -183,7 +176,7 @@ class Player {
          this._resolve(true, level, heldRopes);
       }
 
-      // Y轴分步检测
+      // Y
       let stepsY = Math.ceil(Math.abs(this.vy) / maxStep);
       let dy = this.vy / stepsY;
       for (let i = 0; i < stepsY; i++) {
@@ -192,20 +185,11 @@ class Player {
       }
    }
 
-   /**
-    * AABB 碰撞分离
-    *
-    *  核心优化: 使用 level.getSolidTilesInRect() 替代遍历全部 solidPlatforms
-    *   之前: for (let p of solidPlatforms) → O(地图格子总数)
-    *   现在: 只检测玩家包围盒附近 ~9-16 格 → O(1)
-    */
    _resolve(onX, level, ignoredRopes) {
       this.grounded = false;
 
-      //  空间查询: 获取玩家附近的固体 Tile
       let colliders = level.getSolidTilesInRect(this.x, this.y, this.w, this.h, 1);
 
-      // 追加硬绳碰撞盒
       if (this.ropeL.material === 'HARD' && this.ropeL.state === 'SWINGING' && !ignoredRopes.includes(this.ropeL)) {
          colliders = colliders.concat(this.ropeL.getCollisionBoxes());
       }
@@ -213,7 +197,7 @@ class Player {
          colliders = colliders.concat(this.ropeR.getCollisionBoxes());
       }
 
-      // AABB 分离
+ 
       for (let p of colliders) {
          if (!Physics.rectIntersect(this.x, this.y, this.w, this.h, p.x, p.y, p.w, p.h)) continue;
 
@@ -221,12 +205,12 @@ class Player {
          let ppW = p.w / 2, ppH = p.h / 2;
          let dx = (this.x + phW) - (p.x + ppW);
          let dy = (this.y + phH) - (p.y + ppH);
-         // 计算X/Y轴的重叠量（oX：X轴重叠像素，oY：Y轴重叠像素）
+
          let oX = (phW + ppW) - abs(dx);
          let oY = (phH + ppH) - abs(dy);
-         //无重叠
+
          if (oX <= 0 || oY <= 0) continue;
-         // 根据偏移量大小优先处理偏移量大的轴
+
          if (oX < oY) {
             if (onX) {
                this.x += (dx > 0) ? oX : -oX;
@@ -245,12 +229,11 @@ class Player {
          }
       }
 
-      // 额外着地检测 (站立时)
       if (!onX) {
          this.grounded = false;
-         //  只查脚底下方的一排格子
+
          let footColliders = level.getSolidTilesInRect(this.x, this.y + this.h - 2, this.w, 8, 0);
-         // 追加硬绳碰撞盒
+
          if (this.ropeL.material === 'HARD' && this.ropeL.state === 'SWINGING' && !ignoredRopes.includes(this.ropeL)) {
             footColliders = footColliders.concat(this.ropeL.getCollisionBoxes());
          }
@@ -355,23 +338,11 @@ class Player {
       if (enhance > 0) this.addFloatingText("damage +" + enhance, color(255, 0, 255), 8, 110);
    }
 
-
-   /**
-    * 世界碰撞解算后, 重新钳制玩家到绳长范围内
-    *
-    * 流程: applyPhysics(绳约束) → resolveWorld(瓦片碰撞) → clampToRopes(绳约束补偿)
-    * 避免瓦片碰撞把玩家推出绳长范围后没有修正
-    */
    _clampToRopes() {
       this._clampToRope(this.ropeL);
       this._clampToRope(this.ropeR);
    }
 
-   /**
-    * 对单根绳子执行硬长度约束
-    * 只在软绳 SWINGING 状态下生效
-    * 使用有效锚点
-    */
    _clampToRope(rope) {
       if (rope.material !== 'SOFT' || !rope.stuck || rope.nodes.length < 2) return;
 
@@ -383,16 +354,14 @@ class Player {
       let d = Math.sqrt(dx * dx + dy * dy);
       if (d <= anchor.freeLength) return;
 
-      // 方向: 有效锚点 → 玩家
       let nx = dx / d, ny = dy / d;
 
-      // 硬钳制到可用绳长圆上
       let targetCX = anchor.x + nx * anchor.freeLength;
       let targetCY = anchor.y + ny * anchor.freeLength;
       this.x = targetCX - this.w / 2;
       this.y = targetCY - this.h / 2;
 
-      // 去除径向外推速度, 保留切向 (允许摆荡)
+      // remove the radial extrapolation velocity
       let radialV = this.vx * nx + this.vy * ny;
       if (radialV > 0) {
          this.vx -= radialV * nx;
@@ -400,14 +369,13 @@ class Player {
       }
    }
 
-   // 碰到毒池
    _isInToxicPool(gm) {
       if (gm.level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
          { solidOnly: false, type: GameConfig.Collision.ToxicPool, margin: 0.1 }) !== null) {
          this.die(gm);
       }
    }
-   // ====== 动作 ======
+   // action
 
    fireRope(side, tx, ty) {
       if (side === "LEFT") this.ropeL.fire(this.cx(), this.cy(), tx, ty);
@@ -441,7 +409,7 @@ class Player {
       this.knockTimer = 0;
    }
 
-   // ====== 渲染 ======
+   // render
 
    display(camera, scale) {
       const G = GameConfig.World.GRID_SIZE;
@@ -449,7 +417,7 @@ class Player {
       fill(this.knockTimer > 0 ? color(255, 100, 100) : 255);
       rect(this.x, this.y, this.w, this.h);
 
-      // 眼睛跟随鼠标
+      // eye
       fill(0);
       let wm = camera.screenToWorld(mouseX, mouseY, scale);
       let a = atan2(wm.y - this.cy(), wm.x - this.cx());
@@ -463,34 +431,32 @@ class Player {
    setPrompt(prompt) {
       this.showPrompt = prompt;
    }
+
    _showPrompt() {
-      // 按键提示
       if (this.showPrompt) {
          let px = this.cx(), py = this.y - 10;
-         // 背景框
+
          fill(0, 0, 0, 150);
          noStroke();
          let promptW = 7;
          let promptH = 4;
          rect(px - promptW, py - promptH, promptW * 2, promptH * 2, 3);
-         // 文字
+
          fill(255);
          textAlign(CENTER, CENTER);
          textSize(8);
          text(this.showPrompt, px, py);
-         this.showPrompt = null;  // 在每帧在其他地方重新设置
+         this.showPrompt = null;
       }
    }
 
    // floatingtext
 
    /**
-    * 从玩家头顶缓慢上升并渐隐的文字
-    *
-    * @param {string}  content   text showing
-    * @param {Array}   col       color(0, 0, 0)
-    * @param {number}  [fontSize]  字体大小, default 6
-    * @param {number}  [duration]  持续帧数，default 60
+    * @param {string}  content
+    * @param {Array}   col
+    * @param {number}  [fontSize]
+    * @param {number}  [duration]
     */
    addFloatingText(content, col, fontSize, duration) {
       this.floatingTexts.push(
@@ -510,16 +476,15 @@ class Player {
    }
 }
 
-/**
- * Player.FloatingText — inner class of Player
- */
+// Player.FloatingText — inner class of Player
+
 Player.FloatingText = class {
    /**
-    * @param {Player}  owner     所属的 Player 实例
-    * @param {string}  content   文字内容
-    * @param {Array}   col       color(0,0,0)
-    * @param {number}  fontSize  字体大小
-    * @param {number}  duration  持续帧数
+    * @param {Player}  owner
+    * @param {string}  content
+    * @param {Array}   col
+    * @param {number}  fontSize
+    * @param {number}  duration
     */
    constructor(owner, content, col, fontSize, duration) {
       this.owner = owner;
@@ -547,7 +512,6 @@ Player.FloatingText = class {
       else if (progress > 0.6) alpha = map(progress, 0.6, 1, 255, 0);
       else alpha = 255;
 
-      // 通过 owner 引用直接读取玩家坐标
       let px = this.owner.cx() + this.offsetX;
       let py = this.owner.y - 8 + this.offsetY;
 
@@ -555,10 +519,10 @@ Player.FloatingText = class {
       noStroke();
       textAlign(CENTER, CENTER);
       textSize(this.fontSize);
-      // 阴影
+
       fill(0, 0, 0, alpha * 0.5);
       text(this.text, px + 0.5, py + 0.5);
-      // 正文
+
       let c = color(this.color);
       c.setAlpha(alpha);
       fill(c);
