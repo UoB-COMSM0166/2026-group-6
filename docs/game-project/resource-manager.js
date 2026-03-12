@@ -86,6 +86,15 @@ class ResourceManager {
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
       };
 
+      //Boss
+      this.images.boss = {
+         idle: loadImage('resources/images/enemy/Boss_Idle-Sheet.png'),
+         shoot: loadImage('resources/images/enemy/Boss_Shoot-Sheet.png'),
+         move: loadImage('resources/images/enemy/Boss_Walk-Sheet.png'),  
+         hurt: loadImage('resources/images/enemy/Boss_Hurt-Sheet.png'),   
+         death: loadImage('resources/images/enemy/Boss_Death-Sheet.png')
+      };
+
       //地图背景
       //this.images.parallax = {};
 

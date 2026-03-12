@@ -224,6 +224,13 @@ class GameManager {
       this.player.ropeR.display(this.player);
       this.player.display(this.camera, this.scale);
 
+      //毒水
+      for (let ent of this.entities) {
+         if (ent.displayWater) {
+            ent.displayWater(this.level);
+         }
+      }
+
       pop();
 
       // 常态化显示右上角小地图
