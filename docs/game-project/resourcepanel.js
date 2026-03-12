@@ -41,7 +41,7 @@ class Resourcepanel {
         ];
 
         push();
-        // if there is camera transform, need resetMatrix
+
         resetMatrix();
 
         let px = width / 2 - this.panelW / 2;
