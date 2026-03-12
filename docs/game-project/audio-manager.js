@@ -66,10 +66,10 @@ class AudioManager {
   toggleBgmMute() {
     this.state.bgm.isMuted = !this.state.bgm.isMuted;
     if (this.resources.sounds.bgm) {
-      this.state.bgm.isMuted ? this.resources.sounds.bgm.volume(0) : this.resources.sounds.bgm.unmute();
+      this.state.bgm.isMuted ? this.resources.sounds.bgm.setVolume(0) : this.resources.sounds.bgm.setVolume(1);
     }
     if (this.resources.sounds.story) {
-      this.state.bgm.isMuted ? this.resources.sounds.story.volume(0) : this.resources.sounds.story.unmute();
+      this.state.bgm.isMuted ? this.resources.sounds.story.setVolume(0) : this.resources.sounds.story.setVolume(1);
     }
   }
 
@@ -81,7 +81,7 @@ class AudioManager {
       Object.keys(obj).forEach(key => {
         //静音全部
         if (obj[key] instanceof p5.SoundFile) {
-          this.state.sfx.isMuted ? obj[key].volume(0) : obj[key].unmute();
+          this.state.sfx.isMuted ? obj[key].setVolume(0) : obj[key].setVolume(1);
         } else if (typeof obj[key] === 'object') {
           muteAllSfx(obj[key]);
         }
