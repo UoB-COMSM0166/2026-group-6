@@ -342,12 +342,17 @@ class Player {
    restoreHp(restore) {
       let nextHp = this.hp + restore;
       this.hp = (nextHp > this.maxHp) ? this.maxHp : nextHp;
-      if (restore > 0) this.addFloatingText("+" + restore, color(50, 230, 80), 6);
+      if (restore > 0) this.addFloatingText("+" + restore, color(255, 0, 0), 6);
    }
 
    addJumpForce(enhance) {
       this.jumpForce += enhance;
-      if (enhance > 0) this.addFloatingText("jumpforce +" + enhance, color(199, 115, 37), 8, 110);
+      if (enhance > 0) this.addFloatingText("jumpforce +" + enhance, color(255, 165, 0), 8, 110);
+   }
+
+   addAttackDamage(enhance) {
+      this.attackDmg += enhance;
+      if (enhance > 0) this.addFloatingText("damage +" + enhance, color(255, 0, 255), 8, 110);
    }
 
 

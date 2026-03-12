@@ -4661,12 +4661,11 @@
 		}
 	], "enums": [
 		{ "identifier": "Tools", "uid": 23, "values": [
-			{ "id": "Claw_hook", "tileRect": null, "color": 12470831 },
 			{ "id": "Clean", "tileRect": null, "color": 7552569 },
 			{ "id": "Hp", "tileRect": null, "color": 14120515 },
 			{ "id": "Jump", "tileRect": null, "color": 15389866 },
 			{ "id": "RopeLength", "tileRect": null, "color": 14984818 },
-			{ "id": "Hammer", "tileRect": null, "color": 4073265 }
+			{ "id": "Attack", "tileRect": null, "color": 12470831 }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
 		{ "identifier": "Gatetype", "uid": 244, "values": [ { "id": "CleanedTrigger", "tileRect": null, "color": 12470831 }, { "id": "MechanismTrigger", "tileRect": null, "color": 14120515 } ], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }
 	], "externalEnums": [], "levelFields": [
@@ -6331,6 +6330,28 @@
 							"fieldInstances": [],
 							"__worldX": 384,
 							"__worldY": 1296
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [26,18],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "0c31ee70-fa90-11f0-80e2-c7bcd639c060",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [212,148],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Attack", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Attack"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 548,
+							"__worldY": 1356
 						}
 					]
 				},
@@ -13201,6 +13222,28 @@
 							"fieldInstances": [],
 							"__worldX": 1368,
 							"__worldY": 1560
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [40,9],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "1220f1a0-fa90-11f0-80e2-c784ed2780ca",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [324,76],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Attack", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Attack"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 1428,
+							"__worldY": 1548
 						}
 					]
 				},

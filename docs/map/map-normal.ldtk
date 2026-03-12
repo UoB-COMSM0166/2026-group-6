@@ -4661,12 +4661,11 @@
 		}
 	], "enums": [
 		{ "identifier": "Tools", "uid": 23, "values": [
-			{ "id": "Claw_hook", "tileRect": null, "color": 12470831 },
 			{ "id": "Clean", "tileRect": null, "color": 7552569 },
 			{ "id": "Hp", "tileRect": null, "color": 14120515 },
 			{ "id": "Jump", "tileRect": null, "color": 15389866 },
 			{ "id": "RopeLength", "tileRect": null, "color": 14984818 },
-			{ "id": "Hammer", "tileRect": null, "color": 4073265 }
+			{ "id": "Attack", "tileRect": null, "color": 12470831 }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
 		{ "identifier": "Gatetype", "uid": 244, "values": [ { "id": "CleanedTrigger", "tileRect": null, "color": 12470831 }, { "id": "MechanismTrigger", "tileRect": null, "color": 14120515 } ], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }
 	], "externalEnums": [], "levelFields": [
@@ -6439,6 +6438,28 @@
 							"fieldInstances": [{ "__identifier": "coreId", "__type": "String", "__value": null, "__tile": null, "defUid": 233, "realEditorValues": [] }],
 							"__worldX": 420,
 							"__worldY": 1408
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [40,23],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "1da0ab60-fa90-11f0-80e2-07617124660c",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [324,188],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Attack", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Attack"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 660,
+							"__worldY": 1396
 						}
 					]
 				},
@@ -9084,6 +9105,28 @@
 							"fieldInstances": [],
 							"__worldX": 1192,
 							"__worldY": 1288
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [19,18],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "227df070-fa90-11f0-80e2-b5199bdc09e5",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [156,148],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Attack", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Attack"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 1260,
+							"__worldY": 1396
 						}
 					]
 				},

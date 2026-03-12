@@ -4,13 +4,22 @@ class Tool extends Entity {
       this.toolType = this.fields.toolType;
       switch (this.toolType) {
          case "Clean":
-            this.sprite = resources.images.tools;
+            this.sprite = resources.images.tools.energy;
             break;
          case "Hp":
-            this.sprite = resources.images.toolsHp;
+            this.sprite = resources.images.tools.hp;
+            break;
+         case "RopeLength":
+            this.sprite = resources.images.tools.rope;
+            break;
+         case "Jump":
+            this.sprite = resources.images.tools.jump;
+            break;
+         case "Attack":
+            this.sprite = resources.images.tools.attack;
             break;
          default: {
-            this.sprite = resources.images.toolsOther;
+            this.sprite = resources.images.tools.other;
             break;
          }
       }
@@ -30,6 +39,9 @@ class Tool extends Entity {
             break;
          case "Hp":
             this._getHp(player);
+            break;
+         case "Attack":
+            this._getDamageEnhance(player);
             break;
          default: {
             this.destroy();
@@ -51,7 +63,7 @@ class Tool extends Entity {
       [player.ropeL, player.ropeR].forEach(rope => {
          rope.maxLen += G;
       });
-      player.addFloatingText("rope length +" + G, color(199, 115, 37), 8, 110);
+      player.addFloatingText("rope length +" + G, color(0, 255, 255), 8, 110);
       this.destroy();
    }
 
@@ -66,6 +78,12 @@ class Tool extends Entity {
    _getJumpEnhance(player) {
       gm.addParticles(this.cx(), this.cy());
       player.addJumpForce(0.3);
+      this.destroy();
+   }
+
+   _getDamageEnhance(player) {
+      gm.addParticles(this.cx(), this.cy());
+      player.addAttackDamage(0.5);
       this.destroy();
    }
 }

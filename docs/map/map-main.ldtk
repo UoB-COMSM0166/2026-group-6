@@ -4661,12 +4661,11 @@
 		}
 	], "enums": [
 		{ "identifier": "Tools", "uid": 23, "values": [
-			{ "id": "Claw_hook", "tileRect": null, "color": 12470831 },
 			{ "id": "Clean", "tileRect": null, "color": 7552569 },
 			{ "id": "Hp", "tileRect": null, "color": 14120515 },
 			{ "id": "Jump", "tileRect": null, "color": 15389866 },
 			{ "id": "RopeLength", "tileRect": null, "color": 14984818 },
-			{ "id": "Hammer", "tileRect": null, "color": 4073265 }
+			{ "id": "Attack", "tileRect": null, "color": 12470831 }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] },
 		{ "identifier": "Gatetype", "uid": 244, "values": [ { "id": "CleanedTrigger", "tileRect": null, "color": 12470831 }, { "id": "MechanismTrigger", "tileRect": null, "color": 14120515 } ], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }
 	], "externalEnums": [], "levelFields": [
@@ -8522,7 +8521,7 @@
 						},
 						{
 							"__identifier": "Tools",
-							"__grid": [2,24],
+							"__grid": [4,24],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": null,
@@ -8531,7 +8530,7 @@
 							"width": 8,
 							"height": 8,
 							"defUid": 14,
-							"px": [20,196],
+							"px": [36,196],
 							"fieldInstances": [
 								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Hp", "__tile": null, "defUid": 24, "realEditorValues": [{
 									"id": "V_String",
@@ -8539,7 +8538,7 @@
 								}] },
 								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
 							],
-							"__worldX": 1556,
+							"__worldX": 1572,
 							"__worldY": 1572
 						},
 						{
@@ -10219,6 +10218,28 @@
 							"fieldInstances": [{ "__identifier": "coreId", "__type": "String", "__value": null, "__tile": null, "defUid": 233, "realEditorValues": [] }],
 							"__worldX": 2932,
 							"__worldY": 1608
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [27,16],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "6e1e5500-fa90-11f0-b5f2-9134e3a0a49b",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [220,132],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Jump", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Jump"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 2908,
+							"__worldY": 1508
 						}
 					]
 				},
@@ -13510,6 +13531,50 @@
 							],
 							"__worldX": 3192,
 							"__worldY": 1608
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [36,36],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "67e2b870-fa90-11f0-b5f2-039e491e08fa",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [292,292],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Attack", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Attack"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 3364,
+							"__worldY": 1668
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [26,26],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "69fc49a0-fa90-11f0-b5f2-35c03adeef55",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [212,212],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Hp", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Hp"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 3284,
+							"__worldY": 1588
 						}
 					]
 				},
@@ -14391,10 +14456,7 @@
 							"px": [16,0],
 							"fieldInstances": [
 								{ "__identifier": "unlockByCoreIds", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 235, "realEditorValues": [] },
-								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": "Hammer", "__tile": null, "defUid": 240, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["Hammer"]
-								}] },
+								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [null] },
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
@@ -16092,9 +16154,9 @@
 							"defUid": 14,
 							"px": [260,164],
 							"fieldInstances": [
-								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Hammer", "__tile": null, "defUid": 24, "realEditorValues": [{
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "RopeLength", "__tile": null, "defUid": 24, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["Hammer"]
+									"params": ["RopeLength"]
 								}] },
 								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
 							],
@@ -16543,10 +16605,7 @@
 							"px": [392,0],
 							"fieldInstances": [
 								{ "__identifier": "unlockByCoreIds", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 235, "realEditorValues": [] },
-								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": "Hammer", "__tile": null, "defUid": 240, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["Hammer"]
-								}] },
+								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [null] },
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
@@ -18203,24 +18262,24 @@
 						},
 						{
 							"__identifier": "Tools",
-							"__grid": [27,14],
+							"__grid": [28,14],
 							"__pivot": [0.5,0.5],
 							"__tags": [],
 							"__tile": null,
 							"__smartColor": "#2CE8F5",
-							"iid": "6b971380-fa90-11f0-be9e-bd76c0403e24",
+							"iid": "c40eb7d0-fa90-11f0-a96c-2fe52e70c893",
 							"width": 8,
 							"height": 8,
 							"defUid": 14,
-							"px": [220,116],
+							"px": [228,116],
 							"fieldInstances": [
-								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "RopeLength", "__tile": null, "defUid": 24, "realEditorValues": [{
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Clean", "__tile": null, "defUid": 24, "realEditorValues": [{
 									"id": "V_String",
-									"params": ["RopeLength"]
+									"params": ["Clean"]
 								}] },
 								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
 							],
-							"__worldX": 1676,
+							"__worldX": 1684,
 							"__worldY": 1060
 						}
 					]
@@ -21023,10 +21082,7 @@
 							"px": [408,216],
 							"fieldInstances": [
 								{ "__identifier": "unlockByCoreIds", "__type": "Array<String>", "__value": [], "__tile": null, "defUid": 235, "realEditorValues": [] },
-								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": "Hammer", "__tile": null, "defUid": 240, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["Hammer"]
-								}] },
+								{ "__identifier": "requiredTools", "__type": "LocalEnum.Tools", "__value": null, "__tile": null, "defUid": 240, "realEditorValues": [null] },
 								{ "__identifier": "Gatetype", "__type": "LocalEnum.Gatetype", "__value": "CleanedTrigger", "__tile": null, "defUid": 245, "realEditorValues": [{
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
@@ -21051,6 +21107,50 @@
 							"fieldInstances": [{ "__identifier": "coreId", "__type": "String", "__value": null, "__tile": null, "defUid": 233, "realEditorValues": [] }],
 							"__worldX": 4300,
 							"__worldY": 1264
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [46,39],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "4a620950-fa90-11f0-80e2-37167df29f63",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [372,316],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Hp", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Hp"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 4476,
+							"__worldY": 1332
+						},
+						{
+							"__identifier": "Tools",
+							"__grid": [9,22],
+							"__pivot": [0.5,0.5],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#2CE8F5",
+							"iid": "4d1f7ba0-fa90-11f0-80e2-cfdb50e44494",
+							"width": 8,
+							"height": 8,
+							"defUid": 14,
+							"px": [76,180],
+							"fieldInstances": [
+								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Attack", "__tile": null, "defUid": 24, "realEditorValues": [{
+									"id": "V_String",
+									"params": ["Attack"]
+								}] },
+								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
+							],
+							"__worldX": 4180,
+							"__worldY": 1196
 						}
 					]
 				},

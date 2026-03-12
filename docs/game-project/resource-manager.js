@@ -35,6 +35,7 @@ class ResourceManager {
          area3: [],
          area4: []
       };
+      this.images.tools={};
    }
 
    /**
@@ -56,9 +57,12 @@ class ResourceManager {
       this.images.door1 = loadImage('resources/images/map_image/door1.png');
       this.images.door2 = loadImage('resources/images/map_image/door2.png');
       this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
-      this.images.tools = loadImage('resources/images/map_image/tools.png');
-      this.images.toolsHp = loadImage('resources/images/map_image/tools_hp.png');
-      this.images.toolsOther = loadImage('resources/images/map_image/tools_other.png');
+      this.images.tools.energy = loadImage('resources/images/map_image/tools/tools_energy.png');
+      this.images.tools.hp = loadImage('resources/images/map_image/tools/tools_hp.png');
+      this.images.tools.rope = loadImage('resources/images/map_image/tools/tools_rope.png');
+      this.images.tools.jump = loadImage('resources/images/map_image/tools/tools_jump.png');
+      this.images.tools.attack = loadImage('resources/images/map_image/tools/tools_attack.png');
+      this.images.tools.other = loadImage('resources/images/map_image/tools/tools_other.png');
       this.images.rest = loadImage('resources/images/map_image/reset.png');
       this.images.cover = loadImage('resources/images/map_image/cover.png');
       this.images.storyIntro = [];

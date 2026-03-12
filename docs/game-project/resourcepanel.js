@@ -16,13 +16,13 @@ class Resourcepanel {
         this.barOffsetX = 175;
         this.rowHeight = 40;
         this.startY = 70;
-        this.maxCells = 7;
+        this.maxCells = 9;
 
         this.attrs = [
             { label: 'MAX HP', color: [234, 57, 67], filledColor: [255, 90, 90] },
-            { label: 'Jump Force', color: [199, 135, 57], filledColor: [240, 180, 80] },
-            { label: 'Rope Len', color: [100, 200, 100], filledColor: [140, 240, 140] },
-            { label: 'Attack Dmg', color: [100, 200, 100], filledColor: [140, 240, 140] },
+            { label: 'Jump Force', color: [234, 160, 0], filledColor: [255, 165, 0] },
+            { label: 'Rope Len', color: [0, 234, 234], filledColor: [0, 255, 255] },
+            { label: 'Attack Dmg', color: [234, 0, 234], filledColor: [255, 0, 255] },
         ];
     }
 
@@ -34,10 +34,10 @@ class Resourcepanel {
         if (!this.visible) return;
 
         let stats = [
-            { current: player.maxHp, max: this.maxHp * this.maxCells },
-            { current: player.jumpForce, max: this.jumpForce * this.maxCells },
-            { current: player.ropeL.maxLen, max: this.ropeLength * this.maxCells },
-            { current: player.attackDmg, max: this.attackDmg * this.maxCells },
+            { current: player.maxHp, max: this.maxHp + 20 * this.maxCells, init: this.maxHp },
+            { current: player.jumpForce, max: this.jumpForce + 0.3 * this.maxCells, init: this.jumpForce },
+            { current: player.ropeL.maxLen, max: this.ropeLength + 16 * this.maxCells, init: this.ropeLength },
+            { current: player.attackDmg, max: this.attackDmg + 0.5 * this.maxCells, init: this.attackDmg },
         ];
 
         push();
@@ -71,7 +71,7 @@ class Resourcepanel {
             text(attr.label, px + 30, rowY + this.cellSize / 2);
 
             // number text
-            let valStr = Math.floor(stat.current) + ' / ' + Math.floor(stat.max);
+            let valStr = this.getStrofNum(stat.current) + ' / ' + this.getStrofNum(stat.max);
             textAlign(RIGHT, CENTER);
             textSize(11);
             fill(200);
@@ -79,15 +79,15 @@ class Resourcepanel {
 
             // bars
             let filledCount = (stat.max > 0)
-                ? Math.round((stat.current / stat.max) * this.maxCells)
+                ? Math.round(((stat.current * 10 - stat.init * 10) / (stat.max * 10)) * this.maxCells)
                 : 0;
             filledCount = constrain(filledCount, 0, this.maxCells);
 
-            for (let c = 0; c < this.maxCells; c++) {
+            for (let c = 0; c < this.maxCells + 1; c++) {
                 let cx = px + this.barOffsetX + c * (this.cellSize + this.cellGap);
                 let cy = rowY;
 
-                if (c < filledCount) {
+                if (c < filledCount + 1) {
                     // fill bars
                     fill(attr.filledColor[0], attr.filledColor[1], attr.filledColor[2]);
                     stroke(attr.color[0], attr.color[1], attr.color[2]);
@@ -110,5 +110,13 @@ class Resourcepanel {
         text('Press C to close', px + this.panelW / 2, py + this.panelH - 22);
 
         pop();
+    }
+
+    getStrofNum(num) {
+        if ((num | 0) === num) {
+            return num.toString();
+        } else {
+            return num.toFixed(1);
+        }
     }
 }
