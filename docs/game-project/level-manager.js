@@ -670,8 +670,12 @@ class LevelManager {
                rect(ex, ey, ew, eh);
             }
             else if (ent.type === GameConfig.Entity.PollutionCore) {
-               fill(200, 100, 255, alpha); // 紫色代表污染核心
+               push();
+               stroke(0);
+               strokeWeight(0.5);
+               fill(200, 100, 255); // 紫色代表污染核心
                rect(ex, ey, ew, eh);
+               pop();
             }
             // 【新增分支】：显示清洁能量
             else if (ent.type === GameConfig.Entity.CleanEnergy) {
@@ -773,6 +777,29 @@ class LevelManager {
                      fill(colorHex + "a0");
                      rect(lx + c * scaleX, ly + r * scaleY, scaleX, scaleY);
                   }
+               }
+            }
+         }
+      }
+
+      // pollutioncore
+      for (let lvl of levelsToShow) {
+         let level = gm.levelsInfo[this._findLevelIndexByIid(lvl.iid)];
+         let entities = level.entities;
+         if (entities) {
+            for (let ent of entities) {
+               if (ent.isDead) continue;
+               let ex = level.worldX + ent.x;
+               ex = offsetX + (ex - minX) * mapScale;
+               let ey = level.worldY + ent.y;
+               ey = offsetY + (ey - minY) * mapScale;
+               if (ent.type === GameConfig.Entity.PollutionCore) {
+                  push();
+                  stroke(0);
+                  strokeWeight(0.75);
+                  fill(200, 100, 255);
+                  rect(ex, ey, 12, 12);
+                  pop();
                }
             }
          }
