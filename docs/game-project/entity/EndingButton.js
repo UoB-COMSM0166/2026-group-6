@@ -2,7 +2,7 @@ class EndingButton extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
       this.dialogText = "start to leave earth";
-      this._playerNearby = false;  // 本帧玩家是否接触（每帧重置）
+      this._playerNearby = false;
       this.dialogW = 85;
    }
 
@@ -19,11 +19,10 @@ class EndingButton extends Entity {
    }
 
    update(level) {
-      // 玩家离开后自动关闭对话框
       if (!this._playerNearby && this.dialogOpen) {
          this.dialogOpen = false;
       }
-      // 每帧重置接触标志（由 onPlayerContact 在接触时置 true）
+
       this._playerNearby = false;
    }
 

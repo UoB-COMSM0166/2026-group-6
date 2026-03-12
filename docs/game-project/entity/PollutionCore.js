@@ -11,7 +11,6 @@ class PollutionCore extends Entity {
          player.setPrompt('F');
          if (keyIsDown(Keys.F)) {
             let consume = 2;
-            // 先检查玩家是否有足够的能量可以消耗
             if (player.checkRemainCleanEnergy(consume)) {
                gm.addParticles(this.cx(), this.cy());
                player.reduceCleanEnergy(consume);
@@ -21,7 +20,7 @@ class PollutionCore extends Entity {
       }
       else {
          if (!this.purifySound.isPlaying()) this.purifySound.play();
-         this.destroy(); // 净化完成，销毁实体
+         this.destroy();
       }
    }
 
@@ -33,7 +32,6 @@ class PollutionCore extends Entity {
          player.setPrompt('F');
          if (keyIsDown(Keys.F)) {
             let consume = 2;
-            // 增加能量检查，能量足够时才触发粒子、扣除能量和净化
             if (player.checkRemainCleanEnergy(consume)) {
                gm.addParticles(this.cx(), this.cy());
                player.reduceCleanEnergy(consume);

@@ -4,8 +4,8 @@ class Enemy extends Entity {
     * @param {number} y
     * @param {number} w
     * @param {number} h
-    * @param {Object} [spawnData]  LDtk 原始数据
-    * @param {LevelManager} level  用于出生位置修正
+    * @param {Object} [spawnData]  LDtk original data
+    * @param {LevelManager} level
     */
    constructor(x, y, w, h, spawnData, level) {
       super(x, y, w, h, spawnData);
@@ -18,17 +18,17 @@ class Enemy extends Entity {
       this.purified = false;
       this.alpha = 255;
 
-      this.dir = 1; // 想要前往的方向
+      this.dir = 1; // willing dir
       this.speed = GameConfig.Enemy.SPEED;
       this.vy = 0;
-      this.vx = 0; // 实际移动方向
-      this.accel = 0.02;       // 每帧加速量
-      this.friction = 0.85;     // 击退后的摩擦衰减
-      this.knockback = false;   // 是否处于击退状态
+      this.vx = 0; // actual move dir
+      this.accel = 0.02;       // accelerate
+      this.friction = 0.85;     // repel friction
+      this.knockback = false;   // repel state
       this.grounded = false;
       this.jumpForce = -0.8 * GameConfig.Enemy.JUMPFORCE;
 
-      // 动画
+      // animation
       this.animState = "WALK";
       this.animFrame = 0;
       this.animTick = 0;
@@ -56,7 +56,7 @@ class Enemy extends Entity {
          ATTACK: { x: 33, y: 44, w: 53, h: 45 },
       };
 
-      // 出生防卡墙：使用空间查询
+      // birth detect wall
       let safety = 100;
       while (level.isRectOverlappingTile(this.x, this.y, this.w, this.h,
          { solidOnly: true, margin: 0.1 })
@@ -70,23 +70,22 @@ class Enemy extends Entity {
     * @param {LevelManager} level
     */
    update(level, gm) {
-      // 死亡：直接消失
+      // die
       if (this.hp <= 0) {
          this.destroy();
          return;
       }
 
-      // 动画时间
+      // animation time
       if (this.attackCooldown > 0) this.attackCooldown--;
       if (this.attackTimer > 0) this.attackTimer--;
       if (this.hurtTimer > 0) this.hurtTimer--;
 
-      // --- Y 轴 ---
+      // Y
       this.vy += 0.1;
       let nextY = this.y + this.vy;
       this.grounded = false;
 
-      // 空间查询: 只检测附近的固体
       let hitTileY = level.isRectOverlappingTile(this.x + 0.1, nextY, this.w - 0.2, this.h,
          { solidOnly: true, margin: 0 });
       if (hitTileY) {
@@ -103,17 +102,17 @@ class Enemy extends Entity {
 
       if (this.y > level.mapH) this.hp = 0;
 
-      // --- X 轴 ---
+      // X
       const G = GameConfig.World.GRID_SIZE;
 
       if (this.knockback) {
-         // 击退状态：摩擦衰减，速度足够小时恢复正常
+         // repel
          this.vx *= this.friction;
          if (Math.abs(this.vx) < this.speed * 0.5) {
             this.knockback = false;
          }
       } else {
-         // 正常状态：向目标速度加速
+         // normal
          let targetVx = this.speed * this.dir * 0.8;
          if (Math.abs(this.vx - targetVx) < this.accel) {
             this.vx = targetVx;
@@ -126,11 +125,11 @@ class Enemy extends Entity {
 
       let nextX = this.x + this.vx;
 
-      // 撞墙检测
+      // hitwall detect
       let hitWall = !!level.isRectOverlappingTile(nextX, this.y, this.w, this.h,
          { solidOnly: true, margin: 0.1 });
 
-      // 悬崖检测
+      // Cliff detect
       let moveDir = (this.vx >= 0) ? 1 : -1;
       let probeX = (moveDir === 1) ? (nextX + this.w + 0.1) : (nextX - 0.1);
       let feetRow = level.worldToGrid(0, this.y + this.h).row;
@@ -141,7 +140,7 @@ class Enemy extends Entity {
       let aboutToFall = !safeToDrop;
 
       if (hitWall) {
-         this.vx = 0;  // 撞墙速度归零
+         this.vx = 0;
          if (this.grounded && !this.knockback) {
             this.vy = this.jumpForce;
             this.jumpTime += 1;
@@ -161,7 +160,7 @@ class Enemy extends Entity {
          this.x = nextX;
       }
 
-      // 动画状态选择
+      // animation state
       if (this.hurtTimer > 0) {
          this.animState = "HURT";
       } else if (this.attackTimer > 0) {
@@ -179,7 +178,7 @@ class Enemy extends Entity {
       // The direction in which the player retreats
       let dir = (player.x < this.x) ? -1 : 1;
       if (this.dir * dir < 0) this._turn();
-      // 触发攻击动画
+      // attack animation
       if (this.attackCooldown <= 0) {
          this.attackTimer = this.spriteCfg.attackFrames * this.spriteCfg.frameDelay;
          this.attackCooldown = 20;
@@ -226,9 +225,6 @@ class Enemy extends Entity {
 
    get isDead() { return this.hp <= 0; }
 
-
-
-   // 超出地图
    _isCrossMap(level) {
       let nextX = this.x + this.vx;
       const G = GameConfig.World.GRID_SIZE;
@@ -240,7 +236,7 @@ class Enemy extends Entity {
    _turn() {
       this.dir *= -1;
       this.jumpTime = 0;
-      this.vx = this.speed * this.dir * 0.3;  // 立即给一个新方向的初速度
+      this.vx = this.speed * this.dir * 0.3;
    }
 
    repel(repelX, repelY) {
@@ -313,6 +309,4 @@ class Enemy extends Entity {
       }
       pop();
    }
-
-
 }
