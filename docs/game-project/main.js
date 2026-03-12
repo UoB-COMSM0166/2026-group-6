@@ -890,10 +890,10 @@ instructionsPanel.appendChild(nextPageButton);
 
 // BGM控制行
 const bgmRow = document.createElement('div');
-bgmRow.style.cssText = 'display:flex; align-items:center; gap:12px; width:420px;';
+bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:420px;';
 const bgmLabel = document.createElement('div');
-bgmLabel.textContent = 'BGM';
-bgmLabel.style.cssText = 'width:60px; color:#fff; font-size:18px;';
+bgmLabel.textContent = 'Background';
+bgmLabel.style.cssText = 'width:80px; color:#fff; font-size:18px;';
 const bgmMuteBtn = document.createElement('button');
 bgmMuteBtn.id = 'bgm-mute-btn';
 bgmMuteBtn.textContent = audioManager?.getState().bgm.isMuted ? '🔇' : '🔊';
@@ -910,12 +910,12 @@ bgmRow.appendChild(bgmLabel);
 bgmRow.appendChild(bgmMuteBtn);
 bgmRow.appendChild(bgmSlider);
 
-// SFX控制行
+// sounde: SFX控制行
 const sfxRow = document.createElement('div');
-sfxRow.style.cssText = 'display:flex; align-items:center; gap:12px; width:420px;';
+sfxRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:420px;';
 const sfxLabel = document.createElement('div');
-sfxLabel.textContent = 'SFX';
-sfxLabel.style.cssText = 'width:60px; color:#fff; font-size:18px;';
+sfxLabel.textContent = 'Sounds';
+sfxLabel.style.cssText = 'width:80px; color:#fff; font-size:18px;';
 const sfxMuteBtn = document.createElement('button');
 sfxMuteBtn.id = 'sfx-mute-btn';
 sfxMuteBtn.textContent = audioManager?.getState().sfx.isMuted ? '🔇' : '🔊';
