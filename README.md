@@ -101,48 +101,48 @@ The final outcome of the game will depend on the progress of purifying the world
 <td>Player</td>
 <td>Robot</td>
 <td><img src="resources/images/contentplayer.png" width="64"></td>
-<td>The player character, a small robot that explores the world and purifies pollution.</td>
+<td>The player's image is a white robot with the ability to purify.</td>
 </tr>
 
 <tr>
 <td>Ability</td>
 <td>Energy Rope</td>
 <td><img src="resources/images/contentrope.png" width="64"></td>
-<td>A rope that can be fired to purify pollution or help the player traverse difficult terrain.</td>
+<td>The rope can help players purify the pollution and traverse difficult terrain.</td>
 </tr>
 
 <tr>
 <td rowspan="2">Interactable</td>
 <td>Energy Pillar</td>
 <td><img src="resources/images/cleaningenergy.png" width="64"></td>
-<td>A station where the player can recharge purification energy.</td>
+<td>Players can obtain purification energy here.</td>
 </tr>
 
 <tr>
 <td>Button</td>
 <td><img src="resources/images/button.png" width="64"></td>
-<td>A switch that can be pressed to open certain doors.</td>
+<td>The button can open the mechanism door.</td>
 </tr>
 
 <tr>
 <td>Checkpoint</td>
 <td>Respawn Point</td>
 <td><img src="resources/images/reset.png" width="64"></td>
-<td>The location where the player respawns after death.</td>
+<td>The player's resurrection point</td>
 </tr>
 
 <tr>
 <td>Objective</td>
 <td>Pollution Source</td>
 <td><img src="resources/images/pollution_core.png" width="64"></td>
-<td>A pollution node that must be purified to restore the environment.</td>
+<td>A pollution core that need to be purified by the players.</td>
 </tr>
 
 <tr>
 <td>Enemy</td>
 <td>Monster</td>
 <td><img src="resources/images/contentenemy.png" width="64"></td>
-<td>Hostile creatures that attack the player but can also be purified.</td>
+<td>It will attack players and can be purified.</td>
 </tr>
 
 <tr>
