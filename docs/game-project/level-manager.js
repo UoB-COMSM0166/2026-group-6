@@ -798,7 +798,7 @@ class LevelManager {
                   stroke(0);
                   strokeWeight(0.75);
                   fill(200, 100, 255);
-                  rect(ex, ey, 12, 12);
+                  rect(ex, ey, 12 * mapScale, 12 * mapScale);
                   pop();
                }
             }
@@ -814,7 +814,7 @@ class LevelManager {
       fill(255, 50, 50); // 红色代表玩家
       stroke(255);
       strokeWeight(1.5);
-      ellipse(px, py, 12, 12);
+      ellipse(px, py, 12 * mapScale, 12 * mapScale);
       noStroke();
 
       // 7. 顶部标题
