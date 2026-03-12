@@ -74,7 +74,6 @@ function draw() {
 
    if (appState === "MENU") {
       background(0);
-      intro.display();
       return;
    }
 
@@ -175,7 +174,6 @@ function _createMenu() {
       'background-position:center;' +
       'background-repeat:no-repeat;' +
       'z-index:10;';
-   
 
    // ===== Back 按钮只在子页面显示 =====
    const backBtn = document.createElement('button');
