@@ -169,7 +169,13 @@ function _createMenu() {
       'position:fixed; top:50%; left:50%; width:1000px; height:700px;' +
       'transform:translate(-50%,-50%);' +
       'display:flex; flex-direction:column; justify-content:center; align-items:center;' +
-      'gap:20px; background:#1a1a2e; z-index:10;';
+      'gap:20px;' +
+      'background-image:linear-gradient(rgba(5,10,30,0.35), rgba(5,10,30,0.35)), url("resources/images/UI_resources/Background_space.png");' +
+      'background-size:cover;' +
+      'background-position:center;' +
+      'background-repeat:no-repeat;' +
+      'z-index:10;';
+   
 
    // ===== Back 按钮只在子页面显示 =====
    const backBtn = document.createElement('button');
