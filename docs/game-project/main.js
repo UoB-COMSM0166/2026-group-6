@@ -890,10 +890,10 @@ instructionsPanel.appendChild(nextPageButton);
 
 // BGM控制行
 const bgmRow = document.createElement('div');
-bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:420px;';
+bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
 const bgmLabel = document.createElement('div');
 bgmLabel.textContent = 'Background';
-bgmLabel.style.cssText = 'width:80px; color:#fff; font-size:18px;';
+bgmLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
 const bgmMuteBtn = document.createElement('button');
 bgmMuteBtn.id = 'bgm-mute-btn';
 bgmMuteBtn.textContent = audioManager?.getState().bgm.isMuted ? '🔇' : '🔊';
@@ -905,17 +905,17 @@ bgmSlider.min = '0';
 bgmSlider.max = '1';
 bgmSlider.step = '0.01';
 bgmSlider.value = audioManager?.getState().bgm.volume ?? 0.6;
-bgmSlider.style.cssText = 'flex:1; height:8px; accent-color:#1eb47a;';
+bgmSlider.style.cssText = 'width:240px; height:8px; accent-color:#1eb47a;';
 bgmRow.appendChild(bgmLabel);
 bgmRow.appendChild(bgmMuteBtn);
 bgmRow.appendChild(bgmSlider);
 
 // sounde: SFX控制行
 const sfxRow = document.createElement('div');
-sfxRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:420px;';
+sfxRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
 const sfxLabel = document.createElement('div');
 sfxLabel.textContent = 'Sounds';
-sfxLabel.style.cssText = 'width:80px; color:#fff; font-size:18px;';
+sfxLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
 const sfxMuteBtn = document.createElement('button');
 sfxMuteBtn.id = 'sfx-mute-btn';
 sfxMuteBtn.textContent = audioManager?.getState().sfx.isMuted ? '🔇' : '🔊';
@@ -927,7 +927,7 @@ sfxSlider.min = '0';
 sfxSlider.max = '1';
 sfxSlider.step = '0.01';
 sfxSlider.value = audioManager?.getState().sfx.volume ?? 0.8;
-sfxSlider.style.cssText = 'flex:1; height:8px; accent-color:#1eb47a;';
+sfxSlider.style.cssText = 'width:240px;; height:8px; accent-color:#1eb47a;';
 sfxRow.appendChild(sfxLabel);
 sfxRow.appendChild(sfxMuteBtn);
 sfxRow.appendChild(sfxSlider);
