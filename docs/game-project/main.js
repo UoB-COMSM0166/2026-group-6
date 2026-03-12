@@ -1,6 +1,7 @@
 let resources;
 let gm;
 let appState = "MENU";  // MENU | VIDEO | PLAYING 
+const GAME_FONT_FAMILY = '"Monogram", monospace';
 let menuDiv;
 let intro;
 let storyIntro;
@@ -23,6 +24,19 @@ function setup() {
    document.oncontextmenu = () => false;
    let canvas = createCanvas(1000, 700);
 
+   const fontStyle = document.createElement('style');
+   fontStyle.textContent = `
+      @font-face {
+         font-family: 'Monogram';
+         src: url('resources/fonts/monogram.ttf') format('truetype');
+      }
+
+      body, button, input, select, textarea {
+         font-family: 'Monogram', monospace !important;
+      }
+   `;
+   document.head.appendChild(fontStyle);
+
    canvas.style('display', 'block');
    canvas.style('margin', 'auto');
    canvas.style('position', 'absolute');
@@ -36,6 +50,9 @@ function setup() {
 
    canvas.elt.oncontextmenu = () => false;
    noSmooth();
+   if (resources.fonts.main) {
+      textFont(resources.fonts.main);
+   }
 
    // Cover
    // Story intro first
@@ -57,6 +74,16 @@ function setup() {
 }
 
 function draw() {
+   if (resources?.fonts?.main) {
+      textFont(resources.fonts.main);
+   }
+
+   if (!storyStarted) {
+      background(0);
+      intro.display();
+      return;
+   }
+
    if (!storyStarted) {
       background(0);
       intro.display();
@@ -171,7 +198,8 @@ function _createMenu() {
    backBtn.style.cssText =
       'display:none;' +
       'position:absolute; top:30px; left:30px;' +
-      'width:180px; height:60px; font-size:20px; font-weight:bold; color:white;' +
+      'width:180px; height:60px; font-size:30px; font-weight:bold; color:white;' +
+      'font-family:"Monogram", monospace;' +
       `background-image:url("${BTN_NORMAL}");` +
       'background-size:100% 100%;' +
       'background-repeat:no-repeat;' +
@@ -310,7 +338,7 @@ function _createMenu() {
    let difficultyTitle = document.createElement('div');
    difficultyTitle.textContent = "Choose Difficulty";
    difficultyTitle.style.cssText =
-      'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
+      'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;font-family:"Monogram", monospace;';
 
    let difficultyContainer = document.createElement('div');
    difficultyContainer.style.cssText =
@@ -338,7 +366,7 @@ function _createMenu() {
    const audioTitle = document.createElement('div');
    audioTitle.textContent = "Audio Settings";
    audioTitle.style.cssText =
-      'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
+      'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;font-family:"Monogram", monospace;';
 
    //说明页面
 
@@ -362,11 +390,11 @@ function _createMenu() {
    bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
    const bgmLabel = document.createElement('div');
    bgmLabel.textContent = 'Background';
-   bgmLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
+   bgmLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;font-family:"Monogram", monospace;';
    const bgmMuteBtn = document.createElement('button');
    bgmMuteBtn.id = 'bgm-mute-btn';
    bgmMuteBtn.textContent = audioManager?.getState().bgm.isMuted ? '🔇' : '🔊';
-   bgmMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;';
+   bgmMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;font-family:"Monogram", monospace;';
    const bgmSlider = document.createElement('input');
    bgmSlider.id = 'bgm-volume-slider';
    bgmSlider.type = 'range';
@@ -384,11 +412,11 @@ function _createMenu() {
    sfxRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
    const sfxLabel = document.createElement('div');
    sfxLabel.textContent = 'Sounds';
-   sfxLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
+   sfxLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;font-family:"Monogram", monospace;';
    const sfxMuteBtn = document.createElement('button');
    sfxMuteBtn.id = 'sfx-mute-btn';
    sfxMuteBtn.textContent = audioManager?.getState().sfx.isMuted ? '🔇' : '🔊';
-   sfxMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;';
+   sfxMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;font-family:"Monogram", monospace';
    const sfxSlider = document.createElement('input');
    sfxSlider.id = 'sfx-volume-slider';
    sfxSlider.type = 'range';
@@ -451,7 +479,8 @@ function _makeDifficultyBtn(label, difficulty) {
    btn.textContent = label;
    btn.dataset.difficulty = difficulty; // 存储难度标识
    btn.style.cssText =
-      'width:180px; height:60px; font-size:20px; font-weight:bold; color:white;' +
+      'width:180px; height:60px; font-size:30px; font-weight:bold; color:white;' +
+      'font-family:"Monogram", monospace;' +
       `background-image:url("${BTN_NORMAL}");` +
       'background-size:100% 100%;' +
       'background-repeat:no-repeat;' +
@@ -515,7 +544,8 @@ function _makeBtn(label, onClick) {
    btn.textContent = label;
 
    btn.style.cssText =
-      'width:320px; height:70px; font-size:22px; font-weight:bold; color:white;' +
+      'width:320px; height:70px; font-size:35px; font-weight:bold; color:white;' +
+      'font-family:"Monogram", monospace;' +
       'background-image:url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png");' +
       'background-size:100% 100%;' +
       'background-repeat:no-repeat;' +

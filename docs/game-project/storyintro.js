@@ -61,7 +61,7 @@ class StoryIntro {
 
       this.textBox = {
          x: 115,
-         y: 548,
+         y: 550,
          w: 770,
          h: 96
       };
@@ -236,7 +236,7 @@ class StoryIntro {
       noStroke();
       textAlign(LEFT, TOP);
       textStyle(NORMAL);
-      textSize(22);
+      textSize(35);
       textLeading(24);
 
       text(
@@ -263,7 +263,7 @@ class StoryIntro {
       fill(25);
       textAlign(CENTER, CENTER);
       textStyle(NORMAL);
-      textSize(16);
+      textSize(24);
       text("Skip", b.x + b.w / 2, b.y + b.h / 2 + 1);
       pop();
    }

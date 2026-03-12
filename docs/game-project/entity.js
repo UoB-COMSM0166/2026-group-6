@@ -155,7 +155,7 @@ class Entity {
 
    _drawDialog(w) {
       const lines = this.dialogText.split('\n');
-      const fontSize = 4;
+      const fontSize = 5;
       const lineH = fontSize + 1.5;
       const padX = 3;
       const padY = 3;

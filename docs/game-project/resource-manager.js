@@ -1,26 +1,27 @@
 /**
- * ResourceManager — 资源仓库
+ * ResourceManager — Resource Repository
  *
- * 集中管理所有资源（图片、JSON、音效）的加载。
- * 保证每个素材只加载一次，所有模块从这里获取资源引用。
- * 
- * 
- * =========images文件需放置在audios的资源之前，添加images文件需注意=====
+ * Centrally manages the loading of all resources (images, JSON files, and audio).
+ * Ensures each asset is loaded only once, and all modules obtain resource references from here.
  *
- * 用法:
- *   preload() 中调用 resources.preload()
- *   之后通过 resources.images.tileset / resources.data.ldtk 访问字典
+ *
+ * ========= The images resources must be placed before the audios resources.
+ * Be careful to keep this order when adding new image resources. =====
+ *
+ * Usage:
+ *   Call resources.preload() inside preload()
+ *   Then access resources via resources.images.tileset / resources.data.ldtk
  */
 class ResourceManager {
    constructor() {
       // (dict)
       this.images = {};
       this.data = {};
+      this.fonts = {};
       this.sounds = {
          rope: {},
          enemy: {}
-      };
-      this._loaded = false;
+   };
 
       //地图难度preload
       this.data.ldtk = {
@@ -47,6 +48,7 @@ class ResourceManager {
       this.data.ldtk.medium = loadJSON('map/map-normal.ldtk');
       this.data.ldtk.hard = loadJSON('map/map-main.ldtk');
       this.data.currentLdtk = this.data.ldtk.easy;
+      this.fonts.main = loadFont('resources/fonts/monogram.ttf');
 
       //images
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
