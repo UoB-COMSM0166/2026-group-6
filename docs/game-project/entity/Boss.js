@@ -84,7 +84,7 @@ class Boss extends Entity {
       if (!player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) return;
 
       // Boss 受到伤害
-      this.hp -= 1;
+      this.hp -= player.attackDmg;
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
       gm.addParticles(this.cx(), this.cy(), 10); // 爆大团粒子
 
