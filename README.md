@@ -253,12 +253,12 @@ To structure our game requirements, we organised them using **epics, user storie
 
 <tr>
 <td rowspan="2">Progression and World State</td>
-<td>As a player, I want purification progress to unlock new areas so that exploration feels rewarding.</td>
+<td>As a player, I hope that the purification process can unlock new areas, so that the exploration process will make people feel a sense of achievement.</td>
 <td>Given the purification progress reaches a required percentage, when the player approaches a blocked path, then the barrier is removed or a gate opens.</td>
 </tr>
 
 <tr>
-<td>As a player, I want the final ending to depend on how much pollution I cleaned so that my choices influence the outcome.</td>
+<td>As a player, I hope that the final outcome of the game depends on how many contaminated cores I have cleared. In this way, my choices will be able to influence the result of the game.</td>
 <td>Given the player completes the game, when the system evaluates the purification percentage, then the corresponding ending is displayed.</td>
 </tr>
 
@@ -283,13 +283,8 @@ To structure our game requirements, we organised them using **epics, user storie
 ## Reflection
 In this project, our team progressively understood and mastered the roles of epics, user stories, and acceptance criteria in software engineering through the example of Running App in the workshop, and how they integrate with our game's context. Early in the project, frequent communication among team members led us to believe we had reached consensus on functional requirements, causing us to underestimate the necessity of formalized requirement descriptions.
 
-This assumption was gradually corrected as requirements were systematically organized and discussed. Organizing requirements into epics enabled high-level, structured planning of game systems—such as the core purification mechanism, exploration and ability unlocking, and world state feedback with ending systems. This approach helped define system boundaries during design and maintain logical consistency between features.
-
-User stories prompted us to reexamine requirements from diverse stakeholder perspectives: players and development team members. The user-value-oriented description approach made us focus not only on what a feature “does”, but also why it “does it”. This clarified the game's core design theme: promoting sustainable development on a resource-limited planet through “purification”.
-
-Acceptance criteria helped translate abstract design goals into concrete, verifiable, and testable behavioral standards. By defining clear conditions and expected outcomes, team members developed a more consistent understanding of implementation details, while also providing a clear basis for testing and evaluation.
-
-As the game's scope expanded, requirements continued to evolve. Through the ongoing addition, adjustment, or removal of user stories, we optimized the requirements system in a more agile manner. This ensured that the final implemented features aligned with the game's theme while also meeting the course's requirements for testability and maintainability.
+Based on the content of the workshop, we divided the requirements into different Epics, which enabled our team to plan the game system at a higher level. For instance, the core purification mechanism and the design of players' exploration of the map. This can help us more clearly define the boundaries of the system during the design process and maintain logical consistency.
+During the process of writing user stories, our team began to redesign the requirements from the perspectives of different stakeholders. And this user-value-centered approach enables us to further ponder the question of "why this function needs to be implemented like this". This further clarifies the overall theme of the game, which is to demonstrate the concept of sustainable development on a planet with limited resources through the "purification" mechanism. This further clarifies the theme of the game, which is about ecological protection and the concept of sustainable development. Meanwhile, acceptance criteria can help us transform the abstract design goals into specific and verifiable behavioral standards.
 
 ## Use-Cases
 
