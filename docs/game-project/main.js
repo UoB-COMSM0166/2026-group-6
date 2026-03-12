@@ -11,6 +11,8 @@ let demoVideo = null;
 //add: audiocontrol
 let audioManager;
 
+UI.setLoadingStyle();
+
 function preload() {
    resources = new ResourceManager();
    resources.preload();
@@ -49,7 +51,7 @@ function setup() {
    if (resources.ldtkData) {
       resources.markLoaded();
       //add: audiocontrol
-   audioManager = new AudioManager(resources);
+      audioManager = new AudioManager(resources);
    }
 }
 
@@ -175,7 +177,7 @@ function _createMenu() {
       'background-position:center;' +
       'background-repeat:no-repeat;' +
       'z-index:10;';
-   
+
 
    // ===== Back 按钮只在子页面显示 =====
    const backBtn = document.createElement('button');
@@ -238,9 +240,9 @@ function _createMenu() {
          e.stopPropagation();
       }
 
-     
-       _hideMenu();
-   
+
+      _hideMenu();
+
       // ===== 开始游戏时传入 selectedDifficulty =====
       gm = new GameManager(resources, selectedDifficulty);
 
@@ -276,107 +278,107 @@ function _createMenu() {
    btnContinue.style.opacity = '0.3';
    btnContinue.style.pointerEvents = 'none';
 
-// ===== Choose Difficulty =====
-const btnDifficulty = _makeBtn('Choose Difficulty', function (e) {
-   e.preventDefault();
-   e.stopPropagation();
+   // ===== Choose Difficulty =====
+   const btnDifficulty = _makeBtn('Choose Difficulty', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
-      resources.sounds.click.play();
-   }
-   showMenuPage('difficulty');
-});
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+      showMenuPage('difficulty');
+   });
 
-//======Audio Settings=====
-const btnAudio = _makeBtn('Audio Settings', function (e) {
-   e.preventDefault();
-   e.stopPropagation();
+   //======Audio Settings=====
+   const btnAudio = _makeBtn('Audio Settings', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
-      resources.sounds.click.play();
-   }
-   showMenuPage('audio');
-});
-// ====== Instructions ======
-const btnInstructions = _makeBtn('Instructions', function (e) {
-   e.preventDefault();
-   e.stopPropagation();
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+      showMenuPage('audio');
+   });
+   // ====== Instructions ======
+   const btnInstructions = _makeBtn('Instructions', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
-      resources.sounds.click.play();
-   }
-   showMenuPage('instructions');
-});
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+      showMenuPage('instructions');
+   });
 
-// 组装主面板
-mainPanel.appendChild(btnStart);
-mainPanel.appendChild(btnContinue);
-mainPanel.appendChild(btnDifficulty);
-mainPanel.appendChild(btnAudio);
-mainPanel.appendChild(btnInstructions);
-menuDiv.appendChild(mainPanel);
+   // 组装主面板
+   mainPanel.appendChild(btnStart);
+   mainPanel.appendChild(btnContinue);
+   mainPanel.appendChild(btnDifficulty);
+   mainPanel.appendChild(btnAudio);
+   mainPanel.appendChild(btnInstructions);
+   menuDiv.appendChild(mainPanel);
 
-// 新增：难度面板（默认隐藏）
-const difficultyPanel = document.createElement('div');
-difficultyPanel.id = 'menu-difficulty-panel';
-difficultyPanel.style.cssText =
-   'display:none;' +
-   'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
+   // 新增：难度面板（默认隐藏）
+   const difficultyPanel = document.createElement('div');
+   difficultyPanel.id = 'menu-difficulty-panel';
+   difficultyPanel.style.cssText =
+      'display:none;' +
+      'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
 
-let difficultyTitle = document.createElement('div');
-difficultyTitle.textContent = "Choose Difficulty";
-difficultyTitle.style.cssText =
-   'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
+   let difficultyTitle = document.createElement('div');
+   difficultyTitle.textContent = "Choose Difficulty";
+   difficultyTitle.style.cssText =
+      'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
 
-let difficultyContainer = document.createElement('div');
-difficultyContainer.style.cssText =
-   'display:flex; gap:20px;';
+   let difficultyContainer = document.createElement('div');
+   difficultyContainer.style.cssText =
+      'display:flex; gap:20px;';
 
-let btnEasy = _makeDifficultyBtn('Easy', 'easy');
-let btnMedium = _makeDifficultyBtn('Medium', 'medium');
-let btnHard = _makeDifficultyBtn('Hard', 'hard');
-_setActiveDifficultyBtn(btnEasy);
+   let btnEasy = _makeDifficultyBtn('Easy', 'easy');
+   let btnMedium = _makeDifficultyBtn('Medium', 'medium');
+   let btnHard = _makeDifficultyBtn('Hard', 'hard');
+   _setActiveDifficultyBtn(btnEasy);
 
-difficultyContainer.appendChild(btnEasy);
-difficultyContainer.appendChild(btnMedium);
-difficultyContainer.appendChild(btnHard);
-difficultyPanel.appendChild(difficultyTitle);
-difficultyPanel.appendChild(difficultyContainer);
-menuDiv.appendChild(difficultyPanel);
+   difficultyContainer.appendChild(btnEasy);
+   difficultyContainer.appendChild(btnMedium);
+   difficultyContainer.appendChild(btnHard);
+   difficultyPanel.appendChild(difficultyTitle);
+   difficultyPanel.appendChild(difficultyContainer);
+   menuDiv.appendChild(difficultyPanel);
 
-// 新增：音频面板（默认隐藏）
-const audioPanel = document.createElement('div');
-audioPanel.id = 'menu-audio-panel';
-audioPanel.style.cssText =
-   'display:none;' +
-   'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
+   // 新增：音频面板（默认隐藏）
+   const audioPanel = document.createElement('div');
+   audioPanel.id = 'menu-audio-panel';
+   audioPanel.style.cssText =
+      'display:none;' +
+      'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
 
-const audioTitle = document.createElement('div');
-audioTitle.textContent = "Audio Settings";
-audioTitle.style.cssText =
-   'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
+   const audioTitle = document.createElement('div');
+   audioTitle.textContent = "Audio Settings";
+   audioTitle.style.cssText =
+      'font-size:28px; font-weight:bold; color:#fff; margin-bottom:10px;';
 
-// ===============================
-// Instructions Panel
-// ===============================
+   // ===============================
+   // Instructions Panel
+   // ===============================
 
-const instructionsPanel = document.createElement('div');
-instructionsPanel.id = 'menu-instructions-panel';
-instructionsPanel.style.cssText =
-   'display:none;' +
-   'flex-direction:column;' +
-   'align-items:center;' +
-   'justify-content:flex-start;' +
-   'width:100%;' +
-   'height:100%;' +
-   'padding:110px 24px 24px 24px;' +
-   'box-sizing:border-box;' +
-   'overflow:hidden;' +
-   'color:#fff;' +
-   'position:relative;';
+   const instructionsPanel = document.createElement('div');
+   instructionsPanel.id = 'menu-instructions-panel';
+   instructionsPanel.style.cssText =
+      'display:none;' +
+      'flex-direction:column;' +
+      'align-items:center;' +
+      'justify-content:flex-start;' +
+      'width:100%;' +
+      'height:100%;' +
+      'padding:110px 24px 24px 24px;' +
+      'box-sizing:border-box;' +
+      'overflow:hidden;' +
+      'color:#fff;' +
+      'position:relative;';
 
-const instructionsTableCss = document.createElement('style');
-instructionsTableCss.textContent = `
+   const instructionsTableCss = document.createElement('style');
+   instructionsTableCss.textContent = `
 #menu-instructions-panel .instructions-table thead th {
    border-bottom: 1px solid rgba(255,255,255,0.18);
 }
@@ -390,102 +392,102 @@ instructionsTableCss.textContent = `
    border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 `;
-document.head.appendChild(instructionsTableCss);
+   document.head.appendChild(instructionsTableCss);
 
 
-// ===============================
-// Page Containers
-// ===============================
+   // ===============================
+   // Page Containers
+   // ===============================
 
-const instructionsPage1 = document.createElement('div');
-instructionsPage1.style.cssText =
-   'width:100%; display:flex; justify-content:center; box-sizing:border-box;';
+   const instructionsPage1 = document.createElement('div');
+   instructionsPage1.style.cssText =
+      'width:100%; display:flex; justify-content:center; box-sizing:border-box;';
 
-const instructionsPage2 = document.createElement('div');
-instructionsPage2.style.cssText =
-   'width:100%; display:none; justify-content:center; box-sizing:border-box;';
+   const instructionsPage2 = document.createElement('div');
+   instructionsPage2.style.cssText =
+      'width:100%; display:none; justify-content:center; box-sizing:border-box;';
 
-const instructionsPage3 = document.createElement('div');
-instructionsPage3.style.cssText =
-   'width:100%; display:none; justify-content:center;';
+   const instructionsPage3 = document.createElement('div');
+   instructionsPage3.style.cssText =
+      'width:100%; display:none; justify-content:center;';
 
-const instructionsPage4 = document.createElement('div');
-instructionsPage4.style.cssText =
-   'width:100%; display:none; justify-content:center;';
-
-
-// ===============================
-// Background Card
-// ===============================
-
-function createInstructionCard() {
-
-   const wrap = document.createElement('div');
-
-   wrap.style.cssText =
-      'width:96%;' +
-      'max-width:1080px;' +
-      'min-height:590px;' +
-      'display:flex;' +
-      'justify-content:center;' +
-      'align-items:center;' +
-      'background-image:url("resources/images/instructions/cardX3.png");' +
-      'background-size:100% 100%;' +
-      'background-repeat:no-repeat;' +
-      'background-position:center;' +
-      'padding:24px 26px 28px 26px;' +
-      'box-sizing:border-box;';
-
-   return wrap;
-}
-
-const instructionsTableWrap1 = createInstructionCard();
-const instructionsTableWrap2 = createInstructionCard();
+   const instructionsPage4 = document.createElement('div');
+   instructionsPage4.style.cssText =
+      'width:100%; display:none; justify-content:center;';
 
 
-// ===============================
-// Table Style
-// ===============================
+   // ===============================
+   // Background Card
+   // ===============================
 
-const tableStyle =
-   'width:94%;' +
-   'border-collapse:separate;' +
-   'border-spacing:0;' +
-   'table-layout:fixed;' +
-   'color:white;' +
-   'font-size:15px;' +
-   'margin:0 auto;';
+   function createInstructionCard() {
 
-const thStyle =
-   'border:0;' +
-   'padding:10px 8px;' +
-   'text-align:center;' +
-   'font-weight:bold;';
+      const wrap = document.createElement('div');
 
-const tdStyle =
-   'border:0;' +
-   'padding:8px 8px;' +
-   'text-align:left;' +
-   'vertical-align:middle;';
+      wrap.style.cssText =
+         'width:96%;' +
+         'max-width:1080px;' +
+         'min-height:590px;' +
+         'display:flex;' +
+         'justify-content:center;' +
+         'align-items:center;' +
+         'background-image:url("resources/images/instructions/cardX3.png");' +
+         'background-size:100% 100%;' +
+         'background-repeat:no-repeat;' +
+         'background-position:center;' +
+         'padding:24px 26px 28px 26px;' +
+         'box-sizing:border-box;';
 
-const imgStyle =
-   'display:block;' +
-   'margin:0 auto;' +
-   'max-width:48px;' +
-   'max-height:48px;' +
-   'object-fit:contain;' +
-   'image-rendering:pixelated;';
+      return wrap;
+   }
+
+   const instructionsTableWrap1 = createInstructionCard();
+   const instructionsTableWrap2 = createInstructionCard();
 
 
-// ===============================
-// Page 1 Table
-// ===============================
+   // ===============================
+   // Table Style
+   // ===============================
 
-const instructionsTable1 = document.createElement('table');
-instructionsTable1.className = 'instructions-table';
-instructionsTable1.style.cssText = tableStyle;
+   const tableStyle =
+      'width:94%;' +
+      'border-collapse:separate;' +
+      'border-spacing:0;' +
+      'table-layout:fixed;' +
+      'color:white;' +
+      'font-size:15px;' +
+      'margin:0 auto;';
 
-instructionsTable1.innerHTML = `
+   const thStyle =
+      'border:0;' +
+      'padding:10px 8px;' +
+      'text-align:center;' +
+      'font-weight:bold;';
+
+   const tdStyle =
+      'border:0;' +
+      'padding:8px 8px;' +
+      'text-align:left;' +
+      'vertical-align:middle;';
+
+   const imgStyle =
+      'display:block;' +
+      'margin:0 auto;' +
+      'max-width:48px;' +
+      'max-height:48px;' +
+      'object-fit:contain;' +
+      'image-rendering:pixelated;';
+
+
+   // ===============================
+   // Page 1 Table
+   // ===============================
+
+   const instructionsTable1 = document.createElement('table');
+   instructionsTable1.className = 'instructions-table';
+   instructionsTable1.style.cssText = tableStyle;
+
+   instructionsTable1.innerHTML = `
 <thead>
 <tr>
 <th style="${thStyle} width:11%;">Category</th>
@@ -542,15 +544,15 @@ instructionsTable1.innerHTML = `
 `;
 
 
-// ===============================
-// Page 2 Table
-// ===============================
+   // ===============================
+   // Page 2 Table
+   // ===============================
 
-const instructionsTable2 = document.createElement('table');
-instructionsTable2.className = 'instructions-table';
-instructionsTable2.style.cssText = tableStyle;
+   const instructionsTable2 = document.createElement('table');
+   instructionsTable2.className = 'instructions-table';
+   instructionsTable2.style.cssText = tableStyle;
 
-instructionsTable2.innerHTML = `
+   instructionsTable2.innerHTML = `
 <thead>
 <tr>
 <th style="${thStyle} width:11%;">Category</th>
@@ -606,368 +608,368 @@ instructionsTable2.innerHTML = `
 `;
 
 
-// ===============================
-// Page 3 Controls
-// ===============================
+   // ===============================
+   // Page 3 Controls
+   // ===============================
 
-const controlsPanel = document.createElement('div');
-controlsPanel.style.cssText =
-   'width:96%;' +
-   'max-width:1080px;' +
-   'min-height:590px;' +
-   'display:grid;' +
-   'grid-template-columns:repeat(2, minmax(0, 1fr));' +
-   'grid-template-rows:repeat(2, auto);' +
-   'column-gap:22px;' +
-   'row-gap:18px;' +
-   'padding:36px 26px 28px 26px;' +
-   'box-sizing:border-box;' +
-   'background-image:url("resources/images/instructions/cardX3.png");' +
-   'background-size:100% 100%;' +
-   'background-repeat:no-repeat;' +
-   'background-position:center;' +
-   'align-content:start;';
+   const controlsPanel = document.createElement('div');
+   controlsPanel.style.cssText =
+      'width:96%;' +
+      'max-width:1080px;' +
+      'min-height:590px;' +
+      'display:grid;' +
+      'grid-template-columns:repeat(2, minmax(0, 1fr));' +
+      'grid-template-rows:repeat(2, auto);' +
+      'column-gap:22px;' +
+      'row-gap:18px;' +
+      'padding:36px 26px 28px 26px;' +
+      'box-sizing:border-box;' +
+      'background-image:url("resources/images/instructions/cardX3.png");' +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'align-content:start;';
 
-const controlsPanelSingle = document.createElement('div');
-controlsPanelSingle.style.cssText =
-   'width:96%;' +
-   'max-width:1080px;' +
-   'min-height:590px;' +
-   'display:flex;' +
-   'justify-content:center;' +
-   'align-items:flex-start;' +
-   'padding:24px 26px 28px 26px;' +
-   'box-sizing:border-box;' +
-   'background-image:url("resources/images/instructions/cardX3.png");' +
-   'background-size:100% 100%;' +
-   'background-repeat:no-repeat;' +
-   'background-position:center;';
-
-function createControlItem(imageName, label) {
-   const item = document.createElement('div');
-   item.style.cssText =
+   const controlsPanelSingle = document.createElement('div');
+   controlsPanelSingle.style.cssText =
+      'width:96%;' +
+      'max-width:1080px;' +
+      'min-height:590px;' +
       'display:flex;' +
-      'flex-direction:column;' +
-      'align-items:center;' +
-      'justify-content:flex-start;' +
-      'gap:10px;' +
-      'min-height:230px;';
+      'justify-content:center;' +
+      'align-items:flex-start;' +
+      'padding:24px 26px 28px 26px;' +
+      'box-sizing:border-box;' +
+      'background-image:url("resources/images/instructions/cardX3.png");' +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;';
 
-   const preview = document.createElement('img');
-   preview.src = `resources/images/instructions/${imageName}`;
-   preview.alt = label;
-   preview.style.cssText =
-      'width:100%;' +
-      'height:185px;' +
-      'object-fit:contain;' +
-      'flex-shrink:0;';
+   function createControlItem(imageName, label) {
+      const item = document.createElement('div');
+      item.style.cssText =
+         'display:flex;' +
+         'flex-direction:column;' +
+         'align-items:center;' +
+         'justify-content:flex-start;' +
+         'gap:10px;' +
+         'min-height:230px;';
 
-   const text = document.createElement('div');
-   text.textContent = label;
-   text.style.cssText =
-      'color:#fff;' +
-      'font-size:15px;' +
-      'font-weight:600;' +
-      'line-height:1.2;' +
-      'text-align:center;' +
-      'text-shadow:0 0 8px rgba(0,0,0,0.35);';
+      const preview = document.createElement('img');
+      preview.src = `resources/images/instructions/${imageName}`;
+      preview.alt = label;
+      preview.style.cssText =
+         'width:100%;' +
+         'height:185px;' +
+         'object-fit:contain;' +
+         'flex-shrink:0;';
 
-   item.appendChild(preview);
-   item.appendChild(text);
-   return item;
-}
+      const text = document.createElement('div');
+      text.textContent = label;
+      text.style.cssText =
+         'color:#fff;' +
+         'font-size:15px;' +
+         'font-weight:600;' +
+         'line-height:1.2;' +
+         'text-align:center;' +
+         'text-shadow:0 0 8px rgba(0,0,0,0.35);';
 
-controlsPanel.appendChild(createControlItem('attackmonster.gif', 'Attack monster'));
-controlsPanel.appendChild(createControlItem('energySup.gif', 'Energy Supply'));
-controlsPanel.appendChild(createControlItem('purifycore.gif', 'Purify pollutioncore'));
-controlsPanel.appendChild(createControlItem('rest.gif', 'Set a save point and restore hp'));
-
-const ropeMechanicsItem = createControlItem('Ropemechanics.gif', 'Ropemechanics');
-ropeMechanicsItem.style.cssText +=
-   'width:min(420px, 100%);' +
-   'margin-top:8px;';
-controlsPanelSingle.appendChild(ropeMechanicsItem);
-
-
-// ===============================
-// Assemble Pages
-// ===============================
-
-instructionsTableWrap1.appendChild(instructionsTable1);
-instructionsTableWrap2.appendChild(instructionsTable2);
-
-instructionsPage1.appendChild(instructionsTableWrap1);
-instructionsPage2.appendChild(instructionsTableWrap2);
-instructionsPage3.appendChild(controlsPanel);
-instructionsPage4.appendChild(controlsPanelSingle);
-
-instructionsPanel.appendChild(instructionsPage1);
-instructionsPanel.appendChild(instructionsPage2);
-instructionsPanel.appendChild(instructionsPage3);
-instructionsPanel.appendChild(instructionsPage4);
-
-menuDiv.appendChild(instructionsPanel);
-
-
-// ===============================
-// Next Page Button
-// ===============================
-
-let instructionPageIndex = 1;
-
-function showInstructionsContentPage(pageIndex) {
-   instructionPageIndex = pageIndex;
-   instructionsPage1.style.display = pageIndex === 1 ? 'flex' : 'none';
-   instructionsPage2.style.display = pageIndex === 2 ? 'flex' : 'none';
-   instructionsPage3.style.display = pageIndex === 3 ? 'flex' : 'none';
-   instructionsPage4.style.display = pageIndex === 4 ? 'flex' : 'none';
-   nextPageButton.style.backgroundImage = (pageIndex === 2 || pageIndex === 4)
-      ? 'url("resources/images/instructions/prev.png")'
-      : 'url("resources/images/instructions/next.png")';
-}
-
-const nextPageButton = document.createElement('button');
-nextPageButton.id = 'menu-next-page-btn';
-
-nextPageButton.style.cssText =
-   'position:absolute;' +
-   'right:18px;' +
-   'bottom:12px;' +
-   'width:56px;' +
-   'height:56px;' +
-   'padding:0;' +
-   'background-image:url("resources/images/instructions/next.png");' +
-   'background-size:contain;' +
-   'background-repeat:no-repeat;' +
-   'background-position:center;' +
-   'background-color:transparent;' +
-   'border:none;' +
-   'cursor:pointer;' +
-   'transition:opacity 0.2s;' +
-   'z-index:100;';
-
-nextPageButton.onmouseenter = function () {
-   this.style.opacity = '0.85';
-};
-
-nextPageButton.onmouseleave = function () {
-   this.style.opacity = '1';
-};
-
-nextPageButton.onmousedown = function () {
-   this.style.opacity = '0.7';
-};
-
-nextPageButton.onmouseup = function () {
-   this.style.opacity = '0.85';
-};
-
-const contentButton = document.createElement('button');
-contentButton.id = 'menu-content-btn';
-contentButton.textContent = 'Content';
-
-contentButton.style.cssText =
-   'position:absolute;' +
-   'top:30px;' +
-   'right:40px;' +
-   'width:200px;' +
-   'height:60px;' +
-   'font-size:20px;' +
-   'font-weight:bold;' +
-   'color:white;' +
-   `background-image:url("${BTN_NORMAL}");` +
-   'background-size:100% 100%;' +
-   'background-repeat:no-repeat;' +
-   'background-position:center;' +
-   'background-color:transparent;' +
-   'border:none;' +
-   'cursor:pointer;' +
-   'transition:all 0.2s;' +
-   'z-index:100;';
-
-contentButton.onmouseenter = function () {
-   this.style.backgroundImage = `url("${BTN_HOVER}")`;
-};
-
-contentButton.onmouseleave = function () {
-   this.style.backgroundImage = `url("${BTN_NORMAL}")`;
-};
-
-contentButton.onmousedown = function () {
-   this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
-};
-
-contentButton.onmouseup = function () {
-   this.style.backgroundImage = `url("${BTN_HOVER}")`;
-};
-
-const operationPageButton = document.createElement('button');
-operationPageButton.id = 'menu-operation-page-btn';
-operationPageButton.textContent = 'Controls';
-
-operationPageButton.style.cssText =
-   'position:absolute;' +
-   'top:30px;' +
-   'left:50%;' +
-   'transform:translateX(-50%);' +
-   'width:200px;' +
-   'height:60px;' +
-   'font-size:20px;' +
-   'font-weight:bold;' +
-   'color:white;' +
-   `background-image:url("${BTN_NORMAL}");` +
-   'background-size:100% 100%;' +
-   'background-repeat:no-repeat;' +
-   'background-position:center;' +
-   'background-color:transparent;' +
-   'border:none;' +
-   'cursor:pointer;' +
-   'transition:all 0.2s;' +
-   'z-index:100;';
-
-operationPageButton.onmouseenter = function () {
-   this.style.backgroundImage = `url("${BTN_HOVER}")`;
-};
-
-operationPageButton.onmouseleave = function () {
-   this.style.backgroundImage = `url("${BTN_NORMAL}")`;
-};
-
-operationPageButton.onmousedown = function () {
-   this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
-};
-
-operationPageButton.onmouseup = function () {
-   this.style.backgroundImage = `url("${BTN_HOVER}")`;
-};
-
-operationPageButton.onclick = function (e) {
-   e.preventDefault();
-   e.stopPropagation();
-
-   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
-      resources.sounds.click.play();
+      item.appendChild(preview);
+      item.appendChild(text);
+      return item;
    }
 
-   showInstructionsContentPage(3);
-};
+   controlsPanel.appendChild(createControlItem('attackmonster.gif', 'Attack monster'));
+   controlsPanel.appendChild(createControlItem('energySup.gif', 'Energy Supply'));
+   controlsPanel.appendChild(createControlItem('purifycore.gif', 'Purify pollutioncore'));
+   controlsPanel.appendChild(createControlItem('rest.gif', 'Set a save point and restore hp'));
 
-contentButton.onclick = function (e) {
-   e.preventDefault();
-   e.stopPropagation();
+   const ropeMechanicsItem = createControlItem('Ropemechanics.gif', 'Ropemechanics');
+   ropeMechanicsItem.style.cssText +=
+      'width:min(420px, 100%);' +
+      'margin-top:8px;';
+   controlsPanelSingle.appendChild(ropeMechanicsItem);
 
-   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
-      resources.sounds.click.play();
+
+   // ===============================
+   // Assemble Pages
+   // ===============================
+
+   instructionsTableWrap1.appendChild(instructionsTable1);
+   instructionsTableWrap2.appendChild(instructionsTable2);
+
+   instructionsPage1.appendChild(instructionsTableWrap1);
+   instructionsPage2.appendChild(instructionsTableWrap2);
+   instructionsPage3.appendChild(controlsPanel);
+   instructionsPage4.appendChild(controlsPanelSingle);
+
+   instructionsPanel.appendChild(instructionsPage1);
+   instructionsPanel.appendChild(instructionsPage2);
+   instructionsPanel.appendChild(instructionsPage3);
+   instructionsPanel.appendChild(instructionsPage4);
+
+   menuDiv.appendChild(instructionsPanel);
+
+
+   // ===============================
+   // Next Page Button
+   // ===============================
+
+   let instructionPageIndex = 1;
+
+   function showInstructionsContentPage(pageIndex) {
+      instructionPageIndex = pageIndex;
+      instructionsPage1.style.display = pageIndex === 1 ? 'flex' : 'none';
+      instructionsPage2.style.display = pageIndex === 2 ? 'flex' : 'none';
+      instructionsPage3.style.display = pageIndex === 3 ? 'flex' : 'none';
+      instructionsPage4.style.display = pageIndex === 4 ? 'flex' : 'none';
+      nextPageButton.style.backgroundImage = (pageIndex === 2 || pageIndex === 4)
+         ? 'url("resources/images/instructions/prev.png")'
+         : 'url("resources/images/instructions/next.png")';
    }
 
-   showInstructionsContentPage(1);
-};
+   const nextPageButton = document.createElement('button');
+   nextPageButton.id = 'menu-next-page-btn';
 
-nextPageButton.onclick = function (e) {
-   e.preventDefault();
-   e.stopPropagation();
+   nextPageButton.style.cssText =
+      'position:absolute;' +
+      'right:18px;' +
+      'bottom:12px;' +
+      'width:56px;' +
+      'height:56px;' +
+      'padding:0;' +
+      'background-image:url("resources/images/instructions/next.png");' +
+      'background-size:contain;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'background-color:transparent;' +
+      'border:none;' +
+      'cursor:pointer;' +
+      'transition:opacity 0.2s;' +
+      'z-index:100;';
 
-   if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
-      resources.sounds.click.play();
-   }
+   nextPageButton.onmouseenter = function () {
+      this.style.opacity = '0.85';
+   };
 
-   if (instructionPageIndex === 1) {
-      showInstructionsContentPage(2);
-   } else if (instructionPageIndex === 2) {
-      showInstructionsContentPage(1);
-   } else if (instructionPageIndex === 3) {
-      showInstructionsContentPage(4);
-   } else {
+   nextPageButton.onmouseleave = function () {
+      this.style.opacity = '1';
+   };
+
+   nextPageButton.onmousedown = function () {
+      this.style.opacity = '0.7';
+   };
+
+   nextPageButton.onmouseup = function () {
+      this.style.opacity = '0.85';
+   };
+
+   const contentButton = document.createElement('button');
+   contentButton.id = 'menu-content-btn';
+   contentButton.textContent = 'Content';
+
+   contentButton.style.cssText =
+      'position:absolute;' +
+      'top:30px;' +
+      'right:40px;' +
+      'width:200px;' +
+      'height:60px;' +
+      'font-size:20px;' +
+      'font-weight:bold;' +
+      'color:white;' +
+      `background-image:url("${BTN_NORMAL}");` +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'background-color:transparent;' +
+      'border:none;' +
+      'cursor:pointer;' +
+      'transition:all 0.2s;' +
+      'z-index:100;';
+
+   contentButton.onmouseenter = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
+   contentButton.onmouseleave = function () {
+      this.style.backgroundImage = `url("${BTN_NORMAL}")`;
+   };
+
+   contentButton.onmousedown = function () {
+      this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
+   };
+
+   contentButton.onmouseup = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
+   const operationPageButton = document.createElement('button');
+   operationPageButton.id = 'menu-operation-page-btn';
+   operationPageButton.textContent = 'Controls';
+
+   operationPageButton.style.cssText =
+      'position:absolute;' +
+      'top:30px;' +
+      'left:50%;' +
+      'transform:translateX(-50%);' +
+      'width:200px;' +
+      'height:60px;' +
+      'font-size:20px;' +
+      'font-weight:bold;' +
+      'color:white;' +
+      `background-image:url("${BTN_NORMAL}");` +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'background-color:transparent;' +
+      'border:none;' +
+      'cursor:pointer;' +
+      'transition:all 0.2s;' +
+      'z-index:100;';
+
+   operationPageButton.onmouseenter = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
+   operationPageButton.onmouseleave = function () {
+      this.style.backgroundImage = `url("${BTN_NORMAL}")`;
+   };
+
+   operationPageButton.onmousedown = function () {
+      this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
+   };
+
+   operationPageButton.onmouseup = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
+   operationPageButton.onclick = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+
       showInstructionsContentPage(3);
-   }
+   };
 
-};
+   contentButton.onclick = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-instructionsPanel.appendChild(operationPageButton);
-instructionsPanel.appendChild(contentButton);
-instructionsPanel.appendChild(nextPageButton);
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+
+      showInstructionsContentPage(1);
+   };
+
+   nextPageButton.onclick = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+
+      if (instructionPageIndex === 1) {
+         showInstructionsContentPage(2);
+      } else if (instructionPageIndex === 2) {
+         showInstructionsContentPage(1);
+      } else if (instructionPageIndex === 3) {
+         showInstructionsContentPage(4);
+      } else {
+         showInstructionsContentPage(3);
+      }
+
+   };
+
+   instructionsPanel.appendChild(operationPageButton);
+   instructionsPanel.appendChild(contentButton);
+   instructionsPanel.appendChild(nextPageButton);
 
 
-// BGM控制行
-const bgmRow = document.createElement('div');
-bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
-const bgmLabel = document.createElement('div');
-bgmLabel.textContent = 'Background';
-bgmLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
-const bgmMuteBtn = document.createElement('button');
-bgmMuteBtn.id = 'bgm-mute-btn';
-bgmMuteBtn.textContent = audioManager?.getState().bgm.isMuted ? '🔇' : '🔊';
-bgmMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;';
-const bgmSlider = document.createElement('input');
-bgmSlider.id = 'bgm-volume-slider';
-bgmSlider.type = 'range';
-bgmSlider.min = '0';
-bgmSlider.max = '1';
-bgmSlider.step = '0.01';
-bgmSlider.value = audioManager?.getState().bgm.volume ?? 0.6;
-bgmSlider.style.cssText = 'width:240px; height:8px; accent-color:#1eb47a;';
-bgmRow.appendChild(bgmLabel);
-bgmRow.appendChild(bgmMuteBtn);
-bgmRow.appendChild(bgmSlider);
+   // BGM控制行
+   const bgmRow = document.createElement('div');
+   bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
+   const bgmLabel = document.createElement('div');
+   bgmLabel.textContent = 'Background';
+   bgmLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
+   const bgmMuteBtn = document.createElement('button');
+   bgmMuteBtn.id = 'bgm-mute-btn';
+   bgmMuteBtn.textContent = audioManager?.getState().bgm.isMuted ? '🔇' : '🔊';
+   bgmMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;';
+   const bgmSlider = document.createElement('input');
+   bgmSlider.id = 'bgm-volume-slider';
+   bgmSlider.type = 'range';
+   bgmSlider.min = '0';
+   bgmSlider.max = '1';
+   bgmSlider.step = '0.01';
+   bgmSlider.value = audioManager?.getState().bgm.volume ?? 0.6;
+   bgmSlider.style.cssText = 'width:240px; height:8px; accent-color:#1eb47a;';
+   bgmRow.appendChild(bgmLabel);
+   bgmRow.appendChild(bgmMuteBtn);
+   bgmRow.appendChild(bgmSlider);
 
-// sounde: SFX控制行
-const sfxRow = document.createElement('div');
-sfxRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
-const sfxLabel = document.createElement('div');
-sfxLabel.textContent = 'Sounds';
-sfxLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
-const sfxMuteBtn = document.createElement('button');
-sfxMuteBtn.id = 'sfx-mute-btn';
-sfxMuteBtn.textContent = audioManager?.getState().sfx.isMuted ? '🔇' : '🔊';
-sfxMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;';
-const sfxSlider = document.createElement('input');
-sfxSlider.id = 'sfx-volume-slider';
-sfxSlider.type = 'range';
-sfxSlider.min = '0';
-sfxSlider.max = '1';
-sfxSlider.step = '0.01';
-sfxSlider.value = audioManager?.getState().sfx.volume ?? 0.8;
-sfxSlider.style.cssText = 'width:240px;; height:8px; accent-color:#1eb47a;';
-sfxRow.appendChild(sfxLabel);
-sfxRow.appendChild(sfxMuteBtn);
-sfxRow.appendChild(sfxSlider);
+   // sounde: SFX控制行
+   const sfxRow = document.createElement('div');
+   sfxRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
+   const sfxLabel = document.createElement('div');
+   sfxLabel.textContent = 'Sounds';
+   sfxLabel.style.cssText = 'width:120px; color:#fff; font-size:18px;margin-left:-40px;';
+   const sfxMuteBtn = document.createElement('button');
+   sfxMuteBtn.id = 'sfx-mute-btn';
+   sfxMuteBtn.textContent = audioManager?.getState().sfx.isMuted ? '🔇' : '🔊';
+   sfxMuteBtn.style.cssText = 'width:45px; height:45px; border:none; border-radius:8px; background:#1eb47a; color:#fff; cursor:pointer; font-size:16px;';
+   const sfxSlider = document.createElement('input');
+   sfxSlider.id = 'sfx-volume-slider';
+   sfxSlider.type = 'range';
+   sfxSlider.min = '0';
+   sfxSlider.max = '1';
+   sfxSlider.step = '0.01';
+   sfxSlider.value = audioManager?.getState().sfx.volume ?? 0.8;
+   sfxSlider.style.cssText = 'width:240px;; height:8px; accent-color:#1eb47a;';
+   sfxRow.appendChild(sfxLabel);
+   sfxRow.appendChild(sfxMuteBtn);
+   sfxRow.appendChild(sfxSlider);
 
-// 组装音频面板
-audioPanel.appendChild(audioTitle);
-audioPanel.appendChild(bgmRow);
-audioPanel.appendChild(sfxRow);
-menuDiv.appendChild(audioPanel);
+   // 组装音频面板
+   audioPanel.appendChild(audioTitle);
+   audioPanel.appendChild(bgmRow);
+   audioPanel.appendChild(sfxRow);
+   menuDiv.appendChild(audioPanel);
 
-// 绑定音频面板事件
-bgmMuteBtn.onclick = function () {
-   if (!audioManager) return;
-   audioManager.toggleBgmMute();
-   bgmMuteBtn.textContent = audioManager.getState().bgm.isMuted ? '🔇' : '🔊';
-};
-bgmMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
-bgmMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
+   // 绑定音频面板事件
+   bgmMuteBtn.onclick = function () {
+      if (!audioManager) return;
+      audioManager.toggleBgmMute();
+      bgmMuteBtn.textContent = audioManager.getState().bgm.isMuted ? '🔇' : '🔊';
+   };
+   bgmMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
+   bgmMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
 
-bgmSlider.addEventListener('input', function (e) {
-   if (!audioManager) return;
-   audioManager.setBgmVolume(parseFloat(e.target.value));
-});
+   bgmSlider.addEventListener('input', function (e) {
+      if (!audioManager) return;
+      audioManager.setBgmVolume(parseFloat(e.target.value));
+   });
 
-sfxMuteBtn.onclick = function () {
-   if (!audioManager) return;
-   audioManager.toggleSfxMute();
-   sfxMuteBtn.textContent = audioManager.getState().sfx.isMuted ? '🔇' : '🔊';
-};
-sfxMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
-sfxMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
+   sfxMuteBtn.onclick = function () {
+      if (!audioManager) return;
+      audioManager.toggleSfxMute();
+      sfxMuteBtn.textContent = audioManager.getState().sfx.isMuted ? '🔇' : '🔊';
+   };
+   sfxMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
+   sfxMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
 
-sfxSlider.addEventListener('input', function (e) {
-   if (!audioManager) return;
-   audioManager.setSfxVolume(parseFloat(e.target.value));
-});
+   sfxSlider.addEventListener('input', function (e) {
+      if (!audioManager) return;
+      audioManager.setSfxVolume(parseFloat(e.target.value));
+   });
 
-// 挂载菜单+默认显示主面板
-document.body.appendChild(menuDiv);
-showMenuPage('main');
+   // 挂载菜单+默认显示主面板
+   document.body.appendChild(menuDiv);
+   showMenuPage('main');
 }
 
 function banBtnContinue() {
@@ -1037,7 +1039,7 @@ function _setInactiveDifficultyBtn(btn) {
 }
 
 const BTN_NORMAL = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png';
-const BTN_HOVER  = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png';
+const BTN_HOVER = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png';
 const BTN_ACTIVE = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Active.png';
 
 function _makeBtn(label, onClick) {
@@ -1108,13 +1110,13 @@ function _showMenu() {
 function playDemoVideo() {
    demoVideo = document.createElement('video');
    // 视频路径
-   demoVideo.src = 'resources/videos/helpvideo.mp4'; 
+   demoVideo.src = 'resources/videos/helpvideo.mp4';
    demoVideo.controls = false;
-   
+
    // 关键：静音播放可以绕过浏览器的自动播放拦截
-   demoVideo.muted = true;  
-   demoVideo.playsInline = true; 
-   
+   demoVideo.muted = true;
+   demoVideo.playsInline = true;
+
    // 设置视频样式，覆盖在画布上方
    demoVideo.style.cssText =
       'position:absolute; top:50%; left:50%; width:1000px; height:700px;' +
@@ -1127,8 +1129,8 @@ function playDemoVideo() {
    intro.showSidePanels(1);
 
    // 强制提高侧边栏的层级（z-index: 20），确保它们浮在视频（z-index: 10）上方
-   if(intro.leftCanvas) intro.leftCanvas.style.zIndex = "20";
-   if(intro.rightCanvas) intro.rightCanvas.style.zIndex = "20";
+   if (intro.leftCanvas) intro.leftCanvas.style.zIndex = "20";
+   if (intro.rightCanvas) intro.rightCanvas.style.zIndex = "20";
 
    // 视频自然播放结束，或者玩家点击视频画面，都会触发结束视频并进入菜单
    demoVideo.onended = endDemoVideo;
@@ -1146,7 +1148,7 @@ function playDemoVideo() {
 
 function endDemoVideo() {
    if (!demoVideo) return;
-   
+
    // 停止并移除视频元素
    demoVideo.pause();
    demoVideo.remove();

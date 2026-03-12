@@ -1,5 +1,35 @@
 class UI {
+   static setLoadingStyle() {
+      const fontLink = document.createElement('link');
 
+      fontLink.rel = 'stylesheet';
+      document.head.appendChild(fontLink);
+
+      const styleTag = document.createElement('style');
+      styleTag.textContent = `
+      @keyframes loadingPulse {
+         0%, 100% { opacity: 0.7; text-shadow: 0 0 10px #00FFCC, 0 0 30px #00FFCC; }
+         50%      { opacity: 1;   text-shadow: 0 0 20px #00FFCC, 0 0 60px #00FFCC, 0 0 80px #006666; }
+      }
+      #p5_loading {
+         font-size: 48px !important;
+         font-weight: 700 !important;
+         color: #00FFCC !important;
+         letter-spacing: 6px !important;
+         background-color: transparent !important;
+         padding: 0 !important;
+         border: none !important;
+         position: absolute !important;
+         top: 50% !important;
+         left: 50% !important;
+         transform: translate(-50%, -50%) !important;
+         text-align: center !important;
+         animation: loadingPulse 2s ease-in-out infinite !important;
+         text-shadow: 0 0 15px #00FFCC, 0 0 40px #00FFCC !important;
+      }
+   `;
+      document.head.appendChild(styleTag);
+   }
 
    static drawHUD(player, level, gm) {
       fill(255); noStroke();
