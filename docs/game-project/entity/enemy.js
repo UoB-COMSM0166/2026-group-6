@@ -28,7 +28,7 @@ class Enemy extends Entity {
       this.grounded = false;
       this.jumpForce = -0.8 * GameConfig.Enemy.JUMPFORCE;
 
-      // 动画
+      // Play animation effect
       this.animState = "WALK";
       this.animFrame = 0;
       this.animTick = 0;
@@ -161,7 +161,7 @@ class Enemy extends Entity {
          this.x = nextX;
       }
 
-      // 动画状态选择
+      // Animation state selection
       if (this.hurtTimer > 0) {
          this.animState = "HURT";
       } else if (this.attackTimer > 0) {
@@ -179,7 +179,7 @@ class Enemy extends Entity {
       // The direction in which the player retreats
       let dir = (player.x < this.x) ? -1 : 1;
       if (this.dir * dir < 0) this._turn();
-      // 触发攻击动画
+      // attack
       if (this.attackCooldown <= 0) {
          this.attackTimer = this.spriteCfg.attackFrames * this.spriteCfg.frameDelay;
          this.attackCooldown = 20;
