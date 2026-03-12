@@ -244,8 +244,6 @@ function _createMenu() {
       // ===== 开始游戏时传入 selectedDifficulty =====
       gm = new GameManager(resources, selectedDifficulty);
 
-      // ===== BGM改用当前 audioManager里的值 =====
-      audioManager?.setBgmVolume(audioManager.getState().bgm.volume);
 
       // ===== 避免重复播放 =====
       if (resources.sounds.bgm && !resources.sounds.bgm.isPlaying()) {
@@ -266,7 +264,6 @@ function _createMenu() {
       if (!gm) return;
 
       _hideMenu();
-      audioManager?.setBgmVolume(audioManager.getState().bgm.volume);
       if (resources.sounds.bgm && !resources.sounds.bgm.isPlaying()) {
          resources.sounds.bgm.loop();
       }
