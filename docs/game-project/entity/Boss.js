@@ -189,7 +189,7 @@ class Boss extends Entity {
       if (this.purified || this.state === "DEATH") return;
       if (!player.checkRemainCleanEnergy(GameConfig.Player.AttackConsume)) return;
 
-      this.hp -= 1;
+      this.hp -= player.attackDmg;
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
       gm.addParticles(this.cx(), this.cy(), 10); 
 
