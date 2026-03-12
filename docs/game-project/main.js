@@ -369,6 +369,23 @@ instructionsPanel.style.cssText =
    'color:#fff;' +
    'position:relative;';
 
+const instructionsTableCss = document.createElement('style');
+instructionsTableCss.textContent = `
+#menu-instructions-panel .instructions-table thead th {
+   border-bottom: 1px solid rgba(255,255,255,0.18);
+}
+
+#menu-instructions-panel .instructions-table thead th:not(:last-child),
+#menu-instructions-panel .instructions-table tbody td:not(:last-child) {
+   border-right: 1px solid rgba(255,255,255,0.12);
+}
+
+#menu-instructions-panel .instructions-table tbody tr:not(:last-child) td {
+   border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+`;
+document.head.appendChild(instructionsTableCss);
+
 
 // ===============================
 // Page Containers
@@ -376,11 +393,11 @@ instructionsPanel.style.cssText =
 
 const instructionsPage1 = document.createElement('div');
 instructionsPage1.style.cssText =
-   'width:100%; display:flex; justify-content:center;';
+   'width:100%; display:flex; justify-content:center; box-sizing:border-box;';
 
 const instructionsPage2 = document.createElement('div');
 instructionsPage2.style.cssText =
-   'width:100%; display:none; justify-content:center;';
+   'width:100%; display:none; justify-content:center; box-sizing:border-box;';
 
 const instructionsPage3 = document.createElement('div');
 instructionsPage3.style.cssText =
@@ -402,11 +419,15 @@ function createInstructionCard() {
    wrap.style.cssText =
       'width:96%;' +
       'max-width:1080px;' +
+      'min-height:590px;' +
+      'display:flex;' +
+      'justify-content:center;' +
+      'align-items:center;' +
       'background-image:url("resources/images/instructions/cardX3.png");' +
       'background-size:100% 100%;' +
       'background-repeat:no-repeat;' +
       'background-position:center;' +
-      'padding:20px;' +
+      'padding:24px 26px 28px 26px;' +
       'box-sizing:border-box;';
 
    return wrap;
@@ -421,31 +442,31 @@ const instructionsTableWrap2 = createInstructionCard();
 // ===============================
 
 const tableStyle =
-   'width:100%;' +
-   'border-collapse:collapse;' +
+   'width:94%;' +
+   'border-collapse:separate;' +
+   'border-spacing:0;' +
    'table-layout:fixed;' +
    'color:white;' +
-   'font-size:16px;';
+   'font-size:15px;' +
+   'margin:0 auto;';
 
 const thStyle =
-   'border:1px solid rgba(255,255,255,0.18);' +
-   'padding:14px 12px;' +
+   'border:0;' +
+   'padding:10px 8px;' +
    'text-align:center;' +
-   'background:rgba(0,0,0,0.25);' +
    'font-weight:bold;';
 
 const tdStyle =
-   'border:1px solid rgba(255,255,255,0.12);' +
-   'padding:12px 12px;' +
+   'border:0;' +
+   'padding:8px 8px;' +
    'text-align:left;' +
-   'vertical-align:middle;' +
-   'background:rgba(0,0,0,0.18);';
+   'vertical-align:middle;';
 
 const imgStyle =
    'display:block;' +
    'margin:0 auto;' +
-   'max-width:56px;' +
-   'max-height:56px;' +
+   'max-width:48px;' +
+   'max-height:48px;' +
    'object-fit:contain;' +
    'image-rendering:pixelated;';
 
@@ -455,15 +476,16 @@ const imgStyle =
 // ===============================
 
 const instructionsTable1 = document.createElement('table');
+instructionsTable1.className = 'instructions-table';
 instructionsTable1.style.cssText = tableStyle;
 
 instructionsTable1.innerHTML = `
 <thead>
 <tr>
-<th style="${thStyle} width:13%;">Category</th>
-<th style="${thStyle} width:17%;">Name</th>
-<th style="${thStyle} width:10%;">Image</th>
-<th style="${thStyle} width:60%;">Description</th>
+<th style="${thStyle} width:11%;">Category</th>
+<th style="${thStyle} width:15%;">Name</th>
+<th style="${thStyle} width:9%;">Image</th>
+<th style="${thStyle} width:65%;">Description</th>
 </tr>
 </thead>
 
@@ -487,7 +509,7 @@ instructionsTable1.innerHTML = `
 <td style="${tdStyle}" rowspan="2">Interactable</td>
 <td style="${tdStyle}">Energy Pillar</td>
 <td style="${tdStyle}"><img src="resources/images/instructions/cleaningenergy.png" style="${imgStyle}"></td>
-<td style="${tdStyle}">A station where the player can recharge purification energy.</td>
+<td style="${tdStyle}">A station where the player can recharge purification energy. Each use restores 100 purification energy.</td>
 </tr>
 
 <tr>
@@ -519,15 +541,16 @@ instructionsTable1.innerHTML = `
 // ===============================
 
 const instructionsTable2 = document.createElement('table');
+instructionsTable2.className = 'instructions-table';
 instructionsTable2.style.cssText = tableStyle;
 
 instructionsTable2.innerHTML = `
 <thead>
 <tr>
-<th style="${thStyle} width:13%;">Category</th>
-<th style="${thStyle} width:17%;">Name</th>
-<th style="${thStyle} width:10%;">Image</th>
-<th style="${thStyle} width:60%;">Description</th>
+<th style="${thStyle} width:11%;">Category</th>
+<th style="${thStyle} width:15%;">Name</th>
+<th style="${thStyle} width:9%;">Image</th>
+<th style="${thStyle} width:65%;">Description</th>
 </tr>
 </thead>
 
