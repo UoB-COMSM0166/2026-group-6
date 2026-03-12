@@ -30,11 +30,10 @@ class Button extends Entity {
   }
 
   update(level) {
-    // 玩家离开后自动关闭对话框
+    // close the dialog box
     if (!this._playerNearby && this.dialogOpen) {
       this.dialogOpen = false;
     }
-    // 每帧重置接触标志（由 onPlayerContact 在接触时置 true）
     this._playerNearby = false;
   }
 
@@ -44,7 +43,7 @@ class Button extends Entity {
     rect(this.x, this.y, this.w, this.h);
   }
   /**
-    * 打开指定 iid 的 GateWall
+    * Open the GateWall with the specified IID
     */
   openGateByIid(gm, iid) {
     const gate = gm.findEntityAndLevelByIid(iid).entity;

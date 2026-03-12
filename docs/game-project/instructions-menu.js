@@ -159,7 +159,7 @@ class InstructionsMenu {
          extraPositionCss +
          'width:200px;' +
          'height:60px;' +
-         'font-size:20px;' +
+         'font-size:30px;' +
          'font-weight:bold;' +
          'color:white;' +
          `background-image:url("${this.buttonImages.normal}");` +
@@ -399,7 +399,7 @@ class InstructionsMenu {
       text.textContent = label;
       text.style.cssText =
          'color:#fff;' +
-         'font-size:15px;' +
+         'font-size:30px;' +
          'font-weight:600;' +
          'line-height:1.2;' +
          'text-align:center;' +
@@ -419,7 +419,7 @@ class InstructionsMenu {
          'border-spacing:0;' +
          'table-layout:fixed;' +
          'color:white;' +
-         'font-size:15px;' +
+         'font-size:28px;' +
          'margin:0 auto;';
       table.innerHTML = innerHtml;
       return table;

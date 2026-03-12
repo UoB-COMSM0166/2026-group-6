@@ -12,7 +12,7 @@ class UI {
          50%      { opacity: 1;   text-shadow: 0 0 20px #00FFCC, 0 0 60px #00FFCC, 0 0 80px #006666; }
       }
       #p5_loading {
-         font-size: 48px !important;
+         font-size: 64px !important;
          font-weight: 700 !important;
          color: #00FFCC !important;
          letter-spacing: 6px !important;
@@ -33,7 +33,7 @@ class UI {
 
    static drawHUD(player, level, gm) {
       fill(255); noStroke();
-      textSize(20);
+      textSize(28);
       textAlign(LEFT, TOP);
 
       // ── HP Bar ──
@@ -67,7 +67,7 @@ class UI {
 
       push();
       textAlign(CENTER, TOP);
-      textSize(24);
+      textSize(35);
 
       // 获取当前 Area 的百分比进度（0 到 100）
       let progress = gm.getAreaProgress();
@@ -92,7 +92,7 @@ class UI {
 
       push();
       rectMode(CORNER);
-      let textLen = 50;
+      let textLen = 75;
       // shadow
       noStroke();
       fill(0, 0, 0, 80);
@@ -119,12 +119,12 @@ class UI {
       // label (left) + value (right)
       fill(barColor[0], barColor[1], barColor[2], 240);
       noStroke();
-      textSize(12);
+      textSize(25);
       textAlign(LEFT, CENTER);
       text(label, x + 6, y + h / 2);
       if (w > 15) {
          textAlign(RIGHT, CENTER);
-         textSize(11);
+         textSize(18);
          fill(255, 255, 255, 200);
          text(valueText, x + w - 5 + textLen, y + h / 2);
       }
@@ -139,7 +139,7 @@ class UI {
 
       push();
 
-      textAlign(CENTER, CENTER); textSize(14);
+      textAlign(CENTER, CENTER); textSize(20);
 
       // 左键
       strokeWeight(player.currentRope.includes(player.ropeL) ? 5 : 2);
@@ -178,9 +178,9 @@ class UI {
 
    static drawGameOverScreen() {
       background(50, 0, 0, 150);
-      fill(255); textAlign(CENTER); textSize(40);
+      fill(255); textAlign(CENTER); textSize(70);
       text("DIED", width / 2, height / 2);
-      textSize(20); text("Press R to Restart", width / 2, height / 2 + 50);
+      textSize(50); text("Press R to Restart", width / 2, height / 2 + 50);
    }
 
    static drawMapPrompt(prompt, elapsed, duration) {
@@ -210,7 +210,7 @@ class UI {
 
       push();
       textAlign(CENTER, CENTER);
-      textSize(22);
+      textSize(26);
 
       const lines = prompt.split('\n');
       const lineH = 30;

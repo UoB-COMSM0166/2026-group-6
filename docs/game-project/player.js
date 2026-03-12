@@ -476,7 +476,7 @@ class Player {
          // 文字
          fill(255);
          textAlign(CENTER, CENTER);
-         textSize(5);
+         textSize(8);
          text(this.showPrompt, px, py);
          this.showPrompt = null;  // 在每帧在其他地方重新设置
       }
