@@ -9,7 +9,6 @@ let storyStarted = false;
 let storyFinished = false;
 let selectedDifficulty = "easy";
 let demoVideo = null;
-//add: audiocontrol
 let audioManager;
 let instructionsMenu;
 
@@ -67,7 +66,6 @@ function setup() {
 
    if (resources.ldtkData) {
       resources.markLoaded();
-      //add: audiocontrol
       audioManager = new AudioManager(resources);
    }
 }
