@@ -45,7 +45,7 @@ class UI {
          [180, 40, 40],
          [80, 10, 10],
          [220, 60, 60],
-         "HP",
+         t('hud.hp'),
          player.hp + " / " + player.maxHp
       );
 
@@ -61,7 +61,7 @@ class UI {
          [30, 160, 170],
          [10, 50, 55],
          [50, 200, 210],
-         "Energy",
+         t('hud.energy'),
          currentEnergy
       );
 
@@ -72,16 +72,15 @@ class UI {
       // 获取当前 Area 的百分比进度（0 到 100）
       let progress = gm.getAreaProgress();
       let areaNumber = level.areaNumber;
-      if (areaNumber === "5") areaNumber = "Total";
+      if (areaNumber === "5") areaNumber = t('hud.total');
+      const areaText = t('hud.areaPurified', { area: areaNumber, progress });
 
       fill("rgba(29, 11, 29, 0.45)");
-      // 阴影
-      text(`Area${areaNumber} Purified: ${progress}%`, width / 2 + 2, 22);
+      text(areaText, width / 2 + 2, 22);
 
-      // 文字
       if (progress <= GameConfig.World.PURIFY_CHANGE_THRESHOLD) fill("rgb(210, 205, 210)");
       else fill("rgb(13, 153, 67)");
-      text(`Area${areaNumber} Purified: ${progress}%`, width / 2, 20);
+      text(areaText, width / 2, 20);
       pop();
 
       this._drawMouseButtons(player);
@@ -173,14 +172,14 @@ class UI {
    static drawWinScreen() {
       background(0, 150);
       fill(255); textAlign(CENTER); textSize(40);
-      text("YOU WON!", width / 2, height / 2);
+      text(t('ui.win'), width / 2, height / 2);
    }
 
    static drawGameOverScreen() {
       background(50, 0, 0, 150);
       fill(255); textAlign(CENTER); textSize(70);
-      text("DIED", width / 2, height / 2);
-      textSize(50); text("Press R to Restart", width / 2, height / 2 + 50);
+      text(t('ui.died'), width / 2, height / 2);
+      textSize(50); text(t('ui.restart'), width / 2, height / 2 + 50);
    }
 
    static drawMapPrompt(prompt, elapsed, duration) {

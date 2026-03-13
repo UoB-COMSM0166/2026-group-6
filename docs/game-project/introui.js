@@ -450,7 +450,7 @@ class introUI {
       ctx.font = 'bold 22px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('Movement & Actions', w / 2, 40);
+      ctx.fillText(t('introPanels.movementTitle'), w / 2, 40);
 
       // 分隔线
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 * a})`;
@@ -479,7 +479,7 @@ class introUI {
       ctx.fillStyle = `rgba(200, 220, 255, ${a})`;
       ctx.font = '16px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Move', centerX, row2Y + keyH + 25);
+      ctx.fillText(t('introPanels.move'), centerX, row2Y + keyH + 25);
 
       // 其他按键列表
       let listStartY = row2Y + keyH + 65;
@@ -488,11 +488,11 @@ class introUI {
       let descX = 35;
 
       const keys = [
-         { key: 'F', desc: 'Interact' },
-         { key: 'M', desc: 'Map' },
-         { key: 'H', desc: 'Help' },
-         { key: 'ESC', desc: 'Menu' },
-         { key: 'C', desc: 'State' },
+         { key: 'F', desc: t('introPanels.interact') },
+         { key: 'M', desc: t('introPanels.map') },
+         { key: 'H', desc: t('introPanels.help') },
+         { key: 'ESC', desc: t('introPanels.menu') },
+         { key: 'C', desc: t('introPanels.state') },
       ];
 
       for (let i = 0; i < keys.length; i++) {
@@ -551,7 +551,7 @@ class introUI {
       ctx.font = 'bold 22px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('Rope Controls', w / 2, 40);
+      ctx.fillText(t('introPanels.ropeTitle'), w / 2, 40);
 
       // 分隔线
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 * a})`;
@@ -574,7 +574,7 @@ class introUI {
       ctx.fillText('LMB', w / 2 - 50, mouseY - 10);
       ctx.font = '12px sans-serif';
       ctx.fillStyle = `rgba(200, 220, 255, ${a})`;
-      ctx.fillText('Cyan Rope', w / 2 - 50, mouseY + 8);
+      ctx.fillText(t('introPanels.cyanRope'), w / 2 - 50, mouseY + 8);
 
       // 右键标注
       ctx.font = '14px sans-serif';
@@ -582,7 +582,7 @@ class introUI {
       ctx.fillText('RMB', w / 2 + 50, mouseY - 10);
       ctx.font = '12px sans-serif';
       ctx.fillStyle = `rgba(255, 200, 200, ${a})`;
-      ctx.fillText('Red Rope', w / 2 + 50, mouseY + 8);
+      ctx.fillText(t('introPanels.redRope'), w / 2 + 50, mouseY + 8);
 
       // 绳索按键
       let listStartY = 200;
@@ -591,15 +591,15 @@ class introUI {
       let descX = 35;
 
       const ropeKeys = [
-         { key: 'E', desc: 'Prolong Rope' },
-         { key: 'Q', desc: 'Shorten Rope' },
+         { key: 'E', desc: t('introPanels.prolongRope') },
+         { key: 'Q', desc: t('introPanels.shortenRope') },
       ];
 
       // 小标题
       ctx.fillStyle = `rgba(200, 220, 255, ${a})`;
       ctx.font = 'bold 16px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Rope Actions', w / 2, listStartY - 15);
+      ctx.fillText(t('introPanels.ropeActions'), w / 2, listStartY - 15);
 
       for (let i = 0; i < ropeKeys.length; i++) {
          let item = ropeKeys[i];
@@ -626,20 +626,11 @@ class introUI {
       ctx.fillStyle = `rgba(180, 160, 255, ${a})`;
       ctx.font = 'bold 15px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Tips', w / 2, tipY + 25);
+      ctx.fillText(t('introPanels.tips'), w / 2, tipY + 25);
 
       ctx.fillStyle = `rgba(200, 200, 220, ${0.9 * a})`;
       ctx.font = '13px sans-serif';
-      let tips = [
-         '1. Click Left or Right Button to Fire',
-         ' Rope',
-         '2. Use Q/E or Mouse Wheel to adjust ',
-         'rope length',
-         '3. You can change the Length of the',
-         'rope near the Mouse Cursor, and the ',
-         'icon represented by this rope will be',
-         'Bolded at the bottom of the screen.',
-      ];
+      let tips = t('introPanels.tipLines');
       for (let i = 0; i < tips.length; i++) {
          ctx.fillText(tips[i], w / 2, tipY + 55 + i * 29);
       }

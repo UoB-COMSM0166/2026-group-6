@@ -32,10 +32,11 @@ function setup() {
       }
 
       body, button, input, select, textarea {
-         font-family: 'Monogram', monospace !important;
+         font-family: var(--game-font-family, 'Monogram', monospace) !important;
       }
    `;
    document.head.appendChild(fontStyle);
+   updateStaticDomTranslations();
 
    canvas.style('display', 'block');
    canvas.style('margin', 'auto');
@@ -50,9 +51,7 @@ function setup() {
 
    canvas.elt.oncontextmenu = () => false;
    noSmooth();
-   if (resources.fonts.main) {
-      textFont(resources.fonts.main);
-   }
+   applyGameTextFont(resources);
 
    // Cover
    // Story intro first
@@ -74,9 +73,7 @@ function setup() {
 }
 
 function draw() {
-   if (resources?.fonts?.main) {
-      textFont(resources.fonts.main);
-   }
+   applyGameTextFont(resources);
 
    if (!storyStarted) {
       background(0);

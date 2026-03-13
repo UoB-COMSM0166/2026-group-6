@@ -19,10 +19,10 @@ class Resourcepanel {
         this.maxCells = 9;
 
         this.attrs = [
-            { label: 'MAX HP', color: [234, 57, 67], filledColor: [255, 90, 90] },
-            { label: 'Jump Force', color: [234, 160, 0], filledColor: [255, 165, 0] },
-            { label: 'Rope Len', color: [0, 234, 234], filledColor: [0, 255, 255] },
-            { label: 'Attack Dmg', color: [234, 0, 234], filledColor: [255, 0, 255] },
+            { key: 'resourcePanel.maxHp', color: [234, 57, 67], filledColor: [255, 90, 90] },
+            { key: 'resourcePanel.jumpForce', color: [234, 160, 0], filledColor: [255, 165, 0] },
+            { key: 'resourcePanel.ropeLength', color: [0, 234, 234], filledColor: [0, 255, 255] },
+            { key: 'resourcePanel.attackDamage', color: [234, 0, 234], filledColor: [255, 0, 255] },
         ];
     }
 
@@ -55,7 +55,7 @@ class Resourcepanel {
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(28);
-        text('Player State', px + this.panelW / 2, py + 40);
+        text(t('resourcePanel.title'), px + this.panelW / 2, py + 40);
 
         // draw attribute every row
         for (let i = 0; i < this.attrs.length; i++) {
@@ -68,7 +68,7 @@ class Resourcepanel {
             noStroke();
             textAlign(LEFT, CENTER);
             textSize(23);
-            text(attr.label, px + 30, rowY + this.cellSize / 2);
+            text(t(attr.key), px + 30, rowY + this.cellSize / 2);
 
             // number text
             let valStr = this.getStrofNum(stat.current) + ' / ' + this.getStrofNum(stat.max);
@@ -107,7 +107,7 @@ class Resourcepanel {
         fill(140);
         textAlign(CENTER, CENTER);
         textSize(30);
-        text('Press C to close', px + this.panelW / 2, py + this.panelH - 33);
+        text(t('resourcePanel.close'), px + this.panelW / 2, py + this.panelH - 33);
 
         pop();
     }

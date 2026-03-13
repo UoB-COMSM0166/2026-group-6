@@ -12,6 +12,28 @@ class InstructionsMenu {
       this.styleElement = null;
    }
 
+   refreshLanguage() {
+      if (this.contentButton) {
+         this.contentButton.textContent = t('instructions.tabs.content');
+      }
+      if (this.operationPageButton) {
+         this.operationPageButton.textContent = t('instructions.tabs.controls');
+      }
+      if (!this.panel) return;
+
+      const currentPageIndex = this.pageIndex;
+      this.pages.forEach(page => page.remove());
+      this.pages = [
+         this.createContentPage1(),
+         this.createContentPage2(),
+         this.createControlsPage(),
+         this.createRopeMechanicsPage()
+      ];
+
+      this.pages.forEach(page => this.panel.insertBefore(page, this.operationPageButton));
+      this.showContentPage(currentPageIndex);
+   }
+
    attachTo(parent) {
       if (this.panel) {
          parent.appendChild(this.panel);
@@ -59,13 +81,13 @@ class InstructionsMenu {
 
       this.pages.forEach(page => this.panel.appendChild(page));
 
-      this.contentButton = this.createTabButton('menu-content-btn', 'Content', 'right:40px;', () => {
+      this.contentButton = this.createTabButton('menu-content-btn', t('instructions.tabs.content'), 'right:40px;', () => {
          this.showContentPage(1);
       });
 
       this.operationPageButton = this.createTabButton(
          'menu-operation-page-btn',
-         'Controls',
+         t('instructions.tabs.controls'),
          'left:50%; transform:translateX(-50%);',
          () => {
             this.showContentPage(3);
@@ -219,47 +241,47 @@ class InstructionsMenu {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:11%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:65%;">Description</th>
+<th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
+<th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
+<th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
+<th style="${this.thStyle()} width:65%;">${t('instructions.headers.description')}</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="${this.tdStyle()}">Player</td>
-<td style="${this.tdStyle()}">Robot</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.0.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.0.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentplayer.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The player's image is a white robot with the ability to purify.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.0.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Ability</td>
-<td style="${this.tdStyle()}">Energy Rope</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.1.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.1.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentrope.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The rope can help players purify the pollution and traverse difficult terrain.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.1.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}" rowspan="2">Interactable</td>
-<td style="${this.tdStyle()}">Energy Pillar</td>
+<td style="${this.tdStyle()}" rowspan="2">${t('instructions.contentPage1.2.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.2.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/cleaningenergy.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Players can obtain purification energy here.Each use restores 100 purification energy.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.2.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Button</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.3.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/button.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The button can open the mechanism door.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.3.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Checkpoint</td>
-<td style="${this.tdStyle()}">Respawn Point</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.4.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.4.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/reset.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The player's resurrection point</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.4.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Objective</td>
-<td style="${this.tdStyle()}">Pollution Source</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.5.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.5.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/pollution_core.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">A pollution core that need to be purified by the players.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.5.2')}</td>
 </tr>
 </tbody>
       `));
@@ -274,46 +296,46 @@ class InstructionsMenu {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:11%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:65%;">Description</th>
+<th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
+<th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
+<th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
+<th style="${this.thStyle()} width:65%;">${t('instructions.headers.description')}</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="${this.tdStyle()}">Enemy</td>
-<td style="${this.tdStyle()}">Monster</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.0.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.0.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentenemy.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">It will attack players and can be purified.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.0.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}" rowspan="2">Gate</td>
-<td style="${this.tdStyle()}">Area Gate</td>
+<td style="${this.tdStyle()}" rowspan="2">${t('instructions.contentPage2.1.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.1.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/door1.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">A gate between areas that opens when the area's purification level reaches 80%.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.1.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Mechanism Door</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.2.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/door2.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">A door inside the area that opens after pressing a button.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.2.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}" rowspan="2">Environment</td>
-<td style="${this.tdStyle()}">Polluted Water</td>
+<td style="${this.tdStyle()}" rowspan="2">${t('instructions.contentPage2.3.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.3.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentpollutedwater.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Deadly polluted water that kills the player on contact.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.3.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Clean Water</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.4.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentwater.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Safe water that does not harm the player.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.4.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Collectible</td>
-<td style="${this.tdStyle()}">Energy Crystal</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.5.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.5.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/tools.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Scattered crystals that restore the player's purification energy.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.5.2')}</td>
 </tr>
 </tbody>
       `));
@@ -342,10 +364,10 @@ class InstructionsMenu {
          'background-position:center;' +
          'align-content:start;';
 
-      controlsPanel.appendChild(this.createControlItem('attackmonster.gif', 'Attack monster'));
-      controlsPanel.appendChild(this.createControlItem('energySup.gif', 'Energy Supply'));
-      controlsPanel.appendChild(this.createControlItem('purifycore.gif', 'Purify pollutioncore'));
-      controlsPanel.appendChild(this.createControlItem('rest.gif', 'Set a save point and restore hp'));
+      controlsPanel.appendChild(this.createControlItem('attackmonster.gif', t('instructions.controlsPage.attackMonster')));
+      controlsPanel.appendChild(this.createControlItem('energySup.gif', t('instructions.controlsPage.energySupply')));
+      controlsPanel.appendChild(this.createControlItem('purifycore.gif', t('instructions.controlsPage.purifyCore')));
+      controlsPanel.appendChild(this.createControlItem('rest.gif', t('instructions.controlsPage.rest')));
 
       page.appendChild(controlsPanel);
       return page;
@@ -369,7 +391,7 @@ class InstructionsMenu {
          'background-repeat:no-repeat;' +
          'background-position:center;';
 
-      const ropeMechanicsItem = this.createControlItem('Ropemechanics.gif', 'Ropemechanics');
+      const ropeMechanicsItem = this.createControlItem('Ropemechanics.gif', t('instructions.controlsPage.ropeMechanics'));
       ropeMechanicsItem.style.cssText += 'width:min(500px, 100%);';
       panel.appendChild(ropeMechanicsItem);
       page.appendChild(panel);
