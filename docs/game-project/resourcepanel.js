@@ -9,7 +9,7 @@ class Resourcepanel {
 
         this.bgImage = resources.images.resourcePanelCard;
 
-        this.panelW = 360;
+        this.panelW = 380;
         this.panelH = 300;
         this.cellSize = 12;
         this.cellGap = 2;
@@ -75,7 +75,7 @@ class Resourcepanel {
             textAlign(RIGHT, CENTER);
             textSize(20);
             fill(200);
-            text(valStr, px + this.barOffsetX - 20, rowY + this.cellSize / 2);
+            text(valStr, px + this.barOffsetX - 12, rowY + this.cellSize / 2);
 
             // bars
             let filledCount = (stat.max > 0)

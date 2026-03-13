@@ -31,7 +31,6 @@ class Entity {
       this.dialogOpen = false;
       this._playerNearby = false;
       this.dialogText;
-      this.dialogW;
       // LDtk Entity uniqueness id
       this.iid = spawnData.iid || null;
    }
@@ -111,7 +110,7 @@ class Entity {
       }
       if (!this.dialogOpen) return;
 
-      this._drawDialog(this.dialogW);
+      this._drawDialog();
    }
 
    _drawShape() {
@@ -120,13 +119,21 @@ class Entity {
       rect(this.x, this.y, this.w, this.h);
    }
 
-   _drawDialog(w) {
+   _drawDialog() {
       const lines = this.dialogText.split('\n');
-      const fontSize = 5;
+      const fontSize = 7;
+      textSize(fontSize);
       const lineH = fontSize + 1.5;
-      const padX = 3;
+      const padX = 6;
       const padY = 3;
-      const boxW = w || 55;
+
+      let maxW = 0;
+      for (let line of lines) {
+         let w = textWidth(line);
+         if (w > maxW) maxW = w;
+      }
+      const boxW = maxW + padX * 2;
+
       const boxH = lines.length * lineH + padY * 2;
 
       // center top
@@ -148,9 +155,8 @@ class Entity {
       fill(230, 210, 255);
       noStroke();
       textAlign(LEFT, TOP);
-      textSize(fontSize);
       for (let i = 0; i < lines.length; i++) {
-         text(lines[i], bx + padX + 3, by + padY + i * lineH);
+         text(lines[i], bx + padX, by + padY + i * lineH);
       }
 
       // tile
@@ -163,7 +169,7 @@ class Entity {
          tx + 4, by + boxH,
          tx, by + boxH + 8
       );
- 
+
       noStroke();
       fill(10, 10, 20, 230);
       rect(tx - 3, by + boxH - 1, 6, 3);

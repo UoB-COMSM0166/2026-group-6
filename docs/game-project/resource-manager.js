@@ -80,9 +80,10 @@ class ResourceManager {
       this.images.resourcePanelCard = loadImage("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Card X2/Card X3.png");
 
       this.images.painting = { paintings: [] };
-      for (let i = 1; i <= 5; i++) {
-         this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));
+      for (let i = 1; i <= 3; i++) {
+         this.images.painting.paintings.push(loadImage(`resources/images/map_image/map_image/forest${i}.png`));
       }
+      this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/sky.png`));
 
       //怪物
       this.images.enemy = this.images.enemy || {};

@@ -4,7 +4,6 @@ class Button extends Entity {
 
     this.iid = spawnData.iid || null;
     this.pressed = false;
-    this.dialogW = 40;
     this.dialogText = "This button has \nalready opened \na door.";
     this.sprite = resources.images.button;
   }

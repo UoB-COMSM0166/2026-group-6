@@ -7160,7 +7160,7 @@
 						},
 						{
 							"__identifier": "Cleaning_energy",
-							"__grid": [5,28],
+							"__grid": [39,10],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -7169,10 +7169,10 @@
 							"width": 16,
 							"height": 32,
 							"defUid": 46,
-							"px": [40,224],
+							"px": [312,80],
 							"fieldInstances": [],
-							"__worldX": 760,
-							"__worldY": 1432
+							"__worldX": 1032,
+							"__worldY": 1288
 						},
 						{
 							"__identifier": "Button",
@@ -7385,6 +7385,26 @@
 							"fieldInstances": [{ "__identifier": "coreId", "__type": "String", "__value": null, "__tile": null, "defUid": 233, "realEditorValues": [] }],
 							"__worldX": 916,
 							"__worldY": 1264
+						},
+						{
+							"__identifier": "Enemy",
+							"__grid": [13,31],
+							"__pivot": [0.5,1],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#FF0044",
+							"iid": "be50ce50-fa90-11f0-8e3f-334aa020add6",
+							"width": 16,
+							"height": 16,
+							"defUid": 12,
+							"px": [108,256],
+							"fieldInstances": [
+								{ "__identifier": "hp", "__type": "Float", "__value": 3, "__tile": null, "defUid": 26, "realEditorValues": [] },
+								{ "__identifier": "String", "__type": "String", "__value": null, "__tile": null, "defUid": 55, "realEditorValues": [] },
+								{ "__identifier": "damage", "__type": "Float", "__value": 5, "__tile": null, "defUid": 219, "realEditorValues": [] }
+							],
+							"__worldX": 828,
+							"__worldY": 1464
 						}
 					]
 				},
@@ -8722,7 +8742,7 @@
 						},
 						{
 							"__identifier": "Button",
-							"__grid": [30,23],
+							"__grid": [31,23],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -8731,7 +8751,7 @@
 							"width": 8,
 							"height": 8,
 							"defUid": 242,
-							"px": [240,184],
+							"px": [248,184],
 							"fieldInstances": [{ "__identifier": "target", "__type": "EntityRef", "__value": {
 								"entityIid": "76af7860-fa90-11f0-a19c-e7135c6a6382",
 								"layerIid": "43730b04-fa90-11f0-9b59-8346b69f207e",
@@ -8741,7 +8761,7 @@
 								"id": "V_String",
 								"params": ["76af7860-fa90-11f0-a19c-e7135c6a6382"]
 							}] }],
-							"__worldX": 1344,
+							"__worldX": 1352,
 							"__worldY": 1432
 						},
 						{
@@ -8845,6 +8865,22 @@
 							],
 							"__worldX": 1260,
 							"__worldY": 1396
+						},
+						{
+							"__identifier": "Painting",
+							"__grid": [27,21],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#63C74D",
+							"iid": "a07b04e0-fa90-11f0-8e3f-3f28d7fbe842",
+							"width": 24,
+							"height": 16,
+							"defUid": 249,
+							"px": [216,168],
+							"fieldInstances": [],
+							"__worldX": 1320,
+							"__worldY": 1416
 						}
 					]
 				},
@@ -9595,28 +9631,6 @@
 							"fieldInstances": [{ "__identifier": "nuclear_monster", "__type": "Float", "__value": 0, "__tile": null, "defUid": 20, "realEditorValues": [] }],
 							"__worldX": 1636,
 							"__worldY": 1484
-						},
-						{
-							"__identifier": "Tools",
-							"__grid": [29,20],
-							"__pivot": [0.5,0.5],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#2CE8F5",
-							"iid": "3b38d4d0-fa90-11f0-b809-b9d3b002daa6",
-							"width": 8,
-							"height": 8,
-							"defUid": 14,
-							"px": [236,164],
-							"fieldInstances": [
-								{ "__identifier": "toolType", "__type": "LocalEnum.Tools", "__value": "Jump", "__tile": null, "defUid": 24, "realEditorValues": [{
-									"id": "V_String",
-									"params": ["Jump"]
-								}] },
-								{ "__identifier": "Integer", "__type": "Int", "__value": 0, "__tile": null, "defUid": 25, "realEditorValues": [] }
-							],
-							"__worldX": 1732,
-							"__worldY": 1508
 						},
 						{
 							"__identifier": "Ladder",

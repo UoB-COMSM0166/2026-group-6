@@ -3,7 +3,6 @@ class EndingButton extends Entity {
       super(x, y, w, h, spawnData);
       this.dialogText = "start to leave earth";
       this._playerNearby = false;
-      this.dialogW = 85;
    }
 
    onPlayerContact(player, gm) {

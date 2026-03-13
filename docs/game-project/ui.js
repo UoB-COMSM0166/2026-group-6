@@ -173,7 +173,8 @@ class UI {
    static drawWinScreen() {
       background(0, 150);
       fill(255); textAlign(CENTER); textSize(40);
-      text("YOU WON!", width / 2, height / 2);
+      textSize(50); text("YOU WON!", width / 2, height / 2);
+      textSize(30); text("Press ESC to return to the Menu", width / 2, height / 2 + 50);
    }
 
    static drawGameOverScreen() {
