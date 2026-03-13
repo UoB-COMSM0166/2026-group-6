@@ -603,7 +603,19 @@ function playDemoVideo() {
    }
 }
 
+//add BGM to video
+const beginBGM = resources.sounds.begin;
+if (beginBGM) {
+   resources.sounds.bgm?.stop();
+   resources.sounds.story?.stop();
+   beginBGM.stop();
+   beginBGM.playMode('restart');
+   beginBGM.play();
+}
+
 function endDemoVideo() {
+   resources.sounds.begin?.stop();
+   
    if (!demoVideo) return;
 
    demoVideo.pause();
