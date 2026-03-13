@@ -8,8 +8,8 @@ class Rope {
       this.G = GameConfig.World.GRID_SIZE;
       this.color = ropeColor;
 
-      //  nodes[0] = 玩家端 (始终跟随玩家)
-      //  nodes[last] = 远端 (飞行中/粘在墙上/收回中)
+      //  nodes[0] = Player end
+      //  nodes[last] = Tip end
       /** @type {Array<{x:number, y:number, oldx:number, oldy:number}>} */
       this.nodes = [];
       this.stuck = false;
@@ -17,14 +17,14 @@ class Rope {
       this.extending = false
       this.material = (ropeColor.toString() === color(0, 255, 255).toString()) ? 'HARD' : 'SOFT';
 
-      // 绳头抛射物
+      // rope head (The end far away from the players)
       this.tip = { x: 0, y: 0, vx: 0, vy: 0 };
       this._retractTimer = 0;
 
-      // 表面接触节点索引 (每帧由 _solveConstraints 更新)
+      // Surface contact node index
       this._pinnedIndices = [];
 
-      // 派生常量
+      // Derived constant
       this.nodeDist = this.G * RC.NODE_SPACING_GRIDS;
       this.maxNodes = Math.floor((this.G * RC.MAX_LENGTH_GRIDS) / this.nodeDist);
       this.maxLen = this.G * RC.MAX_LENGTH_GRIDS;
@@ -37,14 +37,13 @@ class Rope {
       this.fireSound = resources.sounds.rope;
    }
 
-   // 节点工具
-
-   /** 创建 Verlet 节点, oldx/oldy 默认等于 x/y (静止) */
+   // verlet nodes
    _node(x, y, ox, oy) {
       return { x, y, oldx: ox ?? x, oldy: oy ?? y };
    }
 
-   /** 钉住节点到指定位置 (位置 + 历史同步, 消除隐含速度) */
+   // Pin the node to the specified position
+   // also can eliminate Verlet implicit velocity
    _pin(node, x, y) {
       node.x = node.oldx = x;
       node.y = node.oldy = y;
@@ -84,7 +83,7 @@ class Rope {
          let a = this.nodes[i], b = this.nodes[i + 1];
          total += dist(a.x, a.y, b.x, b.y);
       }
-      // EXTENDING 时加上 lastNode 到飞行 tip 的距离
+      // EXTENDING
       if (!this.stuck && !this.retracting) {
          total += dist(this.lastNode.x, this.lastNode.y, this.tip.x, this.tip.y);
       }
@@ -94,7 +93,8 @@ class Rope {
    _maintainStrandLength() {
       if (this.nodes.length < 2) return;
 
-      // 首次进入 STRAND 时记录当前路径长度作为固定绳长
+      // Record the current path length as the fixed rope
+      // length when entering STRAND for the first time.
       if (this.ropeLength <= 0) {
          let chainLen = this.nodeDist * (this.nodes.length - 1);
          let directDist = dist(this.nodes[0].x, this.nodes[0].y, this.tip.x, this.tip.y);
@@ -106,7 +106,7 @@ class Rope {
       let diff = pathLen - this.ropeLength;
 
       if (diff > 0) {
-         // 超出绳长: 从 tip 端沿链条将节点向 player 侧收拢 (不删除节点)
+         // Exceeding the rope max length
          let excess = diff;
          for (let i = this.nodes.length - 1; i > 0 && excess > 0; i--) {
             let curr = this.nodes[i];
@@ -114,7 +114,6 @@ class Rope {
             let segLen = dist(prev.x, prev.y, curr.x, curr.y);
 
             if (segLen <= excess) {
-               // 整段收拢: 将节点折叠到前一节点位置
                curr.x = prev.x;
                curr.y = prev.y;
                curr.oldx = curr.x;
@@ -130,7 +129,6 @@ class Rope {
             }
          }
       } else if (diff < 0 && this.material === 'HARD') {
-         // HARD 低于绳长: 将 tip 沿 prev→last 方向延伸补足差值
          let last = this.lastNode;
          let prev = this.nodes[this.nodes.length - 2];
          let dx = last.x - prev.x;
@@ -146,12 +144,11 @@ class Rope {
          }
       }
 
-      // 同步 tip 位置
       this.tip.x = this.lastNode.x;
       this.tip.y = this.lastNode.y;
    }
 
-   // 状态查询
+   // State Getter
 
    get isIdle() { return this.nodes.length === 0; }
 
@@ -176,7 +173,7 @@ class Rope {
       }
    }
 
-   // 操作
+   // operation
 
    fire(px, py, tx, ty) {
       if (!this.isIdle) {
@@ -237,8 +234,6 @@ class Rope {
          Math.floor(this.ropeLength / this.nodeDist) + 1,
          2, this.maxNodes
       );
-      // SWINGING: tip 钉在墙上, 从玩家端增减节点 (放绳/收绳)
-      // 其他状态: 从 tip 端增减 (发射/strand)
       if (this.stuck) {
          while (this.nodes.length > target) this._removeAfterFirst();
          while (this.nodes.length < target) this._insertAfterFirst();
@@ -247,8 +242,6 @@ class Rope {
          while (this.nodes.length < target) this._insertBeforeLast();
       }
    }
-
-   // 每帧更新
 
    update(player, level) {
       if (this.nodes.length === 0) return;
@@ -273,7 +266,7 @@ class Rope {
       this.tip.y = this.lastNode.y;
    }
 
-   // 查询
+   // query
 
    getTip() {
       return { x: this.tip.x, y: this.tip.y };
@@ -288,12 +281,12 @@ class Rope {
       }));
    }
 
-   // 渲染
+   // render
 
    display() {
       if (this.nodes.length === 0) return;
 
-      // 绳线
+      // rope
       stroke(this.color);
       strokeWeight(this.material === 'HARD'
          ? max(RC.HARD_STROKE_MIN, this.G * RC.HARD_STROKE_RATIO)
@@ -305,7 +298,7 @@ class Rope {
       if (this.extending) vertex(this.tip.x, this.tip.y);
       endShape();
 
-      // 端点圆点
+      // tip shape
       noStroke();
       fill(this.color);
       if (this.stuck) {
@@ -317,7 +310,7 @@ class Rope {
       }
    }
 
-   // 内部: 发射
+   // fire
 
    _advanceTip(level) {
       let tip = this.tip;
@@ -352,7 +345,7 @@ class Rope {
       this.tip.x = x;
       this.tip.y = y;
       this.nodes.push(this._node(x, y));
-      //  绳长限制为理论长度、直线距离、实际路径长度中的最大值
+      //  rope maxlen is max value of theoretical length, straight-line distance, actual path
       let chainLen = this.nodeDist * (this.nodes.length - 1);
       let directDist = dist(this.nodes[0].x, this.nodes[0].y, x, y);
       let pathLen = this._getChainPathLength();
@@ -371,7 +364,7 @@ class Rope {
       }
    }
 
-   // 内部: 物理模拟
+   // physics stimulation
 
    _simulate(player, level) {
       if (this.nodes.length < 2) return;
@@ -392,7 +385,8 @@ class Rope {
       }
    }
 
-   /** 硬绳: 中间节点线性插值到首尾直线上 */
+   // hard rope: The intermediate nodes are linearly interpolated 
+   // onto the straight line connecting the first and last nodes.
    _integrateStraight() {
       let first = this.nodes[0];
       let last = this.lastNode;
@@ -409,7 +403,8 @@ class Rope {
       }
    }
 
-   /** 软绳: Verlet 积分 (惯性 + 重力 + 滑动碰撞) */
+   // soft rope: Verlet integration 
+   // add gravity and inertia
    _integrateVerlet(level) {
       let endIdx = this.stuck ? this.nodes.length - 1 : this.nodes.length;
       let gravity = RC.NODE_GRAVITY;
@@ -418,8 +413,10 @@ class Rope {
       for (let i = 1; i < endIdx; i++) {
          let n = this.nodes[i];
 
-         // 上一帧被钉在表面上的节点: 抑制 Verlet 隐含速度
-         // 只保留重力, 让约束求解器决定它是否应该脱离表面
+         // The node pinned to the surface in the previous 
+         // frame: eliminate Verlet implicit velocity
+         // Only retain gravity and let the constraint 
+         // solver decide whether it should detach from the surface
          let wasPinned = this._pinnedIndices.includes(i);
 
          let vx, vy;
@@ -436,7 +433,7 @@ class Rope {
          let newX = n.x + vx;
          let newY = n.y + vy;
 
-         // 分轴碰撞: 允许沿表面滑动而非完全回退
+         // collition
          let solidXY = level.isPointSolid(newX, newY);
          if (solidXY && this.state !== "EXTENDING") {
             let solidX = level.isPointSolid(newX, prevY);
@@ -463,22 +460,19 @@ class Rope {
    }
 
    /**
-    *    ropejoint: 只有超过距离才开始更改node位置，其他时候将可以动的点平分的拉回中心
-    *    核心改进: pinned[] 数组追踪「接触地表的节点」
-    *    接触地表的节点在约束求解中被视为固定锚点
-    *    使绳子自然搭在地块上、绕过拐角
+    *   use ropejoint formula
     */
    _solveConstraints(level) {
       let count = this.nodes.length;
       let lastIdx = count - 1;
 
-      // 标记固定节点: 玩家端 + 锚点端 + 接触地表的节点
+      // Mark fixed nodes: 
+      // player end + anchor end + nodes in contact with the ground surface
       let pinned = new Array(count).fill(false);
-      pinned[0] = true;                           // 玩家端始终固定
-      if (this.stuck) pinned[lastIdx] = true;     // 锚点端始终固定
+      pinned[0] = true;
+      if (this.stuck) pinned[lastIdx] = true;
 
       for (let k = 0; k < RC.STIFFNESS; k++) {
-         // ── 距离约束 ──
          for (let i = 0; i < lastIdx; i++) {
             let A = this.nodes[i];
             let B = this.nodes[i + 1];
@@ -493,18 +487,18 @@ class Rope {
             let bFixed = pinned[i + 1];
 
             if (aFixed && bFixed) {
-               // 两端都固定, 跳过
+               // Both ends are fixed
                continue;
             } else if (aFixed) {
-               // 只有 B 可以移动 → 100% 修正量给 B
+               // only B node can move
                B.x += ox;
                B.y += oy;
             } else if (bFixed) {
-               // 只有 A 可以移动 → 100% 修正量给 A
+               // only A node can move
                A.x -= ox;
                A.y -= oy;
             } else {
-               // 双向各承担 50%  ax = (ax+bx)/2-(ax-bx)*ratio*0.5
+               // A and B nodes are distributed each 50% movement
                A.x -= ox * 0.5;
                A.y -= oy * 0.5;
                B.x += ox * 0.5;
@@ -512,7 +506,7 @@ class Rope {
             }
          }
 
-         // ── 碰撞分离 (每次约束迭代后) ──
+         // collition
          if (this.material == "SOFT") {
             if (level) {
                let endIdx = this.stuck ? count - 1 : count;
@@ -526,7 +520,6 @@ class Rope {
          }
       }
 
-      // 持久化 pinned 状态, 供 _getEffectiveAnchor 使用
       this._pinnedIndices = [];
       for (let i = 0; i < count; i++) {
          if (pinned[i]) this._pinnedIndices.push(i);
@@ -534,19 +527,19 @@ class Rope {
    }
 
    /**
-    * 将单个节点从固体 Tile 中推出 (沿最小穿透轴)
-    * 推出后钉住 oldx/oldy 消除 Verlet 隐含速度
+    * Push a single node out of the solid Tile
+    * if out of solid, Suppress Verlet implicit velocity
     */
    _pushNodeOutOfSolid(node, level) {
       let { col, row } = level.worldToGrid(node.x, node.y);
       let tile = level.getTileAt(col, row);
       if (!tile || !tile.isSolid) return;
 
-      // 保存推出前的 Verlet 隐含速度
+      // save verlet implicit velocity
       let impliedVx = node.x - node.oldx;
       let impliedVy = node.y - node.oldy;
 
-      // 四个方向的穿透深度
+      // four dir
       let left = node.x - tile.x;
       let right = (tile.x + tile.w) - node.x;
       let top = node.y - tile.y;
@@ -579,7 +572,7 @@ class Rope {
          else node.y = best.target;
       }
 
-      // 保留切向速度、消除法向速度 (允许沿表面滑动)
+      // Maintain the tangential velocity and eliminate the normal velocity
       let tangentialDamp = 0.4;
       if (pushAxis === 'x') {
          node.oldx = node.x;
@@ -590,17 +583,15 @@ class Rope {
       }
    }
 
-   // 内部: 玩家约束
+   // Player Constrain
 
    /**
-    * 获取"有效锚点": 绳子绕过拐角时, 最近的表面接触节点充当滑轮
-    * 玩家应从该接触点摆荡, 而非从远端 tip 直接拉
+    * The nearest surface contact node acts as a pulley.
     */
    _getEffectiveAnchor() {
       if (this.nodes.length < 2) return null;
 
-      // 从玩家端 (index 1) 向 tip 端遍历, 找第一个表面接触节点
-      let anchorIdx = this.nodes.length - 1; // 默认: tip
+      let anchorIdx = this.nodes.length - 1;
       for (let i = 1; i < this.nodes.length; i++) {
          if (this._pinnedIndices.includes(i)) {
             anchorIdx = i;
@@ -610,7 +601,6 @@ class Rope {
 
       let anchor = this.nodes[anchorIdx];
 
-      // 计算从有效锚点到 tip 的已用绳长
       let usedLen = 0;
       for (let i = anchorIdx; i < this.nodes.length - 1; i++) {
          let a = this.nodes[i], b = this.nodes[i + 1];
@@ -622,7 +612,6 @@ class Rope {
       return { x: anchor.x, y: anchor.y, freeLength: freeLen };
    }
 
-   /** 对玩家施加绳索约束 (粘住时生效) */
    applyPhysics(player) {
       if (!this.stuck || this.nodes.length < 2) return;
 
@@ -638,7 +627,7 @@ class Rope {
       }
    }
 
-   /** 硬绳: 双向弹簧 (太远拉回, 太近推开) */
+   // hard rope: Bidirectional spring
    _applyHardSpring(player, curDist, anchor) {
       let diff = curDist - anchor.freeLength;
       if (abs(diff) <= RC.HARD_SPRING_THRESHOLD) return;
@@ -649,7 +638,7 @@ class Rope {
       player.vy = (player.vy + sin(a) * f) * RC.HARD_SPRING_DAMPING;
    }
 
-   /** 软绳: Rope Joint — 超出绳长时硬约束 */
+   // soft rope: ropejoint constrain
    _applySoftConstraint(player, curDist, anchor) {
       if (curDist <= anchor.freeLength) return;
 

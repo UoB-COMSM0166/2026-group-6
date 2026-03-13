@@ -6,12 +6,12 @@ class Boss extends Entity {
       this.scaleSize = 0.5;
 
       // 根据缩放系数计算真实的物理碰撞盒
-      let realW = 42 * this.scaleSize; 
-      let realH = 48 * this.scaleSize; 
-      
+      let realW = 42 * this.scaleSize;
+      let realH = 48 * this.scaleSize;
+
       this.x = this.x + (this.w - realW) / 2;
       this.y = this.y + (this.h - realH);
-      
+
       this.w = realW;
       this.h = realH;
 
@@ -19,7 +19,7 @@ class Boss extends Entity {
       this.hp = this.maxHp;
 
       // 状态机
-      this.state = "IDLE"; 
+      this.state = "IDLE";
       this.stateTimer = 0;
       this.purified = false;
 
@@ -38,14 +38,14 @@ class Boss extends Entity {
       this.spriteCfg = {
          frameW: 64,       // 绝大多数动作的单格宽度是 64
          frameH: 64,       // 所有动作的单格高度都是 64
-         
-         idleFrames: 7,    
-         moveFrames: 4,    
-         hurtFrames: 7,    
+
+         idleFrames: 7,
+         moveFrames: 4,
+         hurtFrames: 7,
          shootFrames: 17,  // 射击: 17帧 (代码里会自动将宽度设为 128)
-         deathFrames: 12,  
-         
-         frameDelay: 6,    
+         deathFrames: 12,
+
+         frameDelay: 6,
       };
    }
 
@@ -72,27 +72,27 @@ class Boss extends Entity {
       if (isColliding && gm.player.invulnerableTimer <= 0) {
          gm.player.takeDamage(2, gm); // 扣除玩家 1 点生命值
          gm.player.knockTimer = GameConfig.Player.KnockInterval; // 触发受击硬直/无敌帧
-         
+
          // 给玩家一个受击被弹开的物理效果
          gm.player.vy = -4; // 向上击飞
          // 判断玩家在 Boss 的左边还是右边，决定向哪边弹开
-         gm.player.vx = (gm.player.cx() < this.cx()) ? -3 : 3; 
+         gm.player.vx = (gm.player.cx() < this.cx()) ? -3 : 3;
       }
 
       // 给 Boss 施加重力
-      this.vy += 0.2; 
+      this.vy += 0.2;
       let nextY = this.y + this.vy;
 
       // 检测脚下/头顶是否有固体方块
       let hitTileY = level.isRectOverlappingTile(this.x + 0.1, nextY, this.w - 0.2, this.h, { solidOnly: true, margin: 0 });
-      
+
       if (hitTileY) {
          if (this.vy > 0) {
             // 落地，踩在方块上方
-            this.y = hitTileY.y - this.h; 
+            this.y = hitTileY.y - this.h;
          } else if (this.vy < 0) {
             // 顶到天花板
-            this.y = hitTileY.y + hitTileY.h; 
+            this.y = hitTileY.y + hitTileY.h;
          }
          this.vy = 0; // 撞到东西后垂直速度归零
       } else {
@@ -119,12 +119,12 @@ class Boss extends Entity {
 
          case "MOVE":
             if (this.stateTimer < 120) {
-               let speed = 0.5; 
+               let speed = 0.5;
                let nextX = this.x + this.dir * speed;
-               
+
                // 预测下一步会不会撞墙
                let hitWall = level.isRectOverlappingTile(nextX, this.y, this.w, this.h, { solidOnly: true, margin: 0.1 });
-               
+
                if (!hitWall) {
                   this.x = nextX; // 前方没墙，正常水平移动
                } else {
@@ -132,7 +132,7 @@ class Boss extends Entity {
                   // 如果撞墙了，并且 Boss 当前正踩在地上
                   if (this.vy === 0) {
                      // 跳跃高度
-                     this.vy = -4.5; 
+                     this.vy = -4.5;
                   }
                }
             } else {
@@ -191,16 +191,16 @@ class Boss extends Entity {
 
       this.hp -= player.attackDmg;
       player.reduceCleanEnergy(GameConfig.Player.AttackConsume);
-      gm.addParticles(this.cx(), this.cy(), 10); 
+      gm.addParticles(this.cx(), this.cy(), 10);
 
-      if (rope.state === "EXTENDING") rope.state = "RETRACTING";
+      if (rope.state !== "RETRACTING") rope.state = "RETRACTING";
 
       if (this.hp <= 0) {
-         this.hurtTimer = 0; 
+         this.hurtTimer = 0;
          this._enterState("DEATH");
       } else {
-         this.hurtTimer = this.spriteCfg.hurtFrames * this.spriteCfg.frameDelay; 
-         this.animFrame = 0; 
+         this.hurtTimer = this.spriteCfg.hurtFrames * this.spriteCfg.frameDelay;
+         this.animFrame = 0;
          this.animTick = 0;
       }
    }
@@ -211,13 +211,13 @@ class Boss extends Entity {
       this.animTick++;
 
       if (this.animTick % cfg.frameDelay === 0) {
-         
+
          if (this.state === "DEATH") {
             if (this.animFrame < cfg.deathFrames - 1) {
-               this.animFrame++; 
+               this.animFrame++;
             } else {
-               this.purified = true; 
-               this.destroy(); 
+               this.purified = true;
+               this.destroy();
             }
             return;
          }
@@ -239,11 +239,11 @@ class Boss extends Entity {
       if (this.purified) return;
 
       const bossImgs = resources?.images?.boss;
-      
+
       // ================= 【1. 绘制 Boss 实体】 =================
       if (bossImgs) {
          let sheet = bossImgs.idle;
-         
+
          if (this.state === "DEATH") {
             sheet = bossImgs.death;
          } else if (this.hurtTimer > 0) {
@@ -256,7 +256,7 @@ class Boss extends Entity {
 
          if (sheet && sheet.width > 0) {
             const cfg = this.spriteCfg;
-            
+
             // 射击动作有毒液，单格宽度是 128，其他都是 64
             const currentFrameW = (this.state === "SHOOT") ? 128 : cfg.frameW;
             const currentFrameH = cfg.frameH;
@@ -268,19 +268,19 @@ class Boss extends Entity {
             const srcY = Math.floor(f / cols) * currentFrameH;
 
             // 让图片居中对齐到碰撞盒底部，基于主体 64 像素计算
-            const baseW = 64; 
+            const baseW = 64;
             const dx = this.x + (this.w - baseW) / 2;
             const offsetY = 8;
             const dy = this.y + this.h - currentFrameH + offsetY;
 
             push();
-            
+
             // ================= 【核心修改：模型变红变透明】 =================
             if (this.state === "FLOOD") {
                // tint(R, G, B, Alpha)
                // 255, 100, 100 是一个相对柔和的暗红色（不是刺眼的纯红）
                // 200 是透明度（最大255），让它带有一点半透明效果
-               tint(255, 100, 100, 200); 
+               tint(255, 100, 100, 200);
             }
             // ==============================================================
 
@@ -291,9 +291,9 @@ class Boss extends Entity {
             } else {
                image(sheet, dx, dy, currentFrameW, currentFrameH, srcX, srcY, currentFrameW, currentFrameH);
             }
-            
+
             // 绘制完成后必须清除 tint 效果，否则会影响整个游戏画面的其他图片！
-            noTint(); 
+            noTint();
             pop();
          }
       } else {

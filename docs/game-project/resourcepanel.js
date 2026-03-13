@@ -79,7 +79,7 @@ class Resourcepanel {
 
             // bars
             let filledCount = (stat.max > 0)
-                ? Math.round(((stat.current * 10 - stat.init * 10) / (stat.max * 10)) * this.maxCells)
+                ? Math.round(((stat.current * 10 - stat.init * 10) / (stat.max * 10 - stat.init * 10)) * this.maxCells)
                 : 0;
             filledCount = constrain(filledCount, 0, this.maxCells);
 
