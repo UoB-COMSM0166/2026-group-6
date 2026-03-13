@@ -31,6 +31,14 @@ class GateWall extends Entity {
       if (this.gateType === "CleanedTrigger") gm.setMapPrompt("Explore other sub-areas to increase purification.\nReach "
          + GameConfig.World.PURIFY_CHANGE_THRESHOLD + "% purification to unlock the next area.", 5000);
       else gm.setMapPrompt("Find button to open the door.", 5000);
+      if (this.gateType === "CleanedTrigger") {
+         gm.setMapPrompt(t('prompts.gateExplore', {
+            threshold: GameConfig.World.PURIFY_CHANGE_THRESHOLD
+         }), 5000);
+      }
+      else {
+         gm.setMapPrompt(t('prompts.gateButton'), 5000);
+      }
    }
 
    updateWithGM(gm) {
