@@ -372,34 +372,17 @@ During gameplay, `GameManager` calls player's `update()` method to refresh the p
 
 # 5. Implementation
 
-## 5.1	Multi-level World State Management
+## Challenge 1: Persistent multi-level world state and area-wide progression
+One of the challenges we faced was how to make the game feel like a "single, continuously changing world" rather than several separate levels. At the beginning of the game design, we did not intend to create a linear single-level game. Instead, we hoped that players could explore among multiple interconnected areas. So, whenever a player re-enters a level, if the purified pollution core, defeated enemies, opened doors and changed environment are all regenerated. Then this would not be in line with the initial design of our game. For this reason, the challenge was not simply level switching. We had to integrate level transitions, entity state preservation, area purification progress, and environmental change into one coherent system.
 
-### Level Design and Map Structure
+in order to address this challenge, we designed the `GameManager` as the core management module in ‘game-manager.js’. At the beginning of the game, the LDtk map data will be loaded and a corresponding `LevelManager` will be created for each level. When the level is first loaded, the system will create all the entities and store them in the `levelsInfo` section. If the player enters the same level again later, the game will not recreate the entity from scratch, but will instead use the previously saved state of the entity. In this case, when the player re-enters the level, the purified pollution core and the defeated enemies will not be reset.
 
-The team members independently designed all the levels and maps of this game using LDtk. (Level Designer Toolkit). The entire game world is divided into multiple areas, and each area contains several interconnected levels. Through this design, team members can more flexibly arrange the connection relationships between levels. At the same time, it is also easier to control the exploration routes of players and the overall game pace.
+Additionally, we also used the `worldX`, `worldY` and `__neighbours` data provided by LDtk in level-manager.js to achieve coordinate conversion between different levels. This enables players to continue their exploration across multiple levels. When the player leaves the edge of a level, the system will detect the adjacent levels and calculate the correct position of the player in the new level, thereby achieving the transition of the map.
 
-(Picture to be added)
-
-During the process of map design, we not only needed to complete the visual layout of the levels, but also had to simultaneously plan the logical structure within the levels. Each level is composed of multiple layers, which are used to represent the objects in the game. And the two most important layers are Collision Layer and Entity Layer.
-
-The Collision Layer is mainly used to define the boundaries of entities in the environment, such as the ground, walls, platforms, and other objects that can impede the player's movement. Based on these collision data, the system can determine the physical interactions between the players and the environment. The Entity Layer is used to create various objects that can interact with the player, such as pollution cores, buttons, mechanism doors, and enemies, etc.
-
-(Picture to be added)
-
-To implement some of the mechanism settings in the level, we also designed the control relationship between the buttons and the mechanism doors. In LDtk, each button can be linked to a target door through the fields in the level editor. This reference is connected using the unique identifier (iid) of the entity, thereby establishing a link between the button and the mechanism door.
-
-(Picture to be added)
-
-### Connected Levels and Persistent State
-
-The levels of this game are interconnected, so players can freely explore between these areas. And the actions of the players within a certain level will have an impact on the entire area. Therefore, we have designed a level cache mechanism in the 'GameManager' to ensure that these changes can be saved. The information of the already loaded levels will be stored in the 'levelsInfo'. When the player enters the same level again, the system will not regenerate all the objects, but will directly restore the previous saved entity state. This can ensure that the game state will not be reset when the player re-enters the level.
-
-Additionally, 'LevelManager' will parse the collision layers and entity layers within the LDtk file. This will convert the collision data into a two-dimensional grid structure, which is used for collision detection. Therefore, when detecting collisions, it is only necessary to query the corresponding grid position instead of traversing the entire map.
+Finally, we also implemented an area-level progress system. The `GameManager` will calculates the purification status of all levels within the same area, such as the purification progress of the pollution core and the enemies, and calculate the overall purification progress. This enables the gates in `GateWall.js` to automatically open when the regional purification progress reaches a certain level, and at the same time, the environment will also change.
 
 
-Level connections are achieved through the world position information (`worldX`, `worldY`) and neighbour data (`__neighbours`) provided by LDtk. When the player reaches the boundary of a level, the system calculates the correct neighbouring level and performs a smooth transition. At the same time, the game also implements an area-based purification progress system. Different objects contribute different weights to the purification value of this area. When the purification progress reaches a certain level, the environment will change. For example, some gates open automatically and toxic water areas may become safe water. Additionally, to support interactions between objects across different levels, the entities establish reference relationships through the identifiers(iid) provided by LDtk.
-
-## 5.2 Rope Mechanic Implementation
+## Challenge 2:  Rope Mechanic Implementation
 
 The rope system is one of the most important gameplay mechanisms in this game. Players can use ropes for movement, attacking enemies, and purifying pollution sources. Therefore, the rope system needs to be closely integrated with the player's movement and map collision systems. At the same time, it must remain stable and responsive during gameplay.
 
