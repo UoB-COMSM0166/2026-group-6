@@ -281,7 +281,7 @@ class Player {
          }
       }
       // Formula: F = ρ × g × V
-      let waterDensity = 1 / 7;
+      let waterDensity = 1 / 9;
       let buoyancyForce = waterDensity * GameConfig.World.GRAVITY * waterDeep;
       this.vy -= buoyancyForce;
    }

@@ -298,8 +298,10 @@ class Enemy extends Entity {
       let dy = this.y + this.h - 16 + (this.footOffsetY || 0);
       if (this.animState === "ATTACK") dy -= 2.15; // footoffset
       if (this.animState === "HURT") dy -= 2.3; // footoffset
-
+      let alpha = Math.round(255 *
+         (this.hp + 0.7 * this.maxHp) / (1.7 * this.maxHp));
       push();
+      tint(255, alpha);
       if (this.dir === -1) {
          translate(dx + dw, dy);
          scale(-1, 1);
