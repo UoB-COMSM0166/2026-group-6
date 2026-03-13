@@ -1,15 +1,3 @@
-/**
- * GameManager - 游戏主管理
- *
- * 职责:
- *   - 控制游戏状态 (PLAY / WIN / GAMEOVER)
- *   - 关卡切换
- *   - 协调 LevelManager、Player、Enemy、Camera 等子系统
- *   - 转发输入事件
- *
- * 整个游戏只有一个 GameManager 实例。
- * main.js 仅负责将生命周期转发到这里。
- */
 class GameManager {
    /**
     * @param {ResourceManager} resources
@@ -19,16 +7,16 @@ class GameManager {
       this.scale = GameConfig.Display.GAME_SCALE;
       this.levelIndex = GameConfig.Level.START_INDEX;
 
-      // 子系统
       this.level;
       this.camera = new Camera();
-      this.levelsInfo = {}; // 里面是class Levelmanager
-      // 运行时对象
+      this.levelsInfo = {}; // save class Levelmanager
+
+      // Runtime object
       this.player = null;
       this.entities = [];
       this.particles = [];
 
-      // 游戏状态
+      // state
       this.status = "PLAY"; // PLAY | WIN | GAMEOVER
       this.environmentChanged = false;
       this.mapPromptText = "";
@@ -40,8 +28,7 @@ class GameManager {
       this.preload();
    }
 
-   // 预加载所有关卡
-
+   // preload all levels in levelsinfo
    preload() {
       this._isPreloading = true;
 
@@ -63,8 +50,7 @@ class GameManager {
    }
 
    /**
-    * 加载关卡
-    * @param {Object} [transition]  关卡过渡数据 {x, y, vx, vy}
+    * @param {Object} [transition]
     */
    loadLevel(transition) {
       let ldtk = this.resources.ldtkData;
@@ -76,9 +62,7 @@ class GameManager {
          this.level = new LevelManager(this.levelIndex);
          this.level.load(ldtk, this.levelIndex);
       }
-      // 1. LevelManager 解析地图
 
-      // 创建恢复读取地图的实体
       this._loadEntities();
 
       if (!this._isPreloading) {
@@ -124,7 +108,6 @@ class GameManager {
 
    _loadEntities() {
       if (!(this.levelIndex in this.levelsInfo)) {
-         // 创建实体
          this._createEntities();
          this.level.entities = this.entities;
          this.levelsInfo[this.levelIndex] = this.level;
@@ -138,19 +121,18 @@ class GameManager {
    }
 
    _loadPlayer(transition) {
-      // 关卡过渡: 保留 HP、绳索材质等状态
       if (transition && this.player) {
-         // 切换地图无敌帧
+         // Invincible frames when switching maps
          this.player.invulnerableTimer = GameConfig.Player.InvulInterval
          this.player.x = transition.x;
          this.player.y = transition.y;
-         // 保留移动方向的速度, 过渡更流畅
+         // retains part of speed of move
          this.player.vx = transition.vx * 0.5 || 0;
          this.player.vy = transition.vy * 0.5 || 0;
-         // 收回绳索 (跨关卡的锚点已失效)
+         // Retrieve the rope
          this._resetRope();
       }
-      // 重新开始
+      // restart in one game
       else if (this.status == "GAMEOVER" && this.player) {
          let cp = this.checkpoint;
          this.player.hp = this.player.maxHp;
@@ -160,7 +142,7 @@ class GameManager {
          this.player.vy = 0;
          this._resetRope();
       }
-      // 新游戏
+      // new game
       else {
          let start = this.level.playerStart || GameConfig.Player.DefaultStartPoint;
          this.player = new Player(start.x, start.y);
@@ -177,28 +159,26 @@ class GameManager {
    update() {
       if (this.status !== "PLAY") return;
 
-      // 玩家更新 (传入 GameManager 引用)
       this.player.update(this);
 
-      // 持续按键
       this._onKeyDown();
 
-      // 摄像机
+      // camera
       let viewW = width / this.scale;
       let viewH = height / this.scale;
       this.camera.follow(this.player, this.level.mapW, this.level.mapH, viewW, viewH);
 
-      // 通用实体
+      // entities
       this._updateEntities();
       this._checkTeleport();
+
       this._checkProcess()
-      // 粒子
+
       this._updateParticles();
 
-      // 关卡过渡检测 (优先于胜负判定)
+      // Level transition detection
       this._checkTransition();
 
-      // 胜负判定
       this._checkWinLose();
    }
 
@@ -211,13 +191,13 @@ class GameManager {
       scale(this.scale);
       translate(-this.camera.x, -this.camera.y);
 
-      //渲染地图背景
+      // render area background
       this.drawBackground();
 
-      //  统一渲染: LevelManager 按图层顺序绘制所有 Tile + 装饰
+      // LevelManager Draw all Tiles in layer order
       this.level.draw(this.resources.tilesetImage);
 
-      // 游戏对象
+      // entity
       for (let ent of this.entities) ent.display(this.level);
       for (let p of this.particles) p.display();
       this.player.ropeL.display(this.player);
@@ -233,10 +213,8 @@ class GameManager {
 
       pop();
 
-      // 常态化显示右上角小地图
       this.level.drawMiniMap(this.player);
 
-      // 按下 M 键，屏幕中央放大显示当前及相邻地图
       if (keyIsDown(Keys.M)) {
          this.level.drawLargeMap(this.player, this);
       }
@@ -248,7 +226,7 @@ class GameManager {
          this.player.resourcePanel.display(this.player);
       }
 
-      // UI (屏幕空间)
+      // UI
       UI.drawHUD(this.player, this.level, this);
       if (this.status === "WIN") UI.drawWinScreen();
       else if (this.status === "GAMEOVER") UI.drawGameOverScreen();
@@ -378,7 +356,7 @@ class GameManager {
       }
    }
 
-   //  输入
+   // input
 
    onMousePressed(button) {
       if (this.status !== "PLAY") return;
@@ -412,13 +390,9 @@ class GameManager {
       if (keyIsDown(RIGHT_ARROW) || keyIsDown(Keys.D)) this.player.move(1);  // d
    }
 
-   //  粒子特效
-
    addParticles(x, y, count = 5) {
       this.particles.push(...Particle.spawn(x, y, count));
    }
-
-   //  内部
 
    _updateEntities() {
       for (let i = this.entities.length - 1; i >= 0; i--) {
@@ -498,7 +472,7 @@ class GameManager {
                let level = this.levelsInfo[key];
                if (!level) continue;
                if (level.areaNumber === this.level.areaNumber) {
-                  level.convertToxicToWater();
+                  level.transformPollutedTiles();
                }
             }
          }
@@ -511,7 +485,6 @@ class GameManager {
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;
-      // 切换关卡, 保留速度让过渡更流畅
       this.levelIndex = result.levelIndex;
       this.loadLevel({
          x: result.newX,
@@ -526,14 +499,14 @@ class GameManager {
    }
 
    _checkWinLose() {
-      // 掉出地图底部 (且该方向没有邻居, 否则 _checkTransition 会先处理)
+      // across bottom of map
       if (this.player.y > this.level.mapH + 32) this.player.die(this);
       if (this.player.hp <= 0) this.player.die(this);
    }
 
    /**
-       * 计算当前所在 Area（包含多个 Level）的净化百分比进度
-       * 权重规则：污染核心 = 5, 怪物 = 1
+       * Calculate the purification percentage progress of the current Area (which contains multiple Levels)
+       * Weight rules is in config
        */
    getAreaProgress(areaNumber) {
       let ldtk = this.resources.ldtkData;

@@ -1,12 +1,4 @@
 /**
- * LevelManager — 场景
- * 
- * 每个关卡都有一个LevelManager
- *
- * 核心职责:
- *   1. 解析 LDtk 地图数据
- *   2. 用 2D 网格 存储 Tile 对象
- *
  * @param {int} levelIndex
  *
  */
@@ -16,11 +8,11 @@ class LevelManager {
       this.ldtkData = null;
 
       // 网格数据
-      this.grid = [];           // 2D 数组: grid[row][col] = Tile | null
+      this.grid = [];  // 2D arrays: grid[row][col] = Tile | null
       this.cols = 0;
       this.rows = 0;
       this.gridSize = 0;
-      this.offsetX = 0;         // 图层像素偏移
+      this.offsetX = 0;  // Layer pixel offset
       this.offsetY = 0;
 
       // 地图像素尺寸
@@ -115,18 +107,12 @@ class LevelManager {
       };
    }
 
-   // ========================================================
-   //  空间查询 (核心性能优化)
-   // ========================================================
-
-   /** O(1) 查询: 获取指定网格位置的 Tile */
    getTileAt(col, row) {
       if (row < 0 || row >= this.rows || col < 0 || col >= this.cols) return null;
       let tile = this.grid[row][col];
       return (tile && tile.active) ? tile : null;
    }
 
-   /** O(1) 查询: 指定网格位置是否是固体 */
    isSolidAt(col, row) {
       let tile = this.getTileAt(col, row);
       return tile !== null && tile.isSolid;
@@ -499,8 +485,8 @@ class LevelManager {
    }
 
 
-   // 转换瓦片直接根据test_allgrid_8px里面两者瓦片的相对位置更改
-   convertToxicToWater() {
+   // Tile conversion is directly modified based on the relative positions of the two tiles in tileset png.
+   transformPollutedTiles() {
       if (this.toxicConverted) return;
       this.toxicConverted = true;
 
