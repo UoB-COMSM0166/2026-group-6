@@ -1,4 +1,4 @@
-# 2026-group-6
+ # 2026-group-6
 2026 COMSM0166 group 6
 
 # KanBan Link
@@ -315,21 +315,20 @@ After identifying the core users' requirements, we designed the system's initial
   <b>Figure X.</b> Initial Class Diagram
 </p>
 
-#### 1. GameManager
+**1. GameManager**  
 `GameManager` is the system's central control class, responsible for maintaining the key components required for the game to run, such as `LevelManager`, `Camera`, `ResourceManager`, and `Player`. This class controls the game flow by calling methods such as `loadLevel()`, `update()`, and `render()`, coordinating component updates and rendering within each frame.
 
-#### 2. LevelManager
+**2. LevelManager**  
 `LevelManager` loads level data and manages entities within the current level. It maintains a collection of entities to store all objects in the level. Additionally, `LevelManager` detects map boundaries and triggers region transitions when necessary.
 
-#### 3. Player
+**3. Player**  
 Player-related logic is implemented by `Player`. This class encapsulates attributes such as the player's health, and clean energy, and provides functionality for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
 
-#### 4. Rope
-The rope mechanism is implemented by the `Rope`. This class manages the rope's state, length, and energy transfer behavior, and provides methods for using the rope, updating its state, and adjusting its length. Each rope is associated with a `RopeHead` object, which handles the interaction when the rope head contacts a target object.
+**4. Rope**  
+The rope mechanism is implemented by `Rope`. This class manages the rope's state, length, and energy transfer behavior, and provides methods for using the rope, updating its state, and adjusting its length. Each rope is associated with a `RopeHead` object, which handles the interaction when the rope head contacts a target object.
 
-#### 5. Entity
+**5. Entity**  
 To centrally manage interactive objects within levels, the system employs an abstract class `Entity`. Different game object types inherit from this class to implement specific behaviors. For example, `Enemy` represents an enemy character, while `PollutionCore` represents an environmental target that needs to be purified. This inheritance structure allows objects to share interfaces while maintaining their unique behavioral logic.
-
 
 ## 4.3 Final Class Diagram
 As development progressed, the game gradually added more features, such as different types of enemies, environmental interactive objects, and area teleportation mechanisms. To support these new features, the system architecture was also adjusted accordingly. The final class diagram (Figure X) illustrates the relationships between the main classes in the system.
@@ -344,7 +343,7 @@ As development progressed, the game gradually added more features, such as diffe
 
 The main improvements are reflected in the following three aspects. First, in `entity` class, the initial design only included a small number of basic classes. In the final design, `Entity` is used as the core abstract class of the game object system, deriving several sub-classes such as `Enemy`, `Boss`, `PollutionCore`, `TeleportationGate`, `CleanEnergy`, and `GateWall`. These classes represent different types of game objects; for example, `Enemy` and `Boss` are used to implement enemy characters, while `CleanEnergy` represents resource objects that players can collect.
 
-Second, `levelmanager` has also been adjusted. The initial level representation was relatively simple, while in the final implementation, `LevelManager` uses a tile grid structure to represent the map environment, with each `tile` recording its position, size, and whether it is entity terrain. This structure makes level loading, collision detection, and map rendering clearer and more stable.
+Second, `levelmanager` has also been adjusted. The initial level representation was relatively simple, while in the final implementation, `LevelManager` uses a tile grid structure to represent the map environment, with each `Tile` recording its position, size, and whether it is entity terrain. This structure makes level loading, collision detection, and map rendering clearer and more stable.
 
 Finally, the interaction methods between entities have been unified. When a player or rope comes into contact with an entity, the interaction methods implemented by that entity are called, such as `onPlayerContact()` or `onRopeContact()`. Different entities implement their own behaviors in these methods, such as triggering transmissions or updating polluting core states, thereby avoiding centralized handling of all interaction logic in the system.
 
@@ -357,7 +356,7 @@ Figure X shows the player's interaction process for purifying the pollution core
   <b>Figure X.</b> Rope Interaction and Pollution Purification
 </p>
 
-When a player performs an input action, GameMnager first receives the input event and triggers the `fireRope()` method. The player then calls the rope's `fire()` method, launching the rope towards the target. In each frame update loop, GameManager continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. Contact with the pollution core then initiates pollution purification. If the player's current clean energy meets the purification condition (`player.cleanEnergy ≥ purificationCost`), the player consumes the corresponding clean energy. The pollution core then executes the `purifyPollution()` method and updates its state. Otherwise, the system triggers insufficient energy handling logic, maintaining the pollution core's current state.
+When a `player` performs an input action, `GameMnager` first receives the input event and triggers the `fireRope()` method. The `player` then calls the rope's `fire()` method, launching the rope towards the target. In each frame update loop, `GameManager` continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. Contact with the pollution core then initiates pollution purification. If the player's current clean energy meets the purification condition (`player.cleanEnergy ≥ purificationCost`), the player consumes the corresponding clean energy. The `PollutionCore` then executes the `purifyPollution()` method and updates its state. Otherwise, the system triggers insufficient energy handling logic, maintaining the `PollutionCore's` current state.
 
 ## 4.5 Unlock New Area Sequence Diagram
 Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
@@ -369,7 +368,7 @@ Figure X shows the interaction flow for unlocking new areas. This sequence diagr
   <b>Figure X.</b> Unlock New Area
 </p>
 
-During gameplay, GameManager calls Player's update() method to refresh the player's state in each frame's update loop. Simultaneously, the system checks if the area unlocking conditions are met using LevelManager's checkUnlockCondition() method. If the player's purification progress reaches the preset requirement (purifiedProgress ≥ requiredProgress), the system triggers unlockNewArea() to unlock a new area. GameManager then loads the new level data and calls loadNewArea() to complete the area switch. After the new area is loaded, the system resets the player's position using resetPosition(), allowing the player to enter the new area. If the unlocking conditions are not met, no area switch is triggered, and the game loop continues.
+During gameplay, `GameManager` calls player's `update()` method to refresh the player's state in each frame's update loop. Simultaneously, the system checks if the area unlocking conditions are met using `LevelManager's` `checkUnlockCondition()` method. If the player's purification progress reaches the preset requirement (`purifiedProgress ≥ requiredProgress`), the system triggers `unlockNewArea()` to unlock a new area. `GameManager` then loads the new level data and calls `loadNewArea()` to complete the area switch. After the new area is loaded, the system resets the player's position using `resetPosition()`, allowing the player to enter the new area. If the unlocking conditions are not met, no area switch is triggered, and the game loop continues.
 
 # 5. Implementation
 
@@ -454,7 +453,7 @@ The game also offers two different types of ropes: soft ropes and hard ropes. On
 
 ## 6.1 Qualitative Evaluation
 ### Heuristic Evaluation
-We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective method for identifying usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recored primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
+We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
 <p align="center">
 <b>Table X. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
@@ -654,7 +653,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 </tr>
 
 <tr>
-<td><b>System Usability Survey Score</b></td>
+<td>System Usability Survey Score</td>
 <td>62.5</td>
 <td>60</td>
 <td>37.5</td>
@@ -769,7 +768,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 </tr>
 
 <tr>
-<td><b>System Usability Survey Score</b></td>
+<td>System Usability Survey Score</td>
 <td>60</td>
 <td>35</td>
 <td>35</td>
@@ -784,12 +783,12 @@ A total of 10 participants took part in the evaluation. Each participant played 
 
 </table>
 
-### Mean Results for NASA-TLX and SUS
+### Mean Results for NASA TLX and SUS
 <p align="center">
   <img src="resources/images/NASA TLX.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> Mean NASA-TLX workload scores for the Easy and Hard difficulty levels.
+  <b>Figure X.</b> Mean NASA TLX workload scores for the Easy and Hard difficulty levels.
 </p>
 
 <p align="center">
@@ -834,6 +833,9 @@ According to firgue X, the mean NASA-TLX workload score was **4.57** for the Eas
 </table>
 
 The Wilcoxon Signed-Rank Test results (Table X) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
+
+### Findings
+According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the player's workload is not low, while the SUS score is generally at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps; easy mode reduced difficulty by removing some of the more difficult maps. Now, we have designed different maps for different difficulties. The easy mode levels are simpler, the paths are clearer, and the use of rope mechanics is reduced, making it easier for players to complete the core objective of purifying the contaminated core, thus better distinguishing the different difficulties visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily obtain ability upgrades, such as jumping ability, rope length, and attack power, thereby reducing the difficulty of completing the levels. These adjustments have made the differences between the various difficulty modes clearer.
 
 ## 6.3 How Code Was Tested.
 
