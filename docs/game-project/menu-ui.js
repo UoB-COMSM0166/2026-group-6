@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 class MenuUI {
    constructor({ resources, audioManager, intro, getGameManager, setGameManager, setAppState }) {
       this.resources = resources;
@@ -771,7 +770,6 @@ class MenuUI {
       this.menuDiv.style.display = 'none';
    }
 }
-=======
 const BTN_NORMAL = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png';
 const BTN_HOVER = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png';
 const BTN_ACTIVE = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Active.png';
@@ -1239,4 +1237,3 @@ function endDemoVideo() {
    showMenuPage('main');
    appState = "MENU";
 }
->>>>>>> ccbc31d (partsettings)
