@@ -14,7 +14,6 @@
  */
 class ResourceManager {
    constructor() {
-      // (dict)
       this.images = {};
       this.data = {};
       this.fonts = {};
@@ -23,7 +22,7 @@ class ResourceManager {
          enemy: {}
    };
 
-      //地图难度preload
+      //map difficulty levels preload
       this.data.ldtk = {
          easy: null,
          medium: null,
@@ -40,8 +39,8 @@ class ResourceManager {
    }
 
    /**
-    * 在 p5.js preload() 中调用
-    * 所有 loadImage / loadJSON 都写在这里
+    * p5.js preload() to use
+    * all loadImage / loadJSON here
     */
    preload() {
       this.data.ldtk.easy = loadJSON('map/map-easy.ldtk');
@@ -84,7 +83,7 @@ class ResourceManager {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/background_${i}.png`));
       }
 
-      //怪物
+      //enemy monster
       this.images.enemy = this.images.enemy || {};
       this.images.enemy.slime = {
          walk: loadImage('resources/images/enemy/Monster_Slime_Walk-Sheet.png'),
@@ -101,7 +100,7 @@ class ResourceManager {
          death: loadImage('resources/images/enemy/Boss_Death-Sheet.png')
       };
 
-      //地图背景
+      //map background
       //this.images.parallax = {};
 
       // Area1: Ephemeral_0..5 (6 layers)
@@ -136,7 +135,7 @@ class ResourceManager {
          );
       }
 
-      // 音效：
+      // sounds
       this.sounds.rope = {
          ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
          ropered: loadSound('resources/audios/sides/redwhoosh.wav')
@@ -160,13 +159,12 @@ class ResourceManager {
 
       //bgm:
       this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
-      //this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
+      this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
       this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
 
       //Boss
-      //Boss音效
-      //this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
-      //this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
+      this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
+      this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
       //END之后用
       //this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
@@ -177,7 +175,7 @@ class ResourceManager {
    }
 
 
-   /** preload 完成后标记 */
+   /** after preload is over */
    markLoaded() {
       this._loaded = true;
    }
@@ -186,8 +184,8 @@ class ResourceManager {
       return this._loaded;
    }
 
-   /**按难度获取对应地图
-   * @param {string} difficulty - 难度分级: easy/medium/hard
+   /**get maps according to different levels
+   * @param {string} difficulty - three levels: easy/medium/hard
    * @returns {object} 
    */
    setLdtkData(difficulty = "easy") {
