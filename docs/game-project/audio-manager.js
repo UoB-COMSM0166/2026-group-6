@@ -1,27 +1,26 @@
 class AudioManager {
   constructor(resources) {
-    this.resources = resources; // 关联资源管理器
-    // 音量/开关状态（默认值，可自行调整）
+    this.resources = resources; 
+    //primary status
     this.state = {
-      bgm: { volume: 0.6, isMuted: false },    // BGM（背景音乐）
-      sfx: { volume: 0.8, isMuted: false }     // SFX（音效：点击、门、攻击等）
+      bgm: { volume: 0.6, isMuted: false },    
+      sfx: { volume: 1.0, isMuted: false }     
     };
-    // 初始化：给所有音频绑定音量
+    //init audiovolumes
     this.initAudioVolumes();
   }
 
-  // 初始化：给所有音频设置初始音量
   initAudioVolumes() {
     if (!this.resources?.sounds) return;
 
-    // 1. BGM类音频（bgm、story）
+    // BGM
     const bgmSounds = ['bgm', 'story'];
     bgmSounds.forEach(key => {
       const sound = this.resources.sounds[key];
       if (sound) sound.setVolume(this.state.bgm.volume);
     });
 
-    // 2. SFX类音频（所有其他音效）
+    // Sound Effects
     const sfxKeys = Object.keys(this.resources.sounds).filter(key => {
       return !bgmSounds.includes(key) && 
              (typeof this.resources.sounds[key] === 'object' ? 
@@ -29,11 +28,10 @@ class AudioManager {
                this.resources.sounds[key] instanceof p5.SoundFile);
     });
 
-    // 递归设置音效音量（处理enemy/rope这类嵌套对象）
+    // Batch modification lots of sounds
     this._setSfxVolume(this.resources.sounds, sfxKeys);
   }
 
-  // 私有方法：递归设置音效音量
   _setSfxVolume(soundObj, keys) {
     keys.forEach(key => {
       if (soundObj[key] instanceof p5.SoundFile) {
@@ -48,21 +46,20 @@ class AudioManager {
     });
   }
 
-  // ========== 对外暴露的控制方法 ==========
-  // 1. 设置BGM音量（0-1）
+  // 1. set BGM volume（0-1）
   setBgmVolume(volume) {
-    this.state.bgm.volume = Math.max(0, Math.min(1, volume)); // 限制0-1
+    this.state.bgm.volume = Math.max(0, Math.min(1, volume)); // restirct 0-1
     if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(this.state.bgm.volume);
     if (this.resources.sounds.story) this.resources.sounds.story.setVolume(this.state.bgm.volume);
   }
 
-  // 2. 设置音效音量（0-1）
+  // 2. set sounds volume（0-2）, 1 is too small to hear
   setSfxVolume(volume) {
-    this.state.sfx.volume = Math.max(0, Math.min(1, volume));
+    this.state.sfx.volume = Math.max(0, Math.min(2, volume));
     this._setSfxVolume(this.resources.sounds, Object.keys(this.resources.sounds));
   }
 
-  // 3. 切换BGM静音/开启
+  // mute/unmute BGM
   toggleBgmMute() {
     this.state.bgm.isMuted = !this.state.bgm.isMuted;
     if (this.resources.sounds.bgm) {
@@ -73,13 +70,14 @@ class AudioManager {
     }
   }
 
-  // 4. 切换音效静音/开启
+  // mute/unmute sounds
   toggleSfxMute() {
     this.state.sfx.isMuted = !this.state.sfx.isMuted;
-    // 遍历所有音效，切换静音
+    // silent
+    //修改此处，不静音BGM
     const muteAllSfx = (obj) => {
       Object.keys(obj).forEach(key => {
-        //静音全部
+        //all
         if (obj[key] instanceof p5.SoundFile) {
           this.state.sfx.isMuted ? obj[key].setVolume(0) : obj[key].setVolume(1);
         } else if (typeof obj[key] === 'object') {
@@ -90,7 +88,7 @@ class AudioManager {
     muteAllSfx(this.resources.sounds);
   }
 
-  // 5. 获取当前状态（供UI显示）
+  // UI show status
   getState() {
     return { ...this.state };
   }

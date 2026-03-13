@@ -67,6 +67,7 @@ function refreshMenuLanguage() {
    showMenuPage(currentMenuPage);
 }
 
+//create menu page
 function _createMenu() {
    menuDiv = document.createElement('div');
    menuDiv.id = 'game-menu';
@@ -81,6 +82,7 @@ function _createMenu() {
       'background-repeat:no-repeat;' +
       'z-index:10;';
 
+   //create different buttons
    const backBtn = document.createElement('button');
    backBtn.id = 'menu-back-btn';
    backBtn.textContent = t('menu.back');
@@ -131,6 +133,7 @@ function _createMenu() {
    mainPanel.style.cssText =
       'display:flex; flex-direction:column; align-items:center; gap:20px;';
 
+   //start button
    let btnStart = _makeBtn(t('menu.start'), function (e) {
       if (e) {
          e.preventDefault();
@@ -145,6 +148,7 @@ function _createMenu() {
       }
    });
 
+   //continue button
    let btnContinue = _makeBtn(t('menu.continue'), function (e) {
       if (e) {
          e.preventDefault();
@@ -166,6 +170,7 @@ function _createMenu() {
    btnContinue.style.opacity = '0.3';
    btnContinue.style.pointerEvents = 'none';
 
+   //difficulty choose button
    const btnDifficulty = _makeBtn(t('menu.difficulty'), function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -186,6 +191,8 @@ function _createMenu() {
       showMenuPage('audio');
    });
 
+   //language choose
+   //少量功能仍为中文，中文需要修正为小字号字体
    const btnLanguage = _makeBtn(t('menu.language'), function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -196,6 +203,7 @@ function _createMenu() {
       showMenuPage('language');
    });
 
+   //instruction button
    const btnInstructions = _makeBtn(t('menu.instructions'), function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -229,6 +237,7 @@ function _createMenu() {
    difficultyContainer.style.cssText =
       'display:flex; gap:20px;';
 
+   //different difficulty levels
    let btnEasy = _makeDifficultyBtn(t('menu.easy'), 'easy');
    let btnMedium = _makeDifficultyBtn(t('menu.medium'), 'medium');
    let btnHard = _makeDifficultyBtn(t('menu.hard'), 'hard');
