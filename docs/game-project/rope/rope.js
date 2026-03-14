@@ -12,9 +12,10 @@ class Rope {
       //  nodes[last] = Tip end
       /** @type {Array<{x:number, y:number, oldx:number, oldy:number}>} */
       this.nodes = [];
-      this.stuck = false;
-      this.retracting = false;
-      this.extending = false
+
+      /** @type {"IDLE"|"EXTENDING"|"SWINGING"|"STRAND"|"RETRACTING"} */
+      this._state = "IDLE";
+
       this.material = (ropeColor.toString() === color(0, 255, 255).toString()) ? 'HARD' : 'SOFT';
 
       // rope head (The end far away from the players)
@@ -83,8 +84,8 @@ class Rope {
          let a = this.nodes[i], b = this.nodes[i + 1];
          total += dist(a.x, a.y, b.x, b.y);
       }
-      // EXTENDING
-      if (!this.stuck && !this.retracting) {
+      // EXTENDING or STRAND: tip may be ahead of lastNode
+      if (this._state === "EXTENDING" || this._state === "STRAND") {
          total += dist(this.lastNode.x, this.lastNode.y, this.tip.x, this.tip.y);
       }
       return total;
@@ -150,26 +151,26 @@ class Rope {
 
    // State Getter
 
-   get isIdle() { return this.nodes.length === 0; }
+   get isIdle() { return this._state === "IDLE"; }
 
-   get state() {
-      if (this.nodes.length === 0) return "IDLE";
-      if (this.retracting) return "RETRACTING";
-      if (this.stuck) return "SWINGING";
-      if (this.extending) return "EXTENDING";
-      return "STRAND";
-   }
+   get state() { return this._state; }
+
+   // State Setter
 
    set state(value) {
-      if (value === "IDLE") this.reset();
-      else if (value === "RETRACTING") {
-         this.extending = false;
-         this.retracting = true;
-         this.stuck = false;
-      }
-      else if (value === "SWINGING") {
-         if (this.stuck === true) return;
-         this._stickAt(this.tip.x, this.tip.y);
+      if (value === this._state) return;
+
+      switch (value) {
+         case "IDLE":
+            this.reset();
+            break;
+         case "RETRACTING":
+            this._state = "RETRACTING";
+            break;
+         case "SWINGING":
+            if (this._state === "SWINGING") return;
+            this._stickAt(this.tip.x, this.tip.y);
+            break;
       }
    }
 
@@ -177,9 +178,7 @@ class Rope {
 
    fire(px, py, tx, ty) {
       if (!this.isIdle) {
-         this.retracting = true;
-         this.stuck = false;
-         this.extending = false;
+         this._state = "RETRACTING";
          return;
       }
       if (this.color.toString() === color(0, 255, 255).toString()) {
@@ -195,17 +194,13 @@ class Rope {
       this.tip.vy = sin(angle) * this.launchSpeed;
 
       this.nodes = [this._node(px, py)];
-      this.stuck = false;
-      this.retracting = false;
-      this.extending = true;
+      this._state = "EXTENDING";
       this._retractTimer = 0;
    }
 
    reset() {
       this.nodes = [];
-      this.stuck = false;
-      this.retracting = false;
-      this.extending = false;
+      this._state = "IDLE";
       this.ropeLength = 0;
       this._effectiveMaxLen = this.maxLen;
       this._retractTimer = 0;
@@ -218,11 +213,11 @@ class Rope {
 
    changeLength(amount) {
       if (this.nodes.length < 2) return;
-      let s = this.state;
+      let s = this._state;
       if (s !== 'SWINGING' && s !== 'STRAND') return;
       if (amount > 0 && this.ropeLength >= this._effectiveMaxLen) return;
       if (amount < 0 && this.ropeLength <= this.minLen) {
-         if (s === 'STRAND') this.state = "RETRACTING";
+         if (s === 'STRAND') this._state = "RETRACTING";
          return;
       }
       this.ropeLength = constrain(this.ropeLength + amount, this.minLen, this._effectiveMaxLen);
@@ -234,7 +229,7 @@ class Rope {
          Math.floor(this.ropeLength / this.nodeDist) + 1,
          2, this.maxNodes
       );
-      if (this.stuck) {
+      if (this._state === "SWINGING") {
          while (this.nodes.length > target) this._removeAfterFirst();
          while (this.nodes.length < target) this._insertAfterFirst();
       } else {
@@ -244,11 +239,11 @@ class Rope {
    }
 
    update(player, level) {
-      if (this.nodes.length === 0) return;
+      if (this._state === "IDLE") return;
 
-      if (this.extending) this._advanceTip(level);
+      if (this._state === "EXTENDING") this._advanceTip(level);
 
-      if (this.retracting) {
+      if (this._state === "RETRACTING") {
          this._retractOneNode();
          if (this.nodes.length === 0) {
             this.reset();
@@ -258,7 +253,7 @@ class Rope {
 
       this._simulate(player, level);
 
-      if (this.state === "STRAND") {
+      if (this._state === "STRAND") {
          this._maintainStrandLength();
       }
 
@@ -273,7 +268,7 @@ class Rope {
    }
 
    getCollisionBoxes() {
-      if (this.material !== 'HARD' || !this.stuck) return [];
+      if (this.material !== 'HARD' || this._state !== "SWINGING") return [];
       let size = this.G * RC.COLLISION_BOX_RATIO;
       let half = size / 2;
       return this.nodes.map(n => ({
@@ -284,7 +279,7 @@ class Rope {
    // render
 
    display() {
-      if (this.nodes.length === 0) return;
+      if (this._state === "IDLE") return;
 
       // rope
       stroke(this.color);
@@ -295,16 +290,16 @@ class Rope {
 
       beginShape();
       for (let n of this.nodes) vertex(n.x, n.y);
-      if (this.extending) vertex(this.tip.x, this.tip.y);
+      if (this._state === "EXTENDING") vertex(this.tip.x, this.tip.y);
       endShape();
 
       // tip shape
       noStroke();
       fill(this.color);
-      if (this.stuck) {
+      if (this._state === "SWINGING") {
          let dot = this.G * RC.ANCHOR_DOT_RATIO;
          ellipse(this.tip.x, this.tip.y, dot, dot);
-      } else if (!this.retracting) {
+      } else if (this._state !== "RETRACTING") {
          let dot = this.G * RC.TIP_DOT_RATIO;
          ellipse(this.tip.x, this.tip.y, dot, dot);
       }
@@ -333,15 +328,13 @@ class Rope {
       if (dist(this.lastNode.x, this.lastNode.y, newX, newY) >= this.nodeDist) {
          this.nodes.push(this._node(newX, newY, oldX, oldY));
          if (this.nodes.length >= this.maxNodes) {
-            this.extending = false;
+            this._state = "STRAND";
          }
       }
    }
 
    _stickAt(x, y) {
-      this.stuck = true;
-      this.extending = false;
-      this.retracting = false;
+      this._state = "SWINGING";
       this.tip.x = x;
       this.tip.y = y;
       this.nodes.push(this._node(x, y));
@@ -359,8 +352,7 @@ class Rope {
       this.nodes.pop();
 
       if (this.nodes.length === 0) {
-         this.retracting = false;
-         this.stuck = false;
+         this._state = "IDLE";
       }
    }
 
@@ -380,7 +372,7 @@ class Rope {
 
    _pinFixedEnds(player) {
       this._pin(this.nodes[0], player.cx(), player.cy());
-      if (this.stuck) {
+      if (this._state === "SWINGING") {
          this._pin(this.lastNode, this.tip.x, this.tip.y);
       }
    }
@@ -391,7 +383,7 @@ class Rope {
       let first = this.nodes[0];
       let last = this.lastNode;
       let count = this.nodes.length;
-      let endIdx = this.stuck ? count - 1 : count;
+      let endIdx = this._state === "SWINGING" ? count - 1 : count;
 
       for (let i = 1; i < endIdx; i++) {
          let n = this.nodes[i];
@@ -406,9 +398,9 @@ class Rope {
    // soft rope: Verlet integration 
    // add gravity and inertia
    _integrateVerlet(level) {
-      let endIdx = this.stuck ? this.nodes.length - 1 : this.nodes.length;
+      let endIdx = this._state === "SWINGING" ? this.nodes.length - 1 : this.nodes.length;
       let gravity = RC.NODE_GRAVITY;
-      if (this.extending) gravity *= RC.EXTENDING_GRAVITY_SCALE;
+      if (this._state === "EXTENDING") gravity *= RC.EXTENDING_GRAVITY_SCALE;
 
       for (let i = 1; i < endIdx; i++) {
          let n = this.nodes[i];
@@ -433,9 +425,9 @@ class Rope {
          let newX = n.x + vx;
          let newY = n.y + vy;
 
-         // collition
+         // collision
          let solidXY = level.isPointSolid(newX, newY);
-         if (solidXY && this.state !== "EXTENDING") {
+         if (solidXY && this._state !== "EXTENDING") {
             let solidX = level.isPointSolid(newX, prevY);
             let solidY = level.isPointSolid(prevX, newY);
             if (!solidX && solidY) {
@@ -470,7 +462,7 @@ class Rope {
       // player end + anchor end + nodes in contact with the ground surface
       let pinned = new Array(count).fill(false);
       pinned[0] = true;
-      if (this.stuck) pinned[lastIdx] = true;
+      if (this._state === "SWINGING") pinned[lastIdx] = true;
 
       for (let k = 0; k < RC.STIFFNESS; k++) {
          for (let i = 0; i < lastIdx; i++) {
@@ -506,10 +498,10 @@ class Rope {
             }
          }
 
-         // collition
+         // collision
          if (this.material == "SOFT") {
             if (level) {
-               let endIdx = this.stuck ? count - 1 : count;
+               let endIdx = this._state === "SWINGING" ? count - 1 : count;
                for (let i = 1; i < endIdx; i++) {
                   if (level.isPointSolid(this.nodes[i].x, this.nodes[i].y)) {
                      this._pushNodeOutOfSolid(this.nodes[i], level);
@@ -613,7 +605,7 @@ class Rope {
    }
 
    applyPhysics(player) {
-      if (!this.stuck || this.nodes.length < 2) return;
+      if (this._state !== "SWINGING" || this.nodes.length < 2) return;
 
       let anchor = this._getEffectiveAnchor();
       if (!anchor) return;

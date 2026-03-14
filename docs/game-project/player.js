@@ -344,7 +344,7 @@ class Player {
    }
 
    _clampToRope(rope) {
-      if (rope.material !== 'SOFT' || !rope.stuck || rope.nodes.length < 2) return;
+      if (rope.material !== 'SOFT' || rope.state !== "SWINGING" || rope.nodes.length < 2) return;
 
       let anchor = rope._getEffectiveAnchor();
       if (!anchor) return;
