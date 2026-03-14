@@ -169,7 +169,25 @@ class Rope {
             break;
          case "SWINGING":
             if (this._state === "SWINGING") return;
-            this._stickAt(this.tip.x, this.tip.y);
+            if (this._state === "STRAND") {
+               // fix tip end
+               this._state = "SWINGING";
+               this.tip.x = this.lastNode.x;
+               this.tip.y = this.lastNode.y;
+               this._pin(this.lastNode, this.tip.x, this.tip.y);
+
+               // actual rope len
+               let chainLen = this.nodeDist * (this.nodes.length - 1);
+               let directDist = dist(this.nodes[0].x, this.nodes[0].y,
+                  this.tip.x, this.tip.y);
+               let pathLen = this._getChainPathLength();
+               this.ropeLength = Math.max(chainLen, directDist, pathLen);
+               this._effectiveMaxLen = Math.max(this.ropeLength, this.maxLen);
+
+               this._pinnedIndices = [];
+            } else {
+               this._stickAt(this.tip.x, this.tip.y);
+            }
             break;
       }
    }

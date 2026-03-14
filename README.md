@@ -379,7 +379,7 @@ in order to address this challenge, we designed the `GameManager` as the core ma
 
 Additionally, we also used the `worldX`, `worldY` and `__neighbours` data provided by LDtk in level-manager.js to achieve coordinate conversion between different levels. This enables players to continue their exploration across multiple levels. When the player leaves the edge of a level, the system will detect the adjacent levels and calculate the correct position of the player in the new level, thereby achieving the transition of the map.
 
-Finally, we also implemented an area-level progress system. The `GameManager` will calculates the purification status of all levels within the same area, such as the purification progress of the pollution core and the enemies, and calculate the overall purification progress. This enables the gates in `GateWall.js` to automatically open when the regional purification progress reaches a certain level, and at the same time, the environment will also change.
+Finally, we also implemented an area-level progress system. The `GameManager` will calculates the purification status of all levels within the same area, such as the purification progress of the pollution core and the enemies, and calculate the overall purification progress. This enables the gates in `GateWall.js` to automatically open when the regional purification progress reaches a certain level, and at the same time, the environment will also change via `transformPollutedTiles` in `level-manager.js`, with the implementation in `tile.js`.
 
 
 ## Challenge 2:  Rope Mechanic Implementation
