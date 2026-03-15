@@ -2,15 +2,12 @@ let resources;
 let gm;
 let appState = "MENU";  // MENU | VIDEO | PLAYING 
 const GAME_FONT_FAMILY = '"Monogram", monospace';
-let menuDiv;
 let intro;
 let storyIntro;
 let storyStarted = false;
 let storyFinished = false;
-let selectedDifficulty = "easy";
-let demoVideo = null;
 let audioManager;
-let instructionsMenu;
+let menuUI;
 
 UI.setLoadingStyle();
 
@@ -58,7 +55,7 @@ function setup() {
       storyFinished = true;
       resources.sounds.story?.stop();
       appState = "VIDEO";
-      playDemoVideo();
+      menuUI.playDemoVideo();
    });
 
    // Original intro UI
@@ -67,6 +64,14 @@ function setup() {
    if (resources.ldtkData) {
       resources.markLoaded();
       audioManager = new AudioManager(resources);
+      menuUI = new MenuUI({
+         resources,
+         audioManager,
+         intro,
+         getGameManager: () => gm,
+         setGameManager: (value) => { gm = value; },
+         setAppState: (value) => { appState = value; }
+      });
    }
 }
 
@@ -125,12 +130,12 @@ function mousePressed() {
 
 function keyPressed() {
    if (appState === "VIDEO") {
-      endDemoVideo();
+      menuUI?.endDemoVideo();
       return;
    }
 
    if (appState === "PLAYING") {
-      if (keyCode === ESCAPE) { _showMenu(); return; }
+      if (keyCode === ESCAPE) { menuUI?.showMenu(); return; }
       if (gm) gm.onKeyPressed(key);
    }
 }
