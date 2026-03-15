@@ -50,12 +50,16 @@ class MenuUI {
          languagePanel.style.display = 'flex';
          backBtn.style.display = 'block';
       } else if (page === 'instructions') {
+<<<<<<< HEAD
          this.ensureInstructionsMenu();
+=======
+>>>>>>> 73bdfd8 (?)
          this.instructionsMenu?.show();
          backBtn.style.display = 'block';
       }
    }
 
+<<<<<<< HEAD
    ensureInstructionsMenu() {
       if (this.instructionsMenu || !this.menuDiv) return;
 
@@ -134,6 +138,33 @@ class MenuUI {
       if (getLanguage() === 'zh') this._setActiveSelectBtn(this.menuRefs.btnChinese);
       else this._setActiveSelectBtn(this.menuRefs.btnEnglish);
 
+=======
+   refreshLanguage() {
+      if (!this.menuRefs) return;
+
+      this.menuRefs.backBtn.textContent = t('menu.back');
+      this.menuRefs.btnStart.textContent = t('menu.start');
+      this.menuRefs.btnContinue.textContent = t('menu.continue');
+      this.menuRefs.btnDifficulty.textContent = t('menu.difficulty');
+      this.menuRefs.btnAudio.textContent = t('menu.audio');
+      this.menuRefs.btnLanguage.textContent = t('menu.language');
+      this.menuRefs.btnInstructions.textContent = t('menu.instructions');
+      this.menuRefs.difficultyTitle.textContent = t('menu.difficultyTitle');
+      this.menuRefs.audioTitle.textContent = t('menu.audioTitle');
+      this.menuRefs.languageTitle.textContent = t('menu.languageTitle');
+      this.menuRefs.bgmLabel.textContent = t('menu.background');
+      this.menuRefs.sfxLabel.textContent = t('menu.sounds');
+      this.menuRefs.btnEasy.textContent = t('menu.easy');
+      this.menuRefs.btnMedium.textContent = t('menu.medium');
+      this.menuRefs.btnHard.textContent = t('menu.hard');
+      this.menuRefs.btnEnglish.textContent = t('menu.english');
+      this.menuRefs.btnChinese.textContent = t('menu.chinese');
+      this._setInactiveSelectBtn(this.menuRefs.btnEnglish);
+      this._setInactiveSelectBtn(this.menuRefs.btnChinese);
+      if (getLanguage() === 'zh') this._setActiveSelectBtn(this.menuRefs.btnChinese);
+      else this._setActiveSelectBtn(this.menuRefs.btnEnglish);
+
+>>>>>>> 73bdfd8 (?)
       this.instructionsMenu?.refreshLanguage?.();
       this.showMenuPage(this.currentMenuPage);
    }
@@ -202,7 +233,10 @@ class MenuUI {
             e.stopPropagation();
          }
 
+<<<<<<< HEAD
          this.resources.sounds.story?.stop();
+=======
+>>>>>>> 73bdfd8 (?)
          this.hideMenu();
          this.setGameManager(new GameManager(this.resources, this.selectedDifficulty));
 
@@ -220,7 +254,10 @@ class MenuUI {
          this._playClickSound();
          if (!this.getGameManager()) return;
 
+<<<<<<< HEAD
          this.resources.sounds.story?.stop();
+=======
+>>>>>>> 73bdfd8 (?)
          this.hideMenu();
          if (this.resources.sounds.bgm && !this.resources.sounds.bgm.isPlaying()) {
             this.resources.sounds.bgm.loop();
@@ -304,6 +341,21 @@ class MenuUI {
       audioTitle.style.cssText =
          'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;font-family:var(--game-font-family), monospace;';
 
+<<<<<<< HEAD
+=======
+      this.instructionsMenu = new InstructionsMenu({
+         buttonImages: {
+            normal: this.BTN_NORMAL,
+            hover: this.BTN_HOVER,
+            active: this.BTN_ACTIVE
+         },
+         onPlayClickSound: () => {
+            this._playClickSound();
+         }
+      });
+      this.instructionsMenu.attachTo(this.menuDiv);
+
+>>>>>>> 73bdfd8 (?)
       const bgmRow = document.createElement('div');
       bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
       const bgmLabel = document.createElement('div');
@@ -338,9 +390,15 @@ class MenuUI {
       sfxSlider.id = 'sfx-volume-slider';
       sfxSlider.type = 'range';
       sfxSlider.min = '0';
+<<<<<<< HEAD
       sfxSlider.max = '2';
       sfxSlider.step = '0.01';
       sfxSlider.value = this.audioManager?.getState().sfx.volume ?? 1.0;
+=======
+      sfxSlider.max = '1';
+      sfxSlider.step = '0.01';
+      sfxSlider.value = this.audioManager?.getState().sfx.volume ?? 0.8;
+>>>>>>> 73bdfd8 (?)
       sfxSlider.style.cssText = 'width:240px;; height:8px; accent-color:#1eb47a;';
       sfxRow.appendChild(sfxLabel);
       sfxRow.appendChild(sfxMuteBtn);
@@ -357,6 +415,7 @@ class MenuUI {
          'display:none;' +
          'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
 
+<<<<<<< HEAD
       const storyReviewWrap = document.createElement('div');
       storyReviewWrap.style.cssText =
          'position:absolute; left:18px; top:56%; transform:translateY(-50%);' +
@@ -414,6 +473,8 @@ class MenuUI {
       storyReviewWrap.appendChild(storyReviewBtn);
       storyReviewWrap.appendChild(storyReviewLabel);
 
+=======
+>>>>>>> 73bdfd8 (?)
       const languageTitle = document.createElement('div');
       languageTitle.textContent = t('menu.languageTitle');
       languageTitle.style.cssText =
@@ -432,7 +493,10 @@ class MenuUI {
 
       languageContainer.appendChild(btnEnglish);
       languageContainer.appendChild(btnChinese);
+<<<<<<< HEAD
       languagePanel.appendChild(storyReviewWrap);
+=======
+>>>>>>> 73bdfd8 (?)
       languagePanel.appendChild(languageTitle);
       languagePanel.appendChild(languageContainer);
       this.menuDiv.appendChild(languagePanel);
@@ -440,9 +504,13 @@ class MenuUI {
       bgmMuteBtn.onclick = () => {
          if (!this.audioManager) return;
          this.audioManager.toggleBgmMute();
+<<<<<<< HEAD
          const bgmState = this.audioManager.getState().bgm;
          bgmMuteBtn.textContent = bgmState.isMuted ? '🔇' : '🔊';
          bgmSlider.value = bgmState.isMuted ? '0' : String(bgmState.volume);
+=======
+         bgmMuteBtn.textContent = this.audioManager.getState().bgm.isMuted ? '🔇' : '🔊';
+>>>>>>> 73bdfd8 (?)
       };
       bgmMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
       bgmMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
@@ -455,6 +523,7 @@ class MenuUI {
       sfxMuteBtn.onclick = () => {
          if (!this.audioManager) return;
          this.audioManager.toggleSfxMute();
+<<<<<<< HEAD
          const sfxState = this.audioManager.getState().sfx;
          sfxMuteBtn.textContent = sfxState.isMuted ? '🔇' : '🔊';
          sfxSlider.value = sfxState.isMuted ? '0' : String(sfxState.volume);
@@ -505,6 +574,55 @@ class MenuUI {
       this.setAppState('PLAYING');
    }
 
+=======
+         sfxMuteBtn.textContent = this.audioManager.getState().sfx.isMuted ? '🔇' : '🔊';
+      };
+      sfxMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
+      sfxMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
+
+      sfxSlider.addEventListener('input', (e) => {
+         if (!this.audioManager) return;
+         this.audioManager.setSfxVolume(parseFloat(e.target.value));
+      });
+
+      document.body.appendChild(this.menuDiv);
+      this.menuRefs = {
+         backBtn,
+         btnStart,
+         btnContinue,
+         btnDifficulty,
+         btnAudio,
+         btnLanguage,
+         btnInstructions,
+         difficultyTitle,
+         audioTitle,
+         languageTitle,
+         bgmLabel,
+         sfxLabel,
+         btnEasy,
+         btnMedium,
+         btnHard,
+         btnEnglish,
+         btnChinese
+      };
+      this.refreshLanguage();
+      this.showMenuPage('main');
+   }
+
+   banBtnContinue() {
+      const bc = document.getElementById('btn-continue');
+      if (!bc) return;
+      bc.style.opacity = '0.3';
+      bc.style.pointerEvents = 'none';
+   }
+
+   hideMenu() {
+      if (!this.menuDiv) return;
+      this.menuDiv.style.display = 'none';
+      this.setAppState('PLAYING');
+   }
+
+>>>>>>> 73bdfd8 (?)
    showMenu() {
       if (this.getGameManager()) {
          const bc = document.getElementById('btn-continue');
@@ -514,6 +632,16 @@ class MenuUI {
          }
       }
 
+<<<<<<< HEAD
+=======
+      this.intro.page = 1;
+      this.intro.transition = 1;
+      this.intro.isTransitioning = false;
+
+      this.intro.showFx(1);
+      this.intro.showSidePanels(1);
+
+>>>>>>> 73bdfd8 (?)
       if (!this.menuDiv) {
          this.createMenu();
       }
@@ -657,9 +785,14 @@ class MenuUI {
       const btn = document.createElement('button');
       btn.textContent = label;
 
+<<<<<<< HEAD
       const menuFontSize = getLanguage() === 'zh' ? '35px' : '38px';
       btn.style.cssText =
          `width:320px; height:70px; font-size:${menuFontSize}; font-weight:bold; color:white;` +
+=======
+      btn.style.cssText =
+         'width:320px; height:70px; font-size:35px; font-weight:bold; color:white;' +
+>>>>>>> 73bdfd8 (?)
          'font-family:var(--game-font-family), monospace;' +
          `background-image:url("${this.BTN_NORMAL}");` +
          'background-size:100% 100%;' +
@@ -713,6 +846,7 @@ class MenuUI {
       if (this.resources.sounds.click && !this.resources.sounds.click.isPlaying()) {
          this.resources.sounds.click.play();
       }
+<<<<<<< HEAD
    }
 
    _applyStoryReviewLabelFont(target = this.menuRefs?.storyReviewLabel) {
@@ -774,5 +908,7 @@ class MenuUI {
       storyFinished = false;
 
       this.menuDiv.style.display = 'none';
+=======
+>>>>>>> 73bdfd8 (?)
    }
 }

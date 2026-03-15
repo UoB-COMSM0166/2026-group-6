@@ -6,8 +6,6 @@ let intro;
 let storyIntro;
 let storyStarted = false;
 let storyFinished = false;
-let selectedDifficulty = "easy";
-let demoVideo = null;
 let audioManager;
 let menuUI;
 
