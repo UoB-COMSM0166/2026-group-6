@@ -6,11 +6,6 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 
 # Echoes of Purity
 
-## description
-This is a non-linear level-based game that combines side-scrolling platforming, puzzle-solving, and lightweight RPG elements, with the core theme of "purifying pollution and ecological restoration." Players use rope tools to delve into highly polluted areas, gradually restoring the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world. 
-
-## demo image: v2.5
-
 
 <p align="center">
   <img src="docs/resources/images/map_image/cover.png" width="600">
@@ -312,7 +307,7 @@ After identifying the core users' requirements, we designed the system's initial
   <img src="resources/images/Class_0221.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> Initial Class Diagram
+  <b>Figure 5.</b> Initial Class Diagram
 </p>
 
 **1. GameManager**  
@@ -338,7 +333,7 @@ As development progressed, the game gradually added more features, such as diffe
   <img src="resources/images/Class_0305.png" width="80%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> Final Class Diagram
+  <b>Figure 6.</b> Final Class Diagram
 </p>
 
 The main improvements are reflected in the following three aspects. First, in `entity` class, the initial design only included a small number of basic classes. In the final design, `Entity` is used as the core abstract class of the game object system, deriving several sub-classes such as `Enemy`, `Boss`, `PollutionCore`, `TeleportationGate`, `CleanEnergy`, and `GateWall`. These classes represent different types of game objects; for example, `Enemy` and `Boss` are used to implement enemy characters, while `CleanEnergy` represents resource objects that players can collect.
@@ -353,7 +348,7 @@ Figure X shows the player's interaction process for purifying the pollution core
   <img src="resources/images/Sequence_0305_1.png" width="70%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> Rope Interaction and Pollution Purification
+  <b>Figure 7.</b> Rope Interaction and Pollution Purification
 </p>
 
 When a `player` performs an input action, `GameMnager` first receives the input event and triggers the `fireRope()` method. The `player` then calls the rope's `fire()` method, launching the rope towards the target. In each frame update loop, `GameManager` continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. Contact with the pollution core then initiates pollution purification. If the player's current clean energy meets the purification condition (`player.cleanEnergy ≥ purificationCost`), the player consumes the corresponding clean energy. The `PollutionCore` then executes the `purifyPollution()` method and updates its state. Otherwise, the system triggers insufficient energy handling logic, maintaining the `PollutionCore's` current state.
@@ -365,7 +360,7 @@ Figure X shows the interaction flow for unlocking new areas. This sequence diagr
   <img src="resources/images/Sequence_0305_2.png" width="45%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> Unlock New Area
+  <b>Figure 8.</b> Unlock New Area
 </p>
 
 During gameplay, `GameManager` calls player's `update()` method to refresh the player's state in each frame's update loop. Simultaneously, the system checks if the area unlocking conditions are met using `LevelManager's` `checkUnlockCondition()` method. If the player's purification progress reaches the preset requirement (`purifiedProgress ≥ requiredProgress`), the system triggers `unlockNewArea()` to unlock a new area. `GameManager` then loads the new level data and calls `loadNewArea()` to complete the area switch. After the new area is loaded, the system resets the player's position using `resetPosition()`, allowing the player to enter the new area. If the unlocking conditions are not met, no area switch is triggered, and the game loop continues.
@@ -419,7 +414,7 @@ $$
 \mathbf{p_B} = \mathbf{p_B} - \Delta \cdot \text{offset} \cdot 0.5
 $$
 
-The game also offers two different types of ropes: soft ropes and hard ropes. One of the challenges in achieving this lies in ensuring that the physical system of the rope and the collision system do not conflict with each other. If the positions of the players are independently modified by the two systems, it may cause the character movement to be jittery or unstable. Therefore we have clearly designed the update sequence. First of all, the rope constraint will adjust the player's position. Then, collision detection is carried out, and finally, the player's position is restricted based on the length of the rope. By following this sequence, it is possible to prevent mutual interference between the two systems, ensuring that both the rope system and the platform collision system operate stably.
+The game also offers two different types of ropes: soft ropes and hard ropes. Therefore, in the design process we needed to ensure that the physical system of the rope and the collision system would not conflict with each other. If the positions of the players are independently modified by the two systems, it may cause the character movement to be jittery or unstable. Therefore we have clearly designed the update sequence. First of all, the rope constraint will adjust the player's position. Then, collision detection is carried out, and finally, the player's position is restricted based on the length of the rope. By following this sequence, it is possible to prevent mutual interference between the two systems, ensuring that both the rope system and the platform collision system operate stably.
 
 
 
@@ -439,7 +434,7 @@ The game also offers two different types of ropes: soft ropes and hard ropes. On
 We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
 <p align="center">
-<b>Table X. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
+<b>Table 9. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
 </p>
 
 <table>
