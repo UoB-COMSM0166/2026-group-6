@@ -1,3 +1,4 @@
+// Builds and manages the standalone Instructions view used by the main menu.
 class InstructionsMenu {
    constructor(options) {
       this.buttonImages = options.buttonImages;
@@ -35,6 +36,7 @@ class InstructionsMenu {
 
       this.styleElement = document.createElement('style');
       this.styleElement.textContent = `
+/* Keep table borders and text wrapping local to the instructions panel. */
 #menu-instructions-panel .instructions-table thead th {
    border-bottom: 1px solid rgba(255,255,255,0.18);
 }
@@ -47,10 +49,19 @@ class InstructionsMenu {
 #menu-instructions-panel .instructions-table tbody tr:not(:last-child) td {
    border-bottom: 1px solid rgba(255,255,255,0.12);
 }
+
+#menu-instructions-panel .instructions-table th,
+#menu-instructions-panel .instructions-table td {
+   white-space: normal;
+   overflow-wrap: anywhere;
+   word-break: break-word;
+   line-height: 1.25;
+}
 `;
       document.head.appendChild(this.styleElement);
 
       this.pages = [
+         // 1-2 are content tables, 3 is the controls gallery, 4 is the rope mechanics page.
          this.createContentPage1(),
          this.createContentPage2(),
          this.createControlsPage(),
@@ -99,6 +110,7 @@ class InstructionsMenu {
          e.stopPropagation();
          this.onPlayClickSound();
 
+         // Pages are grouped as 1<->2 and 3<->4, so the arrow just toggles within each pair.
          if (this.pageIndex === 1) {
             this.showContentPage(2);
          } else if (this.pageIndex === 2) {
@@ -138,6 +150,7 @@ class InstructionsMenu {
 
    showContentPage(pageIndex) {
       this.pageIndex = pageIndex;
+      // Only one instructions sub-page is visible at a time.
       this.pages.forEach((page, index) => {
          page.style.display = index + 1 === pageIndex ? 'flex' : 'none';
       });
@@ -197,6 +210,7 @@ class InstructionsMenu {
    createInstructionCard() {
       const wrap = document.createElement('div');
       wrap.style.cssText =
+         // Use a fixed card shell so both content tables share the same frame.
          'width:96%;' +
          'max-width:1080px;' +
          'min-height:590px;' +
@@ -219,10 +233,10 @@ class InstructionsMenu {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:11%;">Category</th>
+<th style="${this.thStyle()} width:15%;">Category</th>
 <th style="${this.thStyle()} width:15%;">Name</th>
 <th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:65%;">Description</th>
+<th style="${this.thStyle()} width:61%;">Description</th>
 </tr>
 </thead>
 <tbody>
@@ -274,10 +288,10 @@ class InstructionsMenu {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:11%;">Category</th>
+<th style="${this.thStyle()} width:15%;">Category</th>
 <th style="${this.thStyle()} width:15%;">Name</th>
 <th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:65%;">Description</th>
+<th style="${this.thStyle()} width:61%;">Description</th>
 </tr>
 </thead>
 <tbody>
@@ -371,6 +385,7 @@ class InstructionsMenu {
 
       const ropeMechanicsItem = this.createControlItem('Ropemechanics.gif', 'Ropemechanics');
       ropeMechanicsItem.style.cssText += 'width:min(500px, 100%);';
+      ropeMechanicsItem.querySelector('img').style.height = '340px';
       panel.appendChild(ropeMechanicsItem);
       page.appendChild(panel);
       return page;
@@ -419,18 +434,18 @@ class InstructionsMenu {
          'border-spacing:0;' +
          'table-layout:fixed;' +
          'color:white;' +
-         'font-size:28px;' +
+         'font-size:25px;' +
          'margin:0 auto;';
       table.innerHTML = innerHtml;
       return table;
    }
 
    thStyle() {
-      return 'border:0;padding:10px 8px;text-align:center;font-weight:bold;';
+      return 'border:0;padding:8px 6px;text-align:center;font-weight:bold;';
    }
 
    tdStyle() {
-      return 'border:0;padding:8px 8px;text-align:left;vertical-align:middle;';
+      return 'border:0;padding:6px 6px;text-align:left;vertical-align:middle;';
    }
 
    imgStyle() {
