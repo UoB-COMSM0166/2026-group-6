@@ -370,7 +370,7 @@ During gameplay, `GameManager` calls player's `update()` method to refresh the p
 ## Challenge 1: Persistent multi-level world state and area-wide progression
 One of the challenges we faced was how to make the game feel like a "single, continuously changing world" rather than several separate levels. At the beginning of the game design, we did not intend to create a linear single-level game. Instead, we hoped that players could explore among multiple interconnected areas. So, whenever a player re-enters a level, if the purified pollution core, defeated enemies, opened doors and changed environment are all regenerated. Then this would not be in line with the initial design of our game. For this reason, the challenge was not simply level switching. We had to integrate level transitions, entity state preservation, area purification progress, and environmental change into one coherent system.
 
-in order to address this challenge, we designed the `GameManager` as the core management module in ‘game-manager.js’. At the beginning of the game, the LDtk map data will be loaded and a corresponding `LevelManager` will be created for each level. When the level is first loaded, the system will create all the entities and store them in the `levelsInfo` section. If the player enters the same level again later, the game will not recreate the entity from scratch, but will instead use the previously saved state of the entity. In this case, when the player re-enters the level, the purified pollution core and the defeated enemies will not be reset.
+In order to address this challenge, we designed the `GameManager` as the core management module in ‘game-manager.js’. At the beginning of the game, the LDtk map data will be loaded and a corresponding `LevelManager` will be created for each level. When the level is first loaded, the system will create all the entities and store them in the `levelsInfo` section. If the player enters the same level again later, the game will not recreate the entity from scratch, but will instead use the previously saved state of the entity. In this case, when the player re-enters the level, the purified pollution core and the defeated enemies will not be reset.
 
 Additionally, we also used the `worldX`, `worldY` and `__neighbours` data provided by LDtk in level-manager.js to achieve coordinate conversion between different levels. This enables players to continue their exploration across multiple levels. When the player leaves the edge of a level, the system will detect the adjacent levels and calculate the correct position of the player in the new level, thereby achieving the transition of the map.
 
@@ -872,9 +872,10 @@ Overall, through the use of **Agile development practices and Kanban-based task 
 
 # 9. Conclusion
 
-- 10% ~500 words
+In this group assignment, we not only completed a functional game, but also gained a more detailed understanding of all the processes of software engineering. Starting from the initial requirement analysis, to the subsequent design, implementation and testing, we gradually realized that software development is not merely about writing code. Instead, it is a continuous iterative process centered around "problem - requirement - solution".
 
-- Reflect on the project as a whole. Lessons learnt. Reflect on challenges. Future work, describe both immediate next steps for your current game and also what you would potentially do if you had chance to develop a sequel.
+Through the workshops in the third and fourth weeks, we learned to think about issues from the perspectives of different stakeholders, such as players, developers, and course evaluators, etc. Furthermore, during the process of writing epics, user stories, and acceptance criteria, we are able to define the functional goals more clearly and reduce the disagreements that arise during the implementation process. 
+
 
 # 10. Contribution Statement
 
