@@ -878,6 +878,13 @@ Then, during the development process, we adopted an agile approach for iterative
 
 From the perspective of challenges, the biggest difficulty of this project lies in how to maintain the consistency of the game state and how to manage the complex system structure. For instance, the persistence of multi-level states and the sequence of resource loading all require us to make additional considerations in the design.
 
+Also, we have also begun to understand the sustainability issues in software engineering. Software not only needs to function in the short term, but also must be maintainable and scalable in the future. The software sustainability mentioned in the course emphasizes long-term effects and system evolution, which makes us realize that the design decisions in game development not only affect the current functions, but also influence future development costs.If we continue to develop this game, our next step will be to prioritize the optimization and reorganization of the code, as well as to improve the testing mechanism to enhance the system's stability. 
+
+At the same time, we will also further enhance the user experience, such as improving the UI and the game feedback mechanism.If there is an opportunity to develop a sequel, we hope to incorporate more complex game mechanics, such as a richer map system, dynamic environmental changes, and deeper narrative content. At the same time, we will plan at the architectural level in advance to support a larger system scale, rather than having to restructure passively later on.
+
+Overall, this game project has enabled us to shift from simply "writing code" to "conducting a software engineering project", and has also allowed us to truly understand the significance of design, collaboration, and long-term thinking.
+
+
 
 
 # 10. Contribution Statement
