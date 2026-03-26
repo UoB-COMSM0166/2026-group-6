@@ -603,22 +603,19 @@ class LevelManager {
    }
 
    drawMiniMap(player) {
-      let miniMapW = width * 0.15; // 相对屏幕宽度的缩小比例
-      let miniMapH = (this.mapH / this.mapW) * miniMapW; // 保持关卡的原始比例
+      let miniMapW = width * 0.15;
+      let miniMapH = (this.mapH / this.mapW) * miniMapW;
       let padding = 15;
       let mapX = width - miniMapW - padding;
       let mapY = padding;
 
-      // 1. 画半透明底板
-      fill(0, 0, 0, 150);
+      fill(0, 0, 0, 90);
       noStroke();
       rect(mapX, mapY, miniMapW, miniMapH, 5);
 
-      // 计算小地图里的 1 个方块等于多少像素
       let scaleX = miniMapW / this.cols;
       let scaleY = miniMapH / this.rows;
 
-      // 2. 画小地图地形
       for (let y = 0; y < this.rows; y++) {
          for (let x = 0; x < this.cols; x++) {
             let tile = this.grid[y][x];
@@ -631,48 +628,42 @@ class LevelManager {
                   case 'spaceship': colorHex = "#FFFFFF"; break;
                   default: colorHex = "#1d1717";
                }
-               fill(colorHex + "50"); // 带透明度
+               fill(colorHex + "30"); // transparency
                rect(mapX + x * scaleX, mapY + y * scaleY, scaleX, scaleY);
             }
          }
       }
 
-      // 怪物和污染核心
       if (this.entities) {
          for (let ent of this.entities) {
-            // 如果已经被吃掉、净化或死亡，则不显示在小地图上
             if (ent.isDead) continue;
 
-            // 将实体的世界坐标转换为小地图相对坐标
             let ex = mapX + (ent.x / this.mapW) * miniMapW;
             let ey = mapY + (ent.y / this.mapH) * miniMapH;
 
-            // 按比例计算实体在小地图上的宽高（设置最小值为4，防止太小看不见）
             let ew = Math.max(4, (ent.w / this.mapW) * miniMapW);
             let eh = Math.max(4, (ent.h / this.mapH) * miniMapH);
             let alpha = 100;
             if (ent.type === GameConfig.Entity.Enemy) {
-               fill(255, 150, 0, alpha); // 橙色代表怪物
+               fill(255, 150, 0, alpha);
                rect(ex, ey, ew, eh);
             }
             else if (ent.type === GameConfig.Entity.PollutionCore) {
                push();
                stroke(0);
                strokeWeight(0.5);
-               fill(200, 100, 255); // 紫色代表污染核心
+               fill(200, 100, 255);
                rect(ex, ey, ew, eh);
                pop();
             }
-            // 【新增分支】：显示清洁能量
             else if (ent.type === GameConfig.Entity.CleanEnergy) {
-               fill(0, 255, 255, alpha); // 青色代表清洁能量
+               fill(0, 255, 255, alpha);
                rect(ex, ey, ew, eh);
             }
          }
       }
 
-      // 3. 玩家
-      fill(255, 50, 50); // 红色代表玩家
+      fill(255, 50, 50);
       stroke(255);
       strokeWeight(1);
       let px = (player.x / this.mapW) * miniMapW;
