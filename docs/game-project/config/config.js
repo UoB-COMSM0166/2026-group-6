@@ -1,5 +1,4 @@
 const GameConfig = {
-   // === 世界基础 ===
    World: {
       GRID_SIZE: 16,
       GRAVITY: 0.35,
@@ -9,23 +8,20 @@ const GameConfig = {
       PURIFY_CHANGE_THRESHOLD: 75,
    },
 
-   // === 显示 ===
    Display: {
       GAME_SCALE: 3,
       MAX_CANVAS_WIDTH: 1000,
       MAX_CANVAS_HEIGHT: 700,
    },
 
-   // === 关卡 ===
    Level: {
       START_INDEX: 0,
-      // 定义净化程度权重
+      // define weight
       CORE_WEIGHT: 5,
       ENEMY_WEIGHT: 1,
       BOSS_WEIGHT: 3,
    },
 
-   // === 玩家 ===
    Player: {
       MAX_HP: 20,
       MAXCleanEnergy: 100,
@@ -40,7 +36,6 @@ const GameConfig = {
       AttackConsume: 5,
    },
 
-   // === 敌人 ===
    Enemy: {
       SPEED: 0.5,
       JUMPFORCE: 3.5,
@@ -69,34 +64,32 @@ const GameConfig = {
       Ground: "ground",
    },
 
-   // === 绳索 ===
    Rope: {
-      // 长度
+      // len
       NODE_SPACING_GRIDS: 0.3,        // 节点间距 (格) 不可变
       MAX_LENGTH_GRIDS: 6,            // 最大绳长 (格) 可变
       MIN_LENGTH_GRIDS: 1,            // 绞盘最短长度 (格)
 
-      // 发射
+      // fire
       LAUNCH_SPEED_GRIDS: 1,        // 发射初速度 (格/帧)
       TIP_GRAVITY: 0.09,              // 绳头重力 (像素/帧²)
       TIP_AIR_DRAG: 0.995,            // 绳头空气阻力
       HEAD_MASS: 4.0,                 // 绳头质量  可变
       EXTENDING_GRAVITY_SCALE: 0.09,  // 发射阶段节点重力缩放
 
-      // Verlet 模拟
+      // Verlet stimulate
       VERLET_DAMPING: 0.98,           // 节点速度衰减
       NODE_GRAVITY: 0.35,             // 节点重力
       STIFFNESS: 25,                  // 距离约束迭代次数 (越大绳子越刚性, 不易拉伸)
 
-      // 玩家约束 (硬绳)
+      // player stirct
       HARD_SPRING_STRENGTH: 0.2,      // 弹簧力度
       HARD_SPRING_DAMPING: 0.9,       // 弹簧阻尼
       HARD_SPRING_THRESHOLD: 1,       // 距离偏差阈值 (像素)
 
-      // 收回
       RETRACT_INTERVAL: 1,            // 每隔几帧删一个节点
 
-      // 渲染
+      // render
       STROKE_RATIO: 1 / 6,
       STROKE_MIN: 1,
       HARD_STROKE_RATIO: 1 / 5,
@@ -104,7 +97,7 @@ const GameConfig = {
       ANCHOR_DOT_RATIO: 1 / 3,
       TIP_DOT_RATIO: 1 / 4,
 
-      // 硬绳碰撞盒
+      // collision
       COLLISION_BOX_RATIO: 0.5,
    },
 };

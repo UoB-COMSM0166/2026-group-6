@@ -15906,7 +15906,7 @@
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
 								}] },
-								{ "__identifier": "requiredArea", "__type": "Int", "__value": 3, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 4, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [4] }] }
 							],
 							"__worldX": 3480,
 							"__worldY": 1376
@@ -17883,7 +17883,7 @@
 									"id": "V_String",
 									"params": ["CleanedTrigger"]
 								}] },
-								{ "__identifier": "requiredArea", "__type": "Int", "__value": 3, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+								{ "__identifier": "requiredArea", "__type": "Int", "__value": 4, "__tile": null, "defUid": 253, "realEditorValues": [{ "id": "V_Int", "params": [4] }] }
 							],
 							"__worldX": 4944,
 							"__worldY": 1376
