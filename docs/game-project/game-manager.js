@@ -198,13 +198,13 @@ class GameManager {
       this.level.draw(this.resources.tilesetImage);
 
       // entity
-      for (let ent of this.entities) ent.display(this.level);
+      for (let ent of this.entities) ent.display(this.level, gm);
       for (let p of this.particles) p.display();
       this.player.ropeL.display(this.player);
       this.player.ropeR.display(this.player);
       this.player.display(this.camera, this.scale);
 
-      //毒水
+      // water
       for (let ent of this.entities) {
          if (ent.displayWater) {
             ent.displayWater(this.level);
@@ -244,7 +244,7 @@ class GameManager {
       const layers = this.resources.images.parallax?.[key];
       if (!layers || layers.length === 0) return;
 
-      // 视口尺寸(world pixel)
+      // world pixel
       const viewW = width / this.scale;
       const viewH = height / this.scale;
 
