@@ -66,28 +66,28 @@ const GameConfig = {
 
    Rope: {
       // len
-      NODE_SPACING_GRIDS: 0.3,        // 节点间距 (格) 不可变
-      MAX_LENGTH_GRIDS: 6,            // 最大绳长 (格) 可变
-      MIN_LENGTH_GRIDS: 1,            // 绞盘最短长度 (格)
+      NODE_SPACING_GRIDS: 0.3,
+      MAX_LENGTH_GRIDS: 6,            // can change
+      MIN_LENGTH_GRIDS: 1,
 
       // fire
-      LAUNCH_SPEED_GRIDS: 1,        // 发射初速度 (格/帧)
-      TIP_GRAVITY: 0.09,              // 绳头重力 (像素/帧²)
-      TIP_AIR_DRAG: 0.995,            // 绳头空气阻力
-      HEAD_MASS: 4.0,                 // 绳头质量  可变
-      EXTENDING_GRAVITY_SCALE: 0.09,  // 发射阶段节点重力缩放
+      LAUNCH_SPEED_GRIDS: 1,
+      TIP_GRAVITY: 0.09,
+      TIP_AIR_DRAG: 0.995,
+      HEAD_MASS: 4.0,                 // can change
+      EXTENDING_GRAVITY_SCALE: 0.09,
 
       // Verlet stimulate
-      VERLET_DAMPING: 0.98,           // 节点速度衰减
-      NODE_GRAVITY: 0.35,             // 节点重力
-      STIFFNESS: 25,                  // 距离约束迭代次数 (越大绳子越刚性, 不易拉伸)
+      VERLET_DAMPING: 0.98,
+      NODE_GRAVITY: 0.35,
+      STIFFNESS: 25,
 
       // player stirct
-      HARD_SPRING_STRENGTH: 0.2,      // 弹簧力度
-      HARD_SPRING_DAMPING: 0.9,       // 弹簧阻尼
-      HARD_SPRING_THRESHOLD: 1,       // 距离偏差阈值 (像素)
+      HARD_SPRING_STRENGTH: 0.2,
+      HARD_SPRING_DAMPING: 0.9,
+      HARD_SPRING_THRESHOLD: 1,
 
-      RETRACT_INTERVAL: 1,            // 每隔几帧删一个节点
+      RETRACT_INTERVAL: 1,
 
       // render
       STROKE_RATIO: 1 / 6,
