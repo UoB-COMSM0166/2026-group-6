@@ -168,26 +168,7 @@ class Rope {
             this._state = "RETRACTING";
             break;
          case "SWINGING":
-            if (this._state === "SWINGING") return;
-            if (this._state === "STRAND") {
-               // fix tip end
-               this._state = "SWINGING";
-               this.tip.x = this.lastNode.x;
-               this.tip.y = this.lastNode.y;
-               this._pin(this.lastNode, this.tip.x, this.tip.y);
-
-               // actual rope len
-               let chainLen = this.nodeDist * (this.nodes.length - 1);
-               let directDist = dist(this.nodes[0].x, this.nodes[0].y,
-                  this.tip.x, this.tip.y);
-               let pathLen = this._getChainPathLength();
-               this.ropeLength = Math.max(chainLen, directDist, pathLen);
-               this._effectiveMaxLen = Math.max(this.ropeLength, this.maxLen);
-
-               this._pinnedIndices = [];
-            } else {
-               this._stickAt(this.tip.x, this.tip.y);
-            }
+            this._stickAt(this.tip.x, this.tip.y);
             break;
       }
    }
@@ -617,22 +598,31 @@ class Rope {
          usedLen += Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
       }
 
-      let freeLen = Math.max(this.nodeDist, this.ropeLength - usedLen);
+      // actual path length from player (node 0) to anchor
+      let playerToAnchorPath = 0;
+      for (let i = 0; i < anchorIdx; i++) {
+         let a = this.nodes[i], b = this.nodes[i + 1];
+         playerToAnchorPath += Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
+      }
+
+      let freeLen = Math.max(this.nodeDist, this.ropeLength - usedLen, playerToAnchorPath);
 
       return { x: anchor.x, y: anchor.y, freeLength: freeLen };
    }
 
    applyPhysics(player) {
       if (this._state !== "SWINGING" || this.nodes.length < 2) return;
-
-      let anchor = this._getEffectiveAnchor();
-      if (!anchor) return;
-
-      let d = dist(player.cx(), player.cy(), anchor.x, anchor.y);
-
+      let anchor;
+      let d;
       if (this.material === 'HARD') {
+         anchor = { x: this.tip.x, y: this.tip.y, freeLength: this.ropeLength };
+         if (!anchor) return;
+         d = dist(player.cx(), player.cy(), anchor.x, anchor.y);
          this._applyHardSpring(player, d, anchor);
       } else {
+         anchor = this._getEffectiveAnchor();
+         if (!anchor) return;
+         d = dist(player.cx(), player.cy(), anchor.x, anchor.y);
          this._applySoftConstraint(player, d, anchor);
       }
    }
