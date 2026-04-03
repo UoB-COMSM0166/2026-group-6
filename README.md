@@ -77,7 +77,7 @@ The game is set on an alien planet on the verge of collapse due to long-term pol
 
 As players advance through levels and complete purification objectives, the planet’s environmental structure, accessible routes, and ecological conditions gradually evolve. These changes reflect the impact that players have on the world and further reinforce the game's theme of "ecological restoration".
 
-The final outcome of the game will depend on the progress of purifying the world. In each area, there are many pollution cores and enemies. When the player successfully cleans up at least 80% of the pollution cores and enemies, they can meet the basic completion criteria for that area. If the player can purify all the contaminated cores and enemies, they will unlock the final outcome, symbolizing that the ecological environment has been completely restored.
+The final outcome of the game will depend on the progress of purifying the world. In each area, there are many pollution cores and enemies. When the player successfully cleans up at least 75% of the pollution cores and enemies, they can meet the basic completion criteria for that area. If the player can purify all the contaminated cores and enemies, they will unlock the final outcome, symbolizing that the ecological environment has been completely restored.
 
 
 
@@ -295,8 +295,6 @@ In order to understand the players' behaviors in the game and the interaction be
 
 # 4. Design
 
-- 15% ~750 words 
-- System architecture. Class diagrams, behavioural diagrams.
 
 ## 4.1 System Architecture
 We employs a modular, object-oriented architecture centred around  `GameManager`, which coordinates interactions between sub-systems during the game process. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management,  thereby enhacing the system's maintainability and scalability. `GameManager` is responsible for maintaining the overall game state and scheduling module execution within each frame's update loop. Level structure and in-level objects are maintained by `LevelManager`, while resource loading is centrally handled by `ResourceManager`. By separating these functional modules from core control logic, the system gains greater flexibility in supporting multi-level structures and region transitions. 
@@ -370,12 +368,18 @@ During gameplay, `GameManager` calls player's `update()` method to refresh the p
 ## Challenge 1: Persistent multi-level world state and area-wide progression
 One of the challenges we faced was how to make the game feel like a "single, continuously changing world" rather than several separate levels. At the beginning of the game design, we did not intend to create a linear single-level game. Instead, we hoped that players could explore among multiple interconnected areas. So, whenever a player re-enters a level, if the purified pollution core, defeated enemies, opened doors and changed environment are all regenerated. Then this would not be in line with the initial design of our game. For this reason, the challenge was not simply level switching. We had to integrate level transitions, entity state preservation, area purification progress, and environmental change into one coherent system.
 
-In order to address this challenge, we designed the `GameManager` as the core management module in ‘game-manager.js’. At the beginning of the game, the LDtk map data will be loaded and a corresponding `LevelManager` will be created for each level. When the level is first loaded, the system will create all the entities and store them in the `levelsInfo` section. If the player enters the same level again later, the game will not recreate the entity from scratch, but will instead use the previously saved state of the entity. In this case, when the player re-enters the level, the purified pollution core and the defeated enemies will not be reset.
+In order to address this challenge, we designed the `GameManager` as the core management module in `game-manager.js`. At the beginning of the game, the LDtk map data will be loaded and a corresponding `LevelManager` will be created for each level. When the level is first loaded, the system will create all the entities and store them in the `levelsInfo` section. If the player enters the same level again later, the game will not recreate the entity from scratch, but will instead use the previously saved state of the entity. In this case, when the player re-enters the level, the purified pollution core and the defeated enemies will not be reset.
 
 Additionally, we also used the `worldX`, `worldY` and `__neighbours` data provided by LDtk in level-manager.js to achieve coordinate conversion between different levels. This enables players to continue their exploration across multiple levels. When the player leaves the edge of a level, the system will detect the adjacent levels and calculate the correct position of the player in the new level, thereby achieving the transition of the map.
 
 Finally, we also implemented an area-level progress system. The `GameManager` will calculates the purification status of all levels within the same area, such as the purification progress of the pollution core and the enemies, and calculate the overall purification progress. This enables the gates in `GateWall.js` to automatically open when the regional purification progress reaches a certain level, and at the same time, the environment will also change via `transformPollutedTiles` in `level-manager.js`, with the implementation in `tile.js`.
 
+<p align="center">
+  <img src="resources/images/challenge1.png" alt="challenge1" width="600"/>
+</p>
+<p align="center">
+  <b>Figure 9.</b> Area progress is shared across levels
+</p>
 
 ## Challenge 2:  Rope Mechanic Implementation
 
@@ -416,18 +420,15 @@ $$
 
 The game also offers two different types of ropes: soft ropes and hard ropes. Therefore, in the design process we needed to ensure that the physical system of the rope and the collision system would not conflict with each other. If the positions of the players are independently modified by the two systems, it may cause the character movement to be jittery or unstable. Therefore we have clearly designed the update sequence. First of all, the rope constraint will adjust the player's position. Then, collision detection is carried out, and finally, the player's position is restricted based on the length of the rope. By following this sequence, it is possible to prevent mutual interference between the two systems, ensuring that both the rope system and the platform collision system operate stably.
 
-
+<p align="center">
+  <img src="resources/images/challenge2.png" alt="challenge2" width="600"/>
+</p>
+<p align="center">
+  <b>Figure 9.</b> Rope anchored to geometry
+</p>
 
 
 # 6. Evaluation
-
-- 15% ~750 words
-
-- One qualitative evaluation (of your choice) 
-
-- One quantitative evaluation (of your choice) 
-
-- Description of how code was tested.
 
 ## 6.1 Qualitative Evaluation
 ### Heuristic Evaluation
@@ -995,18 +996,6 @@ The player activates the purification ability.
 
 - The polluted entity or core is removed or transformed.
 - The world’s purification progress is updated.
-
-
-
-# . Additional Marks
-
-You can delete this section in your own repo, it's just here for information. in addition to the marks above, we will be marking you on the following two points:
-
-- **Quality** of report writing, presentation, use of figures and visual material (5% of report grade) 
-  - Please write in a clear concise manner suitable for an interested layperson. Write as if this repo was publicly available.
-- **Documentation** of code (5% of report grade)
-  - Organise your code so that it could easily be picked up by another team in the future and developed further.
-  - Is your repo clearly organised? Is code well commented throughout?
 
 
  # 12. References
