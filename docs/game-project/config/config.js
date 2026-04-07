@@ -101,3 +101,7 @@ const GameConfig = {
       COLLISION_BOX_RATIO: 0.5,
    },
 };
+
+if (typeof module !== 'undefined') { 
+  module.exports = { GameConfig }; 
+}

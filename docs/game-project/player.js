@@ -530,3 +530,7 @@ Player.FloatingText = class {
       pop();
    }
 }
+
+if (typeof module !== 'undefined') { 
+  module.exports = { Player }; 
+}

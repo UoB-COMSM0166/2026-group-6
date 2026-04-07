@@ -259,6 +259,8 @@ function _createMenu() {
       // ===== 开始游戏时传入 selectedDifficulty =====
       gm = new GameManager(resources, selectedDifficulty);
 
+      // 将 gm 暴露给 window，专门用于自动化测试读取
+      window.gm = gm;
 
       // ===== 避免重复播放 =====
       if (resources.sounds.bgm && !resources.sounds.bgm.isPlaying()) {

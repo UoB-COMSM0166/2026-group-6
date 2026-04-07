@@ -35,3 +35,7 @@ class Physics {
       return null;
    }
 }
+
+if (typeof module !== 'undefined') { 
+  module.exports = { Physics }; 
+}
