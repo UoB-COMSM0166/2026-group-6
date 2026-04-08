@@ -424,9 +424,8 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
   <img src="resources/images/challenge2.png" alt="challenge2" width="600"/>
 </p>
 <p align="center">
-  <b>Figure 9.</b> Rope anchored to geometry
+  <b>Figure 10.</b> Rope anchored to geometry
 </p>
-
 
 # 6. Evaluation
 
@@ -435,7 +434,7 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
 We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
 
 <p align="center">
-<b>Table 9. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
+<b>Table 2. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
 </p>
 
 <table>
@@ -534,7 +533,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 ### GAME EASY LEVEL
 ### NASA TLX
 <p align="center">
-<b>Table X. </b>NASA TLX workload scores for the Easy difficulty level.
+<b>Table 3. </b>NASA TLX workload scores for the Easy difficulty level.
 </p>
 
 <table>
@@ -564,7 +563,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 
 ### System Usability Scale
 <p align="center">
-<b>Table X. </b>SUS scores for the Easy difficulty level.
+<b>Table 4. </b>SUS scores for the Easy difficulty level.
 </p>
 <table>
 <tr>
@@ -650,7 +649,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 ### GAME HARD LEVEL
 ### NASA TLX
 <p align="center">
-<b>Table X. </b>NASA TLX workload scores for the Hard difficulty level.
+<b>Table 5. </b>NASA TLX workload scores for the Hard difficulty level.
 </p>
 <table>
 <tr>
@@ -679,7 +678,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 
 ### System Usability Scale
 <p align="center">
-<b>Table X. </b>SUS scores for the Hard difficulty level.
+<b>Table 6. </b>SUS scores for the Hard difficulty level.
 </p>
 <table>
 <tr>
@@ -767,21 +766,21 @@ A total of 10 participants took part in the evaluation. Each participant played 
   <img src="resources/images/NASA TLX.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> Mean NASA TLX workload scores for the Easy and Hard difficulty levels.
+  <b>Figure 11.</b> Mean NASA TLX workload scores for the Easy and Hard difficulty levels
 </p>
 
 <p align="center">
   <img src="resources/images/SUS.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure X.</b> Mean SUS scores for the Easy and Hard difficulty levels.
+  <b>Figure 12.</b> Mean SUS scores for the Easy and Hard difficulty levels
 </p>
 
 According to firgue X, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard, suggesting slightly better usability for the Easy level.
 
 ### Statistical Analysis
 <p>
-<b>Table X. </b>Wilcoxon Signed-Rank Test results comparing difficulty levels
+<b>Table 7. </b>Wilcoxon Signed-Rank Test results comparing difficulty levels
 </p>
 
 <table>
@@ -817,7 +816,19 @@ The Wilcoxon Signed-Rank Test results (Table X) indicate that there was no stati
 According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the player's workload is not low, while the SUS score is generally at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps; easy mode reduced difficulty by removing some of the more difficult maps. Now, we have designed different maps for different difficulties. The easy mode levels are simpler, the paths are clearer, and the use of rope mechanics is reduced, making it easier for players to complete the core objective of purifying the contaminated core, thus better distinguishing the different difficulties visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily obtain ability upgrades, such as jumping ability, rope length, and attack power, thereby reducing the difficulty of completing the levels. These adjustments have made the differences between the various difficulty modes clearer.
 
 ## 6.3 How Code Was Tested.
+During the development process, testing is carried out continuously as each functional module is progressively implemented. Specifically, our testing methods can be divided into two categories: black-box testing and white-box testing. Firstly, in **black-box testing**, we primarily use automated testing tools to verify the game’s user interaction flows and interface functions, such as accessing the main menu, clicking ‘Start Game’, switching difficulty levels, opening the settings panel, and navigating between screens. At the same time, for systems involving continuous changes—such as player movement, jumping and rope firing, it is difficult to determine correctness through frame-by-frame output alone. Therefore, we also relied on visual and interactive evaluation, such as whether movement speed is reasonable, whether collisions correctly block the player, whether jumping and falling conform to basic physical intuition, and whether rope movement displays natural dynamic effects.
 
+On the other hand, **white-box testing** focuses on verifying the internal logic of the programme, judging the correctness of implementation by observing changes in values and states within specific game scenarios. For example, we tested the logic behind changes in the player’s health points (HP), the consumption of clean energy, and the triggering of invulnerability. During testing, we designed various input scenarios to obtain function return results, whilst handling and validating potential invalid inputs. For instance, we simulated the player taking damage to verify that the HP is reduced correctly and that the invulnerability state is properly triggered, as well as testing whether energy consumption and health recovery limits behave as expected under different conditions. A specific example is shown below:
+
+**Example -- Player Damage and Invulnerability Logic**
+<p align="center">
+  <img src="resources/images/ExampleTest.png" width="100%"/>
+</p>
+<p align="center">
+  <b>Figure 13.</b> Player Damage and Invulnerability Logic
+</p>
+
+In terms of tools, we primarily use **VS Code** to run p5.js-based project code, and combine this with testing tools such as **Jest** and **Cypress** to perform supplementary verification of certain features. By combining black-box testing with white-box testing, we are able to ensure both a natural gaming experience and the correctness of the underlying logic, thereby enhancing software quality.
 
 # 7. Process 
 
