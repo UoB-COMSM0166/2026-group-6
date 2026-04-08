@@ -1,151 +1,141 @@
 describe('Black-Box: Game UI and Flow Tests', () => {
   
-  // beforeEach 会在每一个 it() 测试用例运行前执行
-  // 我们在这里打一套“连招”，跳过所有前置动画，确保每个测试都从主菜单开始
   beforeEach(() => {
-    // 1. 访问游戏本地链接（请确保改成你自己的 Live Server 链接）
+    // 1. Access the local game link
     cy.visit('http://127.0.0.1:5500/docs/index.html'); 
 
-    // 2. 此时是初始封面，点击 Canvas 任意位置触发 storyStarted = true
+    // 2. This is the initial cover screen. Click anywhere on the Canvas to trigger `storyStarted = true`.
     cy.get('canvas.p5Canvas').click();
 
-    // 3. 此时进入剧情界面 (StoryIntro)。
-    // 因为 Skip 按钮是画上去的，宽 1000 高 700，Skip 按钮在 x: 890, y: 28, 宽 78, 高 38
-    // 我们让机器人精准点击按钮的中心点坐标 (930, 47)
+    // 3. At this point, the game enters the story interface (StoryIntro).
     cy.get('canvas.p5Canvas').click(930, 47);
 
-    // 4. 此时进入演示视频播放，页面上被添加了一个 <video> 标签。
-    // 因为代码里写了 demoVideo.onclick = endDemoVideo; 所以我们点击视频即可跳过
-    // Cypress 会自动等待 video 元素出现，不用担心加载延迟
+    // 4. The demo video plays at this point; click the video to skip it.
     cy.get('video').click();
 
-    // 5. 确保跳过视频后，成功来到了主菜单
+    // 5. Ensure that after skipping the video, the game successfully reaches the main menu.
     cy.get('#game-menu').should('be.visible');
   });
 
-  it('测试用例 1：成功加载主菜单并点击 Start Game 进入游戏', () => {
-    // 找到包含 "Start Game" 的按钮并点击
+  it('Test Case 1: Successfully load the main menu and click "Start Game" to enter the game', () => {
+    // Locate the button labeled "Start Game" and click it.
     cy.get('#menu-main-panel').contains('Start Game').click();
 
-    // 验证点击后菜单隐藏，进入游戏状态
+    // Verify the menu is hidden after clicking, entering the game state
     cy.get('#game-menu').should('not.be.visible');
     
-    // 验证核心画布存在（说明没崩溃）
+    // Verify the core canvas exists (indicating it hasn't crashed)
     cy.get('canvas.p5Canvas').should('exist');
   });
 
-  it('测试用例 2：能够打开难度选择页面并修改难度', () => {
+  it('Test Case 2: Able to open the difficulty selection page and change the difficulty', () => {
     cy.contains('Choose Difficulty').click();
     
-    // 验证难度面板出现
+    // Verify the difficulty panel appears
     cy.get('#menu-difficulty-panel').should('be.visible');
     
-    // 点击 Hard 难度
+    // Click the Hard difficulty
     cy.contains('Hard').click();
     
-    // 验证点击后按钮的缩放效果 (通过 transform scale)
+    // Verify the button scaling effect after clicking (via transform scale)
     cy.contains('Hard').should('have.css', 'transform', 'matrix(1.02, 0, 0, 1.02, 0, 0)');
     
-    // 点击 Back 返回主菜单
+    // Click Back to return to the main menu
     cy.get('#menu-back-btn').click();
     cy.get('#menu-main-panel').should('be.visible');
   });
 
-  it('测试用例 3：游戏内能够通过按键 C 呼出资源面板', () => {
+  it('Test Case 3: Able to call up the resource panel in-game by pressing the C key', () => {
     cy.contains('Start Game').click();
     cy.get('#game-menu').should('not.be.visible');
 
-    // 1. 给游戏引擎留出一点初始化时间（500毫秒）
+    // 1. Allow the game engine some initialization time (500 ms)
     cy.wait(500);
 
-    // 2. 模拟玩家按下键盘的 'c' 键
+    // 2. Simulate the player pressing the 'c' key on the keyboard
     cy.get('body').type('c');
 
-    // 3. 使用 Cypress 推荐的链式调用，安全地穿透检查内部变量
-    // its() 会自动寻找对象的深层属性，如果没找到它会智能等待重试，而不会立刻报错
+    // 3. Use Cypress's recommended chaining to safely penetrate and check internal variables
     cy.window()
       .its('gm.player.resourcePanel.visible')
       .should('be.true');
   });
 
-  it('测试用例 4：验证玩家跳跃物理响应 (规避按键过快问题)', () => {
+  it('Test Case 4: Verify the player jump physics response (avoiding issues with pressing keys too fast)', () => {
     cy.contains('Start Game').click();
     cy.wait(500);
 
-    // 跳跃 (W) 是事件驱动的，所以 type('w') 绝对能被准确捕捉
+    // Jumping (W) is event-driven, so type('w') will definitely be accurately captured
     cy.get('body').type('w');
 
-    // 使用安全的链式调用检查 vy 是否因为跳跃变成了负数
+    // Use a safe chained call to check if vy becomes negative due to jumping
     cy.window().then((win) => {
       expect(win.gm.player.vy).to.be.lessThan(0);
     });
   });
 
-  it('测试用例 5：鼠标点击画布发射左键绳索 (解决覆盖遮挡)', () => {
+  it('Test Case 5: Mouse click on the canvas fires the left-click rope (resolving overlay blocking)', () => {
     cy.contains('Start Game').click();
     cy.wait(500);
 
-    // 突破 z-index: 2 的 intro-fx 特效层遮挡
-    // { force: true } 告诉 Cypress："不要管谁挡在前面，直接在这个坐标触发点击事件！"
+    // Break through the intro-fx effect layer blockage with z-index: 2
     cy.get('canvas.p5Canvas').click('topRight', { force: true });
 
-    // 使用安全的 .its() 进行断言，如果状态没更新它会自动重试一小会
+    // Use the safe .its() for assertions; if the state hasn't updated, it will automatically retry for a bit
     cy.window()
       .its('gm.player.ropeL.state')
       .should('not.equal', 'IDLE');
   });
 
-  it('测试用例 6：测试全局大地图逻辑 (直接验证核心函数)', () => {
+  it('Test Case 6: Test global large map logic (directly verifying the core function)', () => {
     cy.contains('Start Game').click();
     cy.wait(500);
 
-    // 既然 Cypress 极速按键无法欺骗 60FPS 的 keyIsDown() 循环
-    // 在 Canvas 自动化测试中，对于持续按压的逻辑，最稳定的是直接验证其底层的业务函数
     cy.window().then((win) => {
-       // 模拟按下 M 键时，游戏内部真正执行的代码
+       // Simulate the code that is actually executed inside the game when the M key is pressed
        win.gm.level.drawLargeMap(win.gm.player, win.gm);
        
-       // 此时 mapOpen 必定被设置为 true
+       // At this point, mapOpen must be set to true
        expect(win.gm.level.mapOpen).to.be.true;
     });
   });
 
-  it('测试用例 7：主菜单音频设置面板 (纯 DOM 交互验证)', () => {
-    // 这个测试不需要进游戏，直接在主菜单点击 "Audio Settings"
+  it('Test Case 7: Main menu audio settings panel (pure DOM interaction verification)', () => {
+    // This test doesn't require entering the game; just click "Audio Settings" directly in the main menu
     cy.contains('Audio Settings').click();
     
-    // 验证音频面板是否滑出
+    // Verify if the audio panel slides out
     cy.get('#menu-audio-panel').should('be.visible');
 
-    // 点击 BGM 静音按钮
+    // Click the BGM mute button
     cy.get('#bgm-mute-btn').click();
     
-    // 验证静音图标是否正确切换
+    // Verify if the mute icon toggles correctly
     cy.get('#bgm-mute-btn').should('have.text', '🔇');
     
-    // 模拟玩家拖动音量滑块到 20%
+    // Simulate the player dragging the volume slider to 20%
     cy.get('#bgm-volume-slider')
       .invoke('val', 0.2)
       .trigger('input');
     
-    // 验证设置面板的 Back 按钮能否正常退回
+    // Verify if the Back button on the settings panel can successfully return
     cy.get('#menu-back-btn').click();
     cy.get('#menu-main-panel').should('be.visible');
   });
 
-  it('测试用例 8：指令/帮助界面 (Instructions) 翻页功能', () => {
+  it('Test Case 8: Instructions/Help screen pagination function', () => {
     cy.contains('Instructions').click();
     
-    // 验证 Instructions 面板出现
+    // Verify the Instructions panel appears
     cy.get('#menu-instructions-panel').should('be.visible');
 
-    // 验证当前处于第一页（内容介绍）
+    // Verify it is currently on the first page (content introduction)
     cy.get('#menu-content-btn').should('be.visible');
 
-    // 点击右下角的“下一页”箭头
+    // Click the "Next Page" arrow in the bottom right corner
     cy.get('#menu-next-page-btn').click();
 
-    // 可以进一步断言翻页逻辑没有引起崩溃
+    // Can further assert that the pagination logic did not cause a crash
     cy.get('#menu-back-btn').click();
     cy.get('#menu-main-panel').should('be.visible');
   });
