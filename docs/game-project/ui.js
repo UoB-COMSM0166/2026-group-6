@@ -179,12 +179,15 @@ class UI {
 
    static drawGameOverScreen() {
       background(50, 0, 0, 150);
-      fill(255); textAlign(CENTER); textSize(70);
-      text(t('ui.died'), width / 2, height / 2);
-      textSize(50); text(t('ui.restart'), width / 2, height / 2 + 50);
+      fill(255); textAlign(CENTER); textSize(60);
+      text(t('ui.died'), width / 2, height / 2 - 50);
+      textSize(50); text(t('ui.restart'), width / 2, height / 2 + 70);
    }
 
    static drawMapPrompt(prompt, elapsed, duration) {
+      prompt = formatDisplayPromptText(prompt);
+      prompt = localizeMapPromptContent(prompt);
+
       let fadeIn = 700;    // 0.7秒
       let fadeOut = 800;   // 0.8秒
       let remaining = duration - elapsed;

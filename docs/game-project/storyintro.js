@@ -64,8 +64,8 @@ class StoryIntro {
    }
 
    stopStoryBgm() {
-      const story = this.resources.sounds.storyBgm;
-      if (story && storyBgm.isPlaying()) {
+      const story = this.resources.sounds.story;
+      if (story && story.isPlaying()) {
          story.stop();
       }
    }
@@ -207,6 +207,7 @@ class StoryIntro {
       let fullLine = slide.lines[this.currentLine];
       let visibleText = fullLine.substring(0, this.currentChar);
       let box = this.textBox;
+      const textOffsetY = getLanguage() === 'zh' ? 30 : 18;
 
       push();
       fill(255);
@@ -219,7 +220,7 @@ class StoryIntro {
       text(
          visibleText,
          box.x + 24,
-         box.y + 18,
+         box.y + textOffsetY,
          box.w - 48,
          box.h - 24
       );
