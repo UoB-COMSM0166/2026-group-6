@@ -77,7 +77,7 @@ class InstructionsMenu {
    white-space: normal;
    overflow-wrap: anywhere;
    word-break: break-word;
-   line-height: 1.25;
+   line-height: 1.35;
 }
 `;
       document.head.appendChild(this.styleElement);
@@ -176,6 +176,7 @@ class InstructionsMenu {
       this.pages.forEach((page, index) => {
          page.style.display = index + 1 === pageIndex ? 'flex' : 'none';
       });
+      this.loadVisiblePageImages(pageIndex);
 
       if (this.nextPageButton) {
          this.nextPageButton.style.backgroundImage = (pageIndex === 2 || pageIndex === 4)
@@ -255,10 +256,6 @@ class InstructionsMenu {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:15%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:61%;">Description</th>
 <th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
 <th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
 <th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
@@ -314,17 +311,10 @@ class InstructionsMenu {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<<<<<<< HEAD
-<th style="${this.thStyle()} width:15%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:61%;">Description</th>
-=======
 <th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
 <th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
 <th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
 <th style="${this.thStyle()} width:65%;">${t('instructions.headers.description')}</th>
->>>>>>> 60c175e (Chinese)
 </tr>
 </thead>
 <tbody>
@@ -435,8 +425,10 @@ class InstructionsMenu {
          'min-height:230px;';
 
       const preview = document.createElement('img');
-      preview.src = `resources/images/instructions/${imageName}`;
+      preview.dataset.src = `resources/images/instructions/${imageName}`;
       preview.alt = label;
+      preview.loading = 'lazy';
+      preview.decoding = 'async';
       preview.style.cssText =
          'width:100%;' +
          'height:185px;' +
@@ -458,6 +450,17 @@ class InstructionsMenu {
       return item;
    }
 
+   loadVisiblePageImages(pageIndex) {
+      const page = this.pages[pageIndex - 1];
+      if (!page) return;
+
+      page.querySelectorAll('img[data-src]').forEach((img) => {
+         if (!img.src) {
+            img.src = img.dataset.src;
+         }
+      });
+   }
+
    createTable(innerHtml) {
       const table = document.createElement('table');
       table.className = 'instructions-table';
@@ -474,11 +477,11 @@ class InstructionsMenu {
    }
 
    thStyle() {
-      return 'border:0;padding:8px 6px;text-align:center;font-weight:bold;';
+      return 'border:0;padding:10px 8px;text-align:center;font-weight:bold;';
    }
 
    tdStyle() {
-      return 'border:0;padding:6px 6px;text-align:left;vertical-align:middle;';
+      return 'border:0;padding:8px 8px;text-align:left;vertical-align:middle;';
    }
 
    imgStyle() {
