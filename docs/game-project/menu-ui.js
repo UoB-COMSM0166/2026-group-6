@@ -50,15 +50,41 @@ class MenuUI {
          languagePanel.style.display = 'flex';
          backBtn.style.display = 'block';
       } else if (page === 'instructions') {
+         this.ensureInstructionsMenu();
          this.instructionsMenu?.show();
          backBtn.style.display = 'block';
       }
+   }
+
+   ensureInstructionsMenu() {
+      if (this.instructionsMenu || !this.menuDiv) return;
+
+      this.instructionsMenu = new InstructionsMenu({
+         buttonImages: {
+            normal: this.BTN_NORMAL,
+            hover: this.BTN_HOVER,
+            active: this.BTN_ACTIVE
+         },
+         onPlayClickSound: () => {
+            this._playClickSound();
+         }
+      });
+      this.instructionsMenu.attachTo(this.menuDiv);
    }
 
    refreshLanguage() {
       if (!this.menuRefs) return;
 
       this.menuRefs.backBtn.textContent = t('menu.back');
+      this.menuRefs.storyReviewLabel.textContent = t('menu.storyReview');
+      this._applyStoryReviewLabelFont();
+      this.menuRefs.storyReviewLabel.style.setProperty(
+         'font-size',
+         getLanguage() === 'zh' ? '19px' : '22px',
+         'important'
+      );
+      this.menuRefs.storyReviewBtn.title = t('menu.storyReview');
+      this.menuRefs.storyReviewBtn.setAttribute('aria-label', t('menu.storyReview'));
       this.menuRefs.btnStart.textContent = t('menu.start');
       this.menuRefs.btnContinue.textContent = t('menu.continue');
       this.menuRefs.btnDifficulty.textContent = t('menu.difficulty');
@@ -148,6 +174,7 @@ class MenuUI {
             e.stopPropagation();
          }
 
+         this.resources.sounds.story?.stop();
          this.hideMenu();
          this.setGameManager(new GameManager(this.resources, this.selectedDifficulty));
 
@@ -165,6 +192,7 @@ class MenuUI {
          this._playClickSound();
          if (!this.getGameManager()) return;
 
+         this.resources.sounds.story?.stop();
          this.hideMenu();
          if (this.resources.sounds.bgm && !this.resources.sounds.bgm.isPlaying()) {
             this.resources.sounds.bgm.loop();
@@ -248,18 +276,6 @@ class MenuUI {
       audioTitle.style.cssText =
          'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;font-family:var(--game-font-family), monospace;';
 
-      this.instructionsMenu = new InstructionsMenu({
-         buttonImages: {
-            normal: this.BTN_NORMAL,
-            hover: this.BTN_HOVER,
-            active: this.BTN_ACTIVE
-         },
-         onPlayClickSound: () => {
-            this._playClickSound();
-         }
-      });
-      this.instructionsMenu.attachTo(this.menuDiv);
-
       const bgmRow = document.createElement('div');
       bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
       const bgmLabel = document.createElement('div');
@@ -294,9 +310,9 @@ class MenuUI {
       sfxSlider.id = 'sfx-volume-slider';
       sfxSlider.type = 'range';
       sfxSlider.min = '0';
-      sfxSlider.max = '1';
+      sfxSlider.max = '2';
       sfxSlider.step = '0.01';
-      sfxSlider.value = this.audioManager?.getState().sfx.volume ?? 0.8;
+      sfxSlider.value = this.audioManager?.getState().sfx.volume ?? 1.0;
       sfxSlider.style.cssText = 'width:240px;; height:8px; accent-color:#1eb47a;';
       sfxRow.appendChild(sfxLabel);
       sfxRow.appendChild(sfxMuteBtn);
@@ -312,6 +328,63 @@ class MenuUI {
       languagePanel.style.cssText =
          'display:none;' +
          'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
+
+      const storyReviewWrap = document.createElement('div');
+      storyReviewWrap.style.cssText =
+         'position:absolute; left:18px; top:56%; transform:translateY(-50%);' +
+         'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; z-index:30;';
+
+      const storyReviewBtn = document.createElement('button');
+      storyReviewBtn.id = 'menu-story-review-btn';
+      storyReviewBtn.type = 'button';
+      storyReviewBtn.textContent = '←';
+      storyReviewBtn.title = t('menu.storyReview');
+      storyReviewBtn.setAttribute('aria-label', t('menu.storyReview'));
+      storyReviewBtn.style.cssText =
+         'width:120px; height:60px; min-height:60px; padding:0; line-height:60px; font-size:32px; font-weight:bold; color:white;' +
+         'font-family:var(--game-font-family), monospace;' +
+         `background-image:url("${this.BTN_NORMAL}");` +
+         'background-size:100% 100%;' +
+         'background-repeat:no-repeat;' +
+         'background-position:center;' +
+         'background-color:transparent;' +
+         'border:none; cursor:pointer;' +
+         'transition:all 0.18s ease;';
+      storyReviewBtn.onmouseenter = () => {
+         storyReviewBtn.style.backgroundImage = `url("${this.BTN_HOVER}")`;
+         storyReviewBtn.style.transform = 'translateX(-2px)';
+      };
+      storyReviewBtn.onmouseleave = () => {
+         storyReviewBtn.style.backgroundImage = `url("${this.BTN_NORMAL}")`;
+         storyReviewBtn.style.transform = 'translateX(0)';
+      };
+      storyReviewBtn.onmousedown = () => {
+         storyReviewBtn.style.backgroundImage = `url("${this.BTN_ACTIVE}")`;
+      };
+      storyReviewBtn.onmouseup = () => {
+         storyReviewBtn.style.backgroundImage = `url("${this.BTN_HOVER}")`;
+      };
+      storyReviewBtn.onclick = (e) => {
+         e.preventDefault();
+         e.stopPropagation();
+         this._playClickSound();
+         this.replayStoryPreview();
+      };
+
+      const storyReviewLabel = document.createElement('div');
+      storyReviewLabel.textContent = t('menu.storyReview');
+      storyReviewLabel.style.cssText =
+         'width:120px; min-height:32px; display:flex; align-items:center; justify-content:center; text-align:center; color:#ffffff; font-size:16px; line-height:1.1;' +
+         'font-family:"Monogram", monospace;';
+      storyReviewLabel.style.setProperty(
+         'font-size',
+         getLanguage() === 'zh' ? '19px' : '22px',
+         'important'
+      );
+      this._applyStoryReviewLabelFont(storyReviewLabel);
+
+      storyReviewWrap.appendChild(storyReviewBtn);
+      storyReviewWrap.appendChild(storyReviewLabel);
 
       const languageTitle = document.createElement('div');
       languageTitle.textContent = t('menu.languageTitle');
@@ -331,6 +404,7 @@ class MenuUI {
 
       languageContainer.appendChild(btnEnglish);
       languageContainer.appendChild(btnChinese);
+      languagePanel.appendChild(storyReviewWrap);
       languagePanel.appendChild(languageTitle);
       languagePanel.appendChild(languageContainer);
       this.menuDiv.appendChild(languagePanel);
@@ -338,7 +412,9 @@ class MenuUI {
       bgmMuteBtn.onclick = () => {
          if (!this.audioManager) return;
          this.audioManager.toggleBgmMute();
-         bgmMuteBtn.textContent = this.audioManager.getState().bgm.isMuted ? '🔇' : '🔊';
+         const bgmState = this.audioManager.getState().bgm;
+         bgmMuteBtn.textContent = bgmState.isMuted ? '🔇' : '🔊';
+         bgmSlider.value = bgmState.isMuted ? '0' : String(bgmState.volume);
       };
       bgmMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
       bgmMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
@@ -351,7 +427,9 @@ class MenuUI {
       sfxMuteBtn.onclick = () => {
          if (!this.audioManager) return;
          this.audioManager.toggleSfxMute();
-         sfxMuteBtn.textContent = this.audioManager.getState().sfx.isMuted ? '🔇' : '🔊';
+         const sfxState = this.audioManager.getState().sfx;
+         sfxMuteBtn.textContent = sfxState.isMuted ? '🔇' : '🔊';
+         sfxSlider.value = sfxState.isMuted ? '0' : String(sfxState.volume);
       };
       sfxMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
       sfxMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
@@ -364,6 +442,8 @@ class MenuUI {
       document.body.appendChild(this.menuDiv);
       this.menuRefs = {
          backBtn,
+         storyReviewBtn,
+         storyReviewLabel,
          btnStart,
          btnContinue,
          btnDifficulty,
@@ -612,5 +692,48 @@ class MenuUI {
       if (this.resources.sounds.click && !this.resources.sounds.click.isPlaying()) {
          this.resources.sounds.click.play();
       }
+   }
+
+   _applyStoryReviewLabelFont(target = this.menuRefs?.storyReviewLabel) {
+      if (!target) return;
+
+      const fontName = getLanguage() === 'zh' ? 'Nightgazer12' : 'Monogram';
+      const family = `"${fontName}", monospace`;
+
+      target.style.setProperty('font-family', family, 'important');
+      target.style.setProperty('font-weight', 'bold', 'important');
+
+      if (typeof document !== 'undefined' && document.fonts?.load) {
+         document.fonts.load(`19px "${fontName}"`).then(() => {
+            target.style.setProperty('font-family', family, 'important');
+         }).catch(() => { });
+      }
+   }
+
+   replayStoryPreview() {
+      if (typeof storyIntro === 'undefined' || !storyIntro) return;
+
+      const originalOnFinish = storyIntro.onFinish;
+      storyIntro.onFinish = () => {
+         storyFinished = true;
+         storyIntro.finished = true;
+         storyIntro.onFinish = originalOnFinish;
+         this.showMenu();
+      };
+
+      storyIntro.refreshLanguage?.();
+      storyIntro.currentSlide = 0;
+      storyIntro.currentLine = 0;
+      storyIntro.currentChar = 0;
+      storyIntro.lastCharTime = millis();
+      storyIntro.linePauseStart = -1;
+      storyIntro.slidePauseStart = -1;
+      storyIntro.finished = false;
+      storyIntro.bgmPlayed = false;
+
+      storyStarted = true;
+      storyFinished = false;
+
+      this.menuDiv.style.display = 'none';
    }
 }
