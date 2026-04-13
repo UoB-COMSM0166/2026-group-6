@@ -945,13 +945,13 @@ The player provides keyboard controls to move the character.
 
 1. The player reaches a blocked passage or polluted gate.
 2. The system checks purification progress.
-3. If the purification condition is not satisfied, the passage remains inaccessible.
+3. If the purification progress does not meet the required standard, then it is impossible to explore the next area.
 
 **A2 – Player Falls or Cannot Reach Platform**
 
-1. The player attempts to traverse terrain but fails.
-2. The character returns to a reachable platform.
-3. The player continues exploration.
+1. The player tries to get through this section but cannot.
+2. The character returns to the accessible platform.
+3. The player continues to explore.
 
 **Postconditions**
 
@@ -964,7 +964,7 @@ The player provides keyboard controls to move the character.
 Player  
 
 **Goal**  
-Allow the player to remove pollution from enemies or environmental cores to restore parts of the ecosystem.
+Allow players to eliminate enemies and purify purification cores to improve the environmental purification process.
 
 **Stakeholders**
 
@@ -973,28 +973,28 @@ Allow the player to remove pollution from enemies or environmental cores to rest
 
 **Preconditions**
 
-1. The player is located near a pollution entity or pollution core.
-2. The player has access to purification energy.
+1. The player is near the polluted entity.
+2. The player has sufficient purification energy.
 
 **Trigger**
 
-The player activates the purification ability.
+The player attempts to purify pollution target.
 
 **Main Success Scenario**
 
-1. The player targets a polluted entity or core.
-2. The player activates cleaning energy.
+1. The player discovers pollution core or enemies.
+2. The player uses ropes to purify pollution core or enemies.
 3. The purification action is executed.
-4. The pollution entity is removed or transformed.
+4. The pollution entity disappears.
 5. The global purification progress value increases.
-6. Visual feedback reflects the purification result.
+6. The game provides visual and/or audio feedback to show the purification result.
 
 **Alternative Flows**
 
 **A1 – Target Out of Range**
 
-1. The player activates purification.
-2. The system detects no valid target.
+1. The player attempts to purify the pollution core or enemy.
+2. The rope failed to detect the target.
 3. The action fails and no purification occurs.
 
 **A2 – Interrupted Purification**
