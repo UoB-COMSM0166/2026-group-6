@@ -15,10 +15,15 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 
 ## TRY TO START GAME
 
-<div align="center">
-  <a href = "https://uob-comsm0166.github.io/2026-group-6/"> Start Game </a>
-</div>
+<p align="center">
+  <img src="resources/images/reset.png" width="50" style="vertical-align: middle;">
 
+  <a href="https://uob-comsm0166.github.io/2026-group-6/" style="font-size:18px; margin: 0 10px;">
+    Start Game
+  </a>
+
+  <img src="resources/images/reset.png" width="50" style="vertical-align: middle;">
+</p>
 
 
 
@@ -64,8 +69,9 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 - [8. Sustainability](#8-sustainability)
 - [9. Conclusion](#9-conclusion)
 - [10. Contribution Statement](#10-contribution-statement)
-- [11. Appendix](#11-appendix)
-- [12.References](#12-references)
+- [11. AI statement](#11-ai-statement)
+- [12. Appendix](#12-appendix)
+- [13. References](#13-references)
 
 ## 1. Introduction
 
@@ -293,12 +299,11 @@ In order to understand the players' behaviors in the game and the interaction be
 
 # 4. Design
 
-
 ## 4.1 System Architecture
-We employs a modular, object-oriented architecture centred around  `GameManager`, which coordinates interactions between sub-systems during the game process. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management,  thereby enhacing the system's maintainability and scalability. `GameManager` is responsible for maintaining the overall game state and scheduling module execution within each frame's update loop. Level structure and in-level objects are maintained by `LevelManager`, while resource loading is centrally handled by `ResourceManager`. By separating these functional modules from core control logic, the system gains greater flexibility in supporting multi-level structures and region transitions. 
+We employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between sub-systems during the game process. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management,  thereby enhacing the system's maintainability and scalability. The `GameManager` is responsible for maintaining the overall game state and scheduling module execution within each frame's update loop. The `LevelManager` maintains the level structure and objects, while resource loading is centrally handled by the `ResourceManager`. By separating these functional modules from the control logic, the system gains greater flexibility.
 
 ## 4.2 Initial Class Diagram
-After identifying the core users' requirements, we designed the system's initial class diagram. The initial design mainly revolved around the core components necessary for the game to run, as shown in Figure X.
+After identifying the core user requirements, we designed the system’s initial class diagram (Figure 5).
 <p align="center">
   <img src="resources/images/Class_0221.png" width="65%"/>
 </p>
@@ -307,23 +312,22 @@ After identifying the core users' requirements, we designed the system's initial
 </p>
 
 **1. GameManager**  
-`GameManager` is the system's central control class, responsible for maintaining the key components required for the game to run, such as `LevelManager`, `Camera`, `ResourceManager`, and `Player`. This class controls the game flow by calling methods such as `loadLevel()`, `update()`, and `render()`, coordinating component updates and rendering within each frame.
+The `GameManager` is the system's central control class to maintain the key components, such as the `LevelManager`, the `Camera`, the `ResourceManager`, and the `Player`. It controls the game flow by calling methods such as `loadLevel()`, `update()`, and `render()`, coordinating components update and rendering within each frame.
 
 **2. LevelManager**  
-`LevelManager` loads level data and manages entities within the current level. It maintains a collection of entities to store all objects in the level. Additionally, `LevelManager` detects map boundaries and triggers region transitions when necessary.
+The `LevelManager` loads level data and manages entities within the current level. It maintains a collection of entities to store all objects in this level. It also detects map boundaries and triggers region transitions.
 
 **3. Player**  
-Player-related logic is implemented by `Player`. This class encapsulates attributes such as the player's health, and clean energy, and provides functionality for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
+The `Player` implements a player-related logic, encapsulating attributes such as the player's health, and clean energy. It provides functionality for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
 
 **4. Rope**  
-The rope mechanism is implemented by `Rope`. This class manages the rope's state, length, and energy transfer behavior, and provides methods for using the rope, updating its state, and adjusting its length. Each rope is associated with a `RopeHead` object, which handles the interaction when the rope head contacts a target object.
+The `Rope` implements a rope mechanism, providing ways for using ropes, updating the state, and adjusting the length. Each rope is associated with a `RopeHead` object, which handles the interactions of different behaviors when the rope head contacts a target object.
 
 **5. Entity**  
-To centrally manage interactive objects within levels, the system employs an abstract class `Entity`. Different game object types inherit from this class to implement specific behaviors. For example, `Enemy` represents an enemy character, while `PollutionCore` represents an environmental target that needs to be purified. This inheritance structure allows objects to share interfaces while maintaining their unique behavioral logic.
+The system employs an abstract class the `Entity` to manage interactive objects within levels in central. Different game object types inherit from this class to implement specific behaviors. For example, the `Enemy` represents an enemy character, while the `PollutionCore` represents a target that requires environmental purification.
 
 ## 4.3 Final Class Diagram
-As development progressed, the game gradually added more features, such as different types of enemies, environmental interactive objects, and area teleportation mechanisms. To support these new features, the system architecture was also adjusted accordingly. The final class diagram (Figure X) illustrates the relationships between the main classes in the system.
-
+As development progressed, the game gradually added more features, such as different types of enemies, environmental interactive objects, and area teleportation mechanisms. To support these new features, the system architecture was adjusted accordingly. The final class diagram (Figure 6) illustrates the relationships between the main classes in the system.
 
 <p align="center">
   <img src="resources/images/Class_0305.png" width="80%"/>
@@ -332,14 +336,15 @@ As development progressed, the game gradually added more features, such as diffe
   <b>Figure 6.</b> Final Class Diagram
 </p>
 
-The main improvements are reflected in the following three aspects. First, in `entity` class, the initial design only included a small number of basic classes. In the final design, `Entity` is used as the core abstract class of the game object system, deriving several sub-classes such as `Enemy`, `Boss`, `PollutionCore`, `TeleportationGate`, `CleanEnergy`, and `GateWall`. These classes represent different types of game objects; for example, `Enemy` and `Boss` are used to implement enemy characters, while `CleanEnergy` represents resource objects that players can collect.
+The main improvements are reflected in the following three aspects. First, the initial design of the `Entity` class had only a few basic classes. In the final design, the `Entity` is used as the core abstract class of the game object system, deriving several subclasses such as the `Enemy`, the `Boss`, the `PollutionCore`, the `TeleportationGate`, the `CleanEnergy`, and the `GateWall`.
 
-Second, `levelmanager` has also been adjusted. The initial level representation was relatively simple, while in the final implementation, `LevelManager` uses a tile grid structure to represent the map environment, with each `Tile` recording its position, size, and whether it is entity terrain. This structure makes level loading, collision detection, and map rendering clearer and more stable.
+Second, the `LevelManager` has also been adjusted. The initial level representation was relatively simple, but in the final implementation, the `LevelManager` uses a tile grid structure to represent the map environment. Each `Tile` records its position, size, and whether it is entity terrain.
 
-Finally, the interaction methods between entities have been unified. When a player or rope comes into contact with an entity, the interaction methods implemented by that entity are called, such as `onPlayerContact()` or `onRopeContact()`. Different entities implement their own behaviors in these methods, such as triggering transmissions or updating polluting core states, thereby avoiding centralized handling of all interaction logic in the system.
+Finally, the interaction methods between entities have been unified. We removed the `RopeHead`; when a player or rope comes into contact with an entity, the interaction methods implemented by that entity, such as `onPlayerContact()` or `onRopeContact()`, are directly called.
 
 ## 4.4 Pollution Purification Sequence Diagram
-Figure X shows the player's interaction process for purifying the pollution core through the rope. This sequence diagram describes the interaction flow from player input to the purification of the pollution core.
+Figure 7 illustrates the sequence of interactions when the player uses the rope to purify a pollution core.
+
 <p align="center">
   <img src="resources/images/Sequence_0305_1.png" width="70%"/>
 </p>
@@ -347,10 +352,10 @@ Figure X shows the player's interaction process for purifying the pollution core
   <b>Figure 7.</b> Rope Interaction and Pollution Purification
 </p>
 
-When a `player` performs an input action, `GameMnager` first receives the input event and triggers the `fireRope()` method. The `player` then calls the rope's `fire()` method, launching the rope towards the target. In each frame update loop, `GameManager` continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. Contact with the pollution core then initiates pollution purification. If the player's current clean energy meets the purification condition (`player.cleanEnergy ≥ purificationCost`), the player consumes the corresponding clean energy. The `PollutionCore` then executes the `purifyPollution()` method and updates its state. Otherwise, the system triggers insufficient energy handling logic, maintaining the `PollutionCore's` current state.
+When a `Player` performs an input action, the `GameMnager` first receives the input event and triggers `fireRope()` method. Then the `Player` calls the rope's `fire()` method and launches the rope towards the target. In each frame update loop, the `GameManager` continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. If it contacts a pollution core, a purification process begins: when the player's clean energy meets the condition (player.cleanEnergy ≥ purificationCost), the corresponding energys are consumed, and the `PollutionCore` executes `purifyPollution()` to update the state; otherwise, the system triggers insufficient energy logic and maintains the `PollutionCore's` current state.
 
 ## 4.5 Unlock New Area Sequence Diagram
-Figure X shows the interaction flow for unlocking new areas. This sequence diagram describes how the system determines whether to unlock new game areas based on the player's purification progress, i.e., purification percentage.
+The sequence diagram (Figure 8) shows how the system determines whether to unlock new game areas based on the player's purification progress.
 
 <p align="center">
   <img src="resources/images/Sequence_0305_2.png" width="45%"/>
@@ -359,7 +364,7 @@ Figure X shows the interaction flow for unlocking new areas. This sequence diagr
   <b>Figure 8.</b> Unlock New Area
 </p>
 
-During gameplay, `GameManager` calls player's `update()` method to refresh the player's state in each frame's update loop. Simultaneously, the system checks if the area unlocking conditions are met using `LevelManager's` `checkUnlockCondition()` method. If the player's purification progress reaches the preset requirement (`purifiedProgress ≥ requiredProgress`), the system triggers `unlockNewArea()` to unlock a new area. `GameManager` then loads the new level data and calls `loadNewArea()` to complete the area switch. After the new area is loaded, the system resets the player's position using `resetPosition()`, allowing the player to enter the new area. If the unlocking conditions are not met, no area switch is triggered, and the game loop continues.
+The`GameManager` calls player's `update()` method to refresh the player's state in each frame's update loop. At the same time, the system checks if the area unlocking conditions are met using the LevelManager's `checkUnlockCondition()` method. If the player's purification progress reaches the preset requirement (`purifiedProgress ≥ requiredProgress`), the system triggers `unlockNewArea()` to unlock a new area. The `GameManager` then loads the new level data and calls `loadNewArea()` to complete the area switch. After the new area is loaded, the system resets the player's position using `resetPosition()`, allowing the player to enter the new area. If the unlocking conditions are not met, no area switch is triggered, and the game loop continues.
 
 # 5. Implementation
 
@@ -429,7 +434,7 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
 
 ## 6.1 Qualitative Evaluation
 ### Heuristic Evaluation
-We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
+We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table 2).
 
 <p align="center">
 <b>Table 2. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
@@ -517,7 +522,7 @@ We invited several evaluators to trial our game and assessed the interface accor
 </tr>
 </table>
 
-Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will incorporate more intuitive HUD designs, such as employing progress bars or icons to represent health and energy. For controls, we will reduce players' cognitive load by simplifying operations or providing key prompts. Moreover, we will introduce straightforward tutorials and hints to assist new players in understanding the rope mechanics and game objectives. Finally, we will appropriately adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience for players.
+Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will add more intuitive HUD designs, such as progress bars or icons to represent health and clean energy. For controls, we will simplify operations or providing prompts to reduce players' cognitive load. Moreover, we will introduce straightforward tutorials and hints to help new players better understand the rope mechanics and game objectives. Finally, we will adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience.
 
 ## 6.2 Quantitative Evaluation
 To evaluate the user experience of the game under different difficulty levels, we conducted a quantitative evaluation using questionnaire-based measures and statistical analysis:
@@ -774,7 +779,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
   <b>Figure 12.</b> Mean SUS scores for the Easy and Hard difficulty levels
 </p>
 
-According to firgue X, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard, suggesting slightly better usability for the Easy level.
+According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard (figure 12), suggesting slightly better usability for the Easy level.
 
 ### Statistical Analysis
 <p>
@@ -808,15 +813,15 @@ According to firgue X, the mean NASA-TLX workload score was **4.57** for the Eas
 
 </table>
 
-The Wilcoxon Signed-Rank Test results (Table X) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
+The Wilcoxon Signed-Rank Test results (Table 7) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
 
 ### Findings
-According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the player's workload is not low, while the SUS score is generally at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps; easy mode reduced difficulty by removing some of the more difficult maps. Now, we have designed different maps for different difficulties. The easy mode levels are simpler, the paths are clearer, and the use of rope mechanics is reduced, making it easier for players to complete the core objective of purifying the contaminated core, thus better distinguishing the different difficulties visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily obtain ability upgrades, such as jumping ability, rope length, and attack power, thereby reducing the difficulty of completing the levels. These adjustments have made the differences between the various difficulty modes clearer.
+According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps; Easy mode reduced difficulty by removing more challenging maps. Now, we've designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
 
-## 6.3 How Code Was Tested.
-During the development process, testing is carried out continuously as each functional module is progressively implemented. Specifically, our testing methods can be divided into two categories: black-box testing and white-box testing. Firstly, in **black-box testing**, we primarily use automated testing tools to verify the game’s user interaction flows and interface functions, such as accessing the main menu, clicking ‘Start Game’, switching difficulty levels, opening the settings panel, and navigating between screens. At the same time, for systems involving continuous changes—such as player movement, jumping and rope firing, it is difficult to determine correctness through frame-by-frame output alone. Therefore, we also relied on visual and interactive evaluation, such as whether movement speed is reasonable, whether collisions correctly block the player, whether jumping and falling conform to basic physical intuition, and whether rope movement displays natural dynamic effects.
+## 6.3 How Code Was Tested
+During development, we continuously tested various functional modules. Specifically, our testing methods can be divided into two parts: black-box testing and white-box testing. First, in **black-box testing**, we used automatic testing tools to verify the game's user interaction flow and interface functions, such as entering the main menu, clicking "Start Game," changing difficulty levels, opening the resource panel, and switching  different interfaces. However, for systems involving continuous changes, such as player movement, jumping, and rope launching. It is difficult to determine whether it is correct based solely on frame-by-frame output so that we depended on visual and interactive evaluations. For example, whether movement speed is reasonable, whether jumping and falling conform to basic physical intuition, and whether rope movement presents natural dynamic effects.
 
-On the other hand, **white-box testing** focuses on verifying the internal logic of the programme, judging the correctness of implementation by observing changes in values and states within specific game scenarios. For example, we tested the logic behind changes in the player’s health points (HP), the consumption of clean energy, and the triggering of invulnerability. During testing, we designed various input scenarios to obtain function return results, whilst handling and validating potential invalid inputs. For instance, we simulated the player taking damage to verify that the HP is reduced correctly and that the invulnerability state is properly triggered, as well as testing whether energy consumption and health recovery limits behave as expected under different conditions. A specific example is shown below:
+On the other hand, **white-box testing** focuses on verifying the program's internal logic, judging the correctness of the implementation by observing changes in values ​​and states in specific game scenarios. For example, we tested the underlying logic of player health (HP) changes, clean energy consumption, and the triggering of invincibility states. During testing, we designed various input scenarios to obtain function return results, while simultaneously handling and verifying potentially invalid inputs. For example, we simulate players taking damage to verify whether HP is reduced correctly, whether invincibility is triggered properly, and to test whether energy consumption and health regeneration limits meet expectations under different conditions. One of examples is as follows:
 
 **Example -- Player Damage and Invulnerability Logic**
 <p align="center">
@@ -826,7 +831,7 @@ On the other hand, **white-box testing** focuses on verifying the internal logic
   <b>Figure 13.</b> Player Damage and Invulnerability Logic
 </p>
 
-In terms of tools, we primarily use **VS Code** to run p5.js-based project code, and combine this with testing tools such as **Jest** and **Cypress** to perform supplementary verification of certain features. By combining black-box testing with white-box testing, we are able to ensure both a natural gaming experience and the correctness of the underlying logic, thereby enhancing software quality.
+In terms of tools, we mainly use **VS Code** to run p5.js-based project code, and combine this with testing tools such as **Jest** and **Cypress** to perform supplementary verification of certain features. By combining black-box testing with white-box testing, we are able to ensure both a natural gaming experience and the correctness of the underlying logic, thereby enhancing software quality.
 
 # 7. Process 
 
@@ -897,9 +902,25 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 # 10. Contribution Statement
 
-- Provide a table of everyone's contribution, which *may* be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Please let us know as soon as possible if there are any issues with teamwork as soon as they are apparent and we will do our best to help your team work harmoniously together.
+| Contributor  | Contribution |
+|--------------|--------------|
+| Qizhou Lu    | 1.00         |
+| Yifei Niu    | 1.00         |
+| Mengzhou Gao | 1.00         |
+| Ruomu Lu     | 1.00         |
+| Hang Su      | 1.00         |
+| Jiaying Wang | 1.00         |
 
-# 11. Appendix
+
+# 11. AI statement
+
+We used AI to create the game's cover and the opening still animation picture.
+
+Use AI to fill in pixel values when quickly completing the initial layout of controls on pages such as the settings page, so as to reduce the time spent adjusting data such as the relative positions, spacing, and sizes of controls.
+
+Use AI to provide partial ideas for some game logic (e.g. enemy movement logic and physical world implementation logic), and manually implement the code.
+
+# 12. Appendix
 
 ## **Use Case Specification**
 
@@ -1005,7 +1026,7 @@ The player attempts to purify pollution target.
 - The world’s purification progress is updated.
 
 
- # 12. References
+ # 13. References
 
 Alexander, I. F. (2005). *A taxonomy of stakeholders: Human roles in system development*. International Journal of Technology and Human Interaction, 1(1), 23–59.
 

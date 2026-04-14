@@ -255,16 +255,14 @@ class introUI {
       }
    }
 
-   // ========== 新增：更新粒子位置和透明度 ==========
    updateParticles() {
       for (let p of this.pixelParticles) {
          p.x += p.speedX;
          p.y += p.speedY;
-         // 呼吸效果：透明度随时间波动
+         // breath effect
          p.alpha += Math.sin(Date.now() * p.pulseSpeed) * 0.01;
-         p.alpha = Math.max(0.1, Math.min(0.8, p.alpha)); // 限制透明度范围
+         p.alpha = Math.max(0.1, Math.min(0.8, p.alpha));
 
-         // 边界回弹：粒子超出画布后回到另一侧
          if (p.x < 0) p.x = this.fxW;
          if (p.x > this.fxW) p.x = 0;
          if (p.y < 0) p.y = this.fxH;
@@ -272,37 +270,31 @@ class introUI {
       }
    }
 
-   // ========== 新增：绘制背景像素粒子 ==========
    _drawBackgroundPixelParticles(ctx, alpha) {
       ctx.save();
       for (let p of this.pixelParticles) {
-         // 粒子颜色：青蓝色（匹配参考图）
          ctx.fillStyle = `rgba(80, 220, 255, ${p.alpha * alpha})`;
-         ctx.fillRect(p.x, p.y, p.size, p.size); // 绘制像素粒子
+         ctx.fillRect(p.x, p.y, p.size, p.size);
       }
       ctx.restore();
    }
 
-   // ========== 新增：核心效果 - 像素化发光边框 ==========
    _drawPixelGlowBorder(ctx, panel, alpha, side) {
       const a = alpha;
-      const glowSize = 8;    // 发光范围（越大边框越宽）
-      const pixelSize = 4;   // 像素块大小（越小越细腻）
+      const glowSize = 8;
+      const pixelSize = 4;
 
       ctx.save();
-      // 外层像素发光：用小方块组成渐变发光边框
       for (let i = -glowSize; i < panel.w + glowSize; i += pixelSize) {
          for (let j = -glowSize; j < panel.h + glowSize; j += pixelSize) {
-            // 只绘制边框区域（内部不画）
             if (i < 0 || i > panel.w || j < 0 || j > panel.h) {
-               // 计算距离面板的距离，实现渐变透明度
                const dist = Math.min(
                   Math.min(i, panel.w - i),
                   Math.min(j, panel.h - j)
                );
                const glowAlpha = (1 - dist / glowSize) * 0.3 * a;
-               if (glowAlpha > 0.01) { // 过滤透明度过低的像素
-                  ctx.fillStyle = `rgba(0, 255, 255, ${glowAlpha})`; // 高亮青色
+               if (glowAlpha > 0.01) {
+                  ctx.fillStyle = `rgba(0, 255, 255, ${glowAlpha})`;
                   ctx.fillRect(
                      panel.x + i - pixelSize / 2,
                      panel.y + j - pixelSize / 2,
@@ -314,7 +306,7 @@ class introUI {
          }
       }
    }
-   // 内层高亮边框：强化面板
+   // Highlighted border on the inner layer
 
    _drawMainFrameFx(ctx, r, alpha) {
       return;
@@ -413,21 +405,21 @@ class introUI {
       this.sidePanelsVisible = false;
    }
 
-   // 左面版
+   // left panel
    _drawLeftPanel(ctx, w, h, alpha) {
       let a = alpha;
       ctx.clearRect(0, 0, w, h);
 
-      // 背景
+      // background
       ctx.fillStyle = `rgba(8, 14, 28, ${0.62 * a})`;
       ctx.beginPath();
       this._roundRect(ctx, 0, 0, w, h, 16);
       ctx.fill();
-      //效果
+      // effect
       this._drawPanelAccent(ctx, w, h, a, 'left');
       this._drawPanelFx(ctx, w, h, a, 'left');
 
-      // 外发光细边
+      // outer glow edge
       ctx.save();
       ctx.shadowBlur = 14;
       ctx.shadowColor = `rgba(80,220,255,${0.20 * a})`;
@@ -438,21 +430,21 @@ class introUI {
       ctx.stroke();
       ctx.restore();
 
-      // 内边框
+      // inner border
       ctx.strokeStyle = `rgba(255,255,255,${0.62 * a})`;
       ctx.lineWidth = 1;
       ctx.beginPath();
       this._roundRect(ctx, 6, 6, w - 12, h - 12, 15);
       ctx.stroke();
 
-      // 标题
+      // title
       ctx.fillStyle = `rgba(255, 255, 255, ${a})`;
       ctx.font = 'bold 22px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(t('introPanels.movementTitle'), w / 2, 40);
 
-      // 分隔线
+      // Separator
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 * a})`;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -460,7 +452,7 @@ class introUI {
       ctx.lineTo(w - 30, 65);
       ctx.stroke();
 
-      // WASD 键
+      // WASD key
       let centerX = w / 2;
       let startY = 110;
       let keyW = 44;
@@ -475,13 +467,13 @@ class introUI {
       this._drawKeyCtx(ctx, 'S', centerX, row2Y, keyW, keyH, a);
       this._drawKeyCtx(ctx, 'D', centerX + keyW + gap, row2Y, keyW, keyH, a);
 
-      // "Move" 标签
+      // Move
       ctx.fillStyle = `rgba(200, 220, 255, ${a})`;
       ctx.font = '16px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(t('introPanels.move'), centerX, row2Y + keyH + 25);
 
-      // 其他按键列表
+      // other keys
       let listStartY = row2Y + keyH + 65;
       let rowH = 50;
       let keyX = w / 2 + 30;
@@ -514,7 +506,7 @@ class introUI {
       }
    }
 
-   // 右面板
+   // right panel
    _drawRightPanel(ctx, w, h, alpha) {
       let a = alpha;
       ctx.clearRect(0, 0, w, h);

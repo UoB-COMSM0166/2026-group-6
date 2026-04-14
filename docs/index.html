@@ -12,74 +12,23 @@
          background-color: #1b1b1b;
          font-family: var(--game-font-family, "Monogram", monospace);
       }
-
-   /* 页面布局 */
-      #layout{
-         max-height:100vh;
-         display:flex;
-         justify-content:center;
-         align-items:flex-start;
-         gap:10px;
-         padding-top:40px;
-   
-      }
-
-      #game-container{
-         width:1000px;
-         height:700px;
-
-         transform: scale(0.75);
-         transform-origin: top center;
-      }
-
-      /* canvas */
-      #game-container canvas{
-         display:block;
-      }
-
-      /* 右侧 Controls UI */
-      #controls-ui{
-         width:220px;
-         padding:15px;
-         border-radius:12px;
-         background:rgba(30,30,40,0.9);
-         color:white;
-         font-family:"Monogram", monospace;
-
-         display:none;   
-      }
-
-      /* 每一行 */
-      .row{
-         margin:6px 0;
-      }
-
-      /* 按键样式 */
-      .key{
-         display:inline-block;
-         width:40px;
-         text-align:center;
-         background:#444;
-         border-radius:5px;
-         margin-right:6px;
-      }
    </style>
 
    <!-- p5.js -->
    <script src="p5.js"></script>
    <script src="p5.sound.js"></script>
 
-   <!-- 第1层: 配置 + 工具 (零依赖) -->
+   <!-- Configuration + Tools (Zero Dependencies) -->
    <script src="game-project/config/config.js"></script>
    <script src="game-project/assist/key.js"></script>
    <script src="game-project/assist/physics.js"></script>
    <script src="game-project/localization.js"></script>
 
-   <!-- 第2层: 数据类 -->
+   <!-- data class -->
    <script src="game-project/tile.js"></script>
    <script src="game-project/particle.js"></script>
 
-   <!-- 第3层: 游戏对象 (依赖 config + physics) -->
+   <!-- Game Object(Dependent on config + physics) -->
    <script src="game-project/rope/rope.js"></script>
    <script src="game-project/entity.js"></script>
    <script src="game-project/entity/GateWall.js"></script>
@@ -97,7 +46,7 @@
    <script src="game-project/entity/Boss.js"></script>
    <script src="game-project/player.js"></script>
 
-   <!-- 第4层: 管理器 (依赖游戏对象) -->
+   <!-- Manager (depends on game objects) -->
     <script src="game-project/resourcepanel.js"></script>
    <script src="game-project/camera.js"></script>
    <script src="game-project/ui.js"></script>
@@ -110,7 +59,7 @@
    <script src="game-project/game-manager.js"></script>
    <script src="game-project/menu-ui.js"></script>
 
-   <!-- 第5层: 入口 (依赖以上全部) -->
+   <!-- main -->
    <script src="game-project/main.js"></script>
 </head>
 

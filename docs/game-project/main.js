@@ -19,9 +19,11 @@ function preload() {
 }
 
 function setup() {
+   // Disable right-click context menu
    document.oncontextmenu = () => false;
    let canvas = createCanvas(1000, 700);
 
+   // Inject custom font styles into the document head
    const fontStyle = document.createElement('style');
    fontStyle.textContent = `
       @font-face {
@@ -36,6 +38,7 @@ function setup() {
    document.head.appendChild(fontStyle);
    updateStaticDomTranslations();
 
+   // Canvas Styling: Center and overlay
    canvas.style('display', 'block');
    canvas.style('margin', 'auto');
    canvas.style('position', 'absolute');
@@ -51,8 +54,7 @@ function setup() {
    noSmooth();
    applyGameTextFont(resources);
 
-   // Cover
-   // Story intro first
+   // Initialize Story Intro sequence
    storyIntro = new StoryIntro(resources, function () {
       storyFinished = true;
       resources.sounds.story?.stop();
@@ -60,7 +62,7 @@ function setup() {
       menuUI.playDemoVideo();
    });
 
-   // Original intro UI
+   // Initialize the main intro UI
    intro = new introUI();
 
    if (resources.ldtkData) {
@@ -80,18 +82,14 @@ function setup() {
 function draw() {
    applyGameTextFont(resources);
 
+   // Pre-story state
    if (!storyStarted) {
       background(0);
       intro.display();
       return;
    }
 
-   if (!storyStarted) {
-      background(0);
-      intro.display();
-      return;
-   }
-
+   // Active story sequence
    if (!storyFinished) {
       background(0);
       storyIntro.update();
@@ -99,16 +97,19 @@ function draw() {
       return;
    }
 
+   // Video/Demo state
    if (appState === "VIDEO") {
       background(0);
       return;
    }
 
+   // Menu state
    if (appState === "MENU") {
       background(0);
       return;
    }
 
+   // Playing state
    if (appState !== "PLAYING" || !gm) return;
    gm.update();
    gm.render();

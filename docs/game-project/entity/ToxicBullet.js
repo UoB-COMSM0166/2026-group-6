@@ -3,39 +3,36 @@ class ToxicBullet extends Entity {
       super(x - 6, y - 6, 12, 12, { identifier: 'ToxicBullet' });
       this.damage = 1;
 
-      // 设定子弹的重力
+      // Set gravity for the bullet
       this.gravity = 0.25;
 
-      // 计算目标点与发射点的距离差
+      // Calculate the distance vector between the target and the launch point
       let dx = targetX - x;
       let dy = targetY - y;
 
-      // 设定子弹飞行到目标所需的时间 (例如 45 帧到达)
-      // 你可以调小这个值让子弹飞得更快，调大让子弹飞得更慢
+      // Set the intended travel time (in frames) to reach the target
       let time = 45; 
 
-      // 水平方向是匀速运动: x = v_x * t
+      // Horizontal movement is constant velocity: $$x = v_x t$$
       this.vx = dx / time;
       
-      // 垂直方向是匀加速运动: y = v_y * t + 0.5 * g * t^2
-      // 反推 v_y = (y - 0.5 * g * t^2) / t
+      // Vertical movement is constant acceleration: $$y = v_y t + \frac{1}{2} g t^2$$
       this.vy = (dy - 0.5 * this.gravity * time * time) / time;
    }
 
-   // 接收 level 和 gm
    update(level, gm) {
-      // 施加重力与位移
+      // Apply gravity and update position
       this.vy += this.gravity;
       this.x += this.vx;
       this.y += this.vy;
 
-      // 检测是否撞到固体墙壁或地面
+      // Check for collision with solid tiles (walls or ground)
       if (level.isRectOverlappingTile(this.x, this.y, this.w, this.h, { solidOnly: true, margin: 0.1 })) {
-         this.destroy(); // 调用 Entity 基类的方法销毁自己
-         if (gm) gm.addParticles(this.cx(), this.cy(), 5); // 撞墙爆点紫色粒子
+         this.destroy(); // Call base Entity method to remove from game
+         if (gm) gm.addParticles(this.cx(), this.cy(), 5); // Spawn purple particles on impact
       }
 
-      // 飞出地图底部则销毁
+      // Destroy if the bullet falls below the map boundary
       if (this.y > level.mapH) {
          this.destroy();
       }
@@ -45,20 +42,20 @@ class ToxicBullet extends Entity {
       if (player.invulnerableTimer <= 0) {
          player.takeDamage(this.damage, gm);
          player.knockTimer = GameConfig.Player.KnockInterval;
-         // 添加轻微的击退效果
+         
+         // Apply a slight knockback effect
          let dir = (player.x < this.x) ? -1 : 1;
          player.vx = dir * 4;
          player.vy = -2;
       }
-      this.destroy(); // 击中玩家后销毁
+      this.destroy(); // Destroy bullet upon hitting the player
    }
 
-   // 覆写 Entity 基类的 _drawShape 方法
    _drawShape() {
-      push(); // 使用 push/pop 防止样式污染其他实体
-      fill(200, 50, 255); // 毒液的亮紫色
-      stroke(255);        // 纯白色的描边
-      strokeWeight(2);    // 加粗描边让它在深色背景下非常显眼
+      push(); // Use push/pop to prevent style leakage to other entities
+      fill(200, 50, 255); // Toxic bright purple
+      stroke(255);        // Pure white outline
+      strokeWeight(2);    // Thicker stroke for high visibility against dark backgrounds
       ellipse(this.cx(), this.cy(), this.w, this.h);
       pop();
    }

@@ -97,6 +97,8 @@ class AudioManager {
   // mute/unmute BGM
   toggleBgmMute() {
     this.state.bgm.isMuted = !this.state.bgm.isMuted;
+    const targetVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
+    
     if (this.resources.sounds.bgm) {
       this.resources.sounds.bgm.setVolume(this.state.bgm.isMuted ? 0 : this.state.bgm.volume);
     }
@@ -120,7 +122,8 @@ class AudioManager {
       Object.keys(obj).forEach(key => {
         //all
         if (obj[key] instanceof p5.SoundFile) {
-          this.state.sfx.isMuted ? obj[key].setVolume(0) : obj[key].setVolume(1);
+          // If muted, set volume to 0; otherwise, restore to stored SFX volume
+          obj[key].setVolume(this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
         } else if (typeof obj[key] === 'object') {
           muteAllSfx(obj[key]);
         }

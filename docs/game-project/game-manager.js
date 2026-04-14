@@ -248,7 +248,7 @@ class GameManager {
       const viewW = width / this.scale;
       const viewH = height / this.scale;
 
-      // 计算 Area 包围盒 & 中心
+      // Calculate Area bounding box & center
       if (!this._areaBoundsCache || this._areaBoundsCache.area !== area) {
          let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
          const ldtk = this.resources.ldtkData;
@@ -261,7 +261,7 @@ class GameManager {
             maxX = Math.max(maxX, wl.worldX + wl.pxWid);
             maxY = Math.max(maxY, wl.worldY + wl.pxHei);
          }
-         // 如果找不到同 area 的 level，退回当前 level 自身范围
+         // Fall back to the current level's own bounds if no levels in the same area are found
          if (minX === Infinity) {
             minX = this.level.worldX;
             minY = this.level.worldY;
@@ -278,70 +278,70 @@ class GameManager {
       }
       const ab = this._areaBoundsCache;
 
-      // ── 摄像机中心的绝对世界坐标 ──
+      // --- Absolute world coordinates of the camera center ---
       const camAbsX = this.level.worldX + this.camera.x + viewW / 2;
       const camAbsY = this.level.worldY + this.camera.y + viewH / 2;
 
-      // 摄像机与 Area 中心的偏移量
+      // Offset between the camera and the Area center
       const dx = camAbsX - ab.cx;
       const dy = camAbsY - ab.cy;
 
-      // ── 各层视差因子：远景 → 近景 ──
-      //   factor = 0  完全不随摄像机移动（无穷远）
-      //   factor = 1  完全跟随摄像机（同步）
+      // --- Parallax factors for each layer: Far → Near ---
+      // factor = 0: Static (at infinity), does not move with camera
+      // factor = 1: Fully follows the camera (no parallax)
       const factors = layers.map((_, i) =>
          0.05 + i * (0.85 / Math.max(1, layers.length - 1))
       );
 
-      // ── 视口边界（本关卡局部坐标）──
+      // --- Viewport boundaries (Local level coordinates) ---
       const vl = this.camera.x;
       const vt = this.camera.y;
 
-      // ── 逐层绘制 (从远到近) ──
+      // --- Draw layers sequentially (Back to Front) ---
       for (let i = 0; i < layers.length; i++) {
          const img = layers[i];
          if (!img) continue;
 
          const f = factors[i];
 
-         // 该层中心 —— 在绝对世界坐标中:
-         //   当摄像机在 Area 中心时, 层中心 == Area 中心
-         //   摄像机每偏移 1px, 该层偏移 f px → 产生 (1-f) 的视差
+         // Layer center in absolute world coordinates:
+         // When the camera is at the Area center, the layer center aligns with the Area center.
+         // For every 1px the camera shifts, the layer shifts by f px, creating (1-f) parallax.
          const layerAbsCX = ab.cx + dx * f;
          const layerAbsCY = ab.cy + dy * f;
 
-         // 转为本关卡局部坐标
+         // Convert to local level coordinates
          const layerLocalCX = layerAbsCX - this.level.worldX;
          const layerLocalCY = layerAbsCY - this.level.worldY;
 
-         // ── 缩放：保证覆盖视口 + 最大视差移动量 ──
-         //   最大偏移量 = Area 半宽/半高 × (1-f)
+         // --- Scaling: Ensure coverage of viewport + max parallax shift ---
+         // Max shift = Area half-width/height × (1-f)
          const maxShiftX = (ab.w / 2) * (1 - f);
          const maxShiftY = (ab.h / 2) * (1 - f);
          const neededW = viewW + maxShiftX * 2;
          const neededH = viewH + maxShiftY * 2;
 
-         // 取最大缩放比，保证宽高都够
+         // Use the maximum scale ratio to ensure both width and height are covered
          const imgScale = Math.max(
             neededW / img.width,
             neededH / img.height,
-            viewW / img.width,   // 兜底: 至少填满视口
+            viewW / img.width,   // Fallback: at least fill the viewport
             viewH / img.height
          );
          const sw = img.width * imgScale;
          const sh = img.height * imgScale;
 
-         // 图片左上角（以层中心为基准）
+         // Image top-left corner (relative to layer center)
          const bx = layerLocalCX - sw / 2;
          const by = layerLocalCY - sh / 2;
 
-         // ── 判断单张是否覆盖视口，不够则平铺 ──
+         // --- Check if a single image covers the viewport; if not, enable tiling ---
          if (bx <= vl && bx + sw >= vl + viewW &&
             by <= vt && by + sh >= vt + viewH) {
-            // 单张足够覆盖
+            // Single instance is sufficient
             image(img, bx, by, sw, sh);
          } else {
-            // 平铺：计算需要铺几行几列
+            // Tiling: Calculate number of rows and columns needed
             const startCol = Math.floor((vl - bx) / sw);
             const endCol = Math.ceil((vl + viewW - bx) / sw);
             const startRow = Math.floor((vt - by) / sh);
@@ -357,7 +357,6 @@ class GameManager {
    }
 
    // input
-
    onMousePressed(button) {
       if (this.status !== "PLAY") return;
       // world point
@@ -397,7 +396,7 @@ class GameManager {
    _updateEntities() {
       for (let i = this.entities.length - 1; i >= 0; i--) {
          let ent = this.entities[i];
-         // 把 this (也就是 gm 本身) 传给实体，让 Boss 能拿到玩家坐标
+         // Pass "this" (the GameManager itself) to entities so the Boss can access the player's coordinates
          ent.update(this.level, this);
 
 
@@ -427,15 +426,14 @@ class GameManager {
    }
 
    /**
-    * 检测玩家是否到达地图边缘且有邻居关卡
-    * 如果有, 切换到邻居关卡并重新定位玩家
+    * Detects if the player has reached the map boundary and if a neighboring level exists.
+    * If so, switches to the adjacent level and repositions the player.
     *
-    * 流程:
-    *   1. LevelManager.checkEdgeTransition() 检测边缘 + 查找邻居 + 坐标映射
-    *   2. 保存玩家速度 (保持移动惯性)
-    *   3. loadLevel(transition) 加载新关卡, 保留玩家状态
+    * Workflow:
+    * 1. LevelManager.checkEdgeTransition() detects the edge, finds the neighbor, and maps coordinates.
+    * 2. Preserve player velocity (to maintain movement momentum/inertia).
+    * 3. loadLevel(transition) loads the new level while maintaining the player's state.
     */
-
    _checkTeleport() {
       if (!this.pendingTeleport) return;
 
@@ -449,7 +447,7 @@ class GameManager {
          vy: 0,
       });
 
-      // 目标关卡所有传送门设冷却，防止立刻回传
+      // Set cooldown for all portals in the target level to prevent immediate return
       for (let ent of this.entities) {
          if (ent instanceof TeleportationGate) {
             ent.cooldown = 30;
@@ -563,9 +561,7 @@ class GameManager {
       return percentage;
    }
 
-   /**
-    * 全局按 iid 找实体：
-    */
+   // Global entity lookup by id
 
    findEntityAndLevelByIid(iid) {
       if (!iid) return null;

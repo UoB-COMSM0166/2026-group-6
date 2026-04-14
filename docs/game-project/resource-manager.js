@@ -4,38 +4,40 @@
  * Centrally manages the loading of all resources (images, JSON files, and audio).
  * Ensures each asset is loaded only once, and all modules obtain resource references from here.
  *
- *
- * ========= The images resources must be placed before the audios resources.
- * Be careful to keep this order when adding new image resources. =====
+ * NOTE: Image resources should be placed before audio resources.
+ * Be mindful of this order when adding new assets.
  *
  * Usage:
- *   Call resources.preload() inside preload()
- *   Then access resources via resources.images.tileset / resources.data.ldtk
+ * Call resources.preload() inside p5.js's preload() function.
+ * Access assets via resources.images.tileset or resources.data.ldtk.
  */
 class ResourceManager {
    constructor() {
+      // Resource Dictionaries
       this.images = {};
       this.data = {};
       this.fonts = {};
       this.sounds = {
          rope: {},
          enemy: {}
-   };
+      };
 
-      //map difficulty levels preload
+      // Map difficulty preloading
       this.data.ldtk = {
          easy: null,
          medium: null,
          hard: null
       };
       this.data.currentLdtk;
+
+      // Parallax background layers grouped by Area
       this.images.parallax = {
          area1: [],
          area2: [],
          area3: [],
          area4: []
       };
-      this.images.tools={};
+      this.images.tools = {};
    }
 
    /**
@@ -43,14 +45,14 @@ class ResourceManager {
     * all loadImage / loadJSON here
     */
    preload() {
+      // Data and Fonts
       this.data.ldtk.easy = loadJSON('map/map-easy.ldtk');
-      //this.data.ldtk.easy = loadJSON('map/help.ldtk');
       this.data.ldtk.medium = loadJSON('map/map-normal.ldtk');
       this.data.ldtk.hard = loadJSON('map/map-main.ldtk');
       this.data.currentLdtk = this.data.ldtk.easy;
       this.fonts.main = loadFont('resources/fonts/monogram.ttf');
 
-      //images
+      // --- Global Image Assets ---
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
@@ -58,14 +60,19 @@ class ResourceManager {
       this.images.door1 = loadImage('resources/images/map_image/door1.png');
       this.images.door2 = loadImage('resources/images/map_image/door2.png');
       this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
+      
+      // HUD / Tool Icons
       this.images.tools.energy = loadImage('resources/images/map_image/tools/tools_energy.png');
       this.images.tools.hp = loadImage('resources/images/map_image/tools/tools_hp.png');
       this.images.tools.rope = loadImage('resources/images/map_image/tools/tools_rope.png');
       this.images.tools.jump = loadImage('resources/images/map_image/tools/tools_jump.png');
       this.images.tools.attack = loadImage('resources/images/map_image/tools/tools_attack.png');
       this.images.tools.other = loadImage('resources/images/map_image/tools/tools_other.png');
+      
       this.images.rest = loadImage('resources/images/map_image/reset.png');
       this.images.cover = loadImage('resources/images/map_image/cover.png');
+      
+      // Story Intro Sequence
       this.images.storyIntro = [];
       for (let i = 1; i <= 4; i++) {
          this.images.storyIntro.push(
@@ -78,6 +85,7 @@ class ResourceManager {
       );
       this.images.resourcePanelCard = loadImage("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Card X2/Card X3.png");
 
+      // World Paintings / Scenery
       this.images.painting = { paintings: [] };
       for (let i = 1; i <= 3; i++) {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/map_image/forest${i}.png`));
@@ -92,7 +100,7 @@ class ResourceManager {
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
       };
 
-      //Boss
+      // --- Boss Assets ---
       this.images.boss = {
          idle: loadImage('resources/images/enemy/Boss_Idle-Sheet.png'),
          shoot: loadImage('resources/images/enemy/Boss_Shoot-Sheet.png'),
@@ -112,7 +120,7 @@ class ResourceManager {
          );
       }
 
-      // Area2: WCP_1..5 (5 layers)
+      // Area 2: WCP_1 to 5 (5 layers)
       this.images.parallax.area2 = [];
       for (let i = 1; i <= 5; i++) {
          this.images.parallax.area2.push(
@@ -120,7 +128,7 @@ class ResourceManager {
          );
       }
 
-      // Area3: 4 layers (order matters: far -> mid -> near -> foreground)
+      // Area 3: 4 layers (Order: Far -> Mid -> Near -> Foreground)
       this.images.parallax.area3 = [
          loadImage(`resources/images/background/area3bg/far-buildings.png`),
          loadImage(`resources/images/background/area3bg/bg.png`),
@@ -128,7 +136,7 @@ class ResourceManager {
          loadImage(`resources/images/background/area3bg/skill-foreground.png`),
       ];
 
-      // Area4: 1..5 (5 layers)  (folder name in zip is "aera4bg")
+      // Area 4: 1 to 5 (5 layers)
       this.images.parallax.area4 = [];
       for (let i = 1; i <= 5; i++) {
          this.images.parallax.area4.push(
@@ -158,7 +166,7 @@ class ResourceManager {
       this.sounds.tool = loadSound('resources/audios/sides/tools.wav');
       this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.wav');
 
-      //bgm:
+      // --- Background Music (BGM) ---
       this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
       this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
       this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
@@ -167,16 +175,15 @@ class ResourceManager {
       this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
       this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
-      //END之后用
-      //this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
-      //this.sounds.better = loadSound('resources/audios/game_once/betterend.mp3');
-      //this.sounds.happy = loadSound('resources/audios/game_once/happyend.mp3');
-      //this.sounds.normal = loadSound('resources/audios/game_once/normalend.mp3');
-      //this.sounds.sad = loadSound('resources/audios/game_once/sadend.mp3');
+      // Post-Ending Audio (Currently disabled/reserved)
+      // this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
+      // this.sounds.better = loadSound('resources/audios/game_once/betterend.mp3');
+      // this.sounds.happy = loadSound('resources/audios/game_once/happyend.mp3');
+      // this.sounds.normal = loadSound('resources/audios/game_once/normalend.mp3');
+      // this.sounds.sad = loadSound('resources/audios/game_once/sadend.mp3');
    }
 
-
-   /** after preload is over */
+   /** Mark as loaded once preload is complete */
    markLoaded() {
       this._loaded = true;
    }
@@ -191,15 +198,14 @@ class ResourceManager {
    */
    setLdtkData(difficulty = "easy") {
       if (!this.data.ldtk[difficulty]) {
-         console.warn(`[ResourceManager] 未找到${difficulty}难度对应地图则回到easy`);
+         console.warn(`[ResourceManager] No map found for "${difficulty}" difficulty; falling back to "easy".`);
          this.data.currentLdtk = this.data.ldtk.easy;
+      } else {
+         this.data.currentLdtk = this.data.ldtk[difficulty];
       }
-      this.data.currentLdtk = this.data.ldtk[difficulty];
    }
 
-   //兼顾访问器
-   //测试临时改动
+   // --- Getters for common assets ---
    get ldtkData() { return this.data.currentLdtk; }
-
    get tilesetImage() { return this.images.tileset; }
 }

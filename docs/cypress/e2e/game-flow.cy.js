@@ -7,7 +7,7 @@ describe('Black-Box: Game UI and Flow Tests', () => {
     // 2. This is the initial cover screen. Click anywhere on the Canvas to trigger `storyStarted = true`.
     cy.get('canvas.p5Canvas').click();
 
-    // 3. At this point, the game enters the story interface (StoryIntro).
+    // 3. The game enters the story interface (StoryIntro).
     cy.get('canvas.p5Canvas').click(930, 47);
 
     // 4. The demo video plays at this point; click the video to skip it.
