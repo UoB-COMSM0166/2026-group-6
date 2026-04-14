@@ -915,6 +915,7 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 # 11. AI statement
 
+We used AI to create the game's cover and the opening still animation picture.
 
 
 # 12. Appendix
