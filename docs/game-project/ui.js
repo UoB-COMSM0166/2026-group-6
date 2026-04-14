@@ -182,12 +182,6 @@ class UI {
       fill(255); textAlign(CENTER); textSize(60);
       text(t('ui.died'), width / 2, height / 2 - 50);
       textSize(50); text(t('ui.restart'), width / 2, height / 2 + 70);
-<<<<<<< HEAD
-      fill(255); textAlign(CENTER); textSize(70);
-      text(t('ui.died'), width / 2, height / 2);
-      textSize(50); text(t('ui.restart'), width / 2, height / 2 + 50);
-=======
->>>>>>> b531474 (saveallnewchanges)
    }
 
    static drawMapPrompt(prompt, elapsed, duration) {

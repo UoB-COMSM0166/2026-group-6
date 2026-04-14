@@ -7,15 +7,12 @@ let zhFontLoaded = false;
 let zhFontLoadPromise = null;
 let playerFloatingTextPatched = false;
 let globalTextPatched = false;
-<<<<<<< HEAD
 const ZH_CANVAS_TEXT_SCALE = 0.85;
 const EN_CANVAS_TEXT_SCALE = 1.0;
 const EN_DOM_TEXT_SCALE = 1.0;
-=======
-let globalTextSizePatched = false;
-let globalTextLeadingPatched = false;
-const ZH_CANVAS_TEXT_SCALE = 0.9;
->>>>>>> b531474 (saveallnewchanges)
+const ZH_CANVAS_TEXT_SCALE = 0.85;
+const EN_CANVAS_TEXT_SCALE = 1.0;
+const EN_DOM_TEXT_SCALE = 1.0;
 
 const TRANSLATIONS = {
    en: {
@@ -31,11 +28,11 @@ const TRANSLATIONS = {
          instructions: 'Instructions',
          language: 'Language',
          storyReview: 'Replay Story',
-         difficultyTitle: 'Choose Difficulty',
-         audioTitle: 'Audio Settings',
-         languageTitle: 'Choose Language',
-         background: 'BGM',
-         sounds: 'Sounds',
+        difficultyTitle: 'Choose Difficulty',
+        audioTitle: 'Audio Settings',
+        languageTitle: 'Choose Language',
+        background: 'BGM',
+        sounds: 'Sounds',
          easy: 'Easy',
          medium: 'Medium',
          hard: 'Hard',
@@ -504,17 +501,12 @@ function getUIFontFamilyCss() {
 }
 
 function getCanvasTextScale() {
-<<<<<<< HEAD
    return currentLanguage === 'zh' ? ZH_CANVAS_TEXT_SCALE : EN_CANVAS_TEXT_SCALE;
 }
 
 function getDomTextScale() {
    return currentLanguage === 'zh' ? 1 : EN_DOM_TEXT_SCALE;
-=======
-   return currentLanguage === 'zh' ? ZH_CANVAS_TEXT_SCALE : 1;
->>>>>>> b531474 (saveallnewchanges)
 }
-
 function applyGameTextFont(resources) {
    if (currentLanguage === 'zh') {
       ensureLanguageFontFaces();
@@ -534,10 +526,7 @@ function applyGameTextFont(resources) {
 
 function updateStaticDomTranslations() {
    ensureLanguageFontFaces();
-<<<<<<< HEAD
    ensureDomFontScaleStyles();
-=======
->>>>>>> b531474 (saveallnewchanges)
    document.title = t('meta.title');
    document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
    document.documentElement.style.setProperty('--game-font-family', getUIFontFamilyCss());
@@ -574,7 +563,6 @@ function updateStaticDomTranslations() {
    if (paragraphs[1]) paragraphs[1].textContent = t('controls.rightClick');
 }
 
-<<<<<<< HEAD
 function ensureDomFontScaleStyles() {
    if (typeof document === 'undefined') return;
 
@@ -593,8 +581,6 @@ html[lang="en"] #controls-ui * {
    document.head.appendChild(styleTag);
 }
 
-=======
->>>>>>> b531474 (saveallnewchanges)
 function localizeFloatingTextContent(content) {
    if (typeof content !== 'string') return content;
 
@@ -725,8 +711,6 @@ function ensureRuntimeLocalizationPatches() {
 
       playerFloatingTextPatched = true;
    }
-<<<<<<< HEAD
-=======
 
    if (!globalTextPatched && typeof globalThis.text === 'function') {
       const originalText = globalThis.text;
@@ -738,29 +722,6 @@ function ensureRuntimeLocalizationPatches() {
       };
       globalTextPatched = true;
    }
-
-   if (!globalTextSizePatched && typeof globalThis.textSize === 'function') {
-      const originalTextSize = globalThis.textSize;
-      globalThis.textSize = function (size) {
-         if (typeof size === 'number') {
-            return originalTextSize.call(this, size * getCanvasTextScale());
-         }
-         return originalTextSize.call(this, size);
-      };
-      globalTextSizePatched = true;
-   }
-
-   if (!globalTextLeadingPatched && typeof globalThis.textLeading === 'function') {
-      const originalTextLeading = globalThis.textLeading;
-      globalThis.textLeading = function (leading) {
-         if (typeof leading === 'number') {
-            return originalTextLeading.call(this, leading * getCanvasTextScale());
-         }
-         return originalTextLeading.call(this, leading);
-      };
-      globalTextLeadingPatched = true;
-   }
->>>>>>> b531474 (saveallnewchanges)
 }
 
 function refreshRuntimeLanguageTargets() {

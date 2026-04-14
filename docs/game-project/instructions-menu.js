@@ -284,17 +284,10 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<<<<<<< HEAD
 <th style="${this.thStyle()} width:${categoryWidth};">${t('instructions.headers.category')}</th>
 <th style="${this.thStyle()} width:${nameWidth};">${t('instructions.headers.name')}</th>
 <th style="${this.thStyle()} width:${imageWidth};">${t('instructions.headers.image')}</th>
 <th style="${this.thStyle()} width:${descriptionWidth};">${t('instructions.headers.description')}</th>
-=======
-<th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
-<th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
-<th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
-<th style="${this.thStyle()} width:65%;">${t('instructions.headers.description')}</th>
->>>>>>> b531474 (saveallnewchanges)
 </tr>
 </thead>
 <tbody>
@@ -351,17 +344,10 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<<<<<<< HEAD
 <th style="${this.thStyle()} width:${categoryWidth};">${t('instructions.headers.category')}</th>
 <th style="${this.thStyle()} width:${nameWidth};">${t('instructions.headers.name')}</th>
 <th style="${this.thStyle()} width:${imageWidth};">${t('instructions.headers.image')}</th>
 <th style="${this.thStyle()} width:${descriptionWidth};">${t('instructions.headers.description')}</th>
-=======
-<th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
-<th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
-<th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
-<th style="${this.thStyle()} width:65%;">${t('instructions.headers.description')}</th>
->>>>>>> b531474 (saveallnewchanges)
 </tr>
 </thead>
 <tbody>
@@ -531,11 +517,7 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
    }
 
    tdStyle() {
-<<<<<<< HEAD
       return 'border:0;padding:6px 6px;text-align:center;vertical-align:middle;';
-=======
-      return 'border:0;padding:8px 8px;text-align:left;vertical-align:middle;';
->>>>>>> b531474 (saveallnewchanges)
    }
 
    imgStyle() {

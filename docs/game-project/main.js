@@ -9,7 +9,9 @@ let storyFinished = false;
 let audioManager;
 let menuUI;
 
-UI.setLoadingStyle();
+if (typeof UI !== 'undefined' && UI?.setLoadingStyle) {
+   UI.setLoadingStyle();
+}
 
 function preload() {
    resources = new ResourceManager();
