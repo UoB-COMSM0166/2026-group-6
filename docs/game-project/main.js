@@ -9,7 +9,8 @@ let storyStarted = false;
 let storyFinished = false;
 let selectedDifficulty = "easy";
 let demoVideo = null;
-//add: audiocontrol
+
+// Integration: Audio Controller
 let audioManager;
 let instructionsMenu;
 
@@ -21,9 +22,11 @@ function preload() {
 }
 
 function setup() {
+   // Disable right-click context menu
    document.oncontextmenu = () => false;
    let canvas = createCanvas(1000, 700);
 
+   // Inject custom font styles into the document head
    const fontStyle = document.createElement('style');
    fontStyle.textContent = `
       @font-face {
@@ -37,6 +40,7 @@ function setup() {
    `;
    document.head.appendChild(fontStyle);
 
+   // Canvas Styling: Center and overlay
    canvas.style('display', 'block');
    canvas.style('margin', 'auto');
    canvas.style('position', 'absolute');
@@ -49,13 +53,13 @@ function setup() {
    document.body.style.overflow = "hidden";
 
    canvas.elt.oncontextmenu = () => false;
-   noSmooth();
+   noSmooth(); // Maintain pixel-art clarity
+   
    if (resources.fonts.main) {
       textFont(resources.fonts.main);
    }
 
-   // Cover
-   // Story intro first
+   // Initialize Story Intro sequence
    storyIntro = new StoryIntro(resources, function () {
       storyFinished = true;
       resources.sounds.story?.stop();
@@ -63,12 +67,12 @@ function setup() {
       playDemoVideo();
    });
 
-   // Original intro UI
+   // Initialize the main intro UI
    intro = new introUI();
 
    if (resources.ldtkData) {
       resources.markLoaded();
-      //add: audiocontrol
+      // Integration: Audio Controller
       audioManager = new AudioManager(resources);
    }
 }
@@ -78,18 +82,14 @@ function draw() {
       textFont(resources.fonts.main);
    }
 
+   // Pre-story state
    if (!storyStarted) {
       background(0);
       intro.display();
       return;
    }
 
-   if (!storyStarted) {
-      background(0);
-      intro.display();
-      return;
-   }
-
+   // Active story sequence
    if (!storyFinished) {
       background(0);
       storyIntro.update();
@@ -97,16 +97,19 @@ function draw() {
       return;
    }
 
+   // Video/Demo state
    if (appState === "VIDEO") {
       background(0);
       return;
    }
 
+   // Menu state
    if (appState === "MENU") {
       background(0);
       return;
    }
 
+   // Playing state
    if (appState !== "PLAYING" || !gm) return;
    gm.update();
    gm.render();
@@ -147,7 +150,10 @@ function mouseWheel(event) {
    return false;
 }
 
-//add: showmenuchange
+/**
+ * Handle sub-menu page transitions
+ * @param {string} page - Target page ID ('main', 'difficulty', 'audio', 'instructions')
+ */
 function showMenuPage(page) {
    const mainPanel = document.getElementById('menu-main-panel');
    const difficultyPanel = document.getElementById('menu-difficulty-panel');
@@ -156,11 +162,13 @@ function showMenuPage(page) {
 
    if (!mainPanel || !difficultyPanel || !audioPanel || !backBtn) return;
 
+   // Hide all panels initially
    mainPanel.style.display = 'none';
    difficultyPanel.style.display = 'none';
    audioPanel.style.display = 'none';
    instructionsMenu?.hide();
 
+   // Show targeted panel
    if (page === 'main') {
       mainPanel.style.display = 'flex';
       backBtn.style.display = 'none';
@@ -191,7 +199,7 @@ function _createMenu() {
       'background-repeat:no-repeat;' +
       'z-index:10;';
 
-   // ===== Back 按钮只在子页面显示 =====
+   // --- Back Button (Visible only on sub-panels) ---
    const backBtn = document.createElement('button');
    backBtn.id = 'menu-back-btn';
    backBtn.textContent = 'Back';
@@ -207,8 +215,7 @@ function _createMenu() {
       'background-color:transparent;' +
       'border:none; cursor:pointer;' +
       'transition:all 0.2s;' +
-      // ===== 增加 z-index，避免被遮挡 =====
-      'z-index:100;';
+      'z-index:100;'; // Elevated Z-index to prevent occlusion
 
    backBtn.onmouseenter = function () {
       this.style.backgroundImage = `url("${BTN_HOVER}")`;
@@ -230,18 +237,17 @@ function _createMenu() {
       e.preventDefault();
       e.stopPropagation();
 
-      // =====点击音效判空，避免 click 不存在时报错=====
+      // Play click sound if available
       if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
          resources.sounds.click.play();
       }
 
-      // ===== Back返回主菜单页=====
+      // Return to main menu page
       showMenuPage('main');
    };
    menuDiv.appendChild(backBtn);
 
-   // 主菜单页
-   // ===== 新增主菜单页容器 =====
+   // --- Main Menu Panel ---
    const mainPanel = document.createElement('div');
    mainPanel.id = 'menu-main-panel';
    mainPanel.style.cssText =
@@ -253,16 +259,15 @@ function _createMenu() {
          e.stopPropagation();
       }
 
-
       _hideMenu();
 
-      // ===== 开始游戏时传入 selectedDifficulty =====
+      // Initialize GameManager with the selected difficulty
       gm = new GameManager(resources, selectedDifficulty);
 
-      // 将 gm 暴露给 window，专门用于自动化测试读取
+      // Expose gm to window for automated testing accessibility
       window.gm = gm;
 
-      // ===== 避免重复播放 =====
+      // Ensure BGM starts looping
       if (resources.sounds.bgm && !resources.sounds.bgm.isPlaying()) {
          resources.sounds.bgm.loop();
       }
@@ -274,7 +279,6 @@ function _createMenu() {
          e.stopPropagation();
       }
 
-      // ===== 加判空：避免 click 音效不存在时报错 =====
       if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
          resources.sounds.click.play();
       }
@@ -287,10 +291,9 @@ function _createMenu() {
    });
 
    btnContinue.id = 'btn-continue';
-   btnContinue.style.opacity = '0.3';
+   btnContinue.style.opacity = '0.3'; // Disabled by default until a game exists
    btnContinue.style.pointerEvents = 'none';
 
-   // ===== Choose Difficulty =====
    const btnDifficulty = _makeBtn('Choose Difficulty', function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -301,7 +304,6 @@ function _createMenu() {
       showMenuPage('difficulty');
    });
 
-   //======Audio Settings=====
    const btnAudio = _makeBtn('Audio Settings', function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -311,7 +313,7 @@ function _createMenu() {
       }
       showMenuPage('audio');
    });
-   // ====== Instructions ======
+
    const btnInstructions = _makeBtn('Instructions', function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -322,7 +324,7 @@ function _createMenu() {
       showMenuPage('instructions');
    });
 
-   // 组装主面板
+   // Build Main Panel
    mainPanel.appendChild(btnStart);
    mainPanel.appendChild(btnContinue);
    mainPanel.appendChild(btnDifficulty);
@@ -330,7 +332,7 @@ function _createMenu() {
    mainPanel.appendChild(btnInstructions);
    menuDiv.appendChild(mainPanel);
 
-   // 新增：难度面板（默认隐藏）
+   // --- Difficulty Panel (Hidden by default) ---
    const difficultyPanel = document.createElement('div');
    difficultyPanel.id = 'menu-difficulty-panel';
    difficultyPanel.style.cssText =
@@ -358,7 +360,7 @@ function _createMenu() {
    difficultyPanel.appendChild(difficultyContainer);
    menuDiv.appendChild(difficultyPanel);
 
-   // 新增：音频面板（默认隐藏）
+   // --- Audio Panel (Hidden by default) ---
    const audioPanel = document.createElement('div');
    audioPanel.id = 'menu-audio-panel';
    audioPanel.style.cssText =
@@ -370,8 +372,7 @@ function _createMenu() {
    audioTitle.style.cssText =
       'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;font-family:"Monogram", monospace;';
 
-   //说明页面
-
+   // Instruction Page Initialization
    instructionsMenu = new InstructionsMenu({
       buttonImages: {
          normal: BTN_NORMAL,
@@ -387,7 +388,7 @@ function _createMenu() {
    instructionsMenu.attachTo(menuDiv);
 
 
-   // BGM控制行
+   // BGM Control Row
    const bgmRow = document.createElement('div');
    bgmRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
    const bgmLabel = document.createElement('div');
@@ -409,7 +410,7 @@ function _createMenu() {
    bgmRow.appendChild(bgmMuteBtn);
    bgmRow.appendChild(bgmSlider);
 
-   // sounde: SFX控制行
+   // SFX Control Row
    const sfxRow = document.createElement('div');
    sfxRow.style.cssText = 'display:flex; align-items:center; gap:10px; width:450px;';
    const sfxLabel = document.createElement('div');
@@ -431,13 +432,13 @@ function _createMenu() {
    sfxRow.appendChild(sfxMuteBtn);
    sfxRow.appendChild(sfxSlider);
 
-   // 组装音频面板
+   // Assemble Audio Panel
    audioPanel.appendChild(audioTitle);
    audioPanel.appendChild(bgmRow);
    audioPanel.appendChild(sfxRow);
    menuDiv.appendChild(audioPanel);
 
-   // 绑定音频面板事件
+   // Bind Audio Events
    bgmMuteBtn.onclick = function () {
       if (!audioManager) return;
       audioManager.toggleBgmMute();
@@ -464,22 +465,27 @@ function _createMenu() {
       audioManager.setSfxVolume(parseFloat(e.target.value));
    });
 
-   // 挂载菜单+默认显示主面板
+   // Mount menu and default to main panel
    document.body.appendChild(menuDiv);
    showMenuPage('main');
 }
 
+/**
+ * Disables the Continue button visually and functionally
+ */
 function banBtnContinue() {
    let bc = document.getElementById('btn-continue');
    bc.style.opacity = '0.3';
    bc.style.pointerEvents = 'none';
 }
 
-// ========== 新增：创建难度按钮的专用方法 ==========
+/**
+ * Helper: Create specialized difficulty selection buttons
+ */
 function _makeDifficultyBtn(label, difficulty) {
    let btn = document.createElement('button');
    btn.textContent = label;
-   btn.dataset.difficulty = difficulty; // 存储难度标识
+   btn.dataset.difficulty = difficulty; // Store difficulty identifier
    btn.style.cssText =
       'width:180px; height:60px; font-size:30px; font-weight:bold; color:white;' +
       'font-family:"Monogram", monospace;' +
@@ -492,7 +498,7 @@ function _makeDifficultyBtn(label, difficulty) {
       'transition: all 0.2s;';
 
 
-   // 鼠标悬停效果
+   // Hover effect
    btn.onmouseenter = function () {
       if (this.dataset.difficulty !== selectedDifficulty) {
          this.style.backgroundImage = `url("${BTN_HOVER}")`;
@@ -505,15 +511,16 @@ function _makeDifficultyBtn(label, difficulty) {
       }
    };
 
-   // 点击切换难度
+   // Switch difficulty on click
    btn.onclick = function () {
       if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
          resources.sounds.click.play();
       }
       selectedDifficulty = this.dataset.difficulty;
       resources.setLdtkData(selectedDifficulty);
-      banBtnContinue();
-      // 重置所有难度按钮样式，高亮当前选中
+      banBtnContinue(); // Reset continue since the world data changed
+      
+      // Reset all difficulty button styles and highlight the current selection
       let allDiffBtns = document.querySelectorAll('[data-difficulty]');
       allDiffBtns.forEach(b => _setInactiveDifficultyBtn(b));
       _setActiveDifficultyBtn(this);
@@ -522,14 +529,18 @@ function _makeDifficultyBtn(label, difficulty) {
    return btn;
 }
 
-// ========== 新增：设置选中/未选中难度按钮样式 ==========
+/**
+ * Highlight active difficulty button
+ */
 function _setActiveDifficultyBtn(btn) {
    btn.style.backgroundImage = `url("${BTN_ACTIVE}")`;
    btn.style.transform = 'scale(1.02)';
    btn.style.boxShadow = '0 0 6px rgba(30, 180, 122, 0.45)';
 }
 
-
+/**
+ * Reset difficulty button to default state
+ */
 function _setInactiveDifficultyBtn(btn) {
    btn.style.backgroundImage = `url("${BTN_NORMAL}")`;
    btn.style.transform = 'scale(1)';
@@ -540,6 +551,9 @@ const BTN_NORMAL = 'resources/images/UI_resources/1. Free Hologram Interface Wen
 const BTN_HOVER = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png';
 const BTN_ACTIVE = 'resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Active.png';
 
+/**
+ * Create a standard menu button
+ */
 function _makeBtn(label, onClick) {
 
    let btn = document.createElement('button');
@@ -593,6 +607,7 @@ function _showMenu() {
       bc.style.pointerEvents = 'auto';
    }
 
+   // Prepare Intro visuals for transition
    intro.page = 1;
    intro.transition = 1;
    intro.isTransitioning = false;
@@ -606,17 +621,19 @@ function _showMenu() {
    resources.sounds.bgm?.pause();
 }
 
+/**
+ * Overlays and plays the demo/help video
+ */
 function playDemoVideo() {
    demoVideo = document.createElement('video');
-   // 视频路径
    demoVideo.src = 'resources/videos/helpvideo.mp4';
    demoVideo.controls = false;
 
-   // 关键：静音播放可以绕过浏览器的自动播放拦截
+   // CRITICAL: Muted playback bypasses browser autoplay restrictions
    demoVideo.muted = true;
    demoVideo.playsInline = true;
 
-   // 设置视频样式，覆盖在画布上方
+   // Style video to overlay perfectly on the canvas
    demoVideo.style.cssText =
       'position:absolute; top:50%; left:50%; width:1000px; height:700px;' +
       'transform:translate(-50%, -50%); z-index:10; background:black; object-fit:contain; cursor:pointer;';
@@ -627,28 +644,29 @@ function playDemoVideo() {
    intro.showFx(1);
    intro.showSidePanels(1);
 
-   // 强制提高侧边栏的层级（z-index: 20），确保它们浮在视频（z-index: 10）上方
+   // Force higher z-index for sidebars to float above the video (z-index 20 > 10)
    if (intro.leftCanvas) intro.leftCanvas.style.zIndex = "20";
    if (intro.rightCanvas) intro.rightCanvas.style.zIndex = "20";
 
-   // 视频自然播放结束，或者玩家点击视频画面，都会触发结束视频并进入菜单
+   // Transitions on end or click
    demoVideo.onended = endDemoVideo;
    demoVideo.onclick = endDemoVideo;
 
-   // 尝试播放视频
    let playPromise = demoVideo.play();
    if (playPromise !== undefined) {
       playPromise.catch(e => {
-         console.error("视频播放失败，原因：", e);
-         endDemoVideo(); // 如果还是报错，就直接进菜单防卡死
+         console.error("Video playback failed:", e);
+         endDemoVideo(); // Fallback to menu to prevent game stall
       });
    }
 }
 
+/**
+ * Removes video and returns to the menu state
+ */
 function endDemoVideo() {
    if (!demoVideo) return;
 
-   // 停止并移除视频元素
    demoVideo.pause();
    demoVideo.remove();
    demoVideo = null;

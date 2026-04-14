@@ -31,8 +31,5 @@ class Ladder extends Entity {
       if (climbing) {
          if (!this.climbSound.isPlaying()) this.climbSound.play();
       }
-      // else {
-      //    if (this.climbSound.isPlaying()) this.climbSound.stop();
-      // }
    }
 }

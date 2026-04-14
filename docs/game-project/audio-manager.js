@@ -1,27 +1,31 @@
 class AudioManager {
   constructor(resources) {
-    this.resources = resources; // 关联资源管理器
-    // 音量/开关状态（默认值，可自行调整）
+    this.resources = resources; // Reference to the resource manager
+    
+    // Volume and Mute states
     this.state = {
-      bgm: { volume: 0.6, isMuted: false },    // BGM（背景音乐）
-      sfx: { volume: 0.8, isMuted: false }     // SFX（音效：点击、门、攻击等）
+      bgm: { volume: 0.6, isMuted: false },    // BGM (Background Music)
+      sfx: { volume: 0.8, isMuted: false }     // SFX (Sound Effects: clicks, doors, attacks, etc.)
     };
-    // 初始化：给所有音频绑定音量
+
+    // Initialization: Bind initial volumes to all audio files
     this.initAudioVolumes();
   }
 
-  // 初始化：给所有音频设置初始音量
+  /**
+   * Initialization: Set initial volumes for all audio resources
+   */
   initAudioVolumes() {
     if (!this.resources?.sounds) return;
 
-    // 1. BGM类音频（bgm、story）
+    // 1. BGM category sounds (e.g., main bgm, story themes)
     const bgmSounds = ['bgm', 'story'];
     bgmSounds.forEach(key => {
       const sound = this.resources.sounds[key];
       if (sound) sound.setVolume(this.state.bgm.volume);
     });
 
-    // 2. SFX类音频（所有其他音效）
+    // 2. SFX category (all other sound effects)
     const sfxKeys = Object.keys(this.resources.sounds).filter(key => {
       return !bgmSounds.includes(key) && 
              (typeof this.resources.sounds[key] === 'object' ? 
@@ -29,11 +33,15 @@ class AudioManager {
                this.resources.sounds[key] instanceof p5.SoundFile);
     });
 
-    // 递归设置音效音量（处理enemy/rope这类嵌套对象）
+    // Recursively set SFX volume (handles nested objects like 'enemy' or 'rope')
     this._setSfxVolume(this.resources.sounds, sfxKeys);
   }
 
-  // 私有方法：递归设置音效音量
+  /**
+   * Private helper: Recursively set SFX volumes
+   * @param {Object} soundObj - The sound object/collection
+   * @param {Array} keys - Keys to iterate through
+   */
   _setSfxVolume(soundObj, keys) {
     keys.forEach(key => {
       if (soundObj[key] instanceof p5.SoundFile) {
@@ -48,40 +56,52 @@ class AudioManager {
     });
   }
 
-  // ========== 对外暴露的控制方法 ==========
-  // 1. 设置BGM音量（0-1）
+  /**
+   * 1. Set BGM volume
+   * @param {number} volume - Value between 0 and 1
+   */
   setBgmVolume(volume) {
-    this.state.bgm.volume = Math.max(0, Math.min(1, volume)); // 限制0-1
+    this.state.bgm.volume = Math.max(0, Math.min(1, volume)); // Clamp value between 0-1
     if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(this.state.bgm.volume);
     if (this.resources.sounds.story) this.resources.sounds.story.setVolume(this.state.bgm.volume);
   }
 
-  // 2. 设置音效音量（0-1）
+  /**
+   * 2. Set SFX volume
+   * @param {number} volume - Value between 0 and 1
+   */
   setSfxVolume(volume) {
     this.state.sfx.volume = Math.max(0, Math.min(1, volume));
     this._setSfxVolume(this.resources.sounds, Object.keys(this.resources.sounds));
   }
 
-  // 3. 切换BGM静音/开启
+  /**
+   * 3. Toggle BGM Mute/Unmute
+   */
   toggleBgmMute() {
     this.state.bgm.isMuted = !this.state.bgm.isMuted;
+    const targetVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
+    
     if (this.resources.sounds.bgm) {
-      this.state.bgm.isMuted ? this.resources.sounds.bgm.setVolume(0) : this.resources.sounds.bgm.setVolume(1);
+      this.resources.sounds.bgm.setVolume(targetVolume);
     }
     if (this.resources.sounds.story) {
-      this.state.bgm.isMuted ? this.resources.sounds.story.setVolume(0) : this.resources.sounds.story.setVolume(1);
+      this.resources.sounds.story.setVolume(targetVolume);
     }
   }
 
-  // 4. 切换音效静音/开启
+  /**
+   * 4. Toggle SFX Mute/Unmute
+   */
   toggleSfxMute() {
     this.state.sfx.isMuted = !this.state.sfx.isMuted;
-    // 遍历所有音效，切换静音
+    
+    // Traverse all sound effects and toggle mute
     const muteAllSfx = (obj) => {
       Object.keys(obj).forEach(key => {
-        //静音全部
         if (obj[key] instanceof p5.SoundFile) {
-          this.state.sfx.isMuted ? obj[key].setVolume(0) : obj[key].setVolume(1);
+          // If muted, set volume to 0; otherwise, restore to stored SFX volume
+          obj[key].setVolume(this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
         } else if (typeof obj[key] === 'object') {
           muteAllSfx(obj[key]);
         }
@@ -90,7 +110,10 @@ class AudioManager {
     muteAllSfx(this.resources.sounds);
   }
 
-  // 5. 获取当前状态（供UI显示）
+  /**
+   * 5. Get current state (useful for UI synchronization)
+   * @returns {Object} A copy of the current audio state
+   */
   getState() {
     return { ...this.state };
   }
