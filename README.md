@@ -15,10 +15,15 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 
 ## TRY TO START GAME
 
-<div align="center">
-  <a href = "https://uob-comsm0166.github.io/2026-group-6/"> Start Game </a>
-</div>
+<p align="center">
+  <img src="resources/images/reset.png" width="50" style="vertical-align: middle;">
 
+  <a href="https://uob-comsm0166.github.io/2026-group-6/" style="font-size:18px; margin: 0 10px;">
+    Start Game
+  </a>
+
+  <img src="resources/images/reset.png" width="50" style="vertical-align: middle;">
+</p>
 
 
 
