@@ -318,13 +318,13 @@ The `GameManager` is the system's central control class to maintain the key comp
 The `LevelManager` loads level data and manages entities within the current level. It maintains a collection of entities to store all objects in this level. It also detects map boundaries and triggers region transitions.
 
 **3. Player**  
-The `player` implements a player-related logic, encapsulating attributes such as the player's health, and clean energy. It provides functionality for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
+The `Player` implements a player-related logic, encapsulating attributes such as the player's health, and clean energy. It provides functionality for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
 
 **4. Rope**  
-`Rope` implements a rope mechanism, providing ways for using ropes, updating the state, and adjusting the length. Each rope is associated with a `RopeHead` object, which handles the interactions of different behaviors when the rope head contacts a target object.
+The `Rope` implements a rope mechanism, providing ways for using ropes, updating the state, and adjusting the length. Each rope is associated with a `RopeHead` object, which handles the interactions of different behaviors when the rope head contacts a target object.
 
 **5. Entity**  
-The system employs an abstract class `Entity` to manage interactive objects within levels in central. Different game object types inherit from this class to implement specific behaviors. For example, `Enemy` represents an enemy character, while `PollutionCore` represents a target that requires environmental purification.
+The system employs an abstract class the `Entity` to manage interactive objects within levels in central. Different game object types inherit from this class to implement specific behaviors. For example, the `Enemy` represents an enemy character, while the `PollutionCore` represents a target that requires environmental purification.
 
 ## 4.3 Final Class Diagram
 As development progressed, the game gradually added more features, such as different types of enemies, environmental interactive objects, and area teleportation mechanisms. To support these new features, the system architecture was adjusted accordingly. The final class diagram (Figure 6) illustrates the relationships between the main classes in the system.
@@ -336,7 +336,7 @@ As development progressed, the game gradually added more features, such as diffe
   <b>Figure 6.</b> Final Class Diagram
 </p>
 
-The main improvements are reflected in the following three aspects. First, the initial design of the `entity` class had only a few basic classes. In the final design, the `Entity` is used as the core abstract class of the game object system, deriving several subclasses such as the `Enemy`, the `Boss`, the `PollutionCore`, the `TeleportationGate`, the `CleanEnergy`, and the `GateWall`.
+The main improvements are reflected in the following three aspects. First, the initial design of the `Entity` class had only a few basic classes. In the final design, the `Entity` is used as the core abstract class of the game object system, deriving several subclasses such as the `Enemy`, the `Boss`, the `PollutionCore`, the `TeleportationGate`, the `CleanEnergy`, and the `GateWall`.
 
 Second, the `LevelManager` has also been adjusted. The initial level representation was relatively simple, but in the final implementation, the `LevelManager` uses a tile grid structure to represent the map environment. Each `Tile` records its position, size, and whether it is entity terrain.
 
@@ -352,7 +352,7 @@ Figure 7 illustrates the sequence of interactions when the player uses the rope 
   <b>Figure 7.</b> Rope Interaction and Pollution Purification
 </p>
 
-When a `player` performs an input action, the `GameMnager` first receives the input event and triggers `fireRope()` method. Then the `player` calls the rope's `fire()` method and launches the rope towards the target. In each frame update loop, the `GameManager` continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. If it contacts a pollution core, a purification process begins: when the player's clean energy meets the condition (player.cleanEnergy ≥ purificationCost), the corresponding energys are consumed, and the `PollutionCore` executes `purifyPollution()` to update the state; otherwise, the system triggers insufficient energy logic and maintains the `PollutionCore's` current state.
+When a `Player` performs an input action, the `GameMnager` first receives the input event and triggers `fireRope()` method. Then the `Player` calls the rope's `fire()` method and launches the rope towards the target. In each frame update loop, the `GameManager` continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. If it contacts a pollution core, a purification process begins: when the player's clean energy meets the condition (player.cleanEnergy ≥ purificationCost), the corresponding energys are consumed, and the `PollutionCore` executes `purifyPollution()` to update the state; otherwise, the system triggers insufficient energy logic and maintains the `PollutionCore's` current state.
 
 ## 4.5 Unlock New Area Sequence Diagram
 The sequence diagram (Figure 8) shows how the system determines whether to unlock new game areas based on the player's purification progress.
@@ -434,7 +434,7 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
 
 ## 6.1 Qualitative Evaluation
 ### Heuristic Evaluation
-We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table X).
+We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table 2).
 
 <p align="center">
 <b>Table 2. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
@@ -522,7 +522,7 @@ We invited several evaluators to trial our game and assessed the interface accor
 </tr>
 </table>
 
-Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will add more intuitive HUD designs, such as progress bars or icons to represent health and energy. For controls, we will reduce players' cognitive load by simplifying operations or providing prompts. Moreover, we will introduce straightforward tutorials and hints to help new players better understand the rope mechanics and game objectives. Finally, we will adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience.
+Based on the results of the heuristic evaluation, we propose the following improvements to address the primary usability issues identified. For the interface, we will add more intuitive HUD designs, such as progress bars or icons to represent health and clean energy. For controls, we will simplify operations or providing prompts to reduce players' cognitive load. Moreover, we will introduce straightforward tutorials and hints to help new players better understand the rope mechanics and game objectives. Finally, we will adjust the game's difficulty and refine combat feedback to deliver a clearer and fairer experience.
 
 ## 6.2 Quantitative Evaluation
 To evaluate the user experience of the game under different difficulty levels, we conducted a quantitative evaluation using questionnaire-based measures and statistical analysis:
@@ -779,7 +779,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
   <b>Figure 12.</b> Mean SUS scores for the Easy and Hard difficulty levels
 </p>
 
-According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard, suggesting slightly better usability for the Easy level.
+According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard (figure 12), suggesting slightly better usability for the Easy level.
 
 ### Statistical Analysis
 <p>
