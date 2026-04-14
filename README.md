@@ -903,15 +903,19 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 # 10. Contribution Statement
 
-- Provide a table of everyone's contribution, which *may* be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Please let us know as soon as possible if there are any issues with teamwork as soon as they are apparent and we will do our best to help your team work harmoniously together.
+| Contributor  | Contribution |
+|--------------|--------------|
+| Qizhou Lu    | 1.00         |
+| Yifei Niu    | 1.00         |
+| Mengzhou Gao | 1.00         |
+| Ruomu Lu     | 1.00         |
+| Hang Su      | 1.00         |
+| Jiaying Wang | 1.00         |
+
 
 # 11. AI statement
 
-- Prior to the game’s official launch, AI-generated images were applied to the creation of the game’s background narrative and cover design, to present game-related information with higher content density.
-- AI was utilized to generate code to accelerate the completion of the initial layout of UI controls on functional pages (e.g., the settings interface), thereby reducing the time spent adjusting parameters including the relative positions, spacing, and dimensions of the controls.
-- In the initial development phase of partial game logic modules, AI was adopted to explore feasible preliminary solutions, which were subsequently subject to manual modification, optimization, and fine-tuning.
-- In the early stage of the project, AI was leveraged to build a functional demo with simplified operations to facilitate subsequent meeting discussions. Notably, this demo had no substantial correlation with the final codebase of the formal project.
-- When processing revisions to large volumes of repetitive content, AI was employed to perform streamlined batch replacement operations.
+
 
 # 12. Appendix
 
