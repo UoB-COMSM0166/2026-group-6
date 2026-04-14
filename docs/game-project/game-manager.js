@@ -561,9 +561,7 @@ class GameManager {
       return percentage;
    }
 
-   /**
-    * 全局按 iid 找实体：
-    */
+   // Global entity lookup by id
 
    findEntityAndLevelByIid(iid) {
       if (!iid) return null;
