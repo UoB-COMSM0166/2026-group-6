@@ -6,12 +6,12 @@ let intro;
 let storyIntro;
 let storyStarted = false;
 let storyFinished = false;
+let selectedDifficulty = "easy";
+let demoVideo = null;
 let audioManager;
 let menuUI;
 
-if (typeof UI !== 'undefined' && UI?.setLoadingStyle) {
-   UI.setLoadingStyle();
-}
+UI.setLoadingStyle();
 
 function preload() {
    resources = new ResourceManager();
