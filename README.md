@@ -919,6 +919,8 @@ We used AI to create the game's cover and the opening still animation picture.
 
 Use AI to fill in pixel values when quickly completing the initial layout of controls on pages such as the settings page, so as to reduce the time spent adjusting data such as the relative positions, spacing, and sizes of controls.
 
+Use AI to provide partial ideas for some game logic (e.g. enemy movement logic and physical world implementation logic), and manually implement the code.
+
 # 12. Appendix
 
 ## **Use Case Specification**
