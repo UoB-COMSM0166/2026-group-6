@@ -37,6 +37,7 @@ class MenuUI {
       languagePanel.style.display = 'none';
       this.instructionsMenu?.hide();
 
+<<<<<<< HEAD
       if (page === 'main') {
          mainPanel.style.display = 'flex';
          backBtn.style.display = 'none';
@@ -53,6 +54,63 @@ class MenuUI {
          this.ensureInstructionsMenu();
          this.instructionsMenu?.show();
          backBtn.style.display = 'block';
+=======
+//create menu page
+function _createMenu() {
+   menuDiv = document.createElement('div');
+   menuDiv.id = 'game-menu';
+   menuDiv.style.cssText =
+      'position:fixed; top:50%; left:50%; width:1000px; height:700px;' +
+      'transform:translate(-50%,-50%);' +
+      'display:flex; flex-direction:column; justify-content:center; align-items:center;' +
+      'gap:20px;' +
+      'background-image:linear-gradient(rgba(5,10,30,0.35), rgba(5,10,30,0.35)), url("resources/images/UI_resources/Background_space.png");' +
+      'background-size:cover;' +
+      'background-position:center;' +
+      'background-repeat:no-repeat;' +
+      'z-index:10;';
+
+   //create different buttons
+   const backBtn = document.createElement('button');
+   backBtn.id = 'menu-back-btn';
+   backBtn.textContent = t('menu.back');
+   backBtn.style.cssText =
+      'display:none;' +
+      'position:absolute; top:30px; left:30px;' +
+      'width:180px; height:60px; font-size:30px; font-weight:bold; color:white;' +
+      'font-family:var(--game-font-family), monospace;' +
+      `background-image:url("${BTN_NORMAL}");` +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'background-color:transparent;' +
+      'border:none; cursor:pointer;' +
+      'transition:all 0.2s;' +
+      'z-index:100;';
+
+   backBtn.onmouseenter = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
+   backBtn.onmouseleave = function () {
+      this.style.backgroundImage = `url("${BTN_NORMAL}")`;
+   };
+
+   backBtn.onmousedown = function () {
+      this.style.backgroundImage = `url("${BTN_ACTIVE}")`;
+   };
+
+   backBtn.onmouseup = function () {
+      this.style.backgroundImage = `url("${BTN_HOVER}")`;
+   };
+
+   backBtn.onclick = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+>>>>>>> 0cfc554 (comments)
       }
    }
 
@@ -72,6 +130,7 @@ class MenuUI {
       this.instructionsMenu.attachTo(this.menuDiv);
    }
 
+<<<<<<< HEAD
    refreshLanguage() {
       if (!this.menuRefs) return;
 
@@ -184,6 +243,11 @@ class MenuUI {
          backBtn.style.backgroundImage = `url("${this.BTN_HOVER}")`;
       };
       backBtn.onclick = (e) => {
+=======
+   //start button
+   let btnStart = _makeBtn(t('menu.start'), function (e) {
+      if (e) {
+>>>>>>> 0cfc554 (comments)
          e.preventDefault();
          e.stopPropagation();
          this._playClickSound();
@@ -202,6 +266,7 @@ class MenuUI {
             e.stopPropagation();
          }
 
+<<<<<<< HEAD
          this.resources.sounds.story?.stop();
          this.hideMenu();
          this.setGameManager(new GameManager(this.resources, this.selectedDifficulty));
@@ -232,6 +297,11 @@ class MenuUI {
       btnContinue.style.pointerEvents = 'none';
 
       const btnDifficulty = this._makeBtn(t('menu.difficulty'), (e) => {
+=======
+   //continue button
+   let btnContinue = _makeBtn(t('menu.continue'), function (e) {
+      if (e) {
+>>>>>>> 0cfc554 (comments)
          e.preventDefault();
          e.stopPropagation();
          this._playClickSound();
@@ -452,6 +522,7 @@ class MenuUI {
          this.audioManager.setBgmVolume(parseFloat(e.target.value));
       });
 
+<<<<<<< HEAD
       sfxMuteBtn.onclick = () => {
          if (!this.audioManager) return;
          this.audioManager.toggleSfxMute();
@@ -461,6 +532,12 @@ class MenuUI {
       };
       sfxMuteBtn.onmouseenter = function () { this.style.background = '#32d696'; };
       sfxMuteBtn.onmouseleave = function () { this.style.background = '#1eb47a'; };
+=======
+   //difficulty choose button
+   const btnDifficulty = _makeBtn(t('menu.difficulty'), function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+>>>>>>> 0cfc554 (comments)
 
       sfxSlider.addEventListener('input', (e) => {
          if (!this.audioManager) return;
@@ -500,6 +577,7 @@ class MenuUI {
       bc.style.pointerEvents = 'none';
    }
 
+<<<<<<< HEAD
    hideMenu() {
       if (!this.menuDiv) return;
       this.menuDiv.style.display = 'none';
@@ -512,6 +590,87 @@ class MenuUI {
          if (bc) {
             bc.style.opacity = '1';
             bc.style.pointerEvents = 'auto';
+=======
+   //language choose
+   //少量功能仍为中文，中文需要修正为小字号字体
+   const btnLanguage = _makeBtn(t('menu.language'), function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+      showMenuPage('language');
+   });
+
+   //instruction button
+   const btnInstructions = _makeBtn(t('menu.instructions'), function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+         resources.sounds.click.play();
+      }
+      showMenuPage('instructions');
+   });
+
+   mainPanel.appendChild(btnStart);
+   mainPanel.appendChild(btnContinue);
+   mainPanel.appendChild(btnDifficulty);
+   mainPanel.appendChild(btnAudio);
+   mainPanel.appendChild(btnLanguage);
+   mainPanel.appendChild(btnInstructions);
+   menuDiv.appendChild(mainPanel);
+
+   const difficultyPanel = document.createElement('div');
+   difficultyPanel.id = 'menu-difficulty-panel';
+   difficultyPanel.style.cssText =
+      'display:none;' +
+      'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
+
+   let difficultyTitle = document.createElement('div');
+   difficultyTitle.textContent = t('menu.difficultyTitle');
+   difficultyTitle.style.cssText =
+      'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;font-family:var(--game-font-family), monospace;';
+
+   let difficultyContainer = document.createElement('div');
+   difficultyContainer.style.cssText =
+      'display:flex; gap:20px;';
+
+   //different difficulty levels
+   let btnEasy = _makeDifficultyBtn(t('menu.easy'), 'easy');
+   let btnMedium = _makeDifficultyBtn(t('menu.medium'), 'medium');
+   let btnHard = _makeDifficultyBtn(t('menu.hard'), 'hard');
+   _setActiveDifficultyBtn(btnEasy);
+
+   difficultyContainer.appendChild(btnEasy);
+   difficultyContainer.appendChild(btnMedium);
+   difficultyContainer.appendChild(btnHard);
+   difficultyPanel.appendChild(difficultyTitle);
+   difficultyPanel.appendChild(difficultyContainer);
+   menuDiv.appendChild(difficultyPanel);
+
+   const audioPanel = document.createElement('div');
+   audioPanel.id = 'menu-audio-panel';
+   audioPanel.style.cssText =
+      'display:none;' +
+      'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
+
+   const audioTitle = document.createElement('div');
+   audioTitle.textContent = t('menu.audioTitle');
+   audioTitle.style.cssText =
+      'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;font-family:var(--game-font-family), monospace;';
+
+   instructionsMenu = new InstructionsMenu({
+      buttonImages: {
+         normal: BTN_NORMAL,
+         hover: BTN_HOVER,
+         active: BTN_ACTIVE
+      },
+      onPlayClickSound: function () {
+         if (resources.sounds.click && !resources.sounds.click.isPlaying()) {
+            resources.sounds.click.play();
+>>>>>>> 0cfc554 (comments)
          }
       }
 

@@ -32,6 +32,7 @@ class AudioManager {
     this._setSfxVolume(this.resources.sounds, sfxKeys);
   }
 
+<<<<<<< HEAD
   _getSfxKeys() {
     if (!this.resources?.sounds) return [];
 
@@ -44,6 +45,8 @@ class AudioManager {
     });
   }
 
+=======
+>>>>>>> 0cfc554 (comments)
   _setSfxVolume(soundObj, keys) {
     keys.forEach(key => {
       if (soundObj[key] instanceof p5.SoundFile) {
@@ -61,14 +64,20 @@ class AudioManager {
   // 1. set BGM volume（0-1）
   setBgmVolume(volume) {
     this.state.bgm.volume = Math.max(0, Math.min(1, volume)); // restirct 0-1
+<<<<<<< HEAD
     const appliedVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
     if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(appliedVolume);
     if (this.resources.sounds.story) this.resources.sounds.story.setVolume(appliedVolume);
+=======
+    if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(this.state.bgm.volume);
+    if (this.resources.sounds.story) this.resources.sounds.story.setVolume(this.state.bgm.volume);
+>>>>>>> 0cfc554 (comments)
   }
 
   // 2. set sounds volume（0-2）, 1 is too small to hear
   setSfxVolume(volume) {
     this.state.sfx.volume = Math.max(0, Math.min(2, volume));
+<<<<<<< HEAD
     const sfxKeys = this._getSfxKeys();
     if (this.state.sfx.isMuted) {
       this._setSfxVolumeTo(sfxKeys, 0);
@@ -92,6 +101,11 @@ class AudioManager {
     });
   }
 
+=======
+    this._setSfxVolume(this.resources.sounds, Object.keys(this.resources.sounds));
+  }
+
+>>>>>>> 0cfc554 (comments)
   // mute/unmute BGM
   toggleBgmMute() {
     this.state.bgm.isMuted = !this.state.bgm.isMuted;
@@ -106,12 +120,28 @@ class AudioManager {
   // mute/unmute sounds
   toggleSfxMute() {
     this.state.sfx.isMuted = !this.state.sfx.isMuted;
+<<<<<<< HEAD
     const sfxKeys = this._getSfxKeys();
     if (this.state.sfx.isMuted) {
       this._setSfxVolumeTo(sfxKeys, 0);
     } else {
       this._setSfxVolumeTo(sfxKeys, this.state.sfx.volume);
     }
+=======
+    // silent
+    //修改此处，不静音BGM
+    const muteAllSfx = (obj) => {
+      Object.keys(obj).forEach(key => {
+        //all
+        if (obj[key] instanceof p5.SoundFile) {
+          this.state.sfx.isMuted ? obj[key].setVolume(0) : obj[key].setVolume(1);
+        } else if (typeof obj[key] === 'object') {
+          muteAllSfx(obj[key]);
+        }
+      });
+    };
+    muteAllSfx(this.resources.sounds);
+>>>>>>> 0cfc554 (comments)
   }
 
   // UI show status
