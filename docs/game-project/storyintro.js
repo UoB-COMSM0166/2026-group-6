@@ -2,39 +2,7 @@ class StoryIntro {
    constructor(resources, onFinish) {
       this.resources = resources;
       this.onFinish = onFinish;
-
-      this.slides = [
-         {
-            title: "The Collapse",
-            lines: [
-               "Years of pollution pushed the planet to collapse.",
-               "Cities fell into ruin, and the ecosystem was destroyed.",
-               "The world was no longer suitable for life."
-            ]
-         },
-         {
-            title: "Dormant Civilization",
-            lines: [
-               "Facing extinction, the planet's native civilization made a final decision.",
-               "They entered deep dormancy, waiting for a chance for the world to recover."
-            ]
-         },
-         {
-            title: "The Mission",
-            lines: [
-               "To restore the dying planet, small purification robots were sent from another planet.",
-               "Their mission was to cleanse the pollution and revive the ecosystem."
-            ]
-         },
-         {
-            title: "The Beginning",
-            lines: [
-               "The robot begins its journey.",
-               "Using purification energy, it can cleanse pollution sources.",
-               "But the ruined world still holds many unknown dangers."
-            ]
-         }
-      ];
+      this.slides = getLocalizedStorySlides();
 
       this.currentSlide = 0;
       this.currentLine = 0;
@@ -72,6 +40,15 @@ class StoryIntro {
 
       //new: bgm
       this.bgmPlayed = false;
+
+      onLanguageChanged(() => this.refreshLanguage());
+   }
+
+   refreshLanguage() {
+      this.slides = getLocalizedStorySlides();
+      this.currentSlide = Math.min(this.currentSlide, this.slides.length - 1);
+      this.currentLine = Math.min(this.currentLine, this.slides[this.currentSlide].lines.length - 1);
+      this.currentChar = Math.min(this.currentChar, this.slides[this.currentSlide].lines[this.currentLine].length);
    }
 
    playStoryBgm() {
@@ -87,8 +64,8 @@ class StoryIntro {
    }
 
    stopStoryBgm() {
-      const story = this.resources.sounds.storyBgm;
-      if (story && storyBgm.isPlaying()) {
+      const story = this.resources.sounds.story;
+      if (story && story.isPlaying()) {
          story.stop();
       }
    }
@@ -230,6 +207,7 @@ class StoryIntro {
       let fullLine = slide.lines[this.currentLine];
       let visibleText = fullLine.substring(0, this.currentChar);
       let box = this.textBox;
+      const textOffsetY = getLanguage() === 'zh' ? 30 : 18;
 
       push();
       fill(255);
@@ -242,7 +220,7 @@ class StoryIntro {
       text(
          visibleText,
          box.x + 24,
-         box.y + 18,
+         box.y + textOffsetY,
          box.w - 48,
          box.h - 24
       );
@@ -264,7 +242,7 @@ class StoryIntro {
       textAlign(CENTER, CENTER);
       textStyle(NORMAL);
       textSize(24);
-      text("Skip", b.x + b.w / 2, b.y + b.h / 2 + 1);
+      text(t('story.skip'), b.x + b.w / 2, b.y + b.h / 2 + 1);
       pop();
    }
 

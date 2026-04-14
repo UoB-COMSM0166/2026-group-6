@@ -74,7 +74,7 @@ class GameManager {
          this.camera.reset();
          this.status = "PLAY";
 
-         this.setMapPrompt(ldtk.levels[this.levelIndex].identifier, 3000);
+         this.setMapPrompt(getDisplayAreaLabelForLevel(this.level, { includeZhPrefix: getLanguage() === 'zh' }), 3000);
       }
    }
 
@@ -462,7 +462,7 @@ class GameManager {
 
       if (progress > GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
          if (!resources.sounds.upgrade.isPlaying()) resources.sounds.upgrade.play();
-         this.setMapPrompt("Some things have changed due to purification.", 3000);
+         this.setMapPrompt(t('prompts.environmentChanged'), 3000);
          this.environmentChanged = true;
 
          if (!this.level.toxicConverted) {

@@ -1,3 +1,4 @@
+/* global t, getLanguage */
 // Builds and manages the standalone Instructions view used by the main menu.
 class InstructionsMenu {
    constructor(options) {
@@ -11,6 +12,28 @@ class InstructionsMenu {
       this.operationPageButton = null;
       this.pageIndex = 1;
       this.styleElement = null;
+   }
+
+   refreshLanguage() {
+      if (this.contentButton) {
+         this.contentButton.textContent = t('instructions.tabs.content');
+      }
+      if (this.operationPageButton) {
+         this.operationPageButton.textContent = t('instructions.tabs.controls');
+      }
+      if (!this.panel) return;
+
+      const currentPageIndex = this.pageIndex;
+      this.pages.forEach(page => page.remove());
+      this.pages = [
+         this.createContentPage1(),
+         this.createContentPage2(),
+         this.createControlsPage(),
+         this.createRopeMechanicsPage()
+      ];
+
+      this.pages.forEach(page => this.panel.insertBefore(page, this.operationPageButton));
+      this.showContentPage(currentPageIndex);
    }
 
    attachTo(parent) {
@@ -55,7 +78,36 @@ class InstructionsMenu {
    white-space: normal;
    overflow-wrap: anywhere;
    word-break: break-word;
-   line-height: 1.25;
+   line-height: 1.35;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-control-text,
+html[lang="en"] #menu-instructions-panel .instructions-control-text + * {
+   transform: translateX(-10px);
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-table {
+   font-size: 28px !important;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-control-text {
+   font-size: 34px !important;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-tab {
+   font-size: 34px !important;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-table tbody td:nth-child(2) {
+   padding-left: 12px;
+}
+
+html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
+   text-align: center;
+}
+
+#menu-instructions-panel .instructions-table tbody td:last-child {
+   text-align: left !important;
 }
 `;
       document.head.appendChild(this.styleElement);
@@ -70,13 +122,13 @@ class InstructionsMenu {
 
       this.pages.forEach(page => this.panel.appendChild(page));
 
-      this.contentButton = this.createTabButton('menu-content-btn', 'Content', 'right:40px;', () => {
+      this.contentButton = this.createTabButton('menu-content-btn', t('instructions.tabs.content'), 'right:40px;', () => {
          this.showContentPage(1);
       });
 
       this.operationPageButton = this.createTabButton(
          'menu-operation-page-btn',
-         'Controls',
+         t('instructions.tabs.controls'),
          'left:50%; transform:translateX(-50%);',
          () => {
             this.showContentPage(3);
@@ -154,6 +206,7 @@ class InstructionsMenu {
       this.pages.forEach((page, index) => {
          page.style.display = index + 1 === pageIndex ? 'flex' : 'none';
       });
+      this.loadVisiblePageImages(pageIndex);
 
       if (this.nextPageButton) {
          this.nextPageButton.style.backgroundImage = (pageIndex === 2 || pageIndex === 4)
@@ -165,14 +218,16 @@ class InstructionsMenu {
    createTabButton(id, label, extraPositionCss, onClick) {
       const button = document.createElement('button');
       button.id = id;
+      button.className = 'instructions-tab';
       button.textContent = label;
+      const tabFontSize = getLanguage() === 'zh' ? '34px' : '38px';
       button.style.cssText =
          'position:absolute;' +
          'top:30px;' +
          extraPositionCss +
          'width:200px;' +
          'height:60px;' +
-         'font-size:30px;' +
+         `font-size:${tabFontSize};` +
          'font-weight:bold;' +
          'color:white;' +
          `background-image:url("${this.buttonImages.normal}");` +
@@ -209,11 +264,14 @@ class InstructionsMenu {
 
    createInstructionCard() {
       const wrap = document.createElement('div');
+      const maxWidth = '1080px';
+      const minHeight = '590px';
+      const padding = '24px 26px 28px 26px';
       wrap.style.cssText =
          // Use a fixed card shell so both content tables share the same frame.
          'width:96%;' +
-         'max-width:1080px;' +
-         'min-height:590px;' +
+         `max-width:${maxWidth};` +
+         `min-height:${minHeight};` +
          'display:flex;' +
          'justify-content:center;' +
          'align-items:center;' +
@@ -221,7 +279,7 @@ class InstructionsMenu {
          'background-size:100% 100%;' +
          'background-repeat:no-repeat;' +
          'background-position:center;' +
-         'padding:24px 26px 28px 26px;' +
+         `padding:${padding};` +
          'box-sizing:border-box;';
       return wrap;
    }
@@ -230,50 +288,55 @@ class InstructionsMenu {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:flex; justify-content:center; box-sizing:border-box;';
       const wrap = this.createInstructionCard();
+      const isEnglish = getLanguage() === 'en';
+      const categoryWidth = isEnglish ? '18%' : '14%';
+      const nameWidth = '15%';
+      const imageWidth = '9%';
+      const descriptionWidth = isEnglish ? '58%' : '62%';
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:15%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:61%;">Description</th>
+<th style="${this.thStyle()} width:${categoryWidth};">${t('instructions.headers.category')}</th>
+<th style="${this.thStyle()} width:${nameWidth};">${t('instructions.headers.name')}</th>
+<th style="${this.thStyle()} width:${imageWidth};">${t('instructions.headers.image')}</th>
+<th style="${this.thStyle()} width:${descriptionWidth};">${t('instructions.headers.description')}</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="${this.tdStyle()}">Player</td>
-<td style="${this.tdStyle()}">Robot</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.0.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.0.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentplayer.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The player's image is a white robot with the ability to purify.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.0.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Ability</td>
-<td style="${this.tdStyle()}">Energy Rope</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.1.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.1.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentrope.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The rope can help players purify the pollution and traverse difficult terrain.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.1.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}" rowspan="2">Interactable</td>
-<td style="${this.tdStyle()}">Energy Pillar</td>
+<td style="${this.tdStyle()}" rowspan="2">${t('instructions.contentPage1.2.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.2.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/cleaningenergy.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Players can obtain purification energy here.Each use restores 100 purification energy.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.2.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Button</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.3.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/button.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The button can open the mechanism door.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.3.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Checkpoint</td>
-<td style="${this.tdStyle()}">Respawn Point</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.4.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.4.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/reset.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">The player's resurrection point</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.4.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Objective</td>
-<td style="${this.tdStyle()}">Pollution Source</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.5.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.5.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/pollution_core.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">A pollution core that need to be purified by the players.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage1.5.2')}</td>
 </tr>
 </tbody>
       `));
@@ -285,49 +348,54 @@ class InstructionsMenu {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:none; justify-content:center; box-sizing:border-box;';
       const wrap = this.createInstructionCard();
+      const isEnglish = getLanguage() === 'en';
+      const categoryWidth = isEnglish ? '18%' : '14%';
+      const nameWidth = '15%';
+      const imageWidth = '9%';
+      const descriptionWidth = isEnglish ? '58%' : '62%';
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:15%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:61%;">Description</th>
+<th style="${this.thStyle()} width:${categoryWidth};">${t('instructions.headers.category')}</th>
+<th style="${this.thStyle()} width:${nameWidth};">${t('instructions.headers.name')}</th>
+<th style="${this.thStyle()} width:${imageWidth};">${t('instructions.headers.image')}</th>
+<th style="${this.thStyle()} width:${descriptionWidth};">${t('instructions.headers.description')}</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="${this.tdStyle()}">Enemy</td>
-<td style="${this.tdStyle()}">Monster</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.0.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.0.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentenemy.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">It will attack players and can be purified.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.0.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}" rowspan="2">Gate</td>
-<td style="${this.tdStyle()}">Area Gate</td>
+<td style="${this.tdStyle()}" rowspan="2">${t('instructions.contentPage2.1.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.1.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/door1.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">A gate between areas that opens when the area's purification level reaches 80%.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.1.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Mechanism Door</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.2.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/door2.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">A door inside the area that opens after pressing a button.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.2.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}" rowspan="2">Environment</td>
-<td style="${this.tdStyle()}">Polluted Water</td>
+<td style="${this.tdStyle()}" rowspan="2">${t('instructions.contentPage2.3.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.3.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentpollutedwater.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Deadly polluted water that kills the player on contact.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.3.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Clean Water</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.4.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/contentwater.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Safe water that does not harm the player.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.4.2')}</td>
 </tr>
 <tr>
-<td style="${this.tdStyle()}">Collectible</td>
-<td style="${this.tdStyle()}">Energy Crystal</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.5.0')}</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.5.1')}</td>
 <td style="${this.tdStyle()}"><img src="resources/images/instructions/tools.png" style="${this.imgStyle()}"></td>
-<td style="${this.tdStyle()}">Scattered crystals that restore the player's purification energy.</td>
+<td style="${this.tdStyle()}">${t('instructions.contentPage2.5.2')}</td>
 </tr>
 </tbody>
       `));
@@ -339,27 +407,31 @@ class InstructionsMenu {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:none; justify-content:center;';
       const controlsPanel = document.createElement('div');
+      const maxWidth = '1080px';
+      const minHeight = '590px';
+      const padding = getLanguage() === 'en' ? '52px 18px 24px 14px' : '58px 26px 28px 26px';
       controlsPanel.style.cssText =
          'width:96%;' +
-         'max-width:1080px;' +
-         'min-height:590px;' +
+         `max-width:${maxWidth};` +
+         `min-height:${minHeight};` +
          'display:grid;' +
          'grid-template-columns:repeat(2, minmax(0, 1fr));' +
          'grid-template-rows:repeat(2, auto);' +
-         'column-gap:22px;' +
-         'row-gap:18px;' +
-         'padding:58px 26px 28px 26px;' +
+         `column-gap:${getLanguage() === 'en' ? '12px' : '22px'};` +
+         `row-gap:${getLanguage() === 'en' ? '14px' : '18px'};` +
+         `padding:${padding};` +
          'box-sizing:border-box;' +
          'background-image:url("resources/images/instructions/cardX3.png");' +
          'background-size:100% 100%;' +
          'background-repeat:no-repeat;' +
          'background-position:center;' +
-         'align-content:start;';
+         'align-content:start;' +
+         (getLanguage() === 'en' ? 'margin-left:-12px;' : '');
 
-      controlsPanel.appendChild(this.createControlItem('attackmonster.gif', 'Attack monster'));
-      controlsPanel.appendChild(this.createControlItem('energySup.gif', 'Energy Supply'));
-      controlsPanel.appendChild(this.createControlItem('purifycore.gif', 'Purify pollutioncore'));
-      controlsPanel.appendChild(this.createControlItem('rest.gif', 'Set a save point and restore hp'));
+      controlsPanel.appendChild(this.createControlItem('attackmonster.gif', t('instructions.controlsPage.attackMonster')));
+      controlsPanel.appendChild(this.createControlItem('energySup.gif', t('instructions.controlsPage.energySupply')));
+      controlsPanel.appendChild(this.createControlItem('purifycore.gif', t('instructions.controlsPage.purifyCore')));
+      controlsPanel.appendChild(this.createControlItem('rest.gif', t('instructions.controlsPage.rest')));
 
       page.appendChild(controlsPanel);
       return page;
@@ -369,21 +441,24 @@ class InstructionsMenu {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:none; justify-content:center;';
       const panel = document.createElement('div');
+      const maxWidth = '1080px';
+      const minHeight = '590px';
+      const padding = '24px 26px 28px 26px';
       panel.style.cssText =
          'width:96%;' +
-         'max-width:1080px;' +
-         'min-height:590px;' +
+         `max-width:${maxWidth};` +
+         `min-height:${minHeight};` +
          'display:flex;' +
          'justify-content:center;' +
          'align-items:center;' +
-         'padding:24px 26px 28px 26px;' +
+         `padding:${padding};` +
          'box-sizing:border-box;' +
          'background-image:url("resources/images/instructions/cardX3.png");' +
          'background-size:100% 100%;' +
          'background-repeat:no-repeat;' +
          'background-position:center;';
 
-      const ropeMechanicsItem = this.createControlItem('Ropemechanics.gif', 'Ropemechanics');
+      const ropeMechanicsItem = this.createControlItem('Ropemechanics.gif', t('instructions.controlsPage.ropeMechanics'));
       ropeMechanicsItem.style.cssText += 'width:min(500px, 100%);';
       ropeMechanicsItem.querySelector('img').style.height = '340px';
       panel.appendChild(ropeMechanicsItem);
@@ -402,8 +477,10 @@ class InstructionsMenu {
          'min-height:230px;';
 
       const preview = document.createElement('img');
-      preview.src = `resources/images/instructions/${imageName}`;
+      preview.dataset.src = `resources/images/instructions/${imageName}`;
       preview.alt = label;
+      preview.loading = 'lazy';
+      preview.decoding = 'async';
       preview.style.cssText =
          'width:100%;' +
          'height:185px;' +
@@ -411,10 +488,12 @@ class InstructionsMenu {
          'flex-shrink:0;';
 
       const text = document.createElement('div');
+      text.className = 'instructions-control-text';
       text.textContent = label;
+      const controlTextSize = getLanguage() === 'zh' ? '34px' : '38px';
       text.style.cssText =
          'color:#fff;' +
-         'font-size:30px;' +
+         `font-size:${controlTextSize};` +
          'font-weight:600;' +
          'line-height:1.2;' +
          'text-align:center;' +
@@ -425,27 +504,58 @@ class InstructionsMenu {
       return item;
    }
 
+   loadVisiblePageImages(pageIndex) {
+      const page = this.pages[pageIndex - 1];
+      if (!page) return;
+
+      page.querySelectorAll('img[data-src]').forEach((img) => {
+         if (!img.src) {
+            img.src = img.dataset.src;
+         }
+      });
+   }
+
    createTable(innerHtml) {
       const table = document.createElement('table');
       table.className = 'instructions-table';
+      const tableFontSize = getLanguage() === 'zh' ? '27px' : '42px';
+      const tableLineHeight = getLanguage() === 'en' ? '1.15' : '1.25';
       table.style.cssText =
          'width:94%;' +
          'border-collapse:separate;' +
          'border-spacing:0;' +
          'table-layout:fixed;' +
          'color:white;' +
-         'font-size:25px;' +
+         `font-size:${tableFontSize};` +
+         `line-height:${tableLineHeight};` +
          'margin:0 auto;';
       table.innerHTML = innerHtml;
+      const descriptionFixTargets = new Set([
+         '按钮可以打开机关门。',
+         '按下按钮后开启的区域内部机关门。',
+         '安全的水域，不会伤害玩家。',
+         'The button can open the mechanism door.',
+         'A door inside the area that opens after pressing a button.',
+         'Safe water that does not harm the player.'
+      ]);
+      table.querySelectorAll('tbody td:last-child').forEach((cell) => {
+         const normalized = cell.textContent
+            .replace(/^[\s\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]+/, '')
+            .replace(/[\s\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]+/g, ' ')
+            .trim();
+         if (descriptionFixTargets.has(normalized)) {
+            cell.textContent = normalized;
+         }
+      });
       return table;
    }
 
    thStyle() {
-      return 'border:0;padding:8px 6px;text-align:center;font-weight:bold;';
+      return 'border:0;padding:10px 8px;text-align:center;font-weight:bold;';
    }
 
    tdStyle() {
-      return 'border:0;padding:6px 6px;text-align:left;vertical-align:middle;';
+      return 'border:0;padding:4px 6px;text-align:center;vertical-align:middle;';
    }
 
    imgStyle() {

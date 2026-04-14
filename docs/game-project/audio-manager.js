@@ -1,31 +1,26 @@
 class AudioManager {
   constructor(resources) {
-    this.resources = resources; // Reference to the resource manager
-    
-    // Volume and Mute states
+    this.resources = resources; 
+    //primary status
     this.state = {
-      bgm: { volume: 0.6, isMuted: false },    // BGM (Background Music)
-      sfx: { volume: 0.8, isMuted: false }     // SFX (Sound Effects: clicks, doors, attacks, etc.)
+      bgm: { volume: 0.6, isMuted: false },    
+      sfx: { volume: 1.0, isMuted: false }     
     };
-
-    // Initialization: Bind initial volumes to all audio files
+    //init audiovolumes
     this.initAudioVolumes();
   }
 
-  /**
-   * Initialization: Set initial volumes for all audio resources
-   */
   initAudioVolumes() {
     if (!this.resources?.sounds) return;
 
-    // 1. BGM category sounds (e.g., main bgm, story themes)
+    // BGM
     const bgmSounds = ['bgm', 'story'];
     bgmSounds.forEach(key => {
       const sound = this.resources.sounds[key];
       if (sound) sound.setVolume(this.state.bgm.volume);
     });
 
-    // 2. SFX category (all other sound effects)
+    // Sound Effects
     const sfxKeys = Object.keys(this.resources.sounds).filter(key => {
       return !bgmSounds.includes(key) && 
              (typeof this.resources.sounds[key] === 'object' ? 
@@ -33,15 +28,22 @@ class AudioManager {
                this.resources.sounds[key] instanceof p5.SoundFile);
     });
 
-    // Recursively set SFX volume (handles nested objects like 'enemy' or 'rope')
+    // Batch modification lots of sounds
     this._setSfxVolume(this.resources.sounds, sfxKeys);
   }
 
-  /**
-   * Private helper: Recursively set SFX volumes
-   * @param {Object} soundObj - The sound object/collection
-   * @param {Array} keys - Keys to iterate through
-   */
+  _getSfxKeys() {
+    if (!this.resources?.sounds) return [];
+
+    const bgmSounds = ['bgm', 'story'];
+    return Object.keys(this.resources.sounds).filter(key => {
+      return !bgmSounds.includes(key) &&
+             (typeof this.resources.sounds[key] === 'object' ?
+               Object.keys(this.resources.sounds[key]).length > 0 :
+               this.resources.sounds[key] instanceof p5.SoundFile);
+    });
+  }
+
   _setSfxVolume(soundObj, keys) {
     keys.forEach(key => {
       if (soundObj[key] instanceof p5.SoundFile) {
@@ -56,49 +58,69 @@ class AudioManager {
     });
   }
 
-  /**
-   * 1. Set BGM volume
-   * @param {number} volume - Value between 0 and 1
-   */
+  // 1. set BGM volume（0-1）
   setBgmVolume(volume) {
-    this.state.bgm.volume = Math.max(0, Math.min(1, volume)); // Clamp value between 0-1
+    this.state.bgm.volume = Math.max(0, Math.min(1, volume)); // restirct 0-1
+    const appliedVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
+    if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(appliedVolume);
+    if (this.resources.sounds.story) this.resources.sounds.story.setVolume(appliedVolume);
     if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(this.state.bgm.volume);
     if (this.resources.sounds.story) this.resources.sounds.story.setVolume(this.state.bgm.volume);
   }
 
-  /**
-   * 2. Set SFX volume
-   * @param {number} volume - Value between 0 and 1
-   */
+  // 2. set sounds volume（0-2）, 1 is too small to hear
   setSfxVolume(volume) {
-    this.state.sfx.volume = Math.max(0, Math.min(1, volume));
-    this._setSfxVolume(this.resources.sounds, Object.keys(this.resources.sounds));
+    this.state.sfx.volume = Math.max(0, Math.min(2, volume));
+    const sfxKeys = this._getSfxKeys();
+    if (this.state.sfx.isMuted) {
+      this._setSfxVolumeTo(sfxKeys, 0);
+    } else {
+      this._setSfxVolume(this.resources.sounds, sfxKeys);
+    }
   }
 
-  /**
-   * 3. Toggle BGM Mute/Unmute
-   */
+  _setSfxVolumeTo(keys, volume) {
+    keys.forEach(key => {
+      const target = this.resources.sounds[key];
+      if (target instanceof p5.SoundFile) {
+        target.setVolume(volume);
+      } else if (typeof target === 'object' && target) {
+        Object.keys(target).forEach(subKey => {
+          if (target[subKey] instanceof p5.SoundFile) {
+            target[subKey].setVolume(volume);
+          }
+        });
+      }
+    });
+  }
+
+  // mute/unmute BGM
   toggleBgmMute() {
     this.state.bgm.isMuted = !this.state.bgm.isMuted;
     const targetVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
     
     if (this.resources.sounds.bgm) {
-      this.resources.sounds.bgm.setVolume(targetVolume);
+      this.resources.sounds.bgm.setVolume(this.state.bgm.isMuted ? 0 : this.state.bgm.volume);
     }
     if (this.resources.sounds.story) {
-      this.resources.sounds.story.setVolume(targetVolume);
+      this.resources.sounds.story.setVolume(this.state.bgm.isMuted ? 0 : this.state.bgm.volume);
     }
   }
 
-  /**
-   * 4. Toggle SFX Mute/Unmute
-   */
+  // mute/unmute sounds
   toggleSfxMute() {
     this.state.sfx.isMuted = !this.state.sfx.isMuted;
-    
-    // Traverse all sound effects and toggle mute
+    const sfxKeys = this._getSfxKeys();
+    if (this.state.sfx.isMuted) {
+      this._setSfxVolumeTo(sfxKeys, 0);
+    } else {
+      this._setSfxVolumeTo(sfxKeys, this.state.sfx.volume);
+    }
+    // silent
+    //修改此处，不静音BGM
     const muteAllSfx = (obj) => {
       Object.keys(obj).forEach(key => {
+        //all
         if (obj[key] instanceof p5.SoundFile) {
           // If muted, set volume to 0; otherwise, restore to stored SFX volume
           obj[key].setVolume(this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
@@ -110,10 +132,7 @@ class AudioManager {
     muteAllSfx(this.resources.sounds);
   }
 
-  /**
-   * 5. Get current state (useful for UI synchronization)
-   * @returns {Object} A copy of the current audio state
-   */
+  // UI show status
   getState() {
     return { ...this.state };
   }

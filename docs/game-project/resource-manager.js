@@ -41,8 +41,8 @@ class ResourceManager {
    }
 
    /**
-    * Called within p5.js preload().
-    * All asset loading logic (loadImage, loadJSON, loadSound) is centralized here.
+    * p5.js preload() to use
+    * all loadImage / loadJSON here
     */
    preload() {
       // Data and Fonts
@@ -92,7 +92,7 @@ class ResourceManager {
       }
       this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/sky.png`));
 
-      // --- Enemy Assets ---
+      //enemy monster
       this.images.enemy = this.images.enemy || {};
       this.images.enemy.slime = {
          walk: loadImage('resources/images/enemy/Monster_Slime_Walk-Sheet.png'),
@@ -109,8 +109,10 @@ class ResourceManager {
          death: loadImage('resources/images/enemy/Boss_Death-Sheet.png')
       };
 
-      // --- Map Backgrounds (Parallax) ---
-      // Area 1: Ephemeral_0 to 5 (6 layers)
+      //map background
+      //this.images.parallax = {};
+
+      // Area1: Ephemeral_0..5 (6 layers)
       this.images.parallax.area1 = [];
       for (let i = 0; i <= 5; i++) {
          this.images.parallax.area1.push(
@@ -142,7 +144,7 @@ class ResourceManager {
          );
       }
 
-      // --- Sound Effects (SFX) ---
+      // sounds
       this.sounds.rope = {
          ropeblue: loadSound('resources/audios/sides/bluewhoosh.wav'),
          ropered: loadSound('resources/audios/sides/redwhoosh.wav')
@@ -166,11 +168,12 @@ class ResourceManager {
 
       // --- Background Music (BGM) ---
       this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
+      this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
       this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
 
-      // Boss SFX (Currently disabled/reserved)
-      // this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
-      // this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
+      //Boss
+      this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
+      this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
       // Post-Ending Audio (Currently disabled/reserved)
       // this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
@@ -189,10 +192,10 @@ class ResourceManager {
       return this._loaded;
    }
 
-   /**
-    * Selects the map data based on the chosen difficulty.
-    * @param {string} difficulty - Difficulty levels: "easy", "medium", or "hard".
-    */
+   /**get maps according to different levels
+   * @param {string} difficulty - three levels: easy/medium/hard
+   * @returns {object} 
+   */
    setLdtkData(difficulty = "easy") {
       if (!this.data.ldtk[difficulty]) {
          console.warn(`[ResourceManager] No map found for "${difficulty}" difficulty; falling back to "easy".`);
