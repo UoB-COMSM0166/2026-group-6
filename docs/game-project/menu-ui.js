@@ -94,6 +94,9 @@ class MenuUI {
       this.menuRefs.difficultyTitle.textContent = t('menu.difficultyTitle');
       this.menuRefs.audioTitle.textContent = t('menu.audioTitle');
       this.menuRefs.languageTitle.textContent = t('menu.languageTitle');
+      this._applyMenuTitleSize(this.menuRefs.difficultyTitle);
+      this._applyMenuTitleSize(this.menuRefs.audioTitle);
+      this._applyMenuTitleSize(this.menuRefs.languageTitle);
       this.menuRefs.bgmLabel.textContent = t('menu.background');
       this.menuRefs.sfxLabel.textContent = t('menu.sounds');
       this.menuRefs.btnEasy.textContent = t('menu.easy');
@@ -101,6 +104,17 @@ class MenuUI {
       this.menuRefs.btnHard.textContent = t('menu.hard');
       this.menuRefs.btnEnglish.textContent = t('menu.english');
       this.menuRefs.btnChinese.textContent = t('menu.chinese');
+      this._applyMenuButtonSize(this.menuRefs.btnStart);
+      this._applyMenuButtonSize(this.menuRefs.btnContinue);
+      this._applyMenuButtonSize(this.menuRefs.btnDifficulty);
+      this._applyMenuButtonSize(this.menuRefs.btnAudio);
+      this._applyMenuButtonSize(this.menuRefs.btnLanguage);
+      this._applyMenuButtonSize(this.menuRefs.btnInstructions);
+      this._applyMenuSubButtonSize(this.menuRefs.btnEasy);
+      this._applyMenuSubButtonSize(this.menuRefs.btnMedium);
+      this._applyMenuSubButtonSize(this.menuRefs.btnHard);
+      this._applyMenuSubButtonSize(this.menuRefs.btnEnglish);
+      this._applyMenuSubButtonSize(this.menuRefs.btnChinese);
       this._setInactiveSelectBtn(this.menuRefs.btnEnglish);
       this._setInactiveSelectBtn(this.menuRefs.btnChinese);
       if (getLanguage() === 'zh') this._setActiveSelectBtn(this.menuRefs.btnChinese);
@@ -637,8 +651,9 @@ class MenuUI {
       const btn = document.createElement('button');
       btn.textContent = label;
 
+      const menuFontSize = getLanguage() === 'zh' ? '35px' : '38px';
       btn.style.cssText =
-         'width:320px; height:70px; font-size:35px; font-weight:bold; color:white;' +
+         `width:320px; height:70px; font-size:${menuFontSize}; font-weight:bold; color:white;` +
          'font-family:var(--game-font-family), monospace;' +
          `background-image:url("${this.BTN_NORMAL}");` +
          'background-size:100% 100%;' +
@@ -708,6 +723,24 @@ class MenuUI {
             target.style.setProperty('font-family', family, 'important');
          }).catch(() => { });
       }
+   }
+
+   _applyMenuTitleSize(target) {
+      if (!target) return;
+      const size = getLanguage() === 'zh' ? '36px' : '44px';
+      target.style.setProperty('font-size', size, 'important');
+   }
+
+   _applyMenuButtonSize(target) {
+      if (!target) return;
+      const size = getLanguage() === 'zh' ? '35px' : '38px';
+      target.style.setProperty('font-size', size, 'important');
+   }
+
+   _applyMenuSubButtonSize(target) {
+      if (!target) return;
+      const size = getLanguage() === 'zh' ? '30px' : '34px';
+      target.style.setProperty('font-size', size, 'important');
    }
 
    replayStoryPreview() {
