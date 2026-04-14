@@ -7,7 +7,7 @@ let zhFontLoaded = false;
 let zhFontLoadPromise = null;
 let playerFloatingTextPatched = false;
 let globalTextPatched = false;
-const ZH_CANVAS_TEXT_SCALE = 0.85;
+const ZH_CANVAS_TEXT_SCALE = 0.8;
 const EN_CANVAS_TEXT_SCALE = 1.0;
 const EN_DOM_TEXT_SCALE = 1.0;
 
@@ -506,6 +506,8 @@ function getDomTextScale() {
 }
 
 function applyGameTextFont(resources) {
+   ensureRuntimeLocalizationPatches();
+
    if (currentLanguage === 'zh') {
       ensureLanguageFontFaces();
       if (!zhFontLoaded && document.fonts?.check('12px "Nightgazer12"')) {
@@ -683,18 +685,64 @@ function formatDisplayPromptText(content) {
    const trimmed = content.trim();
    const areaMatch = trimmed.match(/^Area(\d+)[_\-]([A-Za-z0-9]+)$/i);
    if (areaMatch) {
-      return `${areaMatch[1]}-${areaMatch[2]}`;
+      const areaLabel = `${areaMatch[1]}-${areaMatch[2]}`;
+      return currentLanguage === 'zh' ? `区域${areaLabel}` : areaLabel;
    }
 
    const areaLooseMatch = trimmed.match(/^Area(.+)$/i);
    if (areaLooseMatch) {
-      return areaLooseMatch[1].replace(/_/g, '-');
+      const areaLabel = areaLooseMatch[1].replace(/_/g, '-');
+      return currentLanguage === 'zh' ? `区域${areaLabel}` : areaLabel;
    }
 
    return trimmed.replace(/_/g, '-');
 }
 
+function getDisplayAreaLabelForLevel(level, options = {}) {
+   const { includeZhPrefix = false } = options;
+
+   if (!level) return '';
+
+   const areaNumber = String(level.areaNumber ?? '').trim();
+   if (areaNumber === '5') {
+      return t('hud.total');
+   }
+
+   const ldtkLevels = level?.ldtkData?.levels;
+   const currentLevelIndex = level?.levelIndex;
+   if (!Array.isArray(ldtkLevels) || typeof currentLevelIndex !== 'number') {
+      return areaNumber;
+   }
+
+   const levelsInArea = ldtkLevels
+      .map((ldtkLevel, index) => ({ ldtkLevel, index }))
+      .filter(({ ldtkLevel }) => {
+         const areaField = ldtkLevel.fieldInstances?.find((field) => field.__identifier === 'areaNumber');
+         return String(areaField?.__value ?? '').trim() === areaNumber;
+      });
+
+   const displayIndex = levelsInArea.findIndex(({ index }) => index === currentLevelIndex);
+   if (displayIndex === -1) {
+      return areaNumber;
+   }
+
+   const label = `${areaNumber}-${displayIndex + 1}`;
+   return currentLanguage === 'zh' && includeZhPrefix ? `区域${label}` : label;
+}
+
 function ensureRuntimeLocalizationPatches() {
+   if (!globalTextPatched && typeof globalThis?.textSize === 'function') {
+      const originalTextSize = globalThis.textSize;
+      globalThis.textSize = function (size) {
+         if (typeof size === 'number') {
+            return originalTextSize.call(this, size * getCanvasTextScale());
+         }
+         return originalTextSize.apply(this, arguments);
+      };
+
+      globalTextPatched = true;
+   }
+
    if (!playerFloatingTextPatched && typeof Player !== 'undefined' && Player?.prototype?.addFloatingText) {
       const originalAddFloatingText = Player.prototype.addFloatingText;
       Player.prototype.addFloatingText = function (content, col, fontSize, duration) {

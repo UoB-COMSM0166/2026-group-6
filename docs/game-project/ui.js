@@ -71,9 +71,8 @@ class UI {
 
       // 获取当前 Area 的百分比进度（0 到 100）
       let progress = gm.getAreaProgress();
-      let areaNumber = level.areaNumber;
-      if (areaNumber === "5") areaNumber = t('hud.total');
-      const areaText = t('hud.areaPurified', { area: areaNumber, progress });
+      let areaLabel = getDisplayAreaLabelForLevel(level) || level.areaNumber;
+      const areaText = t('hud.areaPurified', { area: areaLabel, progress });
 
       fill("rgba(29, 11, 29, 0.45)");
       text(areaText, width / 2 + 2, 22);

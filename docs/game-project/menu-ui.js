@@ -15,6 +15,7 @@ class MenuUI {
       this.currentMenuPage = 'main';
       this.menuDiv = null;
       this.demoVideo = null;
+      this.demoVideoPlayToken = 0;
       this.instructionsMenu = null;
       this.selectedDifficulty = 'easy';
 
@@ -530,17 +531,20 @@ class MenuUI {
    }
 
    playDemoVideo() {
-      this.demoVideo = document.createElement('video');
-      this.demoVideo.src = 'resources/videos/helpvideo.mp4';
-      this.demoVideo.controls = false;
-      this.demoVideo.muted = true;
-      this.demoVideo.playsInline = true;
+      const video = document.createElement('video');
+      const playToken = ++this.demoVideoPlayToken;
 
-      this.demoVideo.style.cssText =
+      this.demoVideo = video;
+      video.src = 'resources/videos/helpvideo.mp4';
+      video.controls = false;
+      video.muted = true;
+      video.playsInline = true;
+
+      video.style.cssText =
          'position:absolute; top:50%; left:50%; width:1000px; height:700px;' +
          'transform:translate(-50%, -50%); z-index:10; background:black; object-fit:contain; cursor:pointer;';
 
-      document.body.appendChild(this.demoVideo);
+      document.body.appendChild(video);
 
       this.intro.page = 1;
       this.intro.showFx(1);
@@ -549,8 +553,8 @@ class MenuUI {
       if (this.intro.leftCanvas) this.intro.leftCanvas.style.zIndex = '20';
       if (this.intro.rightCanvas) this.intro.rightCanvas.style.zIndex = '20';
 
-      this.demoVideo.onended = () => this.endDemoVideo();
-      this.demoVideo.onclick = () => this.endDemoVideo();
+      video.onended = () => this.endDemoVideo();
+      video.onclick = () => this.endDemoVideo();
 
       const beginBGM = this.resources.sounds.begin;
       if (beginBGM) {
@@ -561,9 +565,13 @@ class MenuUI {
          beginBGM.play();
       }
 
-      const playPromise = this.demoVideo.play();
+      const playPromise = video.play();
       if (playPromise !== undefined) {
          playPromise.catch((e) => {
+            if (e?.name === 'AbortError' || this.demoVideo !== video || this.demoVideoPlayToken !== playToken) {
+               return;
+            }
+
             console.error('视频播放失败，原因：', e);
             this.endDemoVideo();
          });
@@ -572,11 +580,17 @@ class MenuUI {
 
    endDemoVideo() {
       this.resources.sounds.begin?.stop();
+      this.demoVideoPlayToken++;
 
       if (!this.demoVideo) return;
 
-      this.demoVideo.pause();
-      this.demoVideo.remove();
+      const video = this.demoVideo;
+      video.onended = null;
+      video.onclick = null;
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+      video.remove();
       this.demoVideo = null;
 
       if (!this.menuDiv) {

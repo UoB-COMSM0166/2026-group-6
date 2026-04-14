@@ -74,7 +74,7 @@ class GameManager {
          this.camera.reset();
          this.status = "PLAY";
 
-         this.setMapPrompt(ldtk.levels[this.levelIndex].identifier, 3000);
+         this.setMapPrompt(getDisplayAreaLabelForLevel(this.level, { includeZhPrefix: getLanguage() === 'zh' }), 3000);
       }
    }
 
