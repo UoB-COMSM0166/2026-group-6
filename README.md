@@ -20,8 +20,6 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 </div>
 
 
-VIDEO. Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
-
 
 
 <table>
@@ -421,7 +419,7 @@ $$
 The game also offers two different types of ropes: soft ropes and hard ropes. Therefore, in the design process we needed to ensure that the physical system of the rope and the collision system would not conflict with each other. If the positions of the players are independently modified by the two systems, it may cause the character movement to be jittery or unstable. Therefore we have clearly designed the update sequence. First of all, the rope constraint will adjust the player's position. Then, collision detection is carried out, and finally, the player's position is restricted based on the length of the rope. By following this sequence, it is possible to prevent mutual interference between the two systems, ensuring that both the rope system and the platform collision system operate stably.
 
 <p align="center">
-  <img src="resources/images/challenge2.png" alt="challenge2" width="600"/>
+  <img src="resources/gifs/figure10.gif" width="500">
 </p>
 <p align="center">
   <b>Figure 10.</b> Rope anchored to geometry
@@ -831,8 +829,6 @@ On the other hand, **white-box testing** focuses on verifying the internal logic
 In terms of tools, we primarily use **VS Code** to run p5.js-based project code, and combine this with testing tools such as **Jest** and **Cypress** to perform supplementary verification of certain features. By combining black-box testing with white-box testing, we are able to ensure both a natural gaming experience and the correctness of the underlying logic, thereby enhancing software quality.
 
 # 7. Process 
-
-- 15% ~750 words
 
 - Teamwork. How did you work together, what tools and methods did you use? Did you define team roles? Reflection on how you worked together. Be honest, we want to hear about what didn't work as well as what did work, and importantly how your team adapted throughout the project.
 
