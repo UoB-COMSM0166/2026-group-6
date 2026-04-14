@@ -69,8 +69,9 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 - [8. Sustainability](#8-sustainability)
 - [9. Conclusion](#9-conclusion)
 - [10. Contribution Statement](#10-contribution-statement)
-- [11. Appendix](#11-appendix)
-- [12.References](#12-references)
+- [11. AI statement](#11-ai-statement)
+- [12. Appendix](#12-appendix)
+- [13. References](#13-references)
 
 ## 1. Introduction
 
@@ -904,7 +905,10 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 - Provide a table of everyone's contribution, which *may* be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Please let us know as soon as possible if there are any issues with teamwork as soon as they are apparent and we will do our best to help your team work harmoniously together.
 
-# 11. Appendix
+# 11. AI statement
+
+
+# 12. Appendix
 
 ## **Use Case Specification**
 
@@ -1010,7 +1014,7 @@ The player attempts to purify pollution target.
 - The world’s purification progress is updated.
 
 
- # 12. References
+ # 13. References
 
 Alexander, I. F. (2005). *A taxonomy of stakeholders: Human roles in system development*. International Journal of Technology and Human Interaction, 1(1), 23–59.
 
