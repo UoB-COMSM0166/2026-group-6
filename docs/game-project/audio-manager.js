@@ -64,8 +64,11 @@ class AudioManager {
     const appliedVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
     if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(appliedVolume);
     if (this.resources.sounds.story) this.resources.sounds.story.setVolume(appliedVolume);
+<<<<<<< HEAD
     if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(this.state.bgm.volume);
     if (this.resources.sounds.story) this.resources.sounds.story.setVolume(this.state.bgm.volume);
+=======
+>>>>>>> b531474 (saveallnewchanges)
   }
 
   // 2. set sounds volume（0-2）, 1 is too small to hear
@@ -114,6 +117,7 @@ class AudioManager {
     } else {
       this._setSfxVolumeTo(sfxKeys, this.state.sfx.volume);
     }
+<<<<<<< HEAD
     // silent
     //修改此处，不静音BGM
     const muteAllSfx = (obj) => {
@@ -127,6 +131,8 @@ class AudioManager {
       });
     };
     muteAllSfx(this.resources.sounds);
+=======
+>>>>>>> b531474 (saveallnewchanges)
   }
 
   // UI show status

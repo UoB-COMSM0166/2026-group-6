@@ -76,11 +76,14 @@ class MenuUI {
       if (!this.menuRefs) return;
 
       this.menuRefs.backBtn.textContent = t('menu.back');
+<<<<<<< HEAD
       this.menuRefs.backBtn.style.setProperty(
          'font-size',
          getLanguage() === 'zh' ? '30px' : '34px',
          'important'
       );
+=======
+>>>>>>> b531474 (saveallnewchanges)
       this.menuRefs.storyReviewLabel.textContent = t('menu.storyReview');
       this._applyStoryReviewLabelFont();
       this.menuRefs.storyReviewLabel.style.setProperty(
@@ -88,12 +91,15 @@ class MenuUI {
          getLanguage() === 'zh' ? '19px' : '22px',
          'important'
       );
+<<<<<<< HEAD
       this.menuRefs.storyReviewBtn.style.setProperty(
          'font-size',
          getLanguage() === 'zh' ? '38px' : '44px',
          'important'
       );
       this.menuRefs.storyReviewBtn.style.setProperty('font-weight', '900', 'important');
+=======
+>>>>>>> b531474 (saveallnewchanges)
       this.menuRefs.storyReviewBtn.title = t('menu.storyReview');
       this.menuRefs.storyReviewBtn.setAttribute('aria-label', t('menu.storyReview'));
       this.menuRefs.btnStart.textContent = t('menu.start');
@@ -369,7 +375,11 @@ class MenuUI {
       storyReviewBtn.title = t('menu.storyReview');
       storyReviewBtn.setAttribute('aria-label', t('menu.storyReview'));
       storyReviewBtn.style.cssText =
+<<<<<<< HEAD
          'width:120px; height:60px; min-height:60px; padding:0; line-height:60px; font-size:38px; font-weight:900; color:white;' +
+=======
+         'width:120px; height:60px; min-height:60px; padding:0; line-height:60px; font-size:32px; font-weight:bold; color:white;' +
+>>>>>>> b531474 (saveallnewchanges)
          'font-family:var(--game-font-family), monospace;' +
          `background-image:url("${this.BTN_NORMAL}");` +
          'background-size:100% 100%;' +
@@ -737,6 +747,7 @@ class MenuUI {
       }
    }
 
+<<<<<<< HEAD
    _applyMenuTitleSize(target) {
       if (!target) return;
       const size = getLanguage() === 'zh' ? '36px' : '44px';
@@ -755,6 +766,8 @@ class MenuUI {
       target.style.setProperty('font-size', size, 'important');
    }
 
+=======
+>>>>>>> b531474 (saveallnewchanges)
    replayStoryPreview() {
       if (typeof storyIntro === 'undefined' || !storyIntro) return;
 
