@@ -140,6 +140,11 @@ function keyPressed() {
    if (appState === "PLAYING") {
       if (keyCode === ESCAPE) { menuUI?.showMenu(); return; }
       if (gm) gm.onKeyPressed(key);
+      if (key === 'H' || key === 'h') {
+         menuUI?.showMenu();
+         menuUI?.showMenuPage('instructions');
+         return;
+      }
    }
 }
 

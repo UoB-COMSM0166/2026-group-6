@@ -368,10 +368,7 @@ class GameManager {
    onKeyPressed(key) {
       if (this.status === "PLAY") {
          if (key === ' ' || key === 'ArrowUp' || key === 'w' || key === 'W') this.player.jump();
-         if (key === 'H' || key === 'h') {
-            if (intro.sidePanelsVisible) intro.hideSidePanels();
-            else intro.showSidePanels();
-         }
+         
          if (key === 'C' || key === 'c') {
             this.player.resourcePanel.toggle();
          }
@@ -480,6 +477,7 @@ class GameManager {
          this.environmentChanged = false;
       }
    }
+
    _checkTransition() {
       let result = this.level.checkEdgeTransition(this.player);
       if (!result) return;

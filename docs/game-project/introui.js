@@ -15,7 +15,7 @@ class introUI {
       this.particleCount = 150;
       this.initParticles();
 
-      // 侧边栏 canvas
+      // side panel canvas
       this.leftCanvas = null;
       this.rightCanvas = null;
       this.leftCtx = null;
@@ -27,14 +27,13 @@ class introUI {
       this.panelGap = 24;
    }
 
-   // 侧边栏
    createSidePanels() {
       if (this.sidePanelsCreated) return;
 
       let pw = this.panelWidth;
       let ph = this.panelHeight;
 
-      // 左侧面板
+      // left panel
       this.leftCanvas = document.createElement('canvas');
       this.leftCanvas.width = pw;
       this.leftCanvas.height = ph;
@@ -47,7 +46,7 @@ class introUI {
       document.body.appendChild(this.leftCanvas);
       this.leftCtx = this.leftCanvas.getContext('2d');
 
-      // 右侧面板
+      // right panel
       this.rightCanvas = document.createElement('canvas');
       this.rightCanvas.width = pw;
       this.rightCanvas.height = ph;
@@ -63,7 +62,6 @@ class introUI {
       this.sidePanelsCreated = true;
    }
 
-   //新增一层画布
    createFxCanvas() {
       if (this.fxCreated) return;
 
@@ -121,12 +119,9 @@ class introUI {
          h: this.panelHeight
       };
 
-      // ========== 新增：先绘制背景像素粒子 ==========
       this._drawBackgroundPixelParticles(ctx, a);
-      // ========== 新增：绘制面板像素化发光边框 ==========
       this._drawPixelGlowBorder(ctx, leftPanel, a, 'left');
       this._drawPixelGlowBorder(ctx, rightPanel, a, 'right');
-      // ===============================================
 
       this._drawFxStars(ctx, a, main);
       //Left
@@ -239,18 +234,17 @@ class introUI {
       ctx.restore();
    }
 
-   // ========== 新增：初始化背景像素粒子 ==========
    initParticles() {
       this.pixelParticles = [];
       for (let i = 0; i < this.particleCount; i++) {
          this.pixelParticles.push({
-            x: Math.random() * this.fxW,       // 随机X坐标
-            y: Math.random() * this.fxH,       // 随机Y坐标
-            size: Math.random() > 0.8 ? 2 : 1, // 粒子大小（1/2像素）
-            alpha: Math.random() * 0.5 + 0.1,  // 初始透明度
-            speedX: (Math.random() - 0.5) * 0.2, // 移动速度X
-            speedY: (Math.random() - 0.5) * 0.2, // 移动速度Y
-            pulseSpeed: Math.random() * 0.01 + 0.005 // 呼吸闪烁速度
+            x: Math.random() * this.fxW,
+            y: Math.random() * this.fxH,
+            size: Math.random() > 0.8 ? 2 : 1,
+            alpha: Math.random() * 0.5 + 0.1,
+            speedX: (Math.random() - 0.5) * 0.2,
+            speedY: (Math.random() - 0.5) * 0.2,
+            pulseSpeed: Math.random() * 0.01 + 0.005
          });
       }
    }
@@ -511,16 +505,16 @@ class introUI {
       let a = alpha;
       ctx.clearRect(0, 0, w, h);
 
-      // 背景
+      // background
       ctx.fillStyle = `rgba(8, 14, 28, ${0.62 * a})`;
       ctx.beginPath();
       this._roundRect(ctx, 0, 0, w, h, 18);
       ctx.fill();
-      //效果
+      // effect
       this._drawPanelAccent(ctx, w, h, a, 'right');
       this._drawPanelFx(ctx, w, h, a, 'right');
 
-      /// 外发光细边
+      /// outer glow edge
       ctx.save();
       ctx.shadowBlur = 14;
       ctx.shadowColor = `rgba(80,220,255,${0.20 * a})`;
@@ -531,21 +525,21 @@ class introUI {
       ctx.stroke();
       ctx.restore();
 
-      // 内边框
+      // inner border
       ctx.strokeStyle = `rgba(255,255,255,${0.62 * a})`;
       ctx.lineWidth = 1;
       ctx.beginPath();
       this._roundRect(ctx, 6, 6, w - 12, h - 12, 15);
       ctx.stroke();
 
-      // 标题
+      // title
       ctx.fillStyle = `rgba(255, 255, 255, ${a})`;
       ctx.font = 'bold 22px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(t('introPanels.ropeTitle'), w / 2, 40);
 
-      // 分隔线
+      // seperator line
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 * a})`;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -553,22 +547,22 @@ class introUI {
       ctx.lineTo(w - 30, 65);
       ctx.stroke();
 
-      // 鼠标说明区域
+      // mouse
       let mouseY = 120;
       this._drawMouseIconCtx(ctx, w / 2, mouseY, 40, 52, a);
 
-      // LMB / RMB 标签
+      // LMB / RMB
       ctx.font = '14px sans-serif';
       ctx.textAlign = 'center';
 
-      // 左键标注
+      // left click
       ctx.fillStyle = `rgba(0, 255, 255, ${a})`;
       ctx.fillText('LMB', w / 2 - 50, mouseY - 10);
       ctx.font = '12px sans-serif';
       ctx.fillStyle = `rgba(200, 220, 255, ${a})`;
       ctx.fillText(t('introPanels.cyanRope'), w / 2 - 50, mouseY + 8);
 
-      // 右键标注
+      // right click
       ctx.font = '14px sans-serif';
       ctx.fillStyle = `rgba(255, 100, 100, ${a})`;
       ctx.fillText('RMB', w / 2 + 50, mouseY - 10);
@@ -576,7 +570,7 @@ class introUI {
       ctx.fillStyle = `rgba(255, 200, 200, ${a})`;
       ctx.fillText(t('introPanels.redRope'), w / 2 + 50, mouseY + 8);
 
-      // 绳索按键
+      // rope keys
       let listStartY = 200;
       let rowH = 55;
       let keyX = w / 2 + 40;
@@ -587,7 +581,7 @@ class introUI {
          { key: 'Q', desc: t('introPanels.shortenRope') },
       ];
 
-      // 小标题
+      // small title
       ctx.fillStyle = `rgba(200, 220, 255, ${a})`;
       ctx.font = 'bold 16px sans-serif';
       ctx.textAlign = 'center';
@@ -606,7 +600,7 @@ class introUI {
          ctx.fillText(item.desc, descX, y);
       }
 
-      // 额外提示区
+      // other instruction
       let tipY = listStartY + 20 + ropeKeys.length * rowH + 30;
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * a})`;
       ctx.lineWidth = 1;
@@ -628,8 +622,6 @@ class introUI {
       }
    }
 
-   // Canvas 2D 绘制辅助
-
    _roundRect(ctx, x, y, w, h, r) {
       ctx.moveTo(x + r, y);
       ctx.lineTo(x + w - r, y);
@@ -645,7 +637,7 @@ class introUI {
 
    _drawKeyCtx(ctx, label, x, y, w, h, alpha) {
       let a = alpha;
-      // 按键背景
+      // background
       ctx.fillStyle = `rgba(40, 40, 50, ${a})`;
       ctx.strokeStyle = `rgba(255, 255, 255, ${a})`;
       ctx.lineWidth = 2;
@@ -654,7 +646,7 @@ class introUI {
       ctx.fill();
       ctx.stroke();
 
-      // 文字
+      // text
       ctx.fillStyle = `rgba(255, 255, 255, ${a})`;
       ctx.font = 'bold 16px sans-serif';
       ctx.textAlign = 'center';
@@ -665,7 +657,6 @@ class introUI {
    _drawMouseIconCtx(ctx, x, y, w, h, alpha) {
       let a = alpha;
 
-      // 椭圆外框
       ctx.fillStyle = `rgba(40, 40, 50, ${a})`;
       ctx.strokeStyle = `rgba(255, 255, 255, ${a})`;
       ctx.lineWidth = 2;
@@ -674,7 +665,7 @@ class introUI {
       ctx.fill();
       ctx.stroke();
 
-      // 水平分割线
+      // seperator line
       let lineY = y - h * 0.1;
       ctx.strokeStyle = `rgba(255, 255, 255, ${a})`;
       ctx.lineWidth = 1.5;
@@ -683,13 +674,12 @@ class introUI {
       ctx.lineTo(x + w / 2 - 4, lineY);
       ctx.stroke();
 
-      // 垂直线（滚轮）
       ctx.beginPath();
       ctx.moveTo(x, y - h / 2 + 4);
       ctx.lineTo(x, lineY - 2);
       ctx.stroke();
 
-      // 左键高亮
+      // left click highlight
       ctx.fillStyle = `rgba(0, 255, 255, ${0.4 * a})`;
       ctx.beginPath();
       ctx.moveTo(x, lineY);
@@ -697,7 +687,7 @@ class introUI {
       ctx.closePath();
       ctx.fill();
 
-      // 右键高亮
+      // right click highlight
       ctx.fillStyle = `rgba(255, 100, 100, ${0.4 * a})`;
       ctx.beginPath();
       ctx.moveTo(x, lineY);
@@ -709,7 +699,6 @@ class introUI {
    _drawGlowSquare(ctx, x, y, size, alpha, dir = 'right') {
       const a = alpha;
 
-      //拖尾效果
       for (let i = 3; i >= 1; i--) {
          let tailAlpha = 0.04 * i * a;
          ctx.fillStyle = `rgba(80, 220, 255, ${tailAlpha})`;
@@ -749,7 +738,6 @@ class introUI {
    _drawPanelAccent(ctx, w, h, alpha, side = 'left') {
       const a = alpha;
 
-      // 1. 外侧窄渐变带
       const bandW = 14;
       let grad;
 
@@ -761,8 +749,8 @@ class introUI {
          ctx.fillStyle = grad;
          ctx.fillRect(0, 0, bandW, h);
 
-         this._drawCornerL(ctx, 8, 14, a, false);      // 左上
-         this._drawCornerL(ctx, 8, h - 54, a, false);  // 左下
+         this._drawCornerL(ctx, 8, 14, a, false);
+         this._drawCornerL(ctx, 8, h - 54, a, false);
       } else {
          grad = ctx.createLinearGradient(w, 0, w - bandW, 0);
          grad.addColorStop(0.0, `rgba(80,220,255,${0.18 * a})`);
@@ -771,8 +759,8 @@ class introUI {
          ctx.fillStyle = grad;
          ctx.fillRect(w - bandW, 0, bandW, h);
 
-         this._drawCornerL(ctx, w - 8, 14, a, true);      // 右上
-         this._drawCornerL(ctx, w - 8, h - 54, a, true);  // 右下
+         this._drawCornerL(ctx, w - 8, 14, a, true);
+         this._drawCornerL(ctx, w - 8, h - 54, a, true);
       }
    }
 

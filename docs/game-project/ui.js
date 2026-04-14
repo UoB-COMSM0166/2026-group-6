@@ -69,7 +69,6 @@ class UI {
       textAlign(CENTER, TOP);
       textSize(35);
 
-      // 获取当前 Area 的百分比进度（0 到 100）
       let progress = gm.getAreaProgress();
       let areaLabel = getDisplayAreaLabelForLevel(level) || level.areaNumber;
       const areaText = t('hud.areaPurified', { area: areaLabel, progress });
@@ -139,7 +138,7 @@ class UI {
 
       textAlign(CENTER, CENTER); textSize(20);
 
-      // 左键
+      // left click
       strokeWeight(player.currentRope.includes(player.ropeL) ? 5 : 2);
       if (lActive) { fill(100); stroke(150); }
       else { fill(0, 200, 200, 200); stroke(0, 255, 255); }
@@ -157,7 +156,7 @@ class UI {
       fill(255); noStroke();
       text("LMB", cx - bw / 2 - gap / 2, by + bh / 2);
 
-      // 右键
+      // right click
       strokeWeight(player.currentRope.includes(player.ropeR) ? 5 : 2);
       if (rActive) { fill(100); stroke(150); }
       else { fill(200, 50, 50, 200); stroke(255, 100, 100); }
@@ -187,8 +186,8 @@ class UI {
       prompt = formatDisplayPromptText(prompt);
       prompt = localizeMapPromptContent(prompt);
 
-      let fadeIn = 700;    // 0.7秒
-      let fadeOut = 800;   // 0.8秒
+      let fadeIn = 700;    // 0.7s
+      let fadeOut = 800;   // 0.8s
       let remaining = duration - elapsed;
 
       let alpha;
@@ -230,13 +229,13 @@ class UI {
       const boxH = lineH * lines.length + paddingY;
       const boxCenterY = yPos + boxH / 2;
 
-      // 半透明黑色背景
+      // background
       noStroke();
       fill(0, 0, 0, alpha * 0.8);
       rectMode(CENTER);
       rect(width / 2, boxCenterY, boxW, boxH, 8);
 
-      // 白色文字
+      // texy
       fill(255, 255, 255, alpha);
       for (let i = 0; i < lines.length; i++) {
          let ly = yPos + paddingY / 2 + lineH * i + lineH / 2;
