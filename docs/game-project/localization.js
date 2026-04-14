@@ -7,8 +7,6 @@ let zhFontLoaded = false;
 let zhFontLoadPromise = null;
 let playerFloatingTextPatched = false;
 let globalTextPatched = false;
-let globalTextSizePatched = false;
-let globalTextLeadingPatched = false;
 const ZH_CANVAS_TEXT_SCALE = 0.85;
 const EN_CANVAS_TEXT_SCALE = 1.0;
 const EN_DOM_TEXT_SCALE = 1.0;
@@ -30,7 +28,7 @@ const TRANSLATIONS = {
          difficultyTitle: 'Choose Difficulty',
          audioTitle: 'Audio Settings',
          languageTitle: 'Choose Language',
-         background: 'Background',
+         background: 'BGM',
          sounds: 'Sounds',
          easy: 'Easy',
          medium: 'Medium',
@@ -356,8 +354,8 @@ const TRANSLATIONS = {
          contentPage1: [
             ['玩家', '机器人', '玩家操控的是一台拥有净化能力的白色机器人。'],
             ['能力', '能量绳索', '绳索可以帮助玩家净化污染并穿越复杂地形。'],
-            ['可互动', '能量柱', '玩家可在此补充净化能量，每次恢复 100 点。'],
-            ['可互动', '按钮', '按钮可以打开机关门。'],
+            ['交互', '能量柱', '玩家可在此补充净化能量，每次恢复 100 点。'],
+            ['交互', '按钮', '按钮可以打开机关门。'],
             ['检查点', '复活点', '玩家死亡后会从这里重新开始。'],
             ['目标', '污染核心', '需要由玩家净化的污染核心。']
          ],
@@ -710,39 +708,6 @@ function ensureRuntimeLocalizationPatches() {
       };
 
       playerFloatingTextPatched = true;
-   }
-
-   if (!globalTextPatched && typeof globalThis.text === 'function') {
-      const originalText = globalThis.text;
-      globalThis.text = function (...args) {
-         if (args.length > 0) {
-            args[0] = localizeDrawnTextContent(args[0]);
-         }
-         return originalText.apply(this, args);
-      };
-      globalTextPatched = true;
-   }
-
-   if (!globalTextSizePatched && typeof globalThis.textSize === 'function') {
-      const originalTextSize = globalThis.textSize;
-      globalThis.textSize = function (size) {
-         if (typeof size === 'number') {
-            return originalTextSize.call(this, size * getCanvasTextScale());
-         }
-         return originalTextSize.call(this, size);
-      };
-      globalTextSizePatched = true;
-   }
-
-   if (!globalTextLeadingPatched && typeof globalThis.textLeading === 'function') {
-      const originalTextLeading = globalThis.textLeading;
-      globalThis.textLeading = function (leading) {
-         if (typeof leading === 'number') {
-            return originalTextLeading.call(this, leading * getCanvasTextScale());
-         }
-         return originalTextLeading.call(this, leading);
-      };
-      globalTextLeadingPatched = true;
    }
 }
 

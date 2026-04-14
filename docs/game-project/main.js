@@ -119,7 +119,7 @@ function mousePressed() {
    }
 
    if (!storyFinished) {
-      storyIntro.handleMousePressed();
+      if (storyIntro) storyIntro.handleMousePressed();
       return false;
    }
 

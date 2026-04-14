@@ -1,0 +1,119 @@
+ 686   3    if (typeof content !== 'string') return content;
+ 687   3 
+ 688   3    const trimmed = content.trim();
+ 689   3    const areaMatch = trimmed.match(/^Area(\d+)[_\-]([A-Za-z0-9]+)$/i);
+ 690   4    if (areaMatch) {
+ 691   4       return `${areaMatch[1]}-${areaMatch[2]}`;
+ 692   3    }
+ 693   3 
+ 694   3    const areaLooseMatch = trimmed.match(/^Area(.+)$/i);
+ 695   4    if (areaLooseMatch) {
+ 696   4       return areaLooseMatch[1].replace(/_/g, '-');
+ 697   3    }
+ 698   3 
+ 699   3    return trimmed.replace(/_/g, '-');
+ 700   2 }
+ 701   2 
+ 702   3 function ensureRuntimeLocalizationPatches() {
+ 703   4    if (!playerFloatingTextPatched && typeof Player !== 'undefined' && Player?.prototype?.addFloatingText) {
+ 704   4       const originalAddFloatingText = Player.prototype.addFloatingText;
+ 705   5       Player.prototype.addFloatingText = function (content, col, fontSize, duration) {
+ 706   5          return originalAddFloatingText.call(
+ 707   5             this,
+ 708   5             localizeFloatingTextContent(content),
+ 709   5             col,
+ 710   5             fontSize,
+ 711   5             duration
+ 712   5          );
+ 713   4       };
+ 714   4 
+ 715   4       playerFloatingTextPatched = true;
+ 716   3    }
+ 717   3 
+ 718   4    if (!globalTextPatched && typeof globalThis.text === 'function') {
+ 719   4       const originalText = globalThis.text;
+ 720   5       globalThis.text = function (...args) {
+ 721   6          if (args.length > 0) {
+ 722   6             args[0] = localizeDrawnTextContent(args[0]);
+ 723   5          }
+ 724   5          return originalText.apply(this, args);
+ 725   4       };
+ 726   4       globalTextPatched = true;
+ 727   3    }
+ 728   3 
+ 729   4    if (!globalTextSizePatched && typeof globalThis.textSize === 'function') {
+ 730   4       const originalTextSize = globalThis.textSize;
+ 731   5       globalThis.textSize = function (size) {
+ 732   6          if (typeof size === 'number') {
+ 733   6             return originalTextSize.call(this, size * getCanvasTextScale());
+ 734   5          }
+ 735   5          return originalTextSize.call(this, size);
+ 736   4       };
+ 737   4       globalTextSizePatched = true;
+ 738   3    }
+ 739   3 
+ 740   4    if (!globalTextLeadingPatched && typeof globalThis.textLeading === 'function') {
+ 741   4       const originalTextLeading = globalThis.textLeading;
+ 742   5       globalThis.textLeading = function (leading) {
+ 743   6          if (typeof leading === 'number') {
+ 744   6             return originalTextLeading.call(this, leading * getCanvasTextScale());
+ 745   5          }
+ 746   5          return originalTextLeading.call(this, leading);
+ 747   4       };
+ 748   4       globalTextLeadingPatched = true;
+ 749   3    }
+ 750   2 }
+ 751   2 
+ 752   3 function refreshRuntimeLanguageTargets() {
+ 753   4    try {
+ 754   4       ensureRuntimeLocalizationPatches();
+ 755   4 
+ 756   5       if (typeof storyIntro !== 'undefined' && storyIntro?.refreshLanguage) {
+ 757   5          storyIntro.refreshLanguage();
+ 758   4       }
+ 759   4 
+ 760   5       if (typeof menuUI !== 'undefined' && menuUI?.refreshLanguage) {
+ 761   5          menuUI.refreshLanguage();
+ 762   4       }
+ 763   4 
+ 764   5       if (typeof intro !== 'undefined' && intro?.sidePanelsVisible && intro?.showSidePanels) {
+ 765   5          intro.showSidePanels(1);
+ 766   4       }
+ 767   4    } catch (error) {
+ 768   4       console.warn('[localization] runtime language refresh failed:', error);
+ 769   3    }
+ 770   2 }
+ 771   2 
+ 772   3 function refreshLanguageEverywhere() {
+ 773   3    updateStaticDomTranslations();
+ 774   3    refreshRuntimeLanguageTargets();
+ 775   3 
+ 776   4    if (typeof requestAnimationFrame === 'function') {
+ 777   5       requestAnimationFrame(() => {
+ 778   5          refreshRuntimeLanguageTargets();
+ 779   4       });
+ 780   3    }
+ 781   3 
+ 782   4    if (currentLanguage === 'zh' && zhFontLoadPromise) {
+ 783   5       zhFontLoadPromise.then(() => {
+ 784   5          refreshRuntimeLanguageTargets();
+ 785   4       });
+ 786   3    }
+ 787   2 }
+ 788   2 
+ 789   3 function onLanguageChanged(listener) {
+ 790   3    languageChangeListeners.push(listener);
+ 791   2 }
+ 792   2 
+ 793   3 function setLanguage(language) {
+ 794   4    if (!SUPPORTED_LANGUAGES.includes(language) || language === currentLanguage) {
+ 795   4       refreshLanguageEverywhere();
+ 796   4       return;
+ 797   3    }
+ 798   3 
+ 799   3    currentLanguage = language;
+ 800   3    refreshLanguageEverywhere();
+ 801   3    languageChangeListeners.forEach(listener => listener(language));
+ 802   2 }
+ 803   2 
+ 804   2 refreshLanguageEverywhere();

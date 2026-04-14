@@ -1,3 +1,4 @@
+/* global t, getLanguage */
 // Builds and manages the standalone Instructions view used by the main menu.
 class InstructionsMenu {
    constructor(options) {
@@ -78,6 +79,26 @@ class InstructionsMenu {
    overflow-wrap: anywhere;
    word-break: break-word;
    line-height: 1.25;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-table {
+   font-size: 28px !important;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-control-text {
+   font-size: 34px !important;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-tab {
+   font-size: 34px !important;
+}
+
+html[lang="en"] #menu-instructions-panel .instructions-table tbody td:nth-child(2) {
+   padding-left: 12px;
+}
+
+html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
+   text-align: center;
 }
 `;
       document.head.appendChild(this.styleElement);
@@ -187,14 +208,16 @@ class InstructionsMenu {
    createTabButton(id, label, extraPositionCss, onClick) {
       const button = document.createElement('button');
       button.id = id;
+      button.className = 'instructions-tab';
       button.textContent = label;
+      const tabFontSize = getLanguage() === 'zh' ? '34px' : '38px';
       button.style.cssText =
          'position:absolute;' +
          'top:30px;' +
          extraPositionCss +
          'width:200px;' +
          'height:60px;' +
-         'font-size:30px;' +
+         `font-size:${tabFontSize};` +
          'font-weight:bold;' +
          'color:white;' +
          `background-image:url("${this.buttonImages.normal}");` +
@@ -252,17 +275,18 @@ class InstructionsMenu {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:flex; justify-content:center; box-sizing:border-box;';
       const wrap = this.createInstructionCard();
+      const isEnglish = getLanguage() === 'en';
+      const categoryWidth = isEnglish ? '18%' : '14%';
+      const nameWidth = '15%';
+      const imageWidth = '9%';
+      const descriptionWidth = isEnglish ? '58%' : '62%';
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<th style="${this.thStyle()} width:15%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:61%;">Description</th>
-<th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
-<th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
-<th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
-<th style="${this.thStyle()} width:65%;">${t('instructions.headers.description')}</th>
+<th style="${this.thStyle()} width:${categoryWidth};">${t('instructions.headers.category')}</th>
+<th style="${this.thStyle()} width:${nameWidth};">${t('instructions.headers.name')}</th>
+<th style="${this.thStyle()} width:${imageWidth};">${t('instructions.headers.image')}</th>
+<th style="${this.thStyle()} width:${descriptionWidth};">${t('instructions.headers.description')}</th>
 </tr>
 </thead>
 <tbody>
@@ -311,26 +335,18 @@ class InstructionsMenu {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:none; justify-content:center; box-sizing:border-box;';
       const wrap = this.createInstructionCard();
+      const isEnglish = getLanguage() === 'en';
+      const categoryWidth = isEnglish ? '18%' : '14%';
+      const nameWidth = '15%';
+      const imageWidth = '9%';
+      const descriptionWidth = isEnglish ? '58%' : '62%';
       wrap.appendChild(this.createTable(`
 <thead>
 <tr>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<th style="${this.thStyle()} width:15%;">Category</th>
-<th style="${this.thStyle()} width:15%;">Name</th>
-<th style="${this.thStyle()} width:9%;">Image</th>
-<th style="${this.thStyle()} width:61%;">Description</th>
-=======
-=======
->>>>>>> 7742fa20b2d24cf22196a3cedc3c86a231263176
-<th style="${this.thStyle()} width:11%;">${t('instructions.headers.category')}</th>
-<th style="${this.thStyle()} width:15%;">${t('instructions.headers.name')}</th>
-<th style="${this.thStyle()} width:9%;">${t('instructions.headers.image')}</th>
-<th style="${this.thStyle()} width:65%;">${t('instructions.headers.description')}</th>
-<<<<<<< HEAD
->>>>>>> 60c175e (Chinese)
-=======
->>>>>>> 7742fa20b2d24cf22196a3cedc3c86a231263176
+<th style="${this.thStyle()} width:${categoryWidth};">${t('instructions.headers.category')}</th>
+<th style="${this.thStyle()} width:${nameWidth};">${t('instructions.headers.name')}</th>
+<th style="${this.thStyle()} width:${imageWidth};">${t('instructions.headers.image')}</th>
+<th style="${this.thStyle()} width:${descriptionWidth};">${t('instructions.headers.description')}</th>
 </tr>
 </thead>
 <tbody>
@@ -450,10 +466,12 @@ class InstructionsMenu {
          'flex-shrink:0;';
 
       const text = document.createElement('div');
+      text.className = 'instructions-control-text';
       text.textContent = label;
+      const controlTextSize = getLanguage() === 'zh' ? '34px' : '38px';
       text.style.cssText =
          'color:#fff;' +
-         'font-size:30px;' +
+         `font-size:${controlTextSize};` +
          'font-weight:600;' +
          'line-height:1.2;' +
          'text-align:center;' +
@@ -467,13 +485,14 @@ class InstructionsMenu {
    createTable(innerHtml) {
       const table = document.createElement('table');
       table.className = 'instructions-table';
+      const tableFontSize = getLanguage() === 'zh' ? '27px' : '42px';
       table.style.cssText =
          'width:94%;' +
          'border-collapse:separate;' +
          'border-spacing:0;' +
          'table-layout:fixed;' +
          'color:white;' +
-         'font-size:25px;' +
+         `font-size:${tableFontSize};` +
          'margin:0 auto;';
       table.innerHTML = innerHtml;
       return table;
@@ -484,7 +503,7 @@ class InstructionsMenu {
    }
 
    tdStyle() {
-      return 'border:0;padding:6px 6px;text-align:left;vertical-align:middle;';
+      return 'border:0;padding:6px 6px;text-align:center;vertical-align:middle;';
    }
 
    imgStyle() {
