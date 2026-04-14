@@ -81,6 +81,11 @@ class InstructionsMenu {
    line-height: 1.35;
 }
 
+html[lang="en"] #menu-instructions-panel .instructions-control-text,
+html[lang="en"] #menu-instructions-panel .instructions-control-text + * {
+   transform: translateX(-10px);
+}
+
 html[lang="en"] #menu-instructions-panel .instructions-table {
    font-size: 28px !important;
 }
@@ -99,6 +104,10 @@ html[lang="en"] #menu-instructions-panel .instructions-table tbody td:nth-child(
 
 html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
    text-align: center;
+}
+
+#menu-instructions-panel .instructions-table tbody td:last-child {
+   text-align: left !important;
 }
 `;
       document.head.appendChild(this.styleElement);
@@ -255,11 +264,14 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
 
    createInstructionCard() {
       const wrap = document.createElement('div');
+      const maxWidth = '1080px';
+      const minHeight = '590px';
+      const padding = '24px 26px 28px 26px';
       wrap.style.cssText =
          // Use a fixed card shell so both content tables share the same frame.
          'width:96%;' +
-         'max-width:1080px;' +
-         'min-height:590px;' +
+         `max-width:${maxWidth};` +
+         `min-height:${minHeight};` +
          'display:flex;' +
          'justify-content:center;' +
          'align-items:center;' +
@@ -267,7 +279,7 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
          'background-size:100% 100%;' +
          'background-repeat:no-repeat;' +
          'background-position:center;' +
-         'padding:24px 26px 28px 26px;' +
+         `padding:${padding};` +
          'box-sizing:border-box;';
       return wrap;
    }
@@ -395,22 +407,26 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:none; justify-content:center;';
       const controlsPanel = document.createElement('div');
+      const maxWidth = '1080px';
+      const minHeight = '590px';
+      const padding = getLanguage() === 'en' ? '52px 18px 24px 14px' : '58px 26px 28px 26px';
       controlsPanel.style.cssText =
          'width:96%;' +
-         'max-width:1080px;' +
-         'min-height:590px;' +
+         `max-width:${maxWidth};` +
+         `min-height:${minHeight};` +
          'display:grid;' +
          'grid-template-columns:repeat(2, minmax(0, 1fr));' +
          'grid-template-rows:repeat(2, auto);' +
-         'column-gap:22px;' +
-         'row-gap:18px;' +
-         'padding:58px 26px 28px 26px;' +
+         `column-gap:${getLanguage() === 'en' ? '12px' : '22px'};` +
+         `row-gap:${getLanguage() === 'en' ? '14px' : '18px'};` +
+         `padding:${padding};` +
          'box-sizing:border-box;' +
          'background-image:url("resources/images/instructions/cardX3.png");' +
          'background-size:100% 100%;' +
          'background-repeat:no-repeat;' +
          'background-position:center;' +
-         'align-content:start;';
+         'align-content:start;' +
+         (getLanguage() === 'en' ? 'margin-left:-12px;' : '');
 
       controlsPanel.appendChild(this.createControlItem('attackmonster.gif', t('instructions.controlsPage.attackMonster')));
       controlsPanel.appendChild(this.createControlItem('energySup.gif', t('instructions.controlsPage.energySupply')));
@@ -425,14 +441,17 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
       const page = document.createElement('div');
       page.style.cssText = 'width:100%; display:none; justify-content:center;';
       const panel = document.createElement('div');
+      const maxWidth = '1080px';
+      const minHeight = '590px';
+      const padding = '24px 26px 28px 26px';
       panel.style.cssText =
          'width:96%;' +
-         'max-width:1080px;' +
-         'min-height:590px;' +
+         `max-width:${maxWidth};` +
+         `min-height:${minHeight};` +
          'display:flex;' +
          'justify-content:center;' +
          'align-items:center;' +
-         'padding:24px 26px 28px 26px;' +
+         `padding:${padding};` +
          'box-sizing:border-box;' +
          'background-image:url("resources/images/instructions/cardX3.png");' +
          'background-size:100% 100%;' +
@@ -500,6 +519,7 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
       const table = document.createElement('table');
       table.className = 'instructions-table';
       const tableFontSize = getLanguage() === 'zh' ? '27px' : '42px';
+      const tableLineHeight = getLanguage() === 'en' ? '1.15' : '1.25';
       table.style.cssText =
          'width:94%;' +
          'border-collapse:separate;' +
@@ -507,8 +527,26 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
          'table-layout:fixed;' +
          'color:white;' +
          `font-size:${tableFontSize};` +
+         `line-height:${tableLineHeight};` +
          'margin:0 auto;';
       table.innerHTML = innerHtml;
+      const descriptionFixTargets = new Set([
+         '按钮可以打开机关门。',
+         '按下按钮后开启的区域内部机关门。',
+         '安全的水域，不会伤害玩家。',
+         'The button can open the mechanism door.',
+         'A door inside the area that opens after pressing a button.',
+         'Safe water that does not harm the player.'
+      ]);
+      table.querySelectorAll('tbody td:last-child').forEach((cell) => {
+         const normalized = cell.textContent
+            .replace(/^[\s\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]+/, '')
+            .replace(/[\s\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]+/g, ' ')
+            .trim();
+         if (descriptionFixTargets.has(normalized)) {
+            cell.textContent = normalized;
+         }
+      });
       return table;
    }
 
@@ -517,7 +555,7 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
    }
 
    tdStyle() {
-      return 'border:0;padding:6px 6px;text-align:center;vertical-align:middle;';
+      return 'border:0;padding:4px 6px;text-align:center;vertical-align:middle;';
    }
 
    imgStyle() {

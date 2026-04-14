@@ -10,9 +10,6 @@ let globalTextPatched = false;
 const ZH_CANVAS_TEXT_SCALE = 0.85;
 const EN_CANVAS_TEXT_SCALE = 1.0;
 const EN_DOM_TEXT_SCALE = 1.0;
-const ZH_CANVAS_TEXT_SCALE = 0.85;
-const EN_CANVAS_TEXT_SCALE = 1.0;
-const EN_DOM_TEXT_SCALE = 1.0;
 
 const TRANSLATIONS = {
    en: {
@@ -28,11 +25,11 @@ const TRANSLATIONS = {
          instructions: 'Instructions',
          language: 'Language',
          storyReview: 'Replay Story',
-        difficultyTitle: 'Choose Difficulty',
-        audioTitle: 'Audio Settings',
-        languageTitle: 'Choose Language',
-        background: 'BGM',
-        sounds: 'Sounds',
+         difficultyTitle: 'Choose Difficulty',
+         audioTitle: 'Audio Settings',
+         languageTitle: 'Choose Language',
+         background: 'BGM',
+         sounds: 'Sounds',
          easy: 'Easy',
          medium: 'Medium',
          hard: 'Hard',
@@ -507,6 +504,7 @@ function getCanvasTextScale() {
 function getDomTextScale() {
    return currentLanguage === 'zh' ? 1 : EN_DOM_TEXT_SCALE;
 }
+
 function applyGameTextFont(resources) {
    if (currentLanguage === 'zh') {
       ensureLanguageFontFaces();
@@ -710,17 +708,6 @@ function ensureRuntimeLocalizationPatches() {
       };
 
       playerFloatingTextPatched = true;
-   }
-
-   if (!globalTextPatched && typeof globalThis.text === 'function') {
-      const originalText = globalThis.text;
-      globalThis.text = function (...args) {
-         if (args.length > 0) {
-            args[0] = localizeDrawnTextContent(args[0]);
-         }
-         return originalText.apply(this, args);
-      };
-      globalTextPatched = true;
    }
 }
 

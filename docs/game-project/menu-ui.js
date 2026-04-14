@@ -754,6 +754,7 @@ class MenuUI {
       const size = getLanguage() === 'zh' ? '30px' : '34px';
       target.style.setProperty('font-size', size, 'important');
    }
+
    replayStoryPreview() {
       if (typeof storyIntro === 'undefined' || !storyIntro) return;
 

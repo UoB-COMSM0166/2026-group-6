@@ -64,6 +64,8 @@ class AudioManager {
     const appliedVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
     if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(appliedVolume);
     if (this.resources.sounds.story) this.resources.sounds.story.setVolume(appliedVolume);
+    if (this.resources.sounds.bgm) this.resources.sounds.bgm.setVolume(this.state.bgm.volume);
+    if (this.resources.sounds.story) this.resources.sounds.story.setVolume(this.state.bgm.volume);
   }
 
   // 2. set sounds volume（0-2）, 1 is too small to hear
