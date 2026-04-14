@@ -9,7 +9,9 @@ let playerFloatingTextPatched = false;
 let globalTextPatched = false;
 let globalTextSizePatched = false;
 let globalTextLeadingPatched = false;
-const ZH_CANVAS_TEXT_SCALE = 0.9;
+const ZH_CANVAS_TEXT_SCALE = 0.85;
+const EN_CANVAS_TEXT_SCALE = 1.0;
+const EN_DOM_TEXT_SCALE = 1.0;
 
 const TRANSLATIONS = {
    en: {
@@ -498,7 +500,11 @@ function getUIFontFamilyCss() {
 }
 
 function getCanvasTextScale() {
-   return currentLanguage === 'zh' ? ZH_CANVAS_TEXT_SCALE : 1;
+   return currentLanguage === 'zh' ? ZH_CANVAS_TEXT_SCALE : EN_CANVAS_TEXT_SCALE;
+}
+
+function getDomTextScale() {
+   return currentLanguage === 'zh' ? 1 : EN_DOM_TEXT_SCALE;
 }
 
 function applyGameTextFont(resources) {
@@ -520,9 +526,11 @@ function applyGameTextFont(resources) {
 
 function updateStaticDomTranslations() {
    ensureLanguageFontFaces();
+   ensureDomFontScaleStyles();
    document.title = t('meta.title');
    document.documentElement.lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
    document.documentElement.style.setProperty('--game-font-family', getUIFontFamilyCss());
+   document.documentElement.style.setProperty('--dom-font-scale', String(getDomTextScale()));
 
    const controlsUi = document.getElementById('controls-ui');
    if (!controlsUi) return;
@@ -553,6 +561,24 @@ function updateStaticDomTranslations() {
    const paragraphs = controlsUi.querySelectorAll('p');
    if (paragraphs[0]) paragraphs[0].textContent = t('controls.leftClick');
    if (paragraphs[1]) paragraphs[1].textContent = t('controls.rightClick');
+}
+
+function ensureDomFontScaleStyles() {
+   if (typeof document === 'undefined') return;
+
+   const existing = document.getElementById('localization-font-scale');
+   if (existing) return;
+
+   const styleTag = document.createElement('style');
+   styleTag.id = 'localization-font-scale';
+   styleTag.textContent = `
+html[lang="en"] #game-menu *,
+html[lang="en"] #menu-instructions-panel *,
+html[lang="en"] #controls-ui * {
+   font-size: calc(1em * var(--dom-font-scale)) !important;
+}
+`;
+   document.head.appendChild(styleTag);
 }
 
 function localizeFloatingTextContent(content) {
