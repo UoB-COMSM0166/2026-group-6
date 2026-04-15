@@ -162,10 +162,10 @@ const TRANSLATIONS = {
             ['Collectible', 'Energy Crystal', "Scattered crystals that restore the player's purification energy."]
          ],
          controlsPage: {
-            attackMonster: 'Attack monster',
+            attackMonster: 'Attack Monster',
             energySupply: 'Energy Supply',
-            purifyCore: 'Purify pollution core',
-            rest: 'Set a save point and restore HP',
+            purifyCore: 'Purify Pollution Core',
+            rest: 'Set A Save Point And Restore HP',
             ropeMechanics: 'Rope Mechanics'
          }
       },
