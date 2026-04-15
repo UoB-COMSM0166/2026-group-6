@@ -316,66 +316,19 @@ Table 2 summarizes the main classes in the system and their responsibilities.
   <b>Table 2.</b> Core Class Responsibilities
 </p>
 
-<table>
-<tr>
-<th>Class</th>
-<th>Description</th>
-<th>Key Responsibilities</th>
-</tr>
-
-<tr>
-<td>GameManager</td>
-<td>Central control class of the system.</td>
-<td>The GameManager coordinates all core components, maintains the overall game state, and controls the game loop by invoking loadLevel(), update(), and render() methods in each frame.</td>
-</tr>
-
-<tr>
-<td>LevelManager</td>
-<td>Manages level data and entities within the current level.</td>
-<td>The LevelManager loads level data, maintains and updates a collection of entities, detects map boundaries, and handles region or level transitions.</td>
-</tr>
-
-<tr>
-<td>Player</td>
-<td>Encapsulates player-related logic and attributes.</td>
-<td>The Player manages player state such as health and clean energy, handles movement and jumping, and interacts with the environment through the rope system.</td>
-</tr>
-
-<tr>
-<td>Rope</td>
-<td>Implements the rope mechanism.</td>
-<td>The Rope manages rope behaviour including deployment, state updates, and length adjustment, and coordinates interactions through its associated RopeHead.</td>
-</tr>
-
-<tr>
-<td>RopeHead</td>
-<td>Handles interaction behaviour of the rope.</td>
-<td>The RopeHead defines how the rope interacts with target objects upon contact, enabling different behaviours based on rope configuration.</td>
-</tr>
-
-<tr>
-<td>Entity (Abstract)</td>
-<td>Base class for all interactive objects.</td>
-<td>The Entity class provides a common interface and shared properties for all game objects, supporting extensibility through subclasses such as Enemy, PollutionCore, and Pickup.</td>
-</tr>
-
-<tr>
-<td>ResourceManager</td>
-<td>Handles resource loading and management.</td>
-<td>The ResourceManager is responsible for loading, storing, and providing access to game resources such as textures, sounds, and other assets.</td>
-</tr>
-
-<tr>
-<td>Camera</td>
-<td>Represents the game view.</td>
-<td>The Camera controls the visible area of the game world and follows the player to ensure proper rendering of the scene.</td>
-</tr>
-
-</table>
-
+| Class | Description | Key Responsibilities |
+|:------|:------------|:----------------------|
+| **GameManager** | Central control class | Coordinates core components, maintains game state, and controls the game loop by invoking `loadLevel()`, `update()`, and `render()` each frame |
+| **LevelManager** | Level and entity manager | Loads level data, manages entities, detects boundaries, and handles level transitions |
+| **Player** | Player logic and state | Manages health and energy, handles movement and jumping, and interacts via the rope system |
+| **Rope** | Rope mechanism | Controls rope deployment, updates state, adjusts length, and coordinates interactions |
+| **RopeHead** | Rope interaction handler | Defines how the rope interacts with target objects upon contact |
+| **Entity (Abstract)** | Base class for objects | Provides a shared interface and supports extensibility for game entities |
+| **ResourceManager** | Resource handler | Loads, stores, and provides access to game assets |
+| **Camera** | Game view controller | Controls the visible area and follows the player |
 
 ## 4.3 Final Class Diagram
-As development progressed, the game gradually added more features, such as different types of enemies, environmental interactive objects, and area teleportation mechanisms. To support these new features, the system architecture was adjusted accordingly. The final class diagram (Figure 6) illustrates the relationships between the main classes in the system.
+As game development progressed, we gradually added more features. To support these new features, the system architecture was also adjusted accordingly. Figure 6 represents our final class diagram.
 
 <p align="center">
   <img src="resources/images/Class_0305.png" width="80%"/>
@@ -384,11 +337,13 @@ As development progressed, the game gradually added more features, such as diffe
   <b>Figure 6.</b> Final Class Diagram
 </p>
 
-The main improvements are reflected in the following three aspects. First, the initial design of the `Entity` class had only a few basic classes. In the final design, the `Entity` is used as the core abstract class of the game object system, deriving several subclasses such as the `Enemy`, the `Boss`, the `PollutionCore`, the `TeleportationGate`, the `CleanEnergy`, and the `GateWall`.
+The main improvements to the system are reflected in the following three aspects.
 
-Second, the `LevelManager` has also been adjusted. The initial level representation was relatively simple, but in the final implementation, the `LevelManager` uses a tile grid structure to represent the map environment. Each `Tile` records its position, size, and whether it is entity terrain.
+Firstly, we have carried out the expansion work for the design of the entity system. In the initial class diagram design, the `Entity` only included a small number of basic subclasses. Now, the `Entity` is clearly defined as the core abstract class of the game object system, and it is extended into many concrete subclasses by inheritance, which include `Enemy`, `Boss`, `PollutionCore`, `TeleportationGate`, `CleanEnergy`, and `GateWal`l. This improvement makes different kinds of game objects can be managed under one unified structure.
 
-Finally, the interaction methods between entities have been unified. We removed the `RopeHead`; when a player or rope comes into contact with an entity, the interaction methods implemented by that entity, such as `onPlayerContact()` or `onRopeContact()`, are directly called.
+Secondly, we have made the improvement upon the structure of `LevelManager`. The `LevelManager` adopts a grid-based `Tile` structure for the representation of the map environment. Every `Tile` records its position, its size, and if it can be passed through or easy to collide, thus supporting more fine-grained map control and collision examination. 
+
+In the end, we have carried out a refactoring work on the interaction mechanism that exists between entities. In the beginning design stage, the interaction logic was mainly processed in a unified way by the `RopeHead`. In the final design, this middle structure has been got rid of, and the interactive logic was distributed by us to every entity class. When the rope has a contact occurrence with a object, the system directly carries out the call of that object's `onPlayerContact()` or `onRopeContact()` method for handling the concrete behavior. This method lets the interaction logic be more clear, and therefore it decreases system coupling degree.
 
 ## 4.4 Pollution Purification Sequence Diagram
 Figure 7 illustrates the sequence of interactions when the player uses the rope to purify a pollution core.
@@ -864,12 +819,14 @@ According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Ea
 The Wilcoxon Signed-Rank Test results (Table 8) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
 
 ### Findings
-According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps; Easy mode reduced difficulty by removing more challenging maps. Now, we've designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
+According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps. Now, easy mode reduced difficulty by removing more challenging maps. We have designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
 
 ## 6.3 How Code Was Tested
-During development, we continuously tested various functional modules. Specifically, our testing methods can be divided into two parts: black-box testing and white-box testing. First, in **black-box testing**, we used automatic testing tools to verify the game's user interaction flow and interface functions, such as entering the main menu, clicking "Start Game," changing difficulty levels, opening the resource panel, and switching  different interfaces. However, for systems involving continuous changes, such as player movement, jumping, and rope launching. It is difficult to determine whether it is correct based solely on frame-by-frame output so that we depended on visual and interactive evaluations. For example, whether movement speed is reasonable, whether jumping and falling conform to basic physical intuition, and whether rope movement presents natural dynamic effects.
+During the game development process, we conducted continuous testing on various functional modules. Our testing methodology can be divided into two parts: **black-box testing** and **white-box testing**.
 
-On the other hand, **white-box testing** focuses on verifying the program's internal logic, judging the correctness of the implementation by observing changes in values ​​and states in specific game scenarios. For example, we tested the underlying logic of player health (HP) changes, clean energy consumption, and the triggering of invincibility states. During testing, we designed various input scenarios to obtain function return results, while simultaneously handling and verifying potentially invalid inputs. For example, we simulate players taking damage to verify whether HP is reduced correctly, whether invincibility is triggered properly, and to test whether energy consumption and health regeneration limits meet expectations under different conditions. One of examples is as follows:
+In **black-box testing**, we utilized automatic testing tools to confirm user interaction processes and interface functions, for example entering the main menu, clicking "Start Game", altering the difficulty degree, unfolding the resource panel, and changing among different interfaces. However, as for modules that include continuous changes, for example player moving, jumping and rope launching, hence it is very difficult to judge their correctness only according to frame-by-frame output. Hence, we also depend on visual and interactive assessments to watch if the movement velocity is reasonable, if jumping and falling accord with basic physical intuition, and if the rope movement shows a natural dynamic effect.
+
+On another hand, **white-box testing** concentrates on checking the program's inside logic, judging the rightness of the realization through observing alterations in values and states in particular game situations. For instance, we have carried out tests on the underlying logic of player health (HP) changes, clean energy consumption, and the triggering of invincibility states. In the testing phase, we have designed many kinds of input situations to get the function's returning outcomes, and at the same time we process and check inputs that may have no validity. Below is one of examples of the test code (Figure 13).
 
 **Example -- Player Damage and Invulnerability Logic**
 <p align="center">
@@ -879,7 +836,7 @@ On the other hand, **white-box testing** focuses on verifying the program's inte
   <b>Figure 13.</b> Player Damage and Invulnerability Logic
 </p>
 
-In terms of tools, we mainly use **VS Code** to run p5.js-based project code, and combine this with testing tools such as **Jest** and **Cypress** to perform supplementary verification of certain features. By combining black-box testing with white-box testing, we are able to ensure both a natural gaming experience and the correctness of the underlying logic, thereby enhancing software quality.
+In terms of tools, we used **VS Code** to run the project code based on p5.js, and combined it with testing tools such as **Jest** and **Cypress** to further verify specific functions. Through black-box testing and white-box testing, we are able to ensure a smooth game experience and the correctness of the code logic.
 
 # 7. Process 
 
