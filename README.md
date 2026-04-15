@@ -29,12 +29,12 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 
 <table>
   <tr>
-    <td><img src="resources\gifs\attackmonster.gif" width="200">Attack monster</td>
+    <td><img src="resources\gifs\attackmonster.gif" width="200">Attack Monster</td>
     <td><img src="resources\gifs\energySup.gif" width="200">Energy Supply</td>
   </tr>
   <tr>
-    <td><img src="resources\gifs\purifycore.gif" width="200">Purify pollutioncore</td>
-    <td><img src="resources\gifs\rest.gif" width="200">Set a save point and restore hp</td>
+    <td><img src="resources\gifs\purifycore.gif" width="200">Purify Pollutioncore</td>
+    <td><img src="resources\gifs\rest.gif" width="200">Set a Save Point and Restore HP</td>
   </tr>
   <tr>
     <td><img src="resources\gifs\Ropemechanics.gif" width="200">Ropemechanics</td>
@@ -303,7 +303,7 @@ In order to understand the players' behaviors in the game and the interaction be
 We employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between sub-systems during the game process. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management,  thereby enhacing the system's maintainability and scalability. The `GameManager` is responsible for maintaining the overall game state and scheduling module execution within each frame's update loop. The `LevelManager` maintains the level structure and objects, while resource loading is centrally handled by the `ResourceManager`. By separating these functional modules from the control logic, the system gains greater flexibility.
 
 ## 4.2 Initial Class Diagram
-After identifying the core user requirements, we designed the system’s initial class diagram (Figure 5).
+We defined the core user requirements and designed the initial class diagram of the system (Figure 5).
 <p align="center">
   <img src="resources/images/Class_0221.png" width="65%"/>
 </p>
@@ -311,20 +311,68 @@ After identifying the core user requirements, we designed the system’s initial
   <b>Figure 5.</b> Initial Class Diagram
 </p>
 
-**1. GameManager**  
-The `GameManager` is the system's central control class to maintain the key components, such as the `LevelManager`, the `Camera`, the `ResourceManager`, and the `Player`. It controls the game flow by calling methods such as `loadLevel()`, `update()`, and `render()`, coordinating components update and rendering within each frame.
+Table 2 summarizes the main classes in the system and their responsibilities.
+<p align="center">
+  <b>Table 2.</b> Core Class Responsibilities
+</p>
 
-**2. LevelManager**  
-The `LevelManager` loads level data and manages entities within the current level. It maintains a collection of entities to store all objects in this level. It also detects map boundaries and triggers region transitions.
+<table>
+<tr>
+<th>Class</th>
+<th>Description</th>
+<th>Key Responsibilities</th>
+</tr>
 
-**3. Player**  
-The `Player` implements a player-related logic, encapsulating attributes such as the player's health, and clean energy. It provides functionality for movement, jumping, and firing ropes. Players can interact with environmental objects through the rope system.
+<tr>
+<td>GameManager</td>
+<td>Central control class of the system.</td>
+<td>The GameManager coordinates all core components, maintains the overall game state, and controls the game loop by invoking loadLevel(), update(), and render() methods in each frame.</td>
+</tr>
 
-**4. Rope**  
-The `Rope` implements a rope mechanism, providing ways for using ropes, updating the state, and adjusting the length. Each rope is associated with a `RopeHead` object, which handles the interactions of different behaviors when the rope head contacts a target object.
+<tr>
+<td>LevelManager</td>
+<td>Manages level data and entities within the current level.</td>
+<td>The LevelManager loads level data, maintains and updates a collection of entities, detects map boundaries, and handles region or level transitions.</td>
+</tr>
 
-**5. Entity**  
-The system employs an abstract class the `Entity` to manage interactive objects within levels in central. Different game object types inherit from this class to implement specific behaviors. For example, the `Enemy` represents an enemy character, while the `PollutionCore` represents a target that requires environmental purification.
+<tr>
+<td>Player</td>
+<td>Encapsulates player-related logic and attributes.</td>
+<td>The Player manages player state such as health and clean energy, handles movement and jumping, and interacts with the environment through the rope system.</td>
+</tr>
+
+<tr>
+<td>Rope</td>
+<td>Implements the rope mechanism.</td>
+<td>The Rope manages rope behaviour including deployment, state updates, and length adjustment, and coordinates interactions through its associated RopeHead.</td>
+</tr>
+
+<tr>
+<td>RopeHead</td>
+<td>Handles interaction behaviour of the rope.</td>
+<td>The RopeHead defines how the rope interacts with target objects upon contact, enabling different behaviours based on rope configuration.</td>
+</tr>
+
+<tr>
+<td>Entity (Abstract)</td>
+<td>Base class for all interactive objects.</td>
+<td>The Entity class provides a common interface and shared properties for all game objects, supporting extensibility through subclasses such as Enemy, PollutionCore, and Pickup.</td>
+</tr>
+
+<tr>
+<td>ResourceManager</td>
+<td>Handles resource loading and management.</td>
+<td>The ResourceManager is responsible for loading, storing, and providing access to game resources such as textures, sounds, and other assets.</td>
+</tr>
+
+<tr>
+<td>Camera</td>
+<td>Represents the game view.</td>
+<td>The Camera controls the visible area of the game world and follows the player to ensure proper rendering of the scene.</td>
+</tr>
+
+</table>
+
 
 ## 4.3 Final Class Diagram
 As development progressed, the game gradually added more features, such as different types of enemies, environmental interactive objects, and area teleportation mechanisms. To support these new features, the system architecture was adjusted accordingly. The final class diagram (Figure 6) illustrates the relationships between the main classes in the system.
@@ -434,10 +482,10 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
 
 ## 6.1 Qualitative Evaluation
 ### Heuristic Evaluation
-We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table 2).
+We invited several evaluators to trial our game and assessed the interface according to Nielsen's ten usability heuristics. This approach was chosen because heuristic evaluation is a common and effective way to identify usability issues within interactive systems (Nielsen & Morich, 1990; Nielsen, 1994). During the evaluation, we recorded the primary usability issues and assessed their severity based on frequency, impact, and persistence, thereby calculating an overall severity score (Table 3).
 
 <p align="center">
-<b>Table 2. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
+<b>Table 3. </b> Heuristic Evaluation of <i>Echoes of Purity</i>
 </p>
 
 <table>
@@ -536,7 +584,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 ### GAME EASY LEVEL
 ### NASA TLX
 <p align="center">
-<b>Table 3. </b>NASA TLX workload scores for the Easy difficulty level.
+<b>Table 4. </b>NASA TLX workload scores for the Easy difficulty level.
 </p>
 
 <table>
@@ -566,7 +614,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 
 ### System Usability Scale
 <p align="center">
-<b>Table 4. </b>SUS scores for the Easy difficulty level.
+<b>Table 5. </b>SUS scores for the Easy difficulty level.
 </p>
 <table>
 <tr>
@@ -652,7 +700,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 ### GAME HARD LEVEL
 ### NASA TLX
 <p align="center">
-<b>Table 5. </b>NASA TLX workload scores for the Hard difficulty level.
+<b>Table 6. </b>NASA TLX workload scores for the Hard difficulty level.
 </p>
 <table>
 <tr>
@@ -681,7 +729,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 
 ### System Usability Scale
 <p align="center">
-<b>Table 6. </b>SUS scores for the Hard difficulty level.
+<b>Table 7. </b>SUS scores for the Hard difficulty level.
 </p>
 <table>
 <tr>
@@ -783,7 +831,7 @@ According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Ea
 
 ### Statistical Analysis
 <p>
-<b>Table 7. </b>Wilcoxon Signed-Rank Test results comparing difficulty levels
+<b>Table 8. </b>Wilcoxon Signed-Rank Test results comparing difficulty levels
 </p>
 
 <table>
@@ -813,7 +861,7 @@ According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Ea
 
 </table>
 
-The Wilcoxon Signed-Rank Test results (Table 7) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
+The Wilcoxon Signed-Rank Test results (Table 8) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
 
 ### Findings
 According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps; Easy mode reduced difficulty by removing more challenging maps. Now, we've designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
