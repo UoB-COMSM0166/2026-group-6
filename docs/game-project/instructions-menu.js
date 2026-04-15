@@ -4,10 +4,13 @@ class InstructionsMenu {
    constructor(options) {
       this.buttonImages = options.buttonImages;
       this.onPlayClickSound = options.onPlayClickSound || (() => { });
+      this.onReplayStory = options.onReplayStory || (() => { });
+      this.onReplayTutorialVideo = options.onReplayTutorialVideo || (() => { });
 
       this.panel = null;
       this.pages = [];
       this.nextPageButton = null;
+      this.replayStoryButton = null;
       this.contentButton = null;
       this.operationPageButton = null;
       this.pageIndex = 1;
@@ -15,6 +18,9 @@ class InstructionsMenu {
    }
 
    refreshLanguage() {
+      if (this.replayStoryButton) {
+         this.replayStoryButton.textContent = t('menu.storyReview');
+      }
       if (this.contentButton) {
          this.contentButton.textContent = t('instructions.tabs.content');
       }
@@ -122,14 +128,23 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
 
       this.pages.forEach(page => this.panel.appendChild(page));
 
-      this.contentButton = this.createTabButton('menu-content-btn', t('instructions.tabs.content'), 'right:40px;', () => {
+      this.replayStoryButton = this.createTabButton(
+         'menu-replay-story-btn',
+         t('menu.storyReview'),
+         'left:275px;',
+         () => {
+            this.onReplayStory();
+         }
+      );
+
+      this.contentButton = this.createTabButton('menu-content-btn', t('instructions.tabs.content'), 'left:775px;', () => {
          this.showContentPage(1);
       });
 
       this.operationPageButton = this.createTabButton(
          'menu-operation-page-btn',
          t('instructions.tabs.controls'),
-         'left:50%; transform:translateX(-50%);',
+         'left:525px;',
          () => {
             this.showContentPage(3);
          }
@@ -174,6 +189,7 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
          }
       };
 
+      this.panel.appendChild(this.replayStoryButton);
       this.panel.appendChild(this.operationPageButton);
       this.panel.appendChild(this.contentButton);
       this.panel.appendChild(this.nextPageButton);
@@ -262,6 +278,52 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
       return button;
    }
 
+   createInlineActionButton(id, label, onClick) {
+      const button = document.createElement('button');
+      button.id = id;
+      button.className = 'instructions-tab';
+      button.textContent = label;
+      const buttonFontSize = getLanguage() === 'zh' ? '30px' : '32px';
+      button.style.cssText =
+         'width:320px;' +
+         'height:60px;' +
+         `font-size:${buttonFontSize};` +
+         'font-weight:bold;' +
+         'color:white;' +
+         'font-family:var(--game-font-family), monospace;' +
+         `background-image:url("${this.buttonImages.normal}");` +
+         'background-size:100% 100%;' +
+         'background-repeat:no-repeat;' +
+         'background-position:center;' +
+         'background-color:transparent;' +
+         'border:none;' +
+         'cursor:pointer;' +
+         'transition:all 0.2s;' +
+         'align-self:center;' +
+         'flex-shrink:0;';
+
+      button.onmouseenter = () => {
+         button.style.backgroundImage = `url("${this.buttonImages.hover}")`;
+      };
+      button.onmouseleave = () => {
+         button.style.backgroundImage = `url("${this.buttonImages.normal}")`;
+      };
+      button.onmousedown = () => {
+         button.style.backgroundImage = `url("${this.buttonImages.active}")`;
+      };
+      button.onmouseup = () => {
+         button.style.backgroundImage = `url("${this.buttonImages.hover}")`;
+      };
+      button.onclick = (e) => {
+         e.preventDefault();
+         e.stopPropagation();
+         this.onPlayClickSound();
+         onClick();
+      };
+
+      return button;
+   }
+
    createInstructionCard() {
       const wrap = document.createElement('div');
       const maxWidth = '1080px';
@@ -280,7 +342,8 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
          'background-repeat:no-repeat;' +
          'background-position:center;' +
          `padding:${padding};` +
-         'box-sizing:border-box;';
+         'box-sizing:border-box;' +
+         'margin-top:-18px;';
       return wrap;
    }
 
@@ -449,8 +512,10 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
          `max-width:${maxWidth};` +
          `min-height:${minHeight};` +
          'display:flex;' +
+         'flex-direction:column;' +
          'justify-content:center;' +
          'align-items:center;' +
+         'gap:24px;' +
          `padding:${padding};` +
          'box-sizing:border-box;' +
          'background-image:url("resources/images/instructions/cardX3.png");' +
@@ -458,9 +523,18 @@ html[lang="zh"] #menu-instructions-panel .instructions-table tbody td {
          'background-repeat:no-repeat;' +
          'background-position:center;';
 
+      const replayTutorialButton = this.createInlineActionButton(
+         'menu-replay-tutorial-video-btn',
+         getLanguage() === 'zh' ? '回看教程视频' : 'Replay Tutorial Video',
+         () => {
+            this.onReplayTutorialVideo();
+         }
+      );
+
       const ropeMechanicsItem = this.createControlItem('Ropemechanics.gif', t('instructions.controlsPage.ropeMechanics'));
       ropeMechanicsItem.style.cssText += 'width:min(500px, 100%);';
       ropeMechanicsItem.querySelector('img').style.height = '340px';
+      panel.appendChild(replayTutorialButton);
       panel.appendChild(ropeMechanicsItem);
       page.appendChild(panel);
       return page;

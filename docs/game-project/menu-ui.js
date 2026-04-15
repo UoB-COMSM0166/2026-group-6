@@ -68,6 +68,12 @@ class MenuUI {
          },
          onPlayClickSound: () => {
             this._playClickSound();
+         },
+         onReplayStory: () => {
+            this.replayStoryPreview();
+         },
+         onReplayTutorialVideo: () => {
+            this.playDemoVideo();
          }
       });
       this.instructionsMenu.attachTo(this.menuDiv);
@@ -82,21 +88,6 @@ class MenuUI {
          getLanguage() === 'zh' ? '30px' : '34px',
          'important'
       );
-      this.menuRefs.storyReviewLabel.textContent = t('menu.storyReview');
-      this._applyStoryReviewLabelFont();
-      this.menuRefs.storyReviewLabel.style.setProperty(
-         'font-size',
-         getLanguage() === 'zh' ? '19px' : '22px',
-         'important'
-      );
-      this.menuRefs.storyReviewBtn.style.setProperty(
-         'font-size',
-         getLanguage() === 'zh' ? '38px' : '44px',
-         'important'
-      );
-      this.menuRefs.storyReviewBtn.style.setProperty('font-weight', '900', 'important');
-      this.menuRefs.storyReviewBtn.title = t('menu.storyReview');
-      this.menuRefs.storyReviewBtn.setAttribute('aria-label', t('menu.storyReview'));
       this.menuRefs.btnStart.textContent = t('menu.start');
       this.menuRefs.btnContinue.textContent = t('menu.continue');
       this.menuRefs.btnDifficulty.textContent = t('menu.difficulty');
@@ -358,63 +349,6 @@ class MenuUI {
          'display:none;' +
          'flex-direction:column; align-items:center; justify-content:center; gap:20px; width:100%;';
 
-      const storyReviewWrap = document.createElement('div');
-      storyReviewWrap.style.cssText =
-         'position:absolute; left:18px; top:56%; transform:translateY(-50%);' +
-         'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; z-index:30;';
-
-      const storyReviewBtn = document.createElement('button');
-      storyReviewBtn.id = 'menu-story-review-btn';
-      storyReviewBtn.type = 'button';
-      storyReviewBtn.textContent = '←';
-      storyReviewBtn.title = t('menu.storyReview');
-      storyReviewBtn.setAttribute('aria-label', t('menu.storyReview'));
-      storyReviewBtn.style.cssText =
-         'width:120px; height:60px; min-height:60px; padding:0; line-height:60px; font-size:38px; font-weight:900; color:white;' +
-         'font-family:var(--game-font-family), monospace;' +
-         `background-image:url("${this.BTN_NORMAL}");` +
-         'background-size:100% 100%;' +
-         'background-repeat:no-repeat;' +
-         'background-position:center;' +
-         'background-color:transparent;' +
-         'border:none; cursor:pointer;' +
-         'transition:all 0.18s ease;';
-      storyReviewBtn.onmouseenter = () => {
-         storyReviewBtn.style.backgroundImage = `url("${this.BTN_HOVER}")`;
-         storyReviewBtn.style.transform = 'translateX(-2px)';
-      };
-      storyReviewBtn.onmouseleave = () => {
-         storyReviewBtn.style.backgroundImage = `url("${this.BTN_NORMAL}")`;
-         storyReviewBtn.style.transform = 'translateX(0)';
-      };
-      storyReviewBtn.onmousedown = () => {
-         storyReviewBtn.style.backgroundImage = `url("${this.BTN_ACTIVE}")`;
-      };
-      storyReviewBtn.onmouseup = () => {
-         storyReviewBtn.style.backgroundImage = `url("${this.BTN_HOVER}")`;
-      };
-      storyReviewBtn.onclick = (e) => {
-         e.preventDefault();
-         e.stopPropagation();
-         this._playClickSound();
-         this.replayStoryPreview();
-      };
-
-      const storyReviewLabel = document.createElement('div');
-      storyReviewLabel.textContent = t('menu.storyReview');
-      storyReviewLabel.style.cssText =
-         'width:120px; min-height:32px; display:flex; align-items:center; justify-content:center; text-align:center; color:#ffffff; font-size:16px; line-height:1.1;' +
-         'font-family:"Monogram", monospace;';
-      storyReviewLabel.style.setProperty(
-         'font-size',
-         getLanguage() === 'zh' ? '19px' : '22px',
-         'important'
-      );
-      this._applyStoryReviewLabelFont(storyReviewLabel);
-
-      storyReviewWrap.appendChild(storyReviewBtn);
-      storyReviewWrap.appendChild(storyReviewLabel);
-
       const languageTitle = document.createElement('div');
       languageTitle.textContent = t('menu.languageTitle');
       languageTitle.style.cssText =
@@ -433,7 +367,6 @@ class MenuUI {
 
       languageContainer.appendChild(btnEnglish);
       languageContainer.appendChild(btnChinese);
-      languagePanel.appendChild(storyReviewWrap);
       languagePanel.appendChild(languageTitle);
       languagePanel.appendChild(languageContainer);
       this.menuDiv.appendChild(languagePanel);
@@ -470,8 +403,6 @@ class MenuUI {
       document.body.appendChild(this.menuDiv);
       this.menuRefs = {
          backBtn,
-         storyReviewBtn,
-         storyReviewLabel,
          btnStart,
          btnContinue,
          btnDifficulty,
@@ -732,22 +663,6 @@ class MenuUI {
    _playClickSound() {
       if (this.resources.sounds.click && !this.resources.sounds.click.isPlaying()) {
          this.resources.sounds.click.play();
-      }
-   }
-
-   _applyStoryReviewLabelFont(target = this.menuRefs?.storyReviewLabel) {
-      if (!target) return;
-
-      const fontName = getLanguage() === 'zh' ? 'Nightgazer12' : 'Monogram';
-      const family = `"${fontName}", monospace`;
-
-      target.style.setProperty('font-family', family, 'important');
-      target.style.setProperty('font-weight', 'bold', 'important');
-
-      if (typeof document !== 'undefined' && document.fonts?.load) {
-         document.fonts.load(`19px "${fontName}"`).then(() => {
-            target.style.setProperty('font-family', family, 'important');
-         }).catch(() => { });
       }
    }
 
