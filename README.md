@@ -300,7 +300,7 @@ In order to understand the players' behaviors in the game and the interaction be
 # 4. Design
 
 ## 4.1 System Architecture
-We employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between sub-systems during the game process. The overall architecture divides game logic into several independent modules, including game control, level management, entity systems, and resource management,  thereby enhacing the system's maintainability and scalability. The `GameManager` is responsible for maintaining the overall game state and scheduling module execution within each frame's update loop. The `LevelManager` maintains the level structure and objects, while resource loading is centrally handled by the `ResourceManager`. By separating these functional modules from the control logic, the system gains greater flexibility.
+We employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between sub-systems during the game process. The overall architecture divides game logic into several independent modules. The `GameManager` is responsible for maintaining the overall game state and scheduling module execution within each frame's update loop. The `LevelManager` maintains the level structure and objects, while resource loading is centrally handled by the `ResourceManager`. By separating these functional modules from the control logic, the system gains greater flexibility.
 
 ## 4.2 Initial Class Diagram
 We defined the core user requirements and designed the initial class diagram of the system (Figure 5).
@@ -318,7 +318,7 @@ Table 2 summarizes the main classes in the system and their responsibilities.
 
 | Class | Description | Key Responsibilities |
 |:------|:------------|:----------------------|
-| **GameManager** | Central control class | Coordinates core components, maintains game state, and controls the game loop by invoking `loadLevel()`, `update()`, and `render()` each frame |
+| **GameManager** | Central control class | Coordinates core components, maintains game state, and controls the game loop by calling `loadLevel()`, `update()`, and `render()` each frame |
 | **LevelManager** | Level and entity manager | Loads level data, manages entities, detects boundaries, and handles level transitions |
 | **Player** | Player logic and state | Manages health and energy, handles movement and jumping, and interacts via the rope system |
 | **Rope** | Rope mechanism | Controls rope deployment, updates state, adjusts length, and coordinates interactions |
