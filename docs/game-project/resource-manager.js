@@ -3,13 +3,6 @@
  *
  * Centrally manages the loading of all resources (images, JSON files, and audio).
  * Ensures each asset is loaded only once, and all modules obtain resource references from here.
- *
- * NOTE: Image resources should be placed before audio resources.
- * Be mindful of this order when adding new assets.
- *
- * Usage:
- * Call resources.preload() inside p5.js's preload() function.
- * Access assets via resources.images.tileset or resources.data.ldtk.
  */
 class ResourceManager {
    constructor() {
@@ -41,7 +34,7 @@ class ResourceManager {
    }
 
    /**
-    * p5.js preload() to use
+    * p5.js preload() use
     * all loadImage / loadJSON here
     */
    preload() {
@@ -52,7 +45,7 @@ class ResourceManager {
       this.data.currentLdtk = this.data.ldtk.easy;
       this.fonts.main = loadFont('resources/fonts/monogram.ttf');
 
-      // --- Global Image Assets ---
+      // Global Image Assets
       this.images.tileset = loadImage('resources/images/map_image/prototypegames_tiny_caverns/content/tilesets/tileset_full.png');
       this.images.ladder = loadImage('resources/images/map_image/ladder.png');
       this.images.button = loadImage('resources/images/map_image/button.png');
@@ -100,7 +93,7 @@ class ResourceManager {
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
       };
 
-      // --- Boss Assets ---
+      // Boss Assets
       this.images.boss = {
          idle: loadImage('resources/images/enemy/Boss_Idle-Sheet.png'),
          shoot: loadImage('resources/images/enemy/Boss_Shoot-Sheet.png'),
@@ -166,12 +159,12 @@ class ResourceManager {
       this.sounds.tool = loadSound('resources/audios/sides/tools.wav');
       this.sounds.upgrade = loadSound('resources/audios/sides/upgrade.wav');
 
-      // --- Background Music (BGM) ---
+      // Background Music (BGM)
       this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
       this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
       this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
 
-      //Boss
+      // Boss
       this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
       this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
@@ -183,7 +176,6 @@ class ResourceManager {
       // this.sounds.sad = loadSound('resources/audios/game_once/sadend.mp3');
    }
 
-   /** Mark as loaded once preload is complete */
    markLoaded() {
       this._loaded = true;
    }
@@ -205,7 +197,7 @@ class ResourceManager {
       }
    }
 
-   // --- Getters for common assets ---
+   // Getters for common assets
    get ldtkData() { return this.data.currentLdtk; }
    get tilesetImage() { return this.images.tileset; }
 }

@@ -450,7 +450,7 @@ class Rope {
       }
    }
 
-   /**
+   /*
     *   use ropejoint formula
     */
    _solveConstraints(level) {

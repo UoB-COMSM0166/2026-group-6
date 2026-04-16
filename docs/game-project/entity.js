@@ -16,7 +16,7 @@ class Entity {
       // state
       this.active = true;
 
-      // LDtk  __identifier
+      // LDtk __identifier
       this.type = spawnData.identifier || 'Entity';
 
       // color in LDtk

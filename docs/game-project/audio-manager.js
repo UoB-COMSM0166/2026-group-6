@@ -1,12 +1,12 @@
 class AudioManager {
   constructor(resources) {
     this.resources = resources; 
-    //primary status
+    // primary status
     this.state = {
       bgm: { volume: 0.6, isMuted: false },    
       sfx: { volume: 1.0, isMuted: false }     
     };
-    //init audiovolumes
+    // init audiovolumes
     this.initAudioVolumes();
   }
 
@@ -117,7 +117,6 @@ class AudioManager {
       this._setSfxVolumeTo(sfxKeys, this.state.sfx.volume);
     }
     // silent
-    //修改此处，不静音BGM
     const muteAllSfx = (obj) => {
       Object.keys(obj).forEach(key => {
         //all

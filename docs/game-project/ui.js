@@ -36,7 +36,7 @@ class UI {
       textSize(28);
       textAlign(LEFT, TOP);
 
-      // ── HP Bar ──
+      // HP Bar
       let hpBarWidth = 100;
       hpBarWidth = hpBarWidth * player.maxHp / GameConfig.Player.MAX_HP;
       this._drawBar(
@@ -49,7 +49,7 @@ class UI {
          player.hp + " / " + player.maxHp
       );
 
-      // ── CleanEnergy Bar ──
+      // CleanEnergy Bar
       let currentEnergy = player.cleanEnergy;
       let maxEnergy = GameConfig.Player.MAXCleanEnergy;
       let logRatio = (currentEnergy > 0) ? Math.log(1 + currentEnergy / maxEnergy) / Math.log(2) : 0;

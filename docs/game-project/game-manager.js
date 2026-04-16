@@ -278,7 +278,7 @@ class GameManager {
       }
       const ab = this._areaBoundsCache;
 
-      // --- Absolute world coordinates of the camera center ---
+      // Absolute world coordinates of the camera center
       const camAbsX = this.level.worldX + this.camera.x + viewW / 2;
       const camAbsY = this.level.worldY + this.camera.y + viewH / 2;
 
@@ -286,18 +286,18 @@ class GameManager {
       const dx = camAbsX - ab.cx;
       const dy = camAbsY - ab.cy;
 
-      // --- Parallax factors for each layer: Far → Near ---
+      // Parallax factors for each layer: Far → Near
       // factor = 0: Static (at infinity), does not move with camera
       // factor = 1: Fully follows the camera (no parallax)
       const factors = layers.map((_, i) =>
          0.05 + i * (0.85 / Math.max(1, layers.length - 1))
       );
 
-      // --- Viewport boundaries (Local level coordinates) ---
+      // Viewport boundaries (level coordinates)
       const vl = this.camera.x;
       const vt = this.camera.y;
 
-      // --- Draw layers sequentially (Back to Front) ---
+      // Draw layers sequentially (Back to Front)
       for (let i = 0; i < layers.length; i++) {
          const img = layers[i];
          if (!img) continue;
@@ -314,7 +314,7 @@ class GameManager {
          const layerLocalCX = layerAbsCX - this.level.worldX;
          const layerLocalCY = layerAbsCY - this.level.worldY;
 
-         // --- Scaling: Ensure coverage of viewport + max parallax shift ---
+         // Scaling: Ensure coverage of viewport + max parallax shift
          // Max shift = Area half-width/height × (1-f)
          const maxShiftX = (ab.w / 2) * (1 - f);
          const maxShiftY = (ab.h / 2) * (1 - f);
@@ -335,7 +335,7 @@ class GameManager {
          const bx = layerLocalCX - sw / 2;
          const by = layerLocalCY - sh / 2;
 
-         // --- Check if a single image covers the viewport; if not, enable tiling ---
+         // Check if a single image covers the viewport; if not, enable tiling
          if (bx <= vl && bx + sw >= vl + viewW &&
             by <= vt && by + sh >= vt + viewH) {
             // Single instance is sufficient
@@ -368,7 +368,7 @@ class GameManager {
    onKeyPressed(key) {
       if (this.status === "PLAY") {
          if (key === ' ' || key === 'ArrowUp' || key === 'w' || key === 'W') this.player.jump();
-         
+
          if (key === 'C' || key === 'c') {
             this.player.resourcePanel.toggle();
          }
@@ -393,9 +393,7 @@ class GameManager {
    _updateEntities() {
       for (let i = this.entities.length - 1; i >= 0; i--) {
          let ent = this.entities[i];
-         // Pass "this" (the GameManager itself) to entities so the Boss can access the player's coordinates
          ent.update(this.level, this);
-
 
          if (!ent || ent.active === false) continue;
          if (typeof ent.updateWithGM === "function") {
@@ -425,11 +423,6 @@ class GameManager {
    /**
     * Detects if the player has reached the map boundary and if a neighboring level exists.
     * If so, switches to the adjacent level and repositions the player.
-    *
-    * Workflow:
-    * 1. LevelManager.checkEdgeTransition() detects the edge, finds the neighbor, and maps coordinates.
-    * 2. Preserve player velocity (to maintain movement momentum/inertia).
-    * 3. loadLevel(transition) loads the new level while maintaining the player's state.
     */
    _checkTeleport() {
       if (!this.pendingTeleport) return;
@@ -500,10 +493,10 @@ class GameManager {
       if (this.player.hp <= 0) this.player.die(this);
    }
 
-   /**
-       * Calculate the purification percentage progress of the current Area (which contains multiple Levels)
-       * Weight rules is in config
-       */
+   /*
+   * Calculate the purification percentage progress of the current Area (which contains multiple Levels)
+   * Weight rules is in config
+   */
    getAreaProgress(areaNumber) {
       let ldtk = this.resources.ldtkData;
       if (!ldtk || !ldtk.levels || !this.level) return 0;
