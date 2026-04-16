@@ -42,9 +42,9 @@ class Painting extends Entity {
       this._playerNearby = false;
    }
 
-   display() {
+   display(level, gm) {
       this._drawFrame();
-      super.display();
+      super.display(level, gm);
    }
 
    _drawFrame() {

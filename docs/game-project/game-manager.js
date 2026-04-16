@@ -198,7 +198,7 @@ class GameManager {
       this.level.draw(this.resources.tilesetImage);
 
       // entity
-      for (let ent of this.entities) ent.display(this.level, gm);
+      for (let ent of this.entities) ent.display(this.level, this);
       for (let p of this.particles) p.display();
       this.player.ropeL.display(this.player);
       this.player.ropeR.display(this.player);
