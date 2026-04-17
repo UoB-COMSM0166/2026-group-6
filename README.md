@@ -840,9 +840,7 @@ In terms of tools, we used **VS Code** to run the project code based on p5.js, a
 
 # 7. Process 
 
-- Teamwork. How did you work together, what tools and methods did you use? Did you define team roles? Reflection on how you worked together. Be honest, we want to hear about what didn't work as well as what did work, and importantly how your team adapted throughout the project.
-
-This section describes the development process of our game. In this project, we adopted an **Agile development approach** to organise team collaboration and project development. The game was gradually improved through **iterative development**, while tasks and development progress were managed using a **Jira Kanban board**. During development, the design was continuously adjusted based on feedback from testing.
+In this project, we adopted an **Agile development approach** to organise team collaboration and project development. The game was gradually improved through **iterative development**, while tasks and development progress were managed using a **Jira Kanban board**. During development, the design was continuously adjusted based on feedback from testing.
 
 ## Teamwork
 
@@ -886,6 +884,30 @@ In addition, while collaborating through GitHub, the team occasionally encounter
 Overall, through the use of **Agile development practices and Kanban-based task management**, the team was able to organise development activities effectively and successfully implement the main features of the game.
 
 # 8. Sustainability
+
+## Sustainability Awareness Framework (SusAF)
+
+One of the core mechanisms of our game is the restoration of the ecosystem, which means that when the purification progress reaches a certain fixed value, the environment will change. This mechanism can directly demonstrate the consequences of environmental pollution and connect the game with real-world issues. This also demonstrates the concern of our group for sustainability. Based on the lecture, we used the Sustainability Awareness Framework (SusAF) to analyze the sustainability impact of our game.
+
+At the individual level, our game enables players to intuitively understand the significance of practical actions in restoring the environment. In the game, pollution is not merely a simple background element. It actually has a direct impact on the game world, and players can change this world through the game's purification mechanism. This gameplay design establishes a clear causal relationship between pollution and restoration. When the player cleans up the pollution source, the environment will change. Therefore, players are not merely reading about environmental concepts; instead, they are experiencing them firsthand during the game. This makes "environmental responsibility" more concrete. At the same time, players have a high degree of autonomy in the game. For instance, players can choose to purify or not to purify the pollution sources, and the progress of the area's purification will determine the course of the game. This ensures that the player's actions will receive immediate feedback within the game, enabling them to realize that as long as they keep making efforts, it is possible to restore the environment. In this way, the game plays a role at the individual level of sustainability, encouraging players to reflect on their own role in environmental protection.
+
+From a technical perspective, the game incorporates systems that support these sustainable development goals. The continuous state of the world and the purification process enable the environmental changes to be recorded, making the progress of purification visible. The system world supports long-term expansion and is highly maintainable, which is of great significance for the continuous development of future games. Considering that the sustainability of the software is closely related to the maintainability of the system and its long-term evolution. Therefore, this design enables our game to continue adding new levels, new mechanics and subsequent updates in the future without altering the overall structure.
+
+<p align="center">
+  <img src="resources/images/Sustainability_Awareness_Framework.png" width="65%"/>
+</p>
+
+<p align="center">
+  <b>Figure 14.</b> Sustainability Awareness Framework
+</p>
+
+
+## Ethics and Accessibility
+
+From an ethical perspective, our game design ensures that players do not resort to violent destruction of creatures just for the sake of rewards. Instead, it chose to target the sources of pollution and the core of the problem. This aligns with the core concept of the game, which is "repairing" rather than "violence". This design also aligns the players' actions with the theme of ecological restoration. At the same time, in the process of designing the game, we also avoided treating the restoration of the environment as a simple problem that could be solved with just one action. The closure of the route and the difficulties encountered in purifying the pollution sources all indicate that environmental restoration is a gradual process that depends on continuous efforts.
+
+In terms of accessibility, our current implementation already includes several features. difficulty selection, language switching, as well as control over background music and sound effects. These choices have lowered the entry barrier for new players and are suitable for various types of players.However, there are still areas where the accessibility of our game needs improvement. Some of the core mechanisms in the game, such as rope control and combat, require the simultaneous use of a mouse and keyboard. This might cause difficulties for players who are not familiar with platform games to operate the game. In the future, we will add clearer text labels, more simplified teaching procedures and re-mappable keys. Since accessibility is also a part of ethical software design, we hope that more people will be able to come into contact with and experience this game.
+
 
 
 # 9. Conclusion
