@@ -951,31 +951,12 @@ Use AI to provide partial ideas for some game logic (e.g. enemy movement logic a
 
 ## **Use Case Specification**
 
-**System:** *Echoes of Purity*
-
 ### **UC-01: Explore Polluted Area**
-
-**Primary Actor**  
-Player  
 
 **Goal**  
 Allow the player to explore interconnected areas of the game world and discover polluted zones that require purification.
 
-**Stakeholders**
-
-- Player – wants to explore the world and access new areas.
-- Game system – maintains world state, environment loading, and player position.
-
-**Preconditions**
-
-1. The game session has started or a saved game has been loaded.
-2. The player character is present in a playable area of the map.
-
-**Trigger**
-
-The player provides keyboard controls to move the character.
-
-**Main Success Scenario**
+**Basic Flow**
 
 1. The player moves the character using directional controls.
 2. The game system updates the character’s position in the current area.
@@ -983,48 +964,27 @@ The player provides keyboard controls to move the character.
 4. When the player reaches the boundary of a connected area, the system loads the next area.
 5. The player continues exploration within the new area.
 
-**Alternative Flows**
+**Alternative Flow**
 
-**A1 – Area Locked by Pollution**
+**Area Locked by Pollution**
 
 1. The player reaches a blocked passage or polluted gate.
 2. The system checks purification progress.
 3. If the purification progress does not meet the required standard, then it is impossible to explore the next area.
 
-**A2 – Player Falls or Cannot Reach Platform**
+**Player Falls or Cannot Reach Platform**
 
 1. The player tries to get through this section but cannot.
 2. The character returns to the accessible platform.
 3. The player continues to explore.
 
-**Postconditions**
-
-- The player may discover polluted entities, purification cores, or new traversal paths.
-- The current world state and player position are updated.
 
 ### **UC-02: Purify Pollution Entities**
-
-**Primary Actor**  
-Player  
 
 **Goal**  
 Allow players to eliminate enemies and purify purification cores to improve the environmental purification process.
 
-**Stakeholders**
-
-- Player – wants to restore the environment and progress through the game.
-- Game system – tracks pollution entities and purification progress.
-
-**Preconditions**
-
-1. The player is near the polluted entity.
-2. The player has sufficient purification energy.
-
-**Trigger**
-
-The player attempts to purify pollution target.
-
-**Main Success Scenario**
+**Basic Flow**
 
 1. The player discovers pollution core or enemies.
 2. The player uses ropes to purify pollution core or enemies.
@@ -1033,24 +993,20 @@ The player attempts to purify pollution target.
 5. The global purification progress value increases.
 6. The game provides visual and/or audio feedback to show the purification result.
 
-**Alternative Flows**
+**Alternative Flow**
 
-**A1 – Target Out of Range**
+**Target Out of Range**
 
 1. The player attempts to purify the pollution core or enemy.
 2. The rope failed to detect the target.
 3. The action fails and no purification occurs.
 
-**A2 – Interrupted Purification**
+**Interrupted Purification**
 
 1. The player begins purification.
 2. The player moves away or stops the action.
 3. The purification process is cancelled.
 
-**Postconditions**
-
-- The polluted entity or core is removed or transformed.
-- The world’s purification progress is updated.
 
 
  # 13. References
