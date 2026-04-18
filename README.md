@@ -840,48 +840,49 @@ In terms of tools, we used **VS Code** to run the project code based on p5.js, a
 
 # 7. Process 
 
-In this project, we adopted an **Agile development approach** to organise team collaboration and project development. The game was gradually improved through **iterative development**, while tasks and development progress were managed using a **Jira Kanban board**. During development, the design was continuously adjusted based on feedback from testing.
-
 ## Teamwork
 
-At the beginning of the project, each team member proposed a game idea. After discussion, the final idea was selected through a group vote.
+We adopt an iterative and incremental development based on Kanban and Scrum in Agile. At the beginning of the process, we always discuss our ideas after class. In addition, we divided roles according to those areas we preferred (such as testing, UI, as shown in the table earlier). Following the Agile philosophy, on which days with classes, Scrum Master Ruomu Lu organized everyone to hold stand-up meetings (basically 3 or 4 times a week). Usually, we discussed the progress of the previous week on Monday; then, on Tuesday of each week (after the lab class of this course), Program Owner Yifei Niu determines our goals for this week and assigns new tasks. She also put those tasks on our Jira Kanban board. At meetings on Thursday, we usually discuss challenges we encountered, which also avoids a large amount of work piling up on the day before delivery.
 
-To ensure smooth development, the team maintained a weekly routine:
+We divided the development process into three sprint phases based on the course schedule.
 
-- **Monday** – Review the progress of the previous week's tasks  
-- **Tuesday** – Determine the goals for the current week and assign new tasks  
-- **Thursday** – Discuss difficulties encountered during implementation and attempt to resolve them  
-- **Friday–Sunday** – Focus on completing the assigned tasks  
+| Sprint  | Time       | Goal |
+|---------|------------|------|
+| Sprint 1 | Week 3–6  | Generate the first version of the demo (one difficulty level) |
+| Sprint 2 | Week 7–8  | Add two difficulty levels and expand functionality |
+| Sprint 3 | Week 9–10 | Improve the UI system and enhance user experience |
 
-During the early stage of the project, the team discussed and determined the overall concept of the game and gradually formed the core functional requirements, such as the **rope interaction system**, **pollution purification mechanics**, and **level exploration**. These features were discussed collectively, and the game design was gradually refined through continuous discussion.
+During the sprint review, we check if the functions meet their Acceptance Criteria. If there exist functions that need to be improved, we add them to the Product Backlog and continue to refine it in the next sprint. After that, we reflect on our workflow during the sprint retrospective. In the later stage of development, we no longer strictly obey the initial division of responsibilities in the development field. This is mainly because we want to make sure everyone participates in programming as much as possible.
 
-Throughout the development process, the team followed an **iterative development approach** to progressively implement the game system. As the project progressed, new features and improvements were continuously added to the development plan, allowing the game system to gradually evolve and improve.
+##tools
 
-## Tools and Methods
+Here are some of the tools we used:
+**Jira**
+We use it as a Kanban board to manage tasks, it allows us to organise work into 3 stages
+**Wechat**
+Used for group communication.
+**GitHub**
+Used for version control.
+**LDTK**
+LDtk is used for map design. The reason why we use it is not only because it exchanges map and level as a JSON file, but also since the visual editor totally improves our efficiency. Additionally, we defined entities with specific attributes(such as pollution core and door) within LDtk.
 
-During the development process, we adopted an **Agile development approach** to organise the project workflow.
+##Reflection
 
-Specifically, the development process was divided into multiple development cycles. In each cycle, the team discussed the features that needed to be implemented and assigned tasks to different members. Each member then worked on their respective functional modules, such as gameplay mechanics, level structures, or user interface components. After implementation, the team conducted testing and discussions, and the system was improved based on the feedback obtained.
+###Demand Conflicts and Design Complexity
 
-To manage development tasks more effectively, we used a **Jira Kanban board** to track project progress. The board divided tasks into several stages:
+At the beginning of the process, each of us had many different ideas, which always conflicted with each other. And some of them were hard to implement. To prevent becoming too complex or delayed, we prioritised the tasks and implemented the necessary functions first. We also made prototypes to verify our ideas, and many ideas were discarded naturally in this section.
 
-- **To Do** – Tasks that need to be completed  
-- **In Progress** – Tasks currently being developed  
-- **Done** – Tasks that have been completed and tested  
+During the evaluation stage, we used many quantitative and qualitative methods, especially the think-aloud method, which allowed us to eliminate many complex functions, and then we simplified the gameplay of the game a lot. For example, in the first version, the red and blue ropes were separately extended by Q and E; shortened using Z and C; change between hard and soft modes of the ropes by 1 and 2. Additionally, players should use the mouse to control the direction of the ropes, and the left and right mouse buttons to control which rope to launch!!! (I’m exhausted just writing this sentence) Not to mention that we also developed a series of super fun but super difficult functions based on ropes, including climbing walls and doing a pole vault with a hard rope. Obviously, hardly anyone who participated in the testathon can learn those operations in a short time(even a long time). After that, we gave up the function of switching the hardness of the ropes, and for the length of the ropes, it was only controlled using the mouse wheel.
 
-This visual task management approach allowed the team to clearly understand the current state of the project and ensured that all members were aware of the development progress.
+Overall, we learned the importance of prioritising simplicity in design. While complex mechanics may seem appealing at first, they could decrease usability. We also realised the value of early user testing, as it helped us identify issues that were not obvious during development. This reflects key principles in both HCI and Agile development, particularly the importance of user-centred design, simplicity, and responding to feedback through iterative improvement.
 
-In addition, we used **GitHub** for code management and version control. Team members developed different modules independently and regularly pushed their code to the repository. This allowed the team to gradually integrate different parts of the system while maintaining code consistency.
+###Merge Conflicts
 
-We also used **Visual Studio Code** as the main development environment and **LDtk** for map and level design.
+During the early stage, merge conflicts several times, mainly because we had several people modifying the same file or even the same function simultaneously. To solve this problem, we detailed the task allocation and introduced the pull request process. Members who modified the code worked on separate branches, and our coder, Ruomu Lu, conducted code review before merging.
 
-## Reflection
+###Critical Reflection
 
-During the development process, the team encountered several challenges. For example, in the early stage of the project, the responsibilities for some tasks were not clearly defined, which led to multiple members attempting to implement the same functionality simultaneously. To address this issue, the team later clarified task ownership and used the Kanban board more effectively to track task status.
-
-In addition, while collaborating through GitHub, the team occasionally encountered **merge conflicts**. By synchronising the repository more frequently and communicating changes in advance, these issues were gradually reduced.
-
-Overall, through the use of **Agile development practices and Kanban-based task management**, the team was able to organise development activities effectively and successfully implement the main features of the game.
+Our team’s development approach gradually grew from a relatively loosely organised state to one with more standardised processes and a Scrum framework. If we were to start this project again, we would aim to follow Scrum more consistently. And we would also use more quantitative methods to monitor the process.
 
 # 8. Sustainability
 
