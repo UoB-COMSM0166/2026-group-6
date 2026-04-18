@@ -16,6 +16,7 @@ class ResourceManager {
       // Resource Dictionaries
       this.images = {};
       this.data = {};
+      this.data.enemyConfigs = {};
       this.fonts = {};
       this.sounds = {
          rope: {},
@@ -50,6 +51,8 @@ class ResourceManager {
       this.data.ldtk.medium = loadJSON('map/map-normal.ldtk');
       this.data.ldtk.hard = loadJSON('map/map-main.ldtk');
       this.data.currentLdtk = this.data.ldtk.easy;
+      this.data.enemyConfigs.cat = loadJSON('resources/data/enemies/enemy-cat.json');
+      this.data.enemyConfigs.bat = loadJSON('resources/data/enemies/enemy-bat.json');
       this.fonts.main = loadFont('resources/fonts/monogram.ttf');
 
       // --- Global Image Assets ---
@@ -98,6 +101,13 @@ class ResourceManager {
          walk: loadImage('resources/images/enemy/Monster_Slime_Walk-Sheet.png'),
          attack: loadImage('resources/images/enemy/Monster_Slime_Attack1-Sheet.png'),
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
+      };
+      this.images.enemy.cat = {
+         full: loadImage('resources/images/enemy/cat-full.png')
+      };
+      this.images.enemy.bat = {
+         idle: loadImage('resources/images/enemy/bat-full.png'),
+         fly: loadImage('resources/images/enemy/bat-fly.png')
       };
 
       // --- Boss Assets ---

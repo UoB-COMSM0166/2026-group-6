@@ -1,0 +1,40 @@
+{
+  "id": "enemy-bat",
+  "type": "bat",
+  "movement": {
+    "kind": "flying",
+    "speed": 0.46,
+    "verticalSpeed": 0.24,
+    "chaseRange": 120,
+    "hoverAmplitude": 6,
+    "hoverSpeed": 0.08
+  },
+  "combat": {
+    "attackCooldown": 18
+  },
+  "animation": {
+    "frameWidth": 394,
+    "frameHeight": 394,
+    "frameDelay": 5,
+    "states": {
+      "IDLE": {
+        "sheet": "idle",
+        "row": 0,
+        "frames": 9,
+        "draw": { "w": 26, "h": 18, "anchor": "center" }
+      },
+      "FLY": {
+        "sheet": "fly",
+        "row": 0,
+        "frames": 9,
+        "draw": { "w": 30, "h": 22, "anchor": "center" }
+      },
+      "ATTACK": {
+        "sheet": "fly",
+        "row": 1,
+        "frames": 9,
+        "draw": { "w": 34, "h": 24, "anchor": "center" }
+      }
+    }
+  }
+}

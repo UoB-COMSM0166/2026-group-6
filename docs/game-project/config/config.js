@@ -44,6 +44,8 @@ const GameConfig = {
 
    Entity: {
       Enemy: "Enemy",
+      EnemyCat: "EnemyCat",
+      EnemyBat: "EnemyBat",
       PlayerStart: "Player_start", // only one in the world
       PollutionCore: "Pollution_Core",
       Tool: "Tools",

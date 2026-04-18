@@ -1,0 +1,40 @@
+{
+  "id": "enemy-cat",
+  "type": "cat",
+  "movement": {
+    "kind": "ground",
+    "speed": 0.55,
+    "chaseSpeed": 0.82,
+    "jumpForce": 3.8,
+    "chaseRange": 88,
+    "verticalAwareness": 48
+  },
+  "combat": {
+    "attackCooldown": 24
+  },
+  "animation": {
+    "frameWidth": 847,
+    "frameHeight": 412,
+    "frameDelay": 6,
+    "states": {
+      "WALK": {
+        "sheet": "full",
+        "row": 0,
+        "frames": 4,
+        "draw": { "w": 28, "h": 20, "anchor": "ground" }
+      },
+      "RUN": {
+        "sheet": "full",
+        "row": 1,
+        "frames": 4,
+        "draw": { "w": 32, "h": 22, "anchor": "ground" }
+      },
+      "ATTACK": {
+        "sheet": "full",
+        "row": 2,
+        "frames": 4,
+        "draw": { "w": 36, "h": 24, "anchor": "ground" }
+      }
+    }
+  }
+}

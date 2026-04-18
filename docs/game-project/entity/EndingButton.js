@@ -1,7 +1,7 @@
 class EndingButton extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
-      this.dialogText = "start to leave earth";
+      this.dialogText = this._getEndingText('prompt');
       this._playerNearby = false;
    }
 
@@ -26,17 +26,43 @@ class EndingButton extends Entity {
    }
 
    _endding1(gm) {
-      this.dialogText = "You have almost cleared all the pollution. \n, do you still have any nostalgia for the \npast environment? Stay and continue to \npurify the world.";
+      this.dialogText = this._getEndingText('stay');
       if (!this.dialogOpen) this.dialogOpen = true;
    }
 
    _endding2(gm) {
-      this.dialogText = "Good! There are also some pollution but \nlet us shoot to the space now.";
+      this.dialogText = this._getEndingText('leave');
       if (!this.dialogOpen) this.dialogOpen = true;
    }
 
    _endding3(gm) {
-      this.dialogText = "Start to leave earth!";
+      this.dialogText = this._getEndingText('launch');
       if (!this.dialogOpen) this.dialogOpen = true;
+   }
+
+   _getEndingText(mode) {
+      if (typeof t !== 'function') {
+         return "Start to leave Earth!";
+      }
+
+      switch (mode) {
+         case 'stay':
+            return [
+               t('dialogue.ending.stay.0'),
+               t('dialogue.ending.stay.1'),
+               t('dialogue.ending.stay.2'),
+               t('dialogue.ending.stay.3'),
+            ].join('\n');
+         case 'leave':
+            return [
+               t('dialogue.ending.leave.0'),
+               t('dialogue.ending.leave.1'),
+            ].join('\n');
+         case 'prompt':
+            return t('dialogue.ending.prompt');
+         case 'launch':
+         default:
+            return t('dialogue.ending.launch');
+      }
    }
 }

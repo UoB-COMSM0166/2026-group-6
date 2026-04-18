@@ -4,11 +4,12 @@ class Button extends Entity {
 
     this.iid = spawnData.iid || null;
     this.pressed = false;
-    this.dialogText = "This button has \nalready opened \na door.";
+    this.dialogText = this._getOpenedDoorText();
     this.sprite = resources.images.button;
   }
 
   onPlayerContact(player, gm) {
+    this.dialogText = this._getOpenedDoorText();
     if (this.pressed) {
       this.dialogOpen = true;
       this._playerNearby = true;
@@ -29,6 +30,7 @@ class Button extends Entity {
   }
 
   update(level) {
+    this.dialogText = this._getOpenedDoorText();
     // close the dialog box
     if (!this._playerNearby && this.dialogOpen) {
       this.dialogOpen = false;
@@ -51,5 +53,17 @@ class Button extends Entity {
       return true;
     }
     return false;
+  }
+
+  _getOpenedDoorText() {
+    if (typeof t !== 'function') {
+      return "This button has \nalready opened \na door.";
+    }
+
+    return [
+      t('dialogue.buttonOpened.0'),
+      t('dialogue.buttonOpened.1'),
+      t('dialogue.buttonOpened.2'),
+    ].join('\n');
   }
 }

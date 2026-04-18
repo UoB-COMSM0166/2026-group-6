@@ -468,11 +468,12 @@ class LevelManager {
          if (entity.__identifier === GameConfig.Entity.PlayerStart) {
             this.playerStart = { x: spawn.x, y: spawn.y };
          }
-         else if (entity.__identifier === GameConfig.Entity.Enemy) {
+         else if (this._isEnemyEntity(entity.__identifier)) {
             let hpField = entity.fieldInstances.find(f => f.__identifier === "hp");
             let dmgField = entity.fieldInstances.find(f => f.__identifier === "damage");
             if (hpField) spawn.hp = hpField.__value;
             if (dmgField) spawn.damage = dmgField.__value;
+            spawn.enemyType = this._resolveEnemyType(entity);
             this.enemySpawns.push(spawn);
          }
          else {
@@ -538,6 +539,29 @@ class LevelManager {
          color: entity.__smartColor || '#FF00FF',
          fields,
       };
+   }
+
+   _isEnemyEntity(identifier) {
+      const normalized = String(identifier || '').toLowerCase();
+      return normalized === String(GameConfig.Entity.Enemy).toLowerCase()
+         || normalized === String(GameConfig.Entity.EnemyCat).toLowerCase()
+         || normalized === String(GameConfig.Entity.EnemyBat).toLowerCase()
+         || normalized === 'enemy-cat'
+         || normalized === 'enemy_bat'
+         || normalized === 'enemy-bat'
+         || normalized === 'enemycat';
+   }
+
+   _resolveEnemyType(entity) {
+      const explicitType = entity.fieldInstances.find((field) => field.__identifier === 'enemyType')?.__value;
+      if (typeof explicitType === 'string' && explicitType.trim()) {
+         return explicitType.trim().toLowerCase();
+      }
+
+      const normalized = String(entity.__identifier || '').toLowerCase();
+      if (normalized.includes('cat')) return 'cat';
+      if (normalized.includes('bat')) return 'bat';
+      return 'slime';
    }
 
    _buildIntGridLookup(ldtkData, layerName) {

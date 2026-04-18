@@ -1,21 +1,21 @@
 class Painting extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
-      const dialogPool = [
-         "The sky was once\nthis clear every day.",
-         "A world without smog.\nWas it ever real?",
-         "Look at those trees.\nSo alive, so green.",
-         "The air in this painting\nfeels clean. I miss that.",
-         "Nature in its purest form.\nWe almost lost it all.",
-         "Such stillness.\nNo pollution, no monster.",
-         "The painter must have\nloved this world deeply.",
-         "Every leaf, every wave—\nperfect as they are.",
-         "If only we could\nstep inside this world.",
-         "The light here is warm.\nNot filtered through dust.",
-         "Somewhere, this place\nstill exists. Maybe.",
-         "The scenery in the past, \nit was really beautiful!",
-      ];
-      this.dialogText = random(dialogPool);
+      this.dialogKey = random([
+         'dialogue.paintings.sky',
+         'dialogue.paintings.smog',
+         'dialogue.paintings.trees',
+         'dialogue.paintings.cleanAir',
+         'dialogue.paintings.nature',
+         'dialogue.paintings.stillness',
+         'dialogue.paintings.painter',
+         'dialogue.paintings.leaves',
+         'dialogue.paintings.stepInside',
+         'dialogue.paintings.light',
+         'dialogue.paintings.somewhere',
+         'dialogue.paintings.scenery',
+      ]);
+      this.dialogText = this._getLocalizedDialog();
       this.sprite = random(resources.images.painting.paintings);
 
       this.dialogOpen = false;
@@ -35,6 +35,7 @@ class Painting extends Entity {
    }
 
    update(level) {
+      this.dialogText = this._getLocalizedDialog();
       if (!this._playerNearby && this.dialogOpen) {
          this.dialogOpen = false;
       }
@@ -76,5 +77,16 @@ class Painting extends Entity {
       rect(fx + fw - cs, fy, cs, cs);
       rect(fx, fy + fh - cs, cs, cs);
       rect(fx + fw - cs, fy + fh - cs, cs, cs);
+   }
+
+   _getLocalizedDialog() {
+      if (typeof t !== 'function' || !this.dialogKey) {
+         return "The sky was once\nthis clear every day.";
+      }
+
+      return [
+         t(`${this.dialogKey}.0`),
+         t(`${this.dialogKey}.1`)
+      ].join('\n');
    }
 }
