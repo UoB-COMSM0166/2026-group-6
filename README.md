@@ -854,21 +854,25 @@ We divided the development process into three sprint phases based on the course 
 
 During the sprint review, we check if the functions meet their Acceptance Criteria. If there exist functions that need to be improved, we add them to the Product Backlog and continue to refine it in the next sprint. After that, we reflect on our workflow during the sprint retrospective. In the later stage of development, we no longer strictly obey the initial division of responsibilities in the development field. This is mainly because we want to make sure everyone participates in programming as much as possible.
 
-##tools
+## tools
 
 Here are some of the tools we used:
-**Jira**
+
+- **Jira**
 We use it as a Kanban board to manage tasks, it allows us to organise work into 3 stages
-**Wechat**
+
+- **Wechat**
 Used for group communication.
-**GitHub**
+
+- **GitHub**
 Used for version control.
-**LDTK**
+
+- **LDTK**
 LDtk is used for map design. The reason why we use it is not only because it exchanges map and level as a JSON file, but also since the visual editor totally improves our efficiency. Additionally, we defined entities with specific attributes(such as pollution core and door) within LDtk.
 
-##Reflection
+## Reflection
 
-###Demand Conflicts and Design Complexity
+### Demand Conflicts and Design Complexity
 
 At the beginning of the process, each of us had many different ideas, which always conflicted with each other. And some of them were hard to implement. To prevent becoming too complex or delayed, we prioritised the tasks and implemented the necessary functions first. We also made prototypes to verify our ideas, and many ideas were discarded naturally in this section.
 
@@ -876,11 +880,11 @@ During the evaluation stage, we used many quantitative and qualitative methods, 
 
 Overall, we learned the importance of prioritising simplicity in design. While complex mechanics may seem appealing at first, they could decrease usability. We also realised the value of early user testing, as it helped us identify issues that were not obvious during development. This reflects key principles in both HCI and Agile development, particularly the importance of user-centred design, simplicity, and responding to feedback through iterative improvement.
 
-###Merge Conflicts
+### Merge Conflicts
 
 During the early stage, merge conflicts several times, mainly because we had several people modifying the same file or even the same function simultaneously. To solve this problem, we detailed the task allocation and introduced the pull request process. Members who modified the code worked on separate branches, and our coder, Ruomu Lu, conducted code review before merging.
 
-###Critical Reflection
+### Critical Reflection
 
 Our team’s development approach gradually grew from a relatively loosely organised state to one with more standardised processes and a Scrum framework. If we were to start this project again, we would aim to follow Scrum more consistently. And we would also use more quantitative methods to monitor the process.
 
