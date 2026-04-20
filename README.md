@@ -81,6 +81,12 @@ The game is set on an alien planet on the verge of collapse due to long-term pol
 The twist of this game lies in the combination of its "dynamic ecological feedback system" and the progress mechanism. As players advance through levels and complete purification objectives, the planet’s environmental structure, accessible routes, and ecological conditions gradually evolve visually (Figure 1). These visual changes better reflect the impact that players have on the world and echoe the concept of sustainable development in reality to a certain extent.
 
 Under this system, players do not need to completely remove pollution. When the purification value of a certain area reaches 75%, they can enter the next area and the ecosystem has been restored (Figure 1). However, the unpurified part will continue to affect the overall ecological state and will eventually be reflected in the outcome of the planet. This makes the game form a tension between "efficiency promotion" and "thorough purification" - every player's choice not only affects the progress of the level, but also constantly shapes the final form of the planet.
+<p align="center">
+  <img src="resources/images/intro.jpg"/>
+</p>
+<p align="center">
+  <b>Figure 1.</b> Ecological restoration after reaching 75% purification (left: before, right: after).
+</p>
 
 # 2. Game Content
 
@@ -185,7 +191,7 @@ Under this system, players do not need to completely remove pollution. When the 
 </p>
 
 <p align="center">
-<b>Figure 1.</b> Ideation process for the design of <i>Echoes of Purity</i>.
+<b>Figure 2.</b> Ideation process for the design of <i>Echoes of Purity</i>.
 </p>
 
 In the early stage of the project, we explored game ideas through team brainstorming sessions. Each member first independently proposed a game concept, and then organized these initial ideas in the *gamelist* file of the project repository. This file was used to record different game types, core mechanisms, and potential design directions. By discussing and comparing these ideas, we found that the team members' interests mainly focused on game types that were more exploratory and had a non-linear structure, such as **Metroidvania**. Therefore, during the team discussions in the second and third weeks, we gradually narrowed down the creative direction. We decided to position the project as a non-linear 2D side-scrolling platform game. Players can freely explore different areas and advance the game by gradually unlocking paths.
@@ -197,7 +203,7 @@ Based on the determination of the game type, we then delved into the themes that
 </p>
 
 <p align="center">
-  <b>Figure 2.</b> Paper Prototypin
+  <b>Figure 3.</b> Paper Prototypin
 </p>
 
 In the third-week lab session, we further explored and evaluated our concept by creating a paper prototype of the game. This method enables us to gather some feedback before the idea is implemented, and it can also further assist us in improving the design of the game. Through this prototype, we can gain a clear and intuitive understanding of the core gameplay process of the game, thereby deepening our comprehension of the player interaction process. This was helpful in guiding the subsequent design and development phases.
@@ -212,7 +218,7 @@ In order to better identify the stakeholders involved or affected by the game, w
 </p>
 
 <p align="center">
-  <b>Figure 3.</b> Stakeholder Onion Model
+  <b>Figure 4.</b> Stakeholder Onion Model
 </p>
 
 To structure our game requirements, we organised them using **epics, user stories, and acceptance criteria**, following the agile requirements format introduced in the lab and lecture.
@@ -290,7 +296,7 @@ In order to understand the players' behaviors in the game and the interaction be
 </p>
 
 <p align="center">
-  <b>Figure 4.</b> Use-Case Diagram
+  <b>Figure 5.</b> Use-Case Diagram
 </p>
 
 # 4. Design
@@ -304,7 +310,7 @@ We defined the core user requirements and designed the initial class diagram of 
   <img src="resources/images/Class_0221.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure 5.</b> Initial Class Diagram
+  <b>Figure 6.</b> Initial Class Diagram
 </p>
 
 Table 2 summarizes the main classes in the system and their responsibilities.
@@ -330,7 +336,7 @@ As game development progressed, we gradually added more features. To support the
   <img src="resources/images/Class_0305.png" width="80%"/>
 </p>
 <p align="center">
-  <b>Figure 6.</b> Final Class Diagram
+  <b>Figure 7.</b> Final Class Diagram
 </p>
 
 The main improvements to the system are reflected in the following three aspects.
@@ -342,25 +348,25 @@ Secondly, we have made the improvement upon the structure of `LevelManager`. The
 In the end, we have carried out a refactoring work on the interaction mechanism that exists between entities. In the beginning design stage, the interaction logic was mainly processed in a unified way by the `RopeHead`. In the final design, this middle structure has been got rid of, and the interactive logic was distributed by us to every entity class. When the rope has a contact occurrence with a object, the system directly carries out the call of that object's `onPlayerContact()` or `onRopeContact()` method for handling the concrete behavior. This method lets the interaction logic be more clear, and therefore it decreases system coupling degree.
 
 ## 4.4 Pollution Purification Sequence Diagram
-Figure 7 illustrates the sequence of interactions when the player uses the rope to purify a pollution core.
+Figure 8 illustrates the sequence of interactions when the player uses the rope to purify a pollution core.
 
 <p align="center">
   <img src="resources/images/Sequence_0305_1.png" width="70%"/>
 </p>
 <p align="center">
-  <b>Figure 7.</b> Rope Interaction and Pollution Purification
+  <b>Figure 8.</b> Rope Interaction and Pollution Purification
 </p>
 
 When a `Player` performs an input action, the `GameMnager` first receives the input event and triggers `fireRope()` method. Then the `Player` calls the rope's `fire()` method and launches the rope towards the target. In each frame update loop, the `GameManager` continuously calls the player's `update()` method, updating the rope's state. When the rope contacts an environmental object, the target object's `onRopeContact()` method is triggered. If it contacts a pollution core, a purification process begins: when the player's clean energy meets the condition (player.cleanEnergy ≥ purificationCost), the corresponding energys are consumed, and the `PollutionCore` executes `purifyPollution()` to update the state; otherwise, the system triggers insufficient energy logic and maintains the `PollutionCore's` current state.
 
 ## 4.5 Unlock New Area Sequence Diagram
-The sequence diagram (Figure 8) shows how the system determines whether to unlock new game areas based on the player's purification progress.
+The sequence diagram (Figure 9) shows how the system determines whether to unlock new game areas based on the player's purification progress.
 
 <p align="center">
   <img src="resources/images/Sequence_0305_2.png" width="45%"/>
 </p>
 <p align="center">
-  <b>Figure 8.</b> Unlock New Area
+  <b>Figure 9.</b> Unlock New Area
 </p>
 
 The`GameManager` calls player's `update()` method to refresh the player's state in each frame's update loop. At the same time, the system checks if the area unlocking conditions are met using the LevelManager's `checkUnlockCondition()` method. If the player's purification progress reaches the preset requirement (`purifiedProgress ≥ requiredProgress`), the system triggers `unlockNewArea()` to unlock a new area. The `GameManager` then loads the new level data and calls `loadNewArea()` to complete the area switch. After the new area is loaded, the system resets the player's position using `resetPosition()`, allowing the player to enter the new area. If the unlocking conditions are not met, no area switch is triggered, and the game loop continues.
@@ -380,7 +386,7 @@ Finally, we also implemented an area-level progress system. The `GameManager` wi
   <img src="resources/images/challenge1.png" alt="challenge1" width="600"/>
 </p>
 <p align="center">
-  <b>Figure 9.</b> Area progress is shared across levels
+  <b>Figure 10.</b> Area progress is shared across levels
 </p>
 
 ## Challenge 2:  Rope Mechanic Implementation
@@ -426,7 +432,7 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
   <img src="resources/gifs/figure10.gif" width="500">
 </p>
 <p align="center">
-  <b>Figure 10.</b> Rope anchored to geometry
+  <b>Figure 11.</b> Rope anchored to geometry
 </p>
 
 # 6. Evaluation
@@ -768,17 +774,17 @@ A total of 10 participants took part in the evaluation. Each participant played 
   <img src="resources/images/NASA TLX.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure 11.</b> Mean NASA TLX workload scores for the Easy and Hard difficulty levels
+  <b>Figure 12.</b> Mean NASA TLX workload scores for the Easy and Hard difficulty levels
 </p>
 
 <p align="center">
   <img src="resources/images/SUS.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure 12.</b> Mean SUS scores for the Easy and Hard difficulty levels
+  <b>Figure 13.</b> Mean SUS scores for the Easy and Hard difficulty levels
 </p>
 
-According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard (figure 12), suggesting slightly better usability for the Easy level.
+According to firgue 12, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard (Figure 13), suggesting slightly better usability for the Easy level.
 
 ### Statistical Analysis
 <p>
@@ -815,7 +821,15 @@ According to firgue 11, the mean NASA-TLX workload score was **4.57** for the Ea
 The Wilcoxon Signed-Rank Test results (Table 8) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
 
 ### Findings
-According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps. Now, easy mode reduced difficulty by removing more challenging maps. We have designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, players can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
+According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps. Now, easy mode reduced difficulty by removing more difficult maps. We have designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, we add a resource panel to view the player state (Figure 14). Player can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
+
+<p align="center">
+  <img src="resources/gifs/figure10.gif>
+</p>
+<p align="center">
+  <b>Figure 14.</b>Resource Panel
+</p>
+
 
 ## 6.3 How Code Was Tested
 During the game development process, we conducted continuous testing on various functional modules. Our testing methodology can be divided into two parts: **black-box testing** and **white-box testing**.
@@ -829,7 +843,7 @@ On another hand, **white-box testing** concentrates on checking the program's in
   <img src="resources/images/ExampleTest.png" width="100%"/>
 </p>
 <p align="center">
-  <b>Figure 13.</b> Player Damage and Invulnerability Logic
+  <b>Figure 15.</b> Player Damage and Invulnerability Logic
 </p>
 
 In terms of tools, we used **VS Code** to run the project code based on p5.js, and combined it with testing tools such as **Jest** and **Cypress** to further verify specific functions. Through black-box testing and white-box testing, we are able to ensure a smooth game experience and the correctness of the code logic.
