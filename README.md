@@ -74,17 +74,13 @@ https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
 - [13. References](#13-references)
 
 ## 1. Introduction
-
-Echoes of Purity is a structured non-linear 2D level game that combines side-scrolling platform jumping and lightweight role-playing elements. The core theme of the game is "purifying pollution and ecological restoration". Players will use the rope tool to enter the highly polluted area and gradually restore the planet's ecology. Different levels of purification completion will determine the future direction and the end of the world.
+Echoes of Purity is a structured non-linear 2D level game that combines side-scrolling platform jumping and lightweight role-playing elements. The game focuses on the core theme of the game is "purifying pollution and ecological restoration". 
 
 The game is set on an alien planet on the verge of collapse due to long-term pollution. After severe environmental imbalance, the planet’s native civilization entered a dormant state. The possibility of restoring the planet's ecosystem remains uncertain.Players will take on the role of an advanced artificial intelligence purification unit sent to the severely polluted planet. Using rope tools and cleaning energy, they will penetrate various highly polluted areas, purify contaminated organisms and the environment, and gradually restore the planet's ecosystem.
 
-As players advance through levels and complete purification objectives, the planet’s environmental structure, accessible routes, and ecological conditions gradually evolve. These changes reflect the impact that players have on the world and further reinforce the game's theme of "ecological restoration".
+The twist of this game lies in the combination of its "dynamic ecological feedback system" and the progress mechanism. As players advance through levels and complete purification objectives, the planet’s environmental structure, accessible routes, and ecological conditions gradually evolve visually (Figure 1). These visual changes better reflect the impact that players have on the world and echoe the concept of sustainable development in reality to a certain extent.
 
-The final outcome of the game will depend on the progress of purifying the world. In each area, there are many pollution cores and enemies. When the player successfully cleans up at least 75% of the pollution cores and enemies, they can meet the basic completion criteria for that area. If the player can purify all the contaminated cores and enemies, they will unlock the final outcome, symbolizing that the ecological environment has been completely restored.
-
-
-
+Under this system, players do not need to completely remove pollution. When the purification value of a certain area reaches 75%, they can enter the next area and the ecosystem has been restored (Figure 1). However, the unpurified part will continue to affect the overall ecological state and will eventually be reflected in the outcome of the planet. This makes the game form a tension between "efficiency promotion" and "thorough purification" - every player's choice not only affects the progress of the level, but also constantly shapes the final form of the planet.
 
 # 2. Game Content
 
