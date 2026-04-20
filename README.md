@@ -892,7 +892,7 @@ Our team’s development approach gradually grew from a relatively loosely organ
 
 ## Sustainability Awareness Framework (SusAF)
 
-One of the core mechanisms of our game is the restoration of the ecosystem, which means that when the purification progress reaches a certain fixed value, the environment will change. This mechanism can directly demonstrate the consequences of environmental pollution and connect the game with real-world issues. This also demonstrates the concern of our group for sustainability. To analyse the wider impact of our game, we used the Sustainability Awareness Framework (SusAF).
+One of the core mechanisms of our game is the restoration of the ecosystem, which means that when the purification progress reaches a certain fixed value, the environment will change. This mechanism can directly demonstrate the consequences of environmental pollution and connect the game with real-world issues. This also demonstrates the concern of our group for sustainability. To analyse the wider impact of our game, we used the Sustainability Awareness Framework (SusAF), which is designed to evaluate sustainability impacts across multiple dimensions (Becker et al., 2015).
 
 At the environmental level, the main contribution of our game is to make the process of environmental destruction and restoration visible. In the background setting of the game, this planet has been severely polluted and is no longer suitable for habitation. And the player's goal is to purify the contaminated creatures and the contaminated core. This establishes a causal link between environmental pollution and environmental restoration. The pollution settings in the game will hinder the player's progress and make certain areas even more dangerous, such as contaminated water sources. When players purify the pollution, the game world will also change. For instance, the polluted water sources will become clean and the ground will turn green. At the same time, this also forms a clear chain of environmental effects: pollution damages the world, players take action, and then a recovery outcome occurs. By repeatedly going through this process, players can understand that environmental restoration requires continuous effort. This effectively reinforces players' understanding of their responsibility towards the environment.
 
@@ -1020,6 +1020,8 @@ Allow players to eliminate enemies and purify purification cores to improve the 
  # 13. References
 
 Alexander, I. F. (2005). *A taxonomy of stakeholders: Human roles in system development*. International Journal of Technology and Human Interaction, 1(1), 23–59.
+
+Becker, C., Chitchyan, R., Duboc, L., Easterbrook, S., Penzenstadler, B., Seyff, N., & Venters, C. C. (2015, May). Sustainability design and software: The karlskrona manifesto. In 2015 IEEE/ACM 37th IEEE International Conference on Software Engineering (Vol. 2, pp. 467-476). IEEE.
 
 Nielsen, J. and Molich, R. (1990). *Heuristic evaluation of user interfaces*. Proceedings of the SIGCHI Conference on Human Factors in Computing Systems.
 
