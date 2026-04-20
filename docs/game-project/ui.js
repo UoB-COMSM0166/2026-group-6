@@ -167,12 +167,21 @@ class UI {
       pop();
    }
 
-   static drawWinScreen() {
+   static drawWinScreen(gm) {
       background(0, 150);
       fill(255); textAlign(CENTER); textSize(40);
-      textSize(50); text("YOU WON!", width / 2, height / 2);
-      textSize(30); text("Press ESC to return to the Menu", width / 2, height / 2 + 50);
-      text(t('ui.win'), width / 2, height / 2);
+      const endingOutcome = gm?.endingOutcome || gm?.getEndingOutcome?.();
+      const endingText = endingOutcome
+         ? `${endingOutcome.label} (${endingOutcome.progress}%)`
+         : t('ui.win');
+
+      textSize(50); text(t('ui.win'), width / 2, height / 2 - 30);
+      textSize(28); text(endingText, width / 2, height / 2 + 18);
+      textSize(30); text("Press ESC to return to the Menu", width / 2, height / 2 + 68);
+
+      // Placeholder for ending illustration/video rendering once assets are ready.
+      // image(endingImage, width / 2 - 200, height / 2 - 220, 400, 180);
+      // playEndingAnimation(endingAnimation);
    }
 
    static drawGameOverScreen() {

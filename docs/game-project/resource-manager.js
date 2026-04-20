@@ -51,6 +51,7 @@ class ResourceManager {
       this.data.ldtk.medium = loadJSON('map/map-normal.ldtk');
       this.data.ldtk.hard = loadJSON('map/map-main.ldtk');
       this.data.currentLdtk = this.data.ldtk.easy;
+      this.data.enemyRules = loadJSON('resources/data/enemies/enemy-check.json');
       this.data.enemyConfigs.cat = loadJSON('resources/data/enemies/enemy-cat.json');
       this.data.enemyConfigs.bat = loadJSON('resources/data/enemies/enemy-bat.json');
       this.fonts.main = loadFont('resources/fonts/monogram.ttf');
@@ -180,17 +181,28 @@ class ResourceManager {
       this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
       this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
       this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
+      this.sounds.bgmPlaylist = [
+         loadSound('resources/audios/background/forest.mp3'),
+         loadSound('resources/audios/background/forest2.mp3'),
+         loadSound('resources/audios/background/forest3.mp3'),
+         loadSound('resources/audios/background/forestdeep.mp3'),
+         loadSound('resources/audios/background/forestend.mp3'),
+         loadSound('resources/audios/background/river.mp3'),
+         loadSound('resources/audios/background/river2.mp3')
+      ];
 
       //Boss
       this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
       this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
       // Post-Ending Audio (Currently disabled/reserved)
-      // this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
-      // this.sounds.better = loadSound('resources/audios/game_once/betterend.mp3');
-      // this.sounds.happy = loadSound('resources/audios/game_once/happyend.mp3');
-      // this.sounds.normal = loadSound('resources/audios/game_once/normalend.mp3');
-      // this.sounds.sad = loadSound('resources/audios/game_once/sadend.mp3');
+      // this.sounds.endings = {
+      //    bad: loadSound('resources/audios/game_once/badend.mp3'),
+      //    sad: loadSound('resources/audios/game_once/sadend.mp3'),
+      //    normal: loadSound('resources/audios/game_once/normalend.mp3'),
+      //    better: loadSound('resources/audios/game_once/betterend.mp3'),
+      //    happy: loadSound('resources/audios/game_once/happyend.mp3')
+      // };
    }
 
    /** Mark as loaded once preload is complete */

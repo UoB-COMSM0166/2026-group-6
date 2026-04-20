@@ -111,6 +111,7 @@ function draw() {
 
    // Playing state
    if (appState !== "PLAYING" || !gm) return;
+   audioManager?.updateGameplayAudio(gm, appState);
    gm.update();
    gm.render();
 }

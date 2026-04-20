@@ -1,0 +1,17 @@
+{
+  "defaultEnemyType": "cat",
+  "preserveNearbyWater": {
+    "enabled": true,
+    "enemyType": "slime",
+    "paddingTiles": 1
+  },
+  "areaOverrides": [
+    {
+      "areaNumber": 4,
+      "highPosition": {
+        "maxYRatio": 0.45
+      },
+      "enemyType": "bat"
+    }
+  ]
+}

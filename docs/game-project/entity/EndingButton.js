@@ -7,13 +7,13 @@ class EndingButton extends Entity {
 
    onPlayerContact(player, gm) {
       player.setPrompt('F');
-      let progress = gm.getAreaProgress();
+      let progress = gm.getGlobalPurificationProgress();
       if (progress >= 90) this._endding1(gm);
       else if (progress >= 60) this._endding2(gm);
       else this._endding3(gm);
       if (keyIsDown(Keys.F)) {
          gm.addParticles(this.cx(), this.cy());
-         gm.status = "WIN";
+         gm.finalizeEnding();
       }
    }
 

@@ -197,10 +197,7 @@ class MenuUI {
          this.resources.sounds.story?.stop();
          this.hideMenu();
          this.setGameManager(new GameManager(this.resources, this.selectedDifficulty));
-
-         if (this.resources.sounds.bgm && !this.resources.sounds.bgm.isPlaying()) {
-            this.resources.sounds.bgm.loop();
-         }
+         this.audioManager?.startGameplayBgmCycle(true);
       });
 
       const btnContinue = this._makeBtn(t('menu.continue'), (e) => {
@@ -214,9 +211,7 @@ class MenuUI {
 
          this.resources.sounds.story?.stop();
          this.hideMenu();
-         if (this.resources.sounds.bgm && !this.resources.sounds.bgm.isPlaying()) {
-            this.resources.sounds.bgm.loop();
-         }
+         this.audioManager?.startGameplayBgmCycle(false);
       });
 
       btnContinue.id = 'btn-continue';
@@ -458,7 +453,7 @@ class MenuUI {
       this.menuDiv.style.display = 'flex';
       this.showMenuPage('main');
       this.setAppState('MENU');
-      this.resources.sounds.bgm?.pause();
+      this.audioManager?.stopGameplayBgmCycle();
    }
 
    playDemoVideo() {

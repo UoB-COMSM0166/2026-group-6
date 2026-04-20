@@ -25,6 +25,7 @@ class GameManager {
       this.pendingTeleport = null;
       this._isPreloading;
       this.checkpoint = null; // { levelIndex, x, y }
+      this.endingOutcome = null;
       this.preload();
    }
 
@@ -228,7 +229,7 @@ class GameManager {
 
       // UI
       UI.drawHUD(this.player, this.level, this);
-      if (this.status === "WIN") UI.drawWinScreen();
+      if (this.status === "WIN") UI.drawWinScreen(this);
       else if (this.status === "GAMEOVER") UI.drawGameOverScreen();
       let elapsed = millis() - this.mapPromptStartTime;
       if (elapsed < this.mapPromptDuration) {
@@ -557,6 +558,38 @@ class GameManager {
          : Math.floor((currentPurifiedValue / totalValue) * 100);
 
       return percentage;
+   }
+
+   getGlobalPurificationProgress() {
+      return this.getAreaProgress(5);
+   }
+
+   getEndingOutcome(progress = this.getGlobalPurificationProgress()) {
+      if (progress >= 95) {
+         return { key: 'happy', minProgress: 95, label: 'Happy Ending', progress };
+      }
+      if (progress >= 90) {
+         return { key: 'better', minProgress: 90, label: 'Better Ending', progress };
+      }
+      if (progress >= 85) {
+         return { key: 'normal', minProgress: 85, label: 'Normal Ending', progress };
+      }
+      if (progress >= 80) {
+         return { key: 'sad', minProgress: 80, label: 'Sad Ending', progress };
+      }
+      return { key: 'bad', minProgress: 0, label: 'Bad Ending', progress };
+   }
+
+   finalizeEnding() {
+      const progress = this.getGlobalPurificationProgress();
+      this.endingOutcome = this.getEndingOutcome(progress);
+
+      // Placeholder for ending-specific audio/assets while resources are still in production.
+      // const endingAudio = this.resources?.sounds?.endings?.[this.endingOutcome.key];
+      // const endingImage = this.resources?.images?.endings?.[this.endingOutcome.key];
+      // const endingAnimation = this.resources?.animations?.endings?.[this.endingOutcome.key];
+
+      this.status = "WIN";
    }
 
    // Global entity lookup by id

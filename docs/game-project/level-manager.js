@@ -473,7 +473,11 @@ class LevelManager {
             let dmgField = entity.fieldInstances.find(f => f.__identifier === "damage");
             if (hpField) spawn.hp = hpField.__value;
             if (dmgField) spawn.damage = dmgField.__value;
-            spawn.enemyType = this._resolveEnemyType(entity);
+            spawn.areaNumber = Number(this.areaNumber);
+            spawn.levelIndex = this.levelIndex;
+            spawn.worldX = this.worldX + spawn.x;
+            spawn.worldY = this.worldY + spawn.y;
+            spawn.enemyType = this._resolveEnemyType(entity, spawn);
             this.enemySpawns.push(spawn);
          }
          else {
@@ -552,16 +556,65 @@ class LevelManager {
          || normalized === 'enemycat';
    }
 
-   _resolveEnemyType(entity) {
+   _resolveEnemyType(entity, spawn) {
       const explicitType = entity.fieldInstances.find((field) => field.__identifier === 'enemyType')?.__value;
       if (typeof explicitType === 'string' && explicitType.trim()) {
          return explicitType.trim().toLowerCase();
       }
 
+      const ruleType = this._resolveEnemyTypeFromRules(spawn);
+      if (ruleType) return ruleType;
+
       const normalized = String(entity.__identifier || '').toLowerCase();
       if (normalized.includes('cat')) return 'cat';
       if (normalized.includes('bat')) return 'bat';
       return 'slime';
+   }
+
+   _resolveEnemyTypeFromRules(spawn) {
+      const rules = resources?.data?.enemyRules;
+      if (!rules || !spawn) return null;
+
+      const waterRule = rules.preserveNearbyWater;
+      if (waterRule?.enabled && this._isNearWater(spawn, waterRule.paddingTiles ?? 1)) {
+         return waterRule.enemyType || 'slime';
+      }
+
+      const areaOverrides = Array.isArray(rules.areaOverrides) ? rules.areaOverrides : [];
+      for (const rule of areaOverrides) {
+         if (Number(rule.areaNumber) !== Number(spawn.areaNumber)) continue;
+
+         const maxYRatio = rule.highPosition?.maxYRatio;
+         if (typeof maxYRatio === 'number') {
+            const enemyBottom = spawn.y + spawn.h;
+            if (enemyBottom <= this.mapH * maxYRatio) {
+               return rule.enemyType || rules.defaultEnemyType || 'cat';
+            }
+            continue;
+         }
+
+         return rule.enemyType || rules.defaultEnemyType || 'cat';
+      }
+
+      return rules.defaultEnemyType || 'cat';
+   }
+
+   _isNearWater(spawn, paddingTiles = 1) {
+      const padding = Math.max(0, paddingTiles) * this.gridSize;
+      const width = spawn.w + padding * 2;
+      const height = spawn.h + padding * 2;
+      const x = spawn.x - padding;
+      const y = spawn.y - padding;
+
+      return !!this.isRectOverlappingTile(x, y, width, height, {
+         solidOnly: false,
+         type: GameConfig.Collision.Water,
+         margin: 0
+      }) || !!this.isRectOverlappingTile(x, y, width, height, {
+         solidOnly: false,
+         type: GameConfig.Collision.ToxicPool,
+         margin: 0
+      });
    }
 
    _buildIntGridLookup(ldtkData, layerName) {

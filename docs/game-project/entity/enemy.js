@@ -437,9 +437,12 @@ class Enemy extends Entity {
          ? this.y + (this.h - dh) / 2 + (draw.yOffset || 0)
          : this.y + this.h - dh + (draw.yOffset || 0);
 
-      const alpha = Math.round(255 * (this.hp + 0.7 * this.maxHp) / (1.7 * this.maxHp));
+      const healthRatio = this.maxHp > 0 ? this.hp / this.maxHp : 0;
+      const fadeRatio = 1 - this._clamp(healthRatio, 0, 1);
+      const tintBase = Math.round(255 - fadeRatio * 85);
+      const alpha = Math.round(255 * (0.72 + healthRatio * 0.28));
       push();
-      tint(255, alpha);
+      tint(255, tintBase, tintBase, alpha);
       if (this.dir === -1) {
          translate(dx + dw, dy);
          scale(-1, 1);
