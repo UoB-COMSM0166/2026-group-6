@@ -824,10 +824,10 @@ The Wilcoxon Signed-Rank Test results (Table 8) indicate that there was no stati
 According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps. Now, easy mode reduced difficulty by removing more difficult maps. We have designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. In easy mode, we add a resource panel to view the player state (Figure 14). Player can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
 
 <p align="center">
-  <img src="resources/gifs/figure10.gif>
+  <img src="resources/images/resourcepanel.png" width=45%>
 </p>
 <p align="center">
-  <b>Figure 14.</b>Resource Panel
+  <b>Figure 14.</b> Resource Panel
 </p>
 
 
