@@ -57,7 +57,7 @@ class UI {
       energyBarWidth = logRatio * energyBarWidth;
       this._drawBar(
          20, 48, energyBarWidth, 22,
-         currentEnergy, currentEnergy,
+         currentEnergy, maxEnergy,
          [30, 160, 170],
          [10, 50, 55],
          [50, 200, 210],
@@ -85,7 +85,9 @@ class UI {
    }
 
    static _drawBar(x, y, w, h, current, max, barColor, bgColor, borderColor, label, valueText) {
-      let ratio = constrain(current / max, 0, 1);
+      const safeCurrent = Number.isFinite(current) ? current : 0;
+      const safeMax = Number.isFinite(max) && max > 0 ? max : 1;
+      let ratio = constrain(safeCurrent / safeMax, 0, 1);
 
       push();
       rectMode(CORNER);

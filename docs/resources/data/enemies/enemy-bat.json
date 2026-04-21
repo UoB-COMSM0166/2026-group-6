@@ -3,8 +3,8 @@
   "type": "bat",
   "movement": {
     "kind": "flying",
-    "speed": 0.46,
-    "verticalSpeed": 0.24,
+    "speed": 0.448875,
+    "verticalSpeed": 0.23625,
     "chaseRange": 120,
     "hoverAmplitude": 6,
     "hoverSpeed": 0.08
@@ -12,28 +12,60 @@
   "combat": {
     "attackCooldown": 18
   },
+  "behavior": {
+    "knockbackScale": 2.5,
+    "detectRangeX": 132,
+    "detectRangeY": 68,
+    "detectRadius": 142,
+    "chaseMemoryFrames": 24,
+    "attackRange": 52,
+    "attackVerticalRange": 36,
+    "attackRadius": 62,
+    "attackHoldFrames": 18,
+    "attackSpeedScale": 2.8,
+    "attackAccel": 0.16,
+    "cruiseSpeedScale": 0.82,
+    "chaseSpeedScale": 1.9,
+    "accel": 0.085,
+    "verticalAccel": 0.07
+  },
+  "render": {
+    "faceRightByDefault": false
+  },
   "animation": {
-    "frameWidth": 394,
-    "frameHeight": 394,
-    "frameDelay": 5,
+    "frameWidth": 80,
+    "frameHeight": 128,
+    "frameDelay": 11,
     "states": {
       "IDLE": {
-        "sheet": "idle",
-        "row": 0,
-        "frames": 9,
-        "draw": { "w": 26, "h": 18, "anchor": "center" }
+        "sheet": "stay",
+        "frameRects": [
+          { "x": 20, "y": 13, "w": 24, "h": 39 },
+          { "x": 80, "y": 13, "w": 24, "h": 39 },
+          { "x": 140, "y": 13, "w": 24, "h": 39 },
+          { "x": 200, "y": 13, "w": 24, "h": 39 }
+        ],
+        "draw": { "w": 12, "h": 18, "anchor": "center" }
       },
       "FLY": {
         "sheet": "fly",
-        "row": 0,
-        "frames": 9,
-        "draw": { "w": 30, "h": 22, "anchor": "center" }
+        "frameRects": [
+          { "x": 0, "y": 0, "w": 52, "h": 50 },
+          { "x": 64, "y": 26, "w": 38, "h": 34 },
+          { "x": 124, "y": 0, "w": 36, "h": 66 },
+          { "x": 188, "y": 18, "w": 42, "h": 34 },
+          { "x": 252, "y": 8, "w": 46, "h": 42 }
+        ],
+        "draw": { "w": 18.8, "h": 20.4, "anchor": "center" }
       },
       "ATTACK": {
-        "sheet": "fly",
-        "row": 1,
-        "frames": 9,
-        "draw": { "w": 34, "h": 24, "anchor": "center" }
+        "sheet": "attack",
+        "frameRects": [
+          { "x": 0, "y": 38, "w": 60, "h": 49 },
+          { "x": 62, "y": 44, "w": 56, "h": 41 },
+          { "x": 120, "y": 46, "w": 60, "h": 39 }
+        ],
+        "draw": { "w": 21.6, "h": 16, "anchor": "center" }
       }
     }
   }

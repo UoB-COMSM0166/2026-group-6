@@ -7,9 +7,13 @@ let zhFontLoaded = false;
 let zhFontLoadPromise = null;
 let playerFloatingTextPatched = false;
 let globalTextPatched = false;
+let lastAppliedCanvasFont = null;
+let runtimeLanguageRefreshQueued = false;
+let fontRefreshQueued = false;
 const ZH_CANVAS_TEXT_SCALE = 0.8;
 const EN_CANVAS_TEXT_SCALE = 1.0;
 const EN_DOM_TEXT_SCALE = 1.0;
+const drawnTextMapCache = {};
 
 const TRANSLATIONS = {
    en: {
@@ -438,6 +442,14 @@ function fillTemplate(template, params) {
    });
 }
 
+function translateForLanguage(language, key, params = {}) {
+   const value = getTranslationValue(language, key) ?? getTranslationValue(DEFAULT_LANGUAGE, key);
+   if (typeof value === 'string') {
+      return fillTemplate(value, params);
+   }
+   return value ?? key;
+}
+
 function t(key, params = {}) {
    const value = getTranslationValue(currentLanguage, key) ?? getTranslationValue(DEFAULT_LANGUAGE, key);
    if (typeof value === 'string') {
@@ -508,20 +520,20 @@ function getDomTextScale() {
 function applyGameTextFont(resources) {
    ensureRuntimeLocalizationPatches();
 
+   let targetFont = 'monospace';
    if (currentLanguage === 'zh') {
       ensureLanguageFontFaces();
       if (!zhFontLoaded && document.fonts?.check('12px "Nightgazer12"')) {
          zhFontLoaded = true;
       }
-      textFont('Nightgazer12');
-      return;
+      targetFont = 'Nightgazer12';
+   } else if (resources?.fonts?.main) {
+      targetFont = resources.fonts.main;
    }
 
-   if (resources?.fonts?.main) {
-      textFont(resources.fonts.main);
-   } else {
-      textFont('monospace');
-   }
+   if (lastAppliedCanvasFont === targetFont) return;
+   textFont(targetFont);
+   lastAppliedCanvasFont = targetFont;
 }
 
 function updateStaticDomTranslations() {
@@ -615,43 +627,7 @@ function localizeDrawnTextContent(content) {
 
    const exactContent = content;
    const trimmedContent = content.trim();
-   const drawnTextMap = {
-      'This button has ': t('dialogue.buttonOpened.0'),
-      'already opened ': t('dialogue.buttonOpened.1'),
-      'a door.': t('dialogue.buttonOpened.2'),
-      'The sky was once': t('dialogue.paintings.sky.0'),
-      'this clear every day.': t('dialogue.paintings.sky.1'),
-      'A world without smog.': t('dialogue.paintings.smog.0'),
-      'Was it ever real?': t('dialogue.paintings.smog.1'),
-      'Look at those trees.': t('dialogue.paintings.trees.0'),
-      'So alive, so green.': t('dialogue.paintings.trees.1'),
-      'The air in this painting': t('dialogue.paintings.cleanAir.0'),
-      'feels clean. I miss that.': t('dialogue.paintings.cleanAir.1'),
-      'Nature in its purest form.': t('dialogue.paintings.nature.0'),
-      'We almost lost it all.': t('dialogue.paintings.nature.1'),
-      'Such stillness.': t('dialogue.paintings.stillness.0'),
-      'No pollution, no monster.': t('dialogue.paintings.stillness.1'),
-      'The painter must have': t('dialogue.paintings.painter.0'),
-      'loved this world deeply.': t('dialogue.paintings.painter.1'),
-      'Every leaf, every wave—': t('dialogue.paintings.leaves.0'),
-      'perfect as they are.': t('dialogue.paintings.leaves.1'),
-      'If only we could': t('dialogue.paintings.stepInside.0'),
-      'step inside this world.': t('dialogue.paintings.stepInside.1'),
-      'The light here is warm.': t('dialogue.paintings.light.0'),
-      'Not filtered through dust.': t('dialogue.paintings.light.1'),
-      'Somewhere, this place': t('dialogue.paintings.somewhere.0'),
-      'still exists. Maybe.': t('dialogue.paintings.somewhere.1'),
-      'The scenery in the past, ': t('dialogue.paintings.scenery.0'),
-      'it was really beautiful!': t('dialogue.paintings.scenery.1'),
-      'start to leave earth': t('dialogue.ending.prompt'),
-      'Start to leave earth!': t('dialogue.ending.launch'),
-      'You have almost cleared all the pollution. ': t('dialogue.ending.stay.0'),
-      ', do you still have any nostalgia for the ': t('dialogue.ending.stay.1'),
-      'past environment? Stay and continue to ': t('dialogue.ending.stay.2'),
-      'purify the world.': t('dialogue.ending.stay.3'),
-      'Good! There are also some pollution but ': t('dialogue.ending.leave.0'),
-      'let us shoot to the space now.': t('dialogue.ending.leave.1')
-   };
+   const drawnTextMap = getDrawnTextMap(currentLanguage);
 
    if (Object.prototype.hasOwnProperty.call(drawnTextMap, exactContent)) {
       return drawnTextMap[exactContent];
@@ -662,6 +638,52 @@ function localizeDrawnTextContent(content) {
    }
 
    return localizeFloatingTextContent(content);
+}
+
+function getDrawnTextMap(language) {
+   if (drawnTextMapCache[language]) {
+      return drawnTextMapCache[language];
+   }
+
+   drawnTextMapCache[language] = {
+      'This button has ': translateForLanguage(language, 'dialogue.buttonOpened.0'),
+      'already opened ': translateForLanguage(language, 'dialogue.buttonOpened.1'),
+      'a door.': translateForLanguage(language, 'dialogue.buttonOpened.2'),
+      'The sky was once': translateForLanguage(language, 'dialogue.paintings.sky.0'),
+      'this clear every day.': translateForLanguage(language, 'dialogue.paintings.sky.1'),
+      'A world without smog.': translateForLanguage(language, 'dialogue.paintings.smog.0'),
+      'Was it ever real?': translateForLanguage(language, 'dialogue.paintings.smog.1'),
+      'Look at those trees.': translateForLanguage(language, 'dialogue.paintings.trees.0'),
+      'So alive, so green.': translateForLanguage(language, 'dialogue.paintings.trees.1'),
+      'The air in this painting': translateForLanguage(language, 'dialogue.paintings.cleanAir.0'),
+      'feels clean. I miss that.': translateForLanguage(language, 'dialogue.paintings.cleanAir.1'),
+      'Nature in its purest form.': translateForLanguage(language, 'dialogue.paintings.nature.0'),
+      'We almost lost it all.': translateForLanguage(language, 'dialogue.paintings.nature.1'),
+      'Such stillness.': translateForLanguage(language, 'dialogue.paintings.stillness.0'),
+      'No pollution, no monster.': translateForLanguage(language, 'dialogue.paintings.stillness.1'),
+      'The painter must have': translateForLanguage(language, 'dialogue.paintings.painter.0'),
+      'loved this world deeply.': translateForLanguage(language, 'dialogue.paintings.painter.1'),
+      'Every leaf, every wave—': translateForLanguage(language, 'dialogue.paintings.leaves.0'),
+      'perfect as they are.': translateForLanguage(language, 'dialogue.paintings.leaves.1'),
+      'If only we could': translateForLanguage(language, 'dialogue.paintings.stepInside.0'),
+      'step inside this world.': translateForLanguage(language, 'dialogue.paintings.stepInside.1'),
+      'The light here is warm.': translateForLanguage(language, 'dialogue.paintings.light.0'),
+      'Not filtered through dust.': translateForLanguage(language, 'dialogue.paintings.light.1'),
+      'Somewhere, this place': translateForLanguage(language, 'dialogue.paintings.somewhere.0'),
+      'still exists. Maybe.': translateForLanguage(language, 'dialogue.paintings.somewhere.1'),
+      'The scenery in the past, ': translateForLanguage(language, 'dialogue.paintings.scenery.0'),
+      'it was really beautiful!': translateForLanguage(language, 'dialogue.paintings.scenery.1'),
+      'start to leave earth': translateForLanguage(language, 'dialogue.ending.prompt'),
+      'Start to leave earth!': translateForLanguage(language, 'dialogue.ending.launch'),
+      'You have almost cleared all the pollution. ': translateForLanguage(language, 'dialogue.ending.stay.0'),
+      ', do you still have any nostalgia for the ': translateForLanguage(language, 'dialogue.ending.stay.1'),
+      'past environment? Stay and continue to ': translateForLanguage(language, 'dialogue.ending.stay.2'),
+      'purify the world.': translateForLanguage(language, 'dialogue.ending.stay.3'),
+      'Good! There are also some pollution but ': translateForLanguage(language, 'dialogue.ending.leave.0'),
+      'let us shoot to the space now.': translateForLanguage(language, 'dialogue.ending.leave.1')
+   };
+
+   return drawnTextMapCache[language];
 }
 
 function localizeMapPromptContent(content) {
@@ -731,15 +753,7 @@ function getDisplayAreaLabelForLevel(level, options = {}) {
 }
 
 function ensureRuntimeLocalizationPatches() {
-   if (!globalTextPatched && typeof globalThis?.textSize === 'function') {
-      const originalTextSize = globalThis.textSize;
-      globalThis.textSize = function (size) {
-         if (typeof size === 'number') {
-            return originalTextSize.call(this, size * getCanvasTextScale());
-         }
-         return originalTextSize.apply(this, arguments);
-      };
-
+   if (!globalTextPatched) {
       globalTextPatched = true;
    }
 
@@ -783,15 +797,22 @@ function refreshLanguageEverywhere() {
    updateStaticDomTranslations();
    refreshRuntimeLanguageTargets();
 
-   if (typeof requestAnimationFrame === 'function') {
+   if (!runtimeLanguageRefreshQueued && typeof requestAnimationFrame === 'function') {
+      runtimeLanguageRefreshQueued = true;
       requestAnimationFrame(() => {
+         runtimeLanguageRefreshQueued = false;
          refreshRuntimeLanguageTargets();
       });
    }
 
-   if (currentLanguage === 'zh' && zhFontLoadPromise) {
+   if (currentLanguage === 'zh' && zhFontLoadPromise && !fontRefreshQueued) {
+      fontRefreshQueued = true;
       zhFontLoadPromise.then(() => {
+         fontRefreshQueued = false;
+         lastAppliedCanvasFont = null;
          refreshRuntimeLanguageTargets();
+      }).catch(() => {
+         fontRefreshQueued = false;
       });
    }
 }
@@ -807,6 +828,7 @@ function setLanguage(language) {
    }
 
    currentLanguage = language;
+   lastAppliedCanvasFont = null;
    refreshLanguageEverywhere();
    languageChangeListeners.forEach(listener => listener(language));
 }

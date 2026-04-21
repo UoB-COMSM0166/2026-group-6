@@ -104,11 +104,14 @@ class ResourceManager {
          hurt: loadImage('resources/images/enemy/Monster_Slime_Hurt-Sheet.png'),
       };
       this.images.enemy.cat = {
-         full: loadImage('resources/images/enemy/cat-full.png')
+         stay: loadImage('resources/images/enemy/cat-stay.png'),
+         run: loadImage('resources/images/enemy/cat-run.png'),
+         attack: loadImage('resources/images/enemy/cat-attack.png')
       };
       this.images.enemy.bat = {
-         idle: loadImage('resources/images/enemy/bat-full.png'),
-         fly: loadImage('resources/images/enemy/bat-fly.png')
+         stay: loadImage('resources/images/enemy/bat-stay.png'),
+         fly: loadImage('resources/images/enemy/bat-fly.png'),
+         attack: loadImage('resources/images/enemy/bat-attack.png')
       };
 
       // --- Boss Assets ---
@@ -181,15 +184,27 @@ class ResourceManager {
       this.sounds.story = loadSound('resources/audios/background/forestdeep.mp3');
       this.sounds.begin = loadSound('resources/audios/background/begin.mp3');
       this.sounds.bgm = loadSound('resources/audios/background/forest.mp3');
-      this.sounds.bgmPlaylist = [
-         loadSound('resources/audios/background/forest.mp3'),
-         loadSound('resources/audios/background/forest2.mp3'),
-         loadSound('resources/audios/background/forest3.mp3'),
-         loadSound('resources/audios/background/forestdeep.mp3'),
-         loadSound('resources/audios/background/forestend.mp3'),
-         loadSound('resources/audios/background/river.mp3'),
-         loadSound('resources/audios/background/river2.mp3')
-      ];
+      this.sounds.bgmPlaylists = {
+         normal: [
+            loadSound('resources/audios/background/forest.mp3'),
+            loadSound('resources/audios/background/forest2.mp3'),
+            loadSound('resources/audios/background/forest3.mp3'),
+            loadSound('resources/audios/background/forest4.mp3'),
+            loadSound('resources/audios/background/forestdeep.mp3'),
+            loadSound('resources/audios/background/forestend.mp3'),
+            loadSound('resources/audios/background/river.mp3'),
+            loadSound('resources/audios/background/river2.mp3'),
+            loadSound('resources/audios/background/wind.mp3')
+         ],
+         purified: [
+            loadSound('resources/audios/background/forestp.mp3'),
+            loadSound('resources/audios/background/forest2p.mp3'),
+            loadSound('resources/audios/background/forest3p.mp3'),
+            loadSound('resources/audios/background/riverp.mp3'),
+            loadSound('resources/audios/background/river2p.mp3'),
+            loadSound('resources/audios/background/windp.mp3')
+         ]
+      };
 
       //Boss
       this.sounds.boss = loadSound('resources/audios/background/boss.mp3');

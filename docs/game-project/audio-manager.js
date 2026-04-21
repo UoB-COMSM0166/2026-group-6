@@ -6,24 +6,31 @@ class AudioManager {
       sfx: { volume: 1.0, isMuted: false }
     };
 
-    this.gameplayPlaylistIndex = 0;
+    this.gameplayPlaylistIndices = {
+      normal: 0,
+      purified: 0
+    };
     this.currentGameplayTrack = null;
+    this.activePlaylistKey = 'normal';
     this.gameplayAudioMode = 'playlist';
     this.waitingForBossLoop = false;
+    this.cachedBgmSounds = [];
+    this.cachedSfxKeys = [];
 
     this.initAudioVolumes();
   }
 
   initAudioVolumes() {
     if (!this.resources?.sounds) return;
+    this.cachedBgmSounds = this._collectAllBgmSounds();
+    this.cachedSfxKeys = this._collectSfxKeys();
 
     this._applyBgmVolume();
 
-    const sfxKeys = this._getSfxKeys();
-    this._setSfxVolume(this.resources.sounds, sfxKeys);
+    this._setSfxVolume(this.resources.sounds, this.cachedSfxKeys);
   }
 
-  _getAllBgmSounds() {
+  _collectAllBgmSounds() {
     const sounds = [
       this.resources?.sounds?.story,
       this.resources?.sounds?.begin,
@@ -32,12 +39,18 @@ class AudioManager {
       this.resources?.sounds?.alarm
     ];
 
-    const playlist = this.resources?.sounds?.bgmPlaylist;
-    if (Array.isArray(playlist)) {
-      sounds.push(...playlist);
-    }
+    const playlists = this.resources?.sounds?.bgmPlaylists || {};
+    Object.values(playlists).forEach((playlist) => {
+      if (Array.isArray(playlist)) {
+        sounds.push(...playlist);
+      }
+    });
 
     return [...new Set(sounds.filter(Boolean))];
+  }
+
+  _getAllBgmSounds() {
+    return this.cachedBgmSounds;
   }
 
   _applyBgmVolume() {
@@ -45,11 +58,11 @@ class AudioManager {
     this._getAllBgmSounds().forEach((sound) => sound.setVolume(targetVolume));
   }
 
-  _getSfxKeys() {
+  _collectSfxKeys() {
     if (!this.resources?.sounds) return [];
 
-    const bgmSet = new Set(this._getAllBgmSounds());
-    const reservedBgmKeys = new Set(['bgmPlaylist']);
+    const bgmSet = new Set(this.cachedBgmSounds);
+    const reservedBgmKeys = new Set(['bgmPlaylists']);
     return Object.keys(this.resources.sounds).filter((key) => {
       const target = this.resources.sounds[key];
       if (reservedBgmKeys.has(key)) return false;
@@ -58,6 +71,10 @@ class AudioManager {
         ? Object.keys(target || {}).length > 0
         : target instanceof p5.SoundFile;
     });
+  }
+
+  _getSfxKeys() {
+    return this.cachedSfxKeys;
   }
 
   _setSfxVolume(soundObj, keys) {
@@ -96,8 +113,7 @@ class AudioManager {
 
   setSfxVolume(volume) {
     this.state.sfx.volume = Math.max(0, Math.min(2, volume));
-    const sfxKeys = this._getSfxKeys();
-    this._setSfxVolumeTo(sfxKeys, this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
+    this._setSfxVolumeTo(this.cachedSfxKeys, this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
   }
 
   toggleBgmMute() {
@@ -107,8 +123,7 @@ class AudioManager {
 
   toggleSfxMute() {
     this.state.sfx.isMuted = !this.state.sfx.isMuted;
-    const sfxKeys = this._getSfxKeys();
-    this._setSfxVolumeTo(sfxKeys, this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
+    this._setSfxVolumeTo(this.cachedSfxKeys, this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
   }
 
   getState() {
@@ -116,28 +131,27 @@ class AudioManager {
   }
 
   startGameplayBgmCycle(reset = false) {
-    const playlist = this.resources?.sounds?.bgmPlaylist;
-    if (!Array.isArray(playlist) || playlist.length === 0) return;
-
     if (reset) {
-      this.gameplayPlaylistIndex = 0;
+      this.gameplayPlaylistIndices.normal = 0;
+      this.gameplayPlaylistIndices.purified = 0;
       this.currentGameplayTrack = null;
     }
 
     this.gameplayAudioMode = 'playlist';
     this.waitingForBossLoop = false;
+    this.activePlaylistKey = 'normal';
     this._stopBossAudio();
 
     if (!this.currentGameplayTrack || !this.currentGameplayTrack.isPlaying()) {
-      this._playNextGameplayTrack();
+      this._playNextGameplayTrack(this.activePlaylistKey);
     }
   }
 
   stopGameplayBgmCycle() {
-    this._stopPlaylistAudio();
-    this._stopBossAudio();
+    this._stopAllBackgroundAudio();
     this.currentGameplayTrack = null;
     this.waitingForBossLoop = false;
+    this.gameplayAudioMode = 'playlist';
   }
 
   updateGameplayAudio(gm, appState) {
@@ -146,73 +160,127 @@ class AudioManager {
       return;
     }
 
-    const bossActive = gm.entities?.some((entity) => entity instanceof Boss && entity.active && !entity.purified);
-
-    if (bossActive) {
-      this._enterBossAudioMode();
+    const boss = gm.entities?.find((entity) => entity instanceof Boss && entity.active && !entity.purified);
+    if (boss) {
+      this._enterBossAudioMode(boss);
       return;
     }
 
-    this._enterPlaylistAudioMode();
+    this._enterPlaylistAudioMode(this._resolvePlaylistKey(gm));
   }
 
-  _enterPlaylistAudioMode() {
+  _resolvePlaylistKey(gm) {
+    return gm?.environmentChanged ? 'purified' : 'normal';
+  }
+
+  _getPlaylist(playlistKey = this.activePlaylistKey) {
+    const playlists = this.resources?.sounds?.bgmPlaylists || {};
+    return Array.isArray(playlists[playlistKey]) ? playlists[playlistKey] : [];
+  }
+
+  _enterPlaylistAudioMode(playlistKey) {
     if (this.gameplayAudioMode === 'boss') {
       this._stopBossAudio();
-      this.gameplayAudioMode = 'playlist';
       this.currentGameplayTrack = null;
     }
 
+    this.gameplayAudioMode = 'playlist';
+
+    if (this.activePlaylistKey !== playlistKey) {
+      this.activePlaylistKey = playlistKey;
+      this.currentGameplayTrack = null;
+      this._stopPlaylistAudio();
+    }
+
     if (!this.currentGameplayTrack || !this.currentGameplayTrack.isPlaying()) {
-      this._playNextGameplayTrack();
+      this._playNextGameplayTrack(this.activePlaylistKey);
     }
   }
 
-  _enterBossAudioMode() {
-    const alarm = this.resources?.sounds?.alarm;
-    const boss = this.resources?.sounds?.boss;
-    if (!alarm || !boss) return;
+  _enterBossAudioMode(boss) {
+    const bossTrack = this.resources?.sounds?.boss;
+    if (!bossTrack) return;
 
     if (this.gameplayAudioMode !== 'boss') {
-      this._stopPlaylistAudio();
-      boss.stop();
-      alarm.stop();
-      alarm.play();
+      this._stopAllBackgroundAudio();
+      this._playSound(bossTrack);
       this.gameplayAudioMode = 'boss';
       this.waitingForBossLoop = true;
+    } else if (this.waitingForBossLoop && !bossTrack.isPlaying()) {
+      this._playSound(bossTrack, { loop: true });
+      this.waitingForBossLoop = false;
+    }
+
+    this._updateFloodAlarm(boss);
+  }
+
+  _updateFloodAlarm(boss) {
+    const alarm = this.resources?.sounds?.alarm;
+    if (!alarm) return;
+
+    const isRisingFlood = boss?.state === 'FLOOD' && boss.stateTimer >= 120 && boss.stateTimer < 180;
+    if (isRisingFlood) {
+      this._playSound(alarm, { loop: true });
       return;
     }
 
-    if (this.waitingForBossLoop && !alarm.isPlaying()) {
-      boss.loop();
-      this.waitingForBossLoop = false;
-    }
+    this._stopSound(alarm);
   }
 
-  _playNextGameplayTrack() {
-    const playlist = this.resources?.sounds?.bgmPlaylist;
-    if (!Array.isArray(playlist) || playlist.length === 0) return;
+  _playNextGameplayTrack(playlistKey = this.activePlaylistKey) {
+    const playlist = this._getPlaylist(playlistKey);
+    if (playlist.length === 0) return;
 
-    const nextTrack = playlist[this.gameplayPlaylistIndex % playlist.length];
+    const nextIndex = this.gameplayPlaylistIndices[playlistKey] % playlist.length;
+    const nextTrack = playlist[nextIndex];
     if (!nextTrack) return;
 
     this._stopPlaylistAudio();
     this.currentGameplayTrack = nextTrack;
-    this.currentGameplayTrack.play();
-    this.gameplayPlaylistIndex = (this.gameplayPlaylistIndex + 1) % playlist.length;
+    this._playSound(this.currentGameplayTrack);
+    this.gameplayPlaylistIndices[playlistKey] = (nextIndex + 1) % playlist.length;
   }
 
   _stopPlaylistAudio() {
-    const playlist = this.resources?.sounds?.bgmPlaylist;
-    if (Array.isArray(playlist)) {
-      playlist.forEach((track) => track.stop());
-    }
-    this.resources?.sounds?.bgm?.stop();
+    const playlists = this.resources?.sounds?.bgmPlaylists || {};
+    Object.values(playlists).forEach((playlist) => {
+      if (Array.isArray(playlist)) {
+        playlist.forEach((track) => this._stopSound(track));
+      }
+    });
+    this._stopSound(this.resources?.sounds?.bgm);
   }
 
   _stopBossAudio() {
-    this.resources?.sounds?.alarm?.stop();
-    this.resources?.sounds?.boss?.stop();
+    this._stopSound(this.resources?.sounds?.alarm);
+    this._stopSound(this.resources?.sounds?.boss);
     this.waitingForBossLoop = false;
+  }
+
+  _stopAllBackgroundAudio() {
+    this._stopPlaylistAudio();
+    this._stopBossAudio();
+    this._stopSound(this.resources?.sounds?.story);
+    this._stopSound(this.resources?.sounds?.begin);
+  }
+
+  _playSound(sound, options = {}) {
+    if (!sound) return;
+
+    const { loop = false } = options;
+    if (sound.isPlaying()) return;
+
+    if (loop) {
+      sound.loop();
+      return;
+    }
+
+    sound.play();
+  }
+
+  _stopSound(sound) {
+    if (sound?.isPlaying()) {
+      sound.stop();
+    }
   }
 }

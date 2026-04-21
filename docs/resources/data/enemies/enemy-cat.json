@@ -3,37 +3,70 @@
   "type": "cat",
   "movement": {
     "kind": "ground",
-    "speed": 0.55,
-    "chaseSpeed": 0.82,
-    "jumpForce": 3.8,
-    "chaseRange": 88,
-    "verticalAwareness": 48
+    "speed": 0.48,
+    "chaseSpeed": 0.94,
+    "jumpForce": 2.6,
+    "chaseRange": 96,
+    "verticalAwareness": 56
   },
   "combat": {
     "attackCooldown": 24
   },
+  "behavior": {
+    "detectRangeX": 166,
+    "detectRangeY": 60,
+    "detectRadius": 174,
+    "chaseMemoryFrames": 18,
+    "catAttackHoldFrames": 26,
+    "runRange": 92,
+    "attackRange": 40,
+    "attackRadius": 46,
+    "runSpeedScale": 1.18,
+    "attackMoveScale": 0.38,
+    "stuckFramesThreshold": 14,
+    "stuckHopScale": 1.0,
+    "knockbackScale": 0.4,
+    "attackCooldown": 24
+  },
+  "render": {
+    "faceRightByDefault": false
+  },
   "animation": {
-    "frameWidth": 847,
-    "frameHeight": 412,
-    "frameDelay": 6,
+    "frameWidth": 80,
+    "frameHeight": 178,
+    "frameDelay": 10,
     "states": {
-      "WALK": {
-        "sheet": "full",
-        "row": 0,
-        "frames": 4,
-        "draw": { "w": 28, "h": 20, "anchor": "ground" }
+      "IDLE": {
+        "sheet": "stay",
+        "frameDelay": 50,
+        "frameRects": [
+          { "x": 0, "y": 54, "w": 80, "h": 64 },
+          { "x": 80, "y": 54, "w": 80, "h": 64 },
+          { "x": 160, "y": 54, "w": 80, "h": 64 }
+        ],
+        "draw": { "w": 18.71, "h": 14.97, "anchor": "ground", "yOffset": 1.8 }
       },
       "RUN": {
-        "sheet": "full",
-        "row": 1,
-        "frames": 4,
-        "draw": { "w": 32, "h": 22, "anchor": "ground" }
+        "sheet": "run",
+        "frameDelay": 7,
+        "frameRects": [
+          { "x": 0, "y": 54, "w": 80, "h": 64 },
+          { "x": 80, "y": 54, "w": 80, "h": 64 },
+          { "x": 160, "y": 54, "w": 80, "h": 64 },
+          { "x": 240, "y": 54, "w": 80, "h": 64 },
+          { "x": 320, "y": 54, "w": 80, "h": 64 }
+        ],
+        "draw": { "w": 22.46, "h": 16.87, "anchor": "ground", "yOffset": 2.0 }
       },
       "ATTACK": {
-        "sheet": "full",
-        "row": 2,
-        "frames": 4,
-        "draw": { "w": 36, "h": 24, "anchor": "ground" }
+        "sheet": "attack",
+        "frameDelay": 18,
+        "frameRects": [
+          { "x": 0, "y": 54, "w": 80, "h": 68 },
+          { "x": 80, "y": 54, "w": 80, "h": 68 },
+          { "x": 160, "y": 54, "w": 80, "h": 68 }
+        ],
+        "draw": { "w": 25.15, "h": 17.88, "anchor": "ground", "yOffset": 2.2 }
       }
     }
   }

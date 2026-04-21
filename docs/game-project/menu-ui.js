@@ -681,12 +681,16 @@ class MenuUI {
 
    replayStoryPreview() {
       if (typeof storyIntro === 'undefined' || !storyIntro) return;
+      const appController = globalThis.app;
 
       const originalOnFinish = storyIntro.onFinish;
       storyIntro.onFinish = () => {
-         storyFinished = true;
          storyIntro.finished = true;
          storyIntro.onFinish = originalOnFinish;
+         if (appController) {
+            appController.storyFinished = true;
+            appController.storyStarted = true;
+         }
          this.showMenu();
       };
 
@@ -700,9 +704,11 @@ class MenuUI {
       storyIntro.finished = false;
       storyIntro.bgmPlayed = false;
 
-      storyStarted = true;
-      storyFinished = false;
-
       this.menuDiv.style.display = 'none';
+      this.setAppState('STORY');
+      if (appController) {
+         appController.storyStarted = true;
+         appController.storyFinished = false;
+      }
    }
 }

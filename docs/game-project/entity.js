@@ -108,7 +108,7 @@ class Entity {
          // no sprite, use colored (defined in ldtk) rectangle
          this._drawShape(level);
       }
-      if (!this.dialogOpen) return;
+      if (!this.dialogOpen || !gm) return;
       let viewport = {
          x: gm.camera.x,
          y: gm.camera.y,
