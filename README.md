@@ -85,7 +85,7 @@ Under this system, players do not need to completely remove pollution. When the 
   <img src="resources/images/intro.jpg"/>
 </p>
 <p align="center">
-  <b>Figure 1.</b> Ecological restoration after reaching 75% purification (left: before, right: after).
+  <b>Figure 1.</b> Ecological restoration after reaching 75% purification (left: before, right: after)
 </p>
 
 # 2. Game Content
@@ -191,7 +191,7 @@ Under this system, players do not need to completely remove pollution. When the 
 </p>
 
 <p align="center">
-<b>Figure 2.</b> Ideation process for the design of <i>Echoes of Purity</i>.
+<b>Figure 2.</b> Ideation process for the design of <i>Echoes of Purity</i>
 </p>
 
 In the early stage of the project, we explored game ideas through team brainstorming sessions. Each member first independently proposed a game concept, and then organized these initial ideas in the *gamelist* file of the project repository. This file was used to record different game types, core mechanisms, and potential design directions. By discussing and comparing these ideas, we found that the team members' interests mainly focused on game types that were more exploratory and had a non-linear structure, such as **Metroidvania**. Therefore, during the team discussions in the second and third weeks, we gradually narrowed down the creative direction. We decided to position the project as a non-linear 2D side-scrolling platform game. Players can freely explore different areas and advance the game by gradually unlocking paths.
@@ -966,7 +966,15 @@ From an ethical perspective, our game design ensures that players do not resort 
 
 In terms of accessibility, our current implementation already includes several features. difficulty selection, language switching, as well as control over background music and sound effects. These choices have lowered the entry barrier for new players and are suitable for various types of players.However, there are still areas where the accessibility of our game needs improvement. Some of the core mechanisms in the game, such as rope control and combat, require the simultaneous use of a mouse and keyboard. This might cause difficulties for players who are not familiar with platform games to operate the game. In the future, we will add clearer text labels, more simplified teaching procedures and re-mappable keys. Since accessibility is also a part of ethical software design, we hope that more people will be able to come into contact with and experience this game.
 
+## Green Software Foundation Patterns
+**• Avoid tracking unnecessary data:** 
+We avoid collecting and tracking unnecessary user data. The system only interacts based on keyboard input, reducing data processing needs and energy consumption from the source, and improving user privacy protection.
 
+**• Avoid an excessive DOM size:**
+We reduce the HTML structure as much as possible, avoid creating too many DOM nodes, and remove unnecessary page elements. The main body of the game uses canvas (such as p5.js) rendering instead of traditional DOM controls, thus reducing the layour and repaint operations, improving rendering efficiency and reducing energy consumption.
+
+**• Deprecate GIFs for animated content:**
+We use MP4 video to replace traditional GIF animation. Compared with GIF, MP4 has higher compression efficiency and smaller file volume while ensuring hige image equality, thus reducing data transmission and energy consumption in decoding process of the device.
 
 # 9. Conclusion
 
