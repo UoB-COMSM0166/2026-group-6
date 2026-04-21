@@ -150,7 +150,7 @@ Under this system, players do not need to completely remove pollution. When the 
 <td rowspan="2">Gate</td>
 <td>Area Gate</td>
 <td><img src="resources/images/door1.png" width="64"></td>
-<td>A gate between areas that opens when the area's purification level reaches 80%.</td>
+<td>A gate between areas that opens when the area's purification level reaches 75%.</td>
 </tr>
 
 <tr>
@@ -854,7 +854,16 @@ In terms of tools, we used **VS Code** to run the project code based on p5.js, a
 
 We adopt an iterative and incremental development based on Kanban and Scrum in Agile. At the beginning of the process, we always discuss our ideas after class. In addition, we divided roles according to those areas we preferred (such as testing, UI, as shown in the table earlier). Following the Agile philosophy, on which days with classes, Scrum Master Ruomu Lu organized everyone to hold stand-up meetings (basically 3 or 4 times a week). Usually, we discussed the progress of the previous week on Monday; then, on Tuesday of each week (after the lab class of this course), Program Owner Yifei Niu determines our goals for this week and assigns new tasks. She also put those tasks on our Jira Kanban board. At meetings on Thursday, we usually discuss challenges we encountered, which also avoids a large amount of work piling up on the day before delivery.
 
-We divided the development process into three sprint phases based on the course schedule.
+<p align="center">
+  <img src="resources/gifs/GIF_20260416123949508.gif" width="25%"/>
+</p>
+<p align="center">
+  <b>Figure 16.</b> Stand-up Meeting in MVB
+</p>
+
+<p>
+<b>Table 9. </b> Sprint Breakdown Showing Timelines and Goals
+</p>
 
 | Sprint  | Time       | Goal |
 |---------|------------|------|
@@ -862,23 +871,46 @@ We divided the development process into three sprint phases based on the course 
 | Sprint 2 | Week 7–8  | Add two difficulty levels and expand functionality |
 | Sprint 3 | Week 9–10 | Improve the UI system and enhance user experience |
 
-During the sprint review, we check if the functions meet their Acceptance Criteria. If there exist functions that need to be improved, we add them to the Product Backlog and continue to refine it in the next sprint. After that, we reflect on our workflow during the sprint retrospective. In the later stage of development, we no longer strictly obey the initial division of responsibilities in the development field. This is mainly because we want to make sure everyone participates in programming as much as possible.
+We divided the development process into three sprint phases based on the course schedule. During the sprint review, we check if the functions meet their Acceptance Criteria. If there exist functions that need to be improved, we add them to the Product Backlog and continue to refine it in the next sprint. After that, we reflect on our workflow during the sprint retrospective. In the later stage of development, we no longer strictly obey the initial division of responsibilities in the development field. This is mainly because we want to make sure everyone participates in programming as much as possible.
 
 ## tools
 
 Here are some of the tools we used:
 
 - **Jira**
+
 We use it as a Kanban board to manage tasks, it allows us to organise work into 3 stages
 
+<p align="center">
+  <img src="resources/images/process_jira.png" width="65%"/>
+</p>
+<p align="center">
+  <b>Figure 17.</b> Jira Kanban Board
+</p>
+
 - **Wechat**
+
 Used for group communication.
 
+<p align="center">
+  <b>Figure 18.</b> WeChat Communication for Team Coordination
+</p>
+
 - **GitHub**
+
 Used for version control.
 
 - **LDTK**
+
 LDtk is used for map design. The reason why we use it is not only because it exchanges map and level as a JSON file, but also since the visual editor totally improves our efficiency. Additionally, we defined entities with specific attributes(such as pollution core and door) within LDtk.
+
+<p align="center">
+  <img src="resources/images/process-ldtk.png" width="65%"/>
+</p>
+<p align="center">
+  <b>Figure 19.</b> LDtk Map Design Interface 
+</p>
+
 
 ## Reflection
 
@@ -893,6 +925,14 @@ Overall, we learned the importance of prioritising simplicity in design. While c
 ### Merge Conflicts
 
 During the early stage, merge conflicts several times, mainly because we had several people modifying the same file or even the same function simultaneously. To solve this problem, we detailed the task allocation and introduced the pull request process. Members who modified the code worked on separate branches, and our coder, Ruomu Lu, conducted code review before merging.
+
+<p align="center">
+  <img src="resources/gifs/process-network.gif" width="85%"/>
+</p>
+<p align="center">
+  <b>Figure 20.</b> GitHub Network Graph Showing Branching and Merging During Development 
+</p>
+
 
 ### Critical Reflection
 
@@ -916,7 +956,7 @@ From a technical perspective, the game incorporates systems that support these s
 </p>
 
 <p align="center">
-  <b>Figure 14.</b> Sustainability Awareness Framework
+  <b>Figure 21.</b> Sustainability Awareness Framework
 </p>
 
 
