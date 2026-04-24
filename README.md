@@ -882,7 +882,7 @@ Here are some of the tools we used:
 We use it as a Kanban board to manage tasks, it allows us to organise work into 3 stages
 
 <p align="center">
-  <img src="resources/images/process_jira.png" width="65%"/>
+  <img src="resources/images/process_jira2.png" width="90%"/>
 </p>
 <p align="center">
   <b>Figure 17.</b> Jira Kanban Board
@@ -890,10 +890,17 @@ We use it as a Kanban board to manage tasks, it allows us to organise work into 
 
 - **Wechat**
 
-Used for group communication.
+Used for group online communication.
+
+- **Tencent Meeting**
+
+Since face-to-face communication is not possible during vacation, we use Tecent Meeting to hold remote meetings. Its features, such as screen sharing, allow us to maintain development wherever we are.
 
 <p align="center">
-  <b>Figure 18.</b> WeChat Communication for Team Coordination
+  <img src="resources/images/process-meeting.jpg" width="40%"/>
+</p>
+<p align="center">
+  <b>Figure 18.</b> Online stand-up meeting via Tencent Meeting 
 </p>
 
 - **GitHub**
