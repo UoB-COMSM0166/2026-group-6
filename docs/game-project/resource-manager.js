@@ -80,10 +80,9 @@ class ResourceManager {
 
       // World Paintings / Scenery
       this.images.painting = { paintings: [] };
-      for (let i = 1; i <= 3; i++) {
-         this.images.painting.paintings.push(loadImage(`resources/images/map_image/map_image/forest${i}.png`));
+      for (let i = 1; i <= 7; i++) {
+         this.images.painting.paintings.push(loadImage(`resources/images/views/view${i}.jpg`));
       }
-      this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/sky.png`));
 
       //enemy monster
       this.images.enemy = this.images.enemy || {};

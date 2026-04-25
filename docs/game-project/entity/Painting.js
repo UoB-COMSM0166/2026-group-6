@@ -4,14 +4,11 @@ class Painting extends Entity {
       const dialogPool = [
          "The sky was once\nthis clear every day.",
          "A world without smog.\nWas it ever real?",
-         "Look at those trees.\nSo alive, so green.",
          "The air in this painting\nfeels clean. I miss that.",
          "Nature in its purest form.\nWe almost lost it all.",
          "Such stillness.\nNo pollution, no monster.",
          "The painter must have\nloved this world deeply.",
-         "Every leaf, every wave—\nperfect as they are.",
          "If only we could\nstep inside this world.",
-         "The light here is warm.\nNot filtered through dust.",
          "Somewhere, this place\nstill exists. Maybe.",
          "The scenery in the past, \nit was really beautiful!",
       ];
