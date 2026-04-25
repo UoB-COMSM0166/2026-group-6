@@ -95,9 +95,30 @@ class ResourceManager {
          this.images.painting.paintings.push(loadImage(`resources/images/map_image/map_image/forest${i}.png`));
       }
       this.images.painting.paintings.push(loadImage(`resources/images/map_image/background/sky.png`));
+      this.images.endings = {
+         bad: [
+            loadImage('resources/images/end/bad1.png'),
+            loadImage('resources/images/end/bad2.png')
+         ],
+         good: [
+            loadImage('resources/images/end/good1.png'),
+            loadImage('resources/images/end/good2.png'),
+            loadImage('resources/images/end/good3.png'),
+            loadImage('resources/images/end/good4.png')
+         ],
+         best: [
+            loadImage('resources/images/end/best1.png'),
+            loadImage('resources/images/end/best2.png'),
+            loadImage('resources/images/end/best3.png'),
+            loadImage('resources/images/end/best4.png'),
+            loadImage('resources/images/end/best5.png'),
+            loadImage('resources/images/end/best6.png'),
+            loadImage('resources/images/end/best7.png')
+         ]
+      };
 
-      //enemy monster
-      this.images.enemy = this.images.enemy || {};
+        //enemy monster
+        this.images.enemy = this.images.enemy || {};
       this.images.enemy.slime = {
          walk: loadImage('resources/images/enemy/Monster_Slime_Walk-Sheet.png'),
          attack: loadImage('resources/images/enemy/Monster_Slime_Attack1-Sheet.png'),

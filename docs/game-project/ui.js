@@ -170,6 +170,11 @@ class UI {
    }
 
    static drawWinScreen(gm) {
+      if (gm?.endingSequence?.display) {
+         gm.endingSequence.display();
+         return;
+      }
+
       background(0, 150);
       fill(255); textAlign(CENTER); textSize(40);
       const endingOutcome = gm?.endingOutcome || gm?.getEndingOutcome?.();
@@ -180,10 +185,6 @@ class UI {
       textSize(50); text(t('ui.win'), width / 2, height / 2 - 30);
       textSize(28); text(endingText, width / 2, height / 2 + 18);
       textSize(30); text("Press ESC to return to the Menu", width / 2, height / 2 + 68);
-
-      // Placeholder for ending illustration/video rendering once assets are ready.
-      // image(endingImage, width / 2 - 200, height / 2 - 220, 400, 180);
-      // playEndingAnimation(endingAnimation);
    }
 
    static drawGameOverScreen() {

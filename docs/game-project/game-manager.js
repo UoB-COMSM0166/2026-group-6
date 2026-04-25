@@ -27,6 +27,7 @@ class GameManager {
       this.checkpoint = null; // { levelIndex, x, y }
       this.endingOutcome = null;
       this.endingAudio = null;
+      this.endingSequence = null;
       this.purificationProgressCache = new Map();
       this.purificationProgressVersion = 0;
       this.preload();
@@ -596,6 +597,7 @@ class GameManager {
       const progress = this.getGlobalPurificationProgress();
       this.endingOutcome = this.getEndingOutcome(progress);
       this.endingAudio = playEndingAudio(this.resources, this.endingOutcome);
+      this.endingSequence = createEndingSequence(this.resources, this.endingOutcome);
 
       this.status = "WIN";
    }
