@@ -197,7 +197,7 @@ function getNormalEndingEnglish() {
          lines: [
             'The ecosystem shows signs of returning.',
             'Water runs clearer and the air feels lighter.',
-            'There is still work to do, but the future has opened.'
+            'There is still work to do, but the future has opened.',
             'Step by step, the silent seeds are waiting to sprout.',
             'Thank you for coming with a mission,',
             'Leaving precious footprints on this planet.',
