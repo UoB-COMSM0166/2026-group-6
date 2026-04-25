@@ -17,6 +17,7 @@ class Player {
       this.attackDmg = 1;
       this.grounded = false;
       this.inwater = false;
+      this.isClimbingLadder = false;
 
       this.showPrompt = null;
       this.floatingTexts = [];
@@ -38,6 +39,7 @@ class Player {
     * @param {GameManager} gm
     */
    update(gm) {
+      this.isClimbingLadder = false;
       this._tickTimers();
       this._getActiveWinchRopes(gm)
       this._handleWinch();
@@ -258,7 +260,7 @@ class Player {
             if (!resources.sounds.intowater.isPlaying()) resources.sounds.intowater.play();
             this.inwater = true;
          }
-         if (!resources.sounds.underwater.isPlaying()) resources.sounds.underwater.play();
+         if (!resources.sounds.underwater.isPlaying()) resources.sounds.underwater.loop();
          this.vy *= 0.97;
          let speed = GameConfig.Player.WATER_SPEED;
          if (keyIsDown(Keys.S) || keyIsDown(DOWN_ARROW)) this.vy += speed;
@@ -266,6 +268,13 @@ class Player {
       }
       else {
          this.inwater = false;
+         resources.sounds.underwater?.stop();
+      }
+   }
+
+   syncContinuousAudio() {
+      if (!this.isClimbingLadder) {
+         resources.sounds.ladder?.stop();
       }
    }
 

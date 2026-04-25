@@ -7,10 +7,9 @@ class EndingButton extends Entity {
 
    onPlayerContact(player, gm) {
       player.setPrompt('F');
-      let progress = gm.getGlobalPurificationProgress();
-      if (progress >= 90) this._endding1(gm);
-      else if (progress >= 60) this._endding2(gm);
-      else this._endding3(gm);
+      const endingOutcome = gm.getEndingOutcome();
+      this._showEndingDialog(this._getEndingDialogMode(endingOutcome?.key));
+
       if (keyIsDown(Keys.F)) {
          gm.addParticles(this.cx(), this.cy());
          gm.finalizeEnding();
@@ -25,19 +24,21 @@ class EndingButton extends Entity {
       this._playerNearby = false;
    }
 
-   _endding1(gm) {
-      this.dialogText = this._getEndingText('stay');
-      if (!this.dialogOpen) this.dialogOpen = true;
+   _showEndingDialog(mode) {
+      this.dialogText = this._getEndingText(mode);
+      this.dialogOpen = true;
    }
 
-   _endding2(gm) {
-      this.dialogText = this._getEndingText('leave');
-      if (!this.dialogOpen) this.dialogOpen = true;
-   }
+   _getEndingDialogMode(endingKey) {
+      if (endingKey === 'true' || endingKey === 'happy' || endingKey === 'better') {
+         return 'stay';
+      }
 
-   _endding3(gm) {
-      this.dialogText = this._getEndingText('launch');
-      if (!this.dialogOpen) this.dialogOpen = true;
+      if (endingKey === 'normal' || endingKey === 'sad') {
+         return 'leave';
+      }
+
+      return 'launch';
    }
 
    _getEndingText(mode) {

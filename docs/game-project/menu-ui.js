@@ -327,7 +327,7 @@ class MenuUI {
       sfxSlider.min = '0';
       sfxSlider.max = '2';
       sfxSlider.step = '0.01';
-      sfxSlider.value = this.audioManager?.getState().sfx.volume ?? 1.0;
+      sfxSlider.value = this.audioManager?.getState().sfx.volume ?? 0.6;
       sfxSlider.style.cssText = 'width:240px;; height:8px; accent-color:#1eb47a;';
       sfxRow.appendChild(sfxLabel);
       sfxRow.appendChild(sfxMuteBtn);

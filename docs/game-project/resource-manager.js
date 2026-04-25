@@ -189,9 +189,7 @@ class ResourceManager {
             loadSound('resources/audios/background/forest.mp3'),
             loadSound('resources/audios/background/forest2.mp3'),
             loadSound('resources/audios/background/forest3.mp3'),
-            loadSound('resources/audios/background/forest4.mp3'),
             loadSound('resources/audios/background/forestdeep.mp3'),
-            loadSound('resources/audios/background/forestend.mp3'),
             loadSound('resources/audios/background/river.mp3'),
             loadSound('resources/audios/background/river2.mp3'),
             loadSound('resources/audios/background/wind.mp3')
@@ -200,24 +198,27 @@ class ResourceManager {
             loadSound('resources/audios/background/forestp.mp3'),
             loadSound('resources/audios/background/forest2p.mp3'),
             loadSound('resources/audios/background/forest3p.mp3'),
-            loadSound('resources/audios/background/riverp.mp3'),
             loadSound('resources/audios/background/river2p.mp3'),
             loadSound('resources/audios/background/windp.mp3')
          ]
       };
+      this.sounds.quieterBgm = [...this.sounds.bgmPlaylists.purified];
 
       //Boss
       this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
       this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
-      // Post-Ending Audio (Currently disabled/reserved)
-      // this.sounds.endings = {
-      //    bad: loadSound('resources/audios/game_once/badend.mp3'),
-      //    sad: loadSound('resources/audios/game_once/sadend.mp3'),
-      //    normal: loadSound('resources/audios/game_once/normalend.mp3'),
-      //    better: loadSound('resources/audios/game_once/betterend.mp3'),
-      //    happy: loadSound('resources/audios/game_once/happyend.mp3')
-      // };
+      this.sounds.endings = {
+         bad: loadSound('resources/audios/game_once/badend.mp3'),
+         sad: loadSound('resources/audios/game_once/sadend.mp3'),
+         normal: loadSound('resources/audios/game_once/normalend.mp3'),
+         better: loadSound('resources/audios/game_once/betterend.mp3'),
+         happy: loadSound('resources/audios/game_once/happyend.mp3'),
+         // Placeholder: replace null with
+         // loadSound('resources/audios/game_once/trueend.mp3')
+         // after the true ending track is added.
+         true: null
+      };
    }
 
    /** Mark as loaded once preload is complete */

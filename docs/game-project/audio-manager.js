@@ -3,7 +3,7 @@ class AudioManager {
     this.resources = resources;
     this.state = {
       bgm: { volume: 0.6, isMuted: false },
-      sfx: { volume: 1.0, isMuted: false }
+      sfx: { volume: 0.6, isMuted: false }
     };
 
     this.gameplayPlaylistIndices = {
@@ -16,6 +16,10 @@ class AudioManager {
     this.waitingForBossLoop = false;
     this.cachedBgmSounds = [];
     this.cachedSfxKeys = [];
+    this.quieterBgmSounds = new Set();
+    this.lastGameplayAudioUpdateAt = -Infinity;
+    this.lastGameplayAudioAppState = null;
+    this.gameplayAudioUpdateInterval = 80;
 
     this.initAudioVolumes();
   }
@@ -24,6 +28,7 @@ class AudioManager {
     if (!this.resources?.sounds) return;
     this.cachedBgmSounds = this._collectAllBgmSounds();
     this.cachedSfxKeys = this._collectSfxKeys();
+    this.quieterBgmSounds = new Set(this.resources?.sounds?.quieterBgm || []);
 
     this._applyBgmVolume();
 
@@ -38,6 +43,9 @@ class AudioManager {
       this.resources?.sounds?.boss,
       this.resources?.sounds?.alarm
     ];
+
+    const endingSounds = Object.values(this.resources?.sounds?.endings || {});
+    sounds.push(...endingSounds);
 
     const playlists = this.resources?.sounds?.bgmPlaylists || {};
     Object.values(playlists).forEach((playlist) => {
@@ -54,8 +62,11 @@ class AudioManager {
   }
 
   _applyBgmVolume() {
-    const targetVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
-    this._getAllBgmSounds().forEach((sound) => sound.setVolume(targetVolume));
+    const baseVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
+    this._getAllBgmSounds().forEach((sound) => {
+      const volumeScale = this.quieterBgmSounds.has(sound) ? 0.8 : 1;
+      sound.setVolume(baseVolume * volumeScale);
+    });
   }
 
   _collectSfxKeys() {
@@ -149,14 +160,20 @@ class AudioManager {
 
   stopGameplayBgmCycle() {
     this._stopAllBackgroundAudio();
+    this._stopGameplayLoopingSfx();
     this.currentGameplayTrack = null;
     this.waitingForBossLoop = false;
     this.gameplayAudioMode = 'playlist';
   }
 
   updateGameplayAudio(gm, appState) {
+    if (!this._shouldUpdateGameplayAudio(appState)) {
+      return;
+    }
+
     if (appState !== 'PLAYING' || !gm) {
       this._stopBossAudio();
+      this._stopGameplayLoopingSfx();
       return;
     }
 
@@ -167,6 +184,24 @@ class AudioManager {
     }
 
     this._enterPlaylistAudioMode(this._resolvePlaylistKey(gm));
+  }
+
+  _shouldUpdateGameplayAudio(appState) {
+    const now = typeof millis === 'function' ? millis() : Date.now();
+    const appStateChanged = this.lastGameplayAudioAppState !== appState;
+
+    this.lastGameplayAudioAppState = appState;
+    if (appStateChanged) {
+      this.lastGameplayAudioUpdateAt = now;
+      return true;
+    }
+
+    if (now - this.lastGameplayAudioUpdateAt < this.gameplayAudioUpdateInterval) {
+      return false;
+    }
+
+    this.lastGameplayAudioUpdateAt = now;
+    return true;
   }
 
   _resolvePlaylistKey(gm) {
@@ -262,6 +297,12 @@ class AudioManager {
     this._stopBossAudio();
     this._stopSound(this.resources?.sounds?.story);
     this._stopSound(this.resources?.sounds?.begin);
+    stopEndingAudio(this.resources);
+  }
+
+  _stopGameplayLoopingSfx() {
+    this._stopSound(this.resources?.sounds?.underwater);
+    this._stopSound(this.resources?.sounds?.ladder);
   }
 
   _playSound(sound, options = {}) {

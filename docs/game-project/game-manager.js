@@ -26,6 +26,9 @@ class GameManager {
       this._isPreloading;
       this.checkpoint = null; // { levelIndex, x, y }
       this.endingOutcome = null;
+      this.endingAudio = null;
+      this.purificationProgressCache = new Map();
+      this.purificationProgressVersion = 0;
       this.preload();
    }
 
@@ -65,6 +68,7 @@ class GameManager {
       }
 
       this._loadEntities();
+      this.invalidatePurificationProgressCache();
 
       if (!this._isPreloading) {
          let size = this.level.getCanvasSize();
@@ -115,6 +119,7 @@ class GameManager {
          this.level.totalPollutionCore = this.level.getEntityCount(GameConfig.Entity.PollutionCore);
          this.level.totalEnemies = this.level.getEntityCount(GameConfig.Entity.Enemy);
          this.level.totalBoss = this.level.getEntityCount(GameConfig.Entity.Boss);
+         this.invalidatePurificationProgressCache();
       }
       else {
          this.entities = this.levelsInfo[this.levelIndex].entities;
@@ -169,9 +174,10 @@ class GameManager {
       let viewH = height / this.scale;
       this.camera.follow(this.player, this.level.mapW, this.level.mapH, viewW, viewH);
 
-      // entities
-      this._updateEntities();
-      this._checkTeleport();
+        // entities
+        this._updateEntities();
+        this.player.syncContinuousAudio();
+        this._checkTeleport();
 
       this._checkProcess()
 
@@ -412,7 +418,10 @@ class GameManager {
                ent.onRopeContact(rope, this.player, this);
             }
          });
-         if (ent.isDead) this.entities.splice(i, 1);
+         if (ent.isDead) {
+            this.entities.splice(i, 1);
+            this.invalidatePurificationProgressCache();
+         }
       }
    }
 
@@ -511,6 +520,11 @@ class GameManager {
 
       let currentAreaNumber = areaNumber || this.level.areaNumber;
       currentAreaNumber = Number(currentAreaNumber);
+      const cacheKey = currentAreaNumber;
+      const cached = this.purificationProgressCache.get(cacheKey);
+      if (cached && cached.version === this.purificationProgressVersion) {
+         return cached.value;
+      }
 
       let CORE_WEIGHT = GameConfig.Level.CORE_WEIGHT;
       let ENEMY_WEIGHT = GameConfig.Level.ENEMY_WEIGHT;
@@ -557,7 +571,17 @@ class GameManager {
          ? 100
          : Math.floor((currentPurifiedValue / totalValue) * 100);
 
+      this.purificationProgressCache.set(cacheKey, {
+         version: this.purificationProgressVersion,
+         value: percentage
+      });
+
       return percentage;
+   }
+
+   invalidatePurificationProgressCache() {
+      this.purificationProgressVersion++;
+      this.purificationProgressCache.clear();
    }
 
    getGlobalPurificationProgress() {
@@ -565,29 +589,13 @@ class GameManager {
    }
 
    getEndingOutcome(progress = this.getGlobalPurificationProgress()) {
-      if (progress >= 95) {
-         return { key: 'happy', minProgress: 95, label: 'Happy Ending', progress };
-      }
-      if (progress >= 90) {
-         return { key: 'better', minProgress: 90, label: 'Better Ending', progress };
-      }
-      if (progress >= 85) {
-         return { key: 'normal', minProgress: 85, label: 'Normal Ending', progress };
-      }
-      if (progress >= 80) {
-         return { key: 'sad', minProgress: 80, label: 'Sad Ending', progress };
-      }
-      return { key: 'bad', minProgress: 0, label: 'Bad Ending', progress };
+      return resolveEndingOutcome(progress);
    }
 
    finalizeEnding() {
       const progress = this.getGlobalPurificationProgress();
       this.endingOutcome = this.getEndingOutcome(progress);
-
-      // Placeholder for ending-specific audio/assets while resources are still in production.
-      // const endingAudio = this.resources?.sounds?.endings?.[this.endingOutcome.key];
-      // const endingImage = this.resources?.images?.endings?.[this.endingOutcome.key];
-      // const endingAnimation = this.resources?.animations?.endings?.[this.endingOutcome.key];
+      this.endingAudio = playEndingAudio(this.resources, this.endingOutcome);
 
       this.status = "WIN";
    }
