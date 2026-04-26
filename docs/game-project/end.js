@@ -973,11 +973,9 @@ function patchMenuUIForEndingReplayButton() {
 }
 
 function installEndingPreviewHooks() {
-   const menuReady = patchMenuUIForEndingPreview();
    const replayMenuReady = patchMenuUIForEndingReplayButton();
-   const audioReady = patchAudioManagerForEndingPreview();
    const appReady = patchAppControllerForEndingReplayButton();
-   return menuReady && replayMenuReady && audioReady && appReady;
+   return replayMenuReady && appReady;
 }
 
 function waitForEndingPreviewHooks() {
