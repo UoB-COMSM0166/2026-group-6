@@ -53,6 +53,7 @@ class ResourceManager {
       this.images.door1 = loadImage('resources/images/map_image/door1.png');
       this.images.door2 = loadImage('resources/images/map_image/door2.png');
       this.images.pollutionCore = loadImage('resources/images/map_image/pollution_core.png');
+      this.images.endingButton = loadImage('resources/images/map_image/endingbutton.png');
       
       // HUD / Tool Icons
       this.images.tools.energy = loadImage('resources/images/map_image/tools/tools_energy.png');

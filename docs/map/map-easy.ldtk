@@ -11430,7 +11430,7 @@
 						},
 						{
 							"__identifier": "Cleaning_energy",
-							"__grid": [11,2],
+							"__grid": [29,2],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -11439,9 +11439,9 @@
 							"width": 16,
 							"height": 32,
 							"defUid": 46,
-							"px": [88,16],
+							"px": [232,16],
 							"fieldInstances": [],
-							"__worldX": 3008,
+							"__worldX": 3152,
 							"__worldY": 1080
 						},
 						{

@@ -2,6 +2,7 @@ class EndingButton extends Entity {
    constructor(x, y, w, h, spawnData) {
       super(x, y, w, h, spawnData);
       this.dialogText = "start to leave earth";
+      this.sprite = resources.images.endingButton;
       this._playerNearby = false;
    }
 
