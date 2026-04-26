@@ -5976,7 +5976,7 @@
 			"__neighbours": [{ "levelIid": "827318f0-fa90-11f0-b5f0-afbac617f9e0", "dir": "e" }]
 		},
 		{
-			"identifier": "Area1_6",
+			"identifier": "Area1_2",
 			"iid": "827318f0-fa90-11f0-b5f0-afbac617f9e0",
 			"uid": 225,
 			"worldX": 336,
@@ -7071,7 +7071,7 @@
 			"__neighbours": [ { "levelIid": "d76e78f0-fa90-11f0-b5f0-bb0a869c1759", "dir": "w" }, { "levelIid": "3d44dbf3-fa90-11f0-9b59-6941870cbee6", "dir": "e" } ]
 		},
 		{
-			"identifier": "Area2_3",
+			"identifier": "Area2_1",
 			"iid": "3d44dbf3-fa90-11f0-9b59-6941870cbee6",
 			"uid": 207,
 			"worldX": 720,
@@ -8285,7 +8285,7 @@
 			"__neighbours": [ { "levelIid": "827318f0-fa90-11f0-b5f0-afbac617f9e0", "dir": "w" }, { "levelIid": "43730b03-fa90-11f0-9b59-f99fd6205096", "dir": "e" } ]
 		},
 		{
-			"identifier": "Area2_7",
+			"identifier": "Area2_2",
 			"iid": "43730b03-fa90-11f0-9b59-f99fd6205096",
 			"uid": 210,
 			"worldX": 1104,
@@ -9569,7 +9569,7 @@
 			"__neighbours": [ { "levelIid": "3d44dbf3-fa90-11f0-9b59-6941870cbee6", "dir": "w" }, { "levelIid": "58d8e300-fa90-11f0-b522-871fb9dc379f", "dir": "e" } ]
 		},
 		{
-			"identifier": "Area3_4",
+			"identifier": "Area3_1",
 			"iid": "58d8e300-fa90-11f0-b522-871fb9dc379f",
 			"uid": 219,
 			"worldX": 1496,
@@ -10109,7 +10109,7 @@
 			"__neighbours": [ { "levelIid": "43730b03-fa90-11f0-9b59-f99fd6205096", "dir": "w" }, { "levelIid": "f4c3a210-fa90-11f0-947a-29c235997323", "dir": "e" } ]
 		},
 		{
-			"identifier": "Area3_5",
+			"identifier": "Area3_2",
 			"iid": "f4c3a210-fa90-11f0-947a-29c235997323",
 			"uid": 226,
 			"worldX": 1784,
@@ -11006,7 +11006,7 @@
 			"__neighbours": [ { "levelIid": "58d8e300-fa90-11f0-b522-871fb9dc379f", "dir": "w" }, { "levelIid": "c7babe10-fa90-11f0-aac2-09ba7774ea4f", "dir": "e" } ]
 		},
 		{
-			"identifier": "Area4_5",
+			"identifier": "Area4_1",
 			"iid": "c7babe10-fa90-11f0-aac2-09ba7774ea4f",
 			"uid": 164,
 			"worldX": 2264,
@@ -11661,7 +11661,7 @@
 			"__neighbours": [ { "levelIid": "f4c3a210-fa90-11f0-947a-29c235997323", "dir": "w" }, { "levelIid": "6b029060-fa90-11f0-af70-47ccf31b1c0f", "dir": "e" } ]
 		},
 		{
-			"identifier": "Area4_end",
+			"identifier": "Spaceship",
 			"iid": "6b029060-fa90-11f0-af70-47ccf31b1c0f",
 			"uid": 165,
 			"worldX": 2648,

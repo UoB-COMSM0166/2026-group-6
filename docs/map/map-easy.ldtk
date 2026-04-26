@@ -6912,7 +6912,7 @@
 			"__neighbours": [ { "levelIid": "d76e78f0-fa90-11f0-b5f0-bb0a869c1759", "dir": "w" }, { "levelIid": "9e71a3a0-fa90-11f0-b5f0-4f90088af627", "dir": "e" } ]
 		},
 		{
-			"identifier": "Area1_5",
+			"identifier": "Area1_3",
 			"iid": "9e71a3a0-fa90-11f0-b5f0-4f90088af627",
 			"uid": 224,
 			"worldX": 720,
@@ -7961,7 +7961,7 @@
 			"__neighbours": [ { "levelIid": "bb206420-fa90-11f0-b5f0-2ff36e33e9c7", "dir": "w" }, { "levelIid": "3d44dbf3-fa90-11f0-9b59-6941870cbee6", "dir": "e" }, { "levelIid": "29270c30-fa90-11f0-a19c-5db9d17e48e8", "dir": "se" } ]
 		},
 		{
-			"identifier": "Area2_3",
+			"identifier": "Area2_1",
 			"iid": "3d44dbf3-fa90-11f0-9b59-6941870cbee6",
 			"uid": 207,
 			"worldX": 1104,
@@ -9193,7 +9193,7 @@
 			"__neighbours": [ { "levelIid": "9e71a3a0-fa90-11f0-b5f0-4f90088af627", "dir": "w" }, { "levelIid": "41d587a3-fa90-11f0-9b59-ab71a500de1e", "dir": "e" }, { "levelIid": "29270c30-fa90-11f0-a19c-5db9d17e48e8", "dir": "s" } ]
 		},
 		{
-			"identifier": "Area2_5",
+			"identifier": "Area2_3",
 			"iid": "41d587a3-fa90-11f0-9b59-ab71a500de1e",
 			"uid": 209,
 			"worldX": 1488,
@@ -10166,7 +10166,7 @@
 			"__neighbours": [ { "levelIid": "3d44dbf3-fa90-11f0-9b59-6941870cbee6", "dir": "w" }, { "levelIid": "24db95f0-fa90-11f0-9ba3-5b423f318bd6", "dir": "e" }, { "levelIid": "29270c30-fa90-11f0-a19c-5db9d17e48e8", "dir": "sw" } ]
 		},
 		{
-			"identifier": "Area4_end",
+			"identifier": "Spaceship",
 			"iid": "6b029060-fa90-11f0-af70-47ccf31b1c0f",
 			"uid": 165,
 			"worldX": 2272,
@@ -12092,7 +12092,7 @@
 			"__neighbours": []
 		},
 		{
-			"identifier": "Area3_4",
+			"identifier": "Area2_4",
 			"iid": "24db95f0-fa90-11f0-9ba3-5b423f318bd6",
 			"uid": 2048,
 			"worldX": 1888,
@@ -12793,7 +12793,7 @@
 			"__neighbours": [ { "levelIid": "41d587a3-fa90-11f0-9b59-ab71a500de1e", "dir": "w" }, { "levelIid": "6b029060-fa90-11f0-af70-47ccf31b1c0f", "dir": "e" } ]
 		},
 		{
-			"identifier": "Level_8",
+			"identifier": "Area2_2",
 			"iid": "29270c30-fa90-11f0-a19c-5db9d17e48e8",
 			"uid": 2052,
 			"worldX": 1104,
@@ -12803,7 +12803,7 @@
 			"pxHei": 216,
 			"__bgColor": "#696A79",
 			"bgColor": null,
-			"useAutoIdentifier": true,
+			"useAutoIdentifier": false,
 			"bgRelPath": null,
 			"bgPos": null,
 			"bgPivotX": 0.5,

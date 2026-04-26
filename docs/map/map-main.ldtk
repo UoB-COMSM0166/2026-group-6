@@ -19369,7 +19369,7 @@
 			"__neighbours": [ { "levelIid": "bdee39d0-fa90-11f0-b522-815ac8b65e73", "dir": "w" }, { "levelIid": "58d8e300-fa90-11f0-b522-871fb9dc379f", "dir": "e" }, { "levelIid": "c6611470-fa90-11f0-94a3-9756cbf5bc3c", "dir": "n" }, { "levelIid": "97d19aa0-fa90-11f0-aac2-b3942c41d1f2", "dir": "n" } ]
 		},
 		{
-			"identifier": "Area3_run",
+			"identifier": "Area2_hide",
 			"iid": "eebd5b00-fa90-11f0-b522-7360abc8e2bf",
 			"uid": 232,
 			"worldX": 1456,
@@ -25741,7 +25741,7 @@
 			"__neighbours": [ { "levelIid": "43730b03-fa90-11f0-9b59-f99fd6205096", "dir": "sw" }, { "levelIid": "c51085a0-fa90-11f0-aac2-e18df3b3c336", "dir": "s" }, { "levelIid": "6b029060-fa90-11f0-af70-47ccf31b1c0f", "dir": "w" } ]
 		},
 		{
-			"identifier": "Area4_end",
+			"identifier": "Spaceship",
 			"iid": "6b029060-fa90-11f0-af70-47ccf31b1c0f",
 			"uid": 165,
 			"worldX": 2696,

@@ -70,8 +70,9 @@ class UI {
       textSize(35);
 
       let progress = gm.getAreaProgress();
-      let areaLabel = getDisplayAreaLabelForLevel(level) || level.areaNumber;
-      const areaText = t('hud.areaPurified', { area: areaLabel, progress });
+      let areaNumber = level.areaNumber;
+      if (areaNumber === "5") areaNumber = "Total";
+      const areaText = `Area${areaNumber} Purified: ${progress}%`;
 
       fill("rgba(29, 11, 29, 0.45)");
       text(areaText, width / 2 + 2, 22);
@@ -182,9 +183,6 @@ class UI {
    }
 
    static drawMapPrompt(prompt, elapsed, duration) {
-      prompt = formatDisplayPromptText(prompt);
-      prompt = localizeMapPromptContent(prompt);
-
       let fadeIn = 700;    // 0.7s
       let fadeOut = 800;   // 0.8s
       let remaining = duration - elapsed;
