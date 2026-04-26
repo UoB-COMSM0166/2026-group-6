@@ -109,6 +109,26 @@ function drawImageCover(img, dx, dy, dw, dh) {
    image(img, dx, dy, dw, dh, sx, sy, sw, sh);
 }
 
+function wrapEndingTextByCharacters(content, maxWidth) {
+   if (typeof content !== 'string' || !content.length) return content;
+
+   let wrapped = '';
+   let currentLine = '';
+
+   for (const char of content) {
+      const candidate = currentLine + char;
+      if (textWidth(candidate) <= maxWidth || currentLine.length === 0) {
+         currentLine = candidate;
+         continue;
+      }
+
+      wrapped += `${currentLine}\n`;
+      currentLine = char;
+   }
+
+   return wrapped + currentLine;
+}
+
 function resolveEndingOutcome(progress = 0) {
    const normalizedProgress = normalizeEndingProgress(progress);
    const matchedEnding = ENDING_DEFINITIONS.find((ending) => normalizedProgress >= ending.minProgress)
@@ -165,13 +185,10 @@ function getBadEndingEnglish() {
       {
          title: 'The End [Regret]',
          lines: [
-            'Energy levels critical, severe system damage detected.',
-            'Please return to the cockpit immediately.',
+            'Energy levels critical, severe system damage detected. Please return to the cockpit immediately.',
             'The launch was succeeded, but the world below still remains scarred.',
-            'Too much pollution was left behind.',
-            'We came with hope, we leave with regret.',
-            'Mission Failure detected.',
-            'Initiating self-destruct sequence.'
+            'Too much pollution was left behind. We came with hope, we leave with regret.',
+            '[Mission Failure detected] Initiating self-destruct sequence.'
          ]
       }
    ];
@@ -182,11 +199,9 @@ function getBadEndingChinese() {
       {
          title: '达成【遗憾】结局',
          lines: [
-            '能量不足,机体损毁严重,',
-            '请立即返回机舱！',
+            '能量不足,机体损毁严重,请立即返回机舱!',
             '飞船顺利升空，但下方的世界依然伤痕累累。',
-            '仍有太多污染被遗留在这颗星球上。',
-            '怀着希望而来的我们,怀着遗憾离去，',
+            '仍有太多污染被遗留在这颗星球上。怀着希望而来的我们,怀着遗憾离去。',
             '检测到【任务失败】,销毁程序已启动。'
          ]
       }
@@ -199,13 +214,11 @@ function getSadEndingEnglish() {
       {
          title: 'The End [Pity]',
          lines: [
-            'The planet acknowledges your efforts and contributions,',
-            'A part of the planet has been saved.',
+            'The planet acknowledges your efforts and contributions, a part of the planet has been saved.',
             'But silence still hangs over the ruins.',
             'Recovery began, yet future remains fragile.',
             'Maybe just a little bit more?',
-            '[Try Again!]',
-            'A faint call of life comes from afar.'
+            '[Try Once Again!] A faint call of life comes from afar.'
          ]
       }
    ];
@@ -216,13 +229,11 @@ function getSadEndingChinese() {
       {
          title: '达成【惋惜】结局',
          lines: [
-            '星球承认你的努力与付出，',
-            '这里的一部分得到了拯救。',
+            '星球承认你的努力与付出，这里的一部分得到了拯救。',
             '然而废墟之上的沉寂依然挥之不去。',
             '复苏已经开始,未来却仍然脆弱。',
             '也许只差一点点？',
-            '[再试一次吧!]',
-            '从远方飘来生命微弱的呼唤。'
+            '【再试一次吧!】 从远方飘来生命微弱的呼唤。'
          ]
       }
    ];
@@ -234,14 +245,11 @@ function getNormalEndingEnglish() {
       {
          title: 'The End [Serendipity]',
          lines: [
-            'The ecosystem shows signs of returning.',
-            'Water runs clearer and the air feels lighter.',
+            'The ecosystem shows signs of returning. Water runs clearer and the air feels lighter.',
             'There is still work to do, but the future has opened.',
             'Step by step, the silent seeds are waiting to sprout.',
-            'Thank you for coming with a mission,',
-            'Leaving precious footprints on this planet.',
-            'Maybe in the future, maybe not far away,',
-            'We look forward to meeting again in a thriving tomorrow.'
+            'Thank you for coming with a mission, and leaving precious footprints on this planet.',
+            'Maybe in the future, maybe not far away. We look forward to meeting again in a thriving tomorrow.'
          ]
       }
    ];
@@ -252,15 +260,11 @@ function getNormalEndingChinese() {
       {
          title: '达成【确幸】结局',
          lines: [
-            '生态已然出现复苏的迹象。',
-            '水流更加清澈,空气更为清新。',
-            '前路仍有任务等待，但未来已经被重新打开。',
+            '生态已然出现复苏的迹象。水流更加清澈,空气更为清新。',
+            '前路仍有任务等待，但未来已经被重新定义。',
             '一点一点,沉默的种子正在期待发芽...',
-            '感谢怀揣使命而来的你，',
-            '在这个星球上留下了珍贵的足迹，',
-            '也许未来，也许不远，',
-            '期待我们的再次相遇,',
-            '在枝繁叶茂的明天。'
+            '感谢怀揣使命而来的你，在这个星球上留下弥足珍贵的足迹。',
+            '也许未来，也许不远，期待我们的再次相遇，在枝繁叶茂的明天。'
          ]
       }
    ];
@@ -272,11 +276,9 @@ function getBetterEndingEnglish() {
       {
          title: 'The End [Future]',
          lines: [
-            'Most of the pollution has been removed.',
-            'The sleeping world is finally beginning to breathe again.',
+            'Most of the pollution has been removed. The sleeping world is finally beginning to breathe again.',
             'A stronger tomorrow is now within reach.',
-            'Looking forward to the sound of sprouting,',
-            'just like looking forward to the future,',
+            'Looking forward to the sound of sprouting, just like looking forward to the future,',
             'Looking forward to what kind of stories the next adventure will bring,',
             'A new future is slowly unfolding ahead.'
          ]
@@ -289,14 +291,11 @@ function getBetterEndingChinese() {
       {
          title: '达成【未来】结局',
          lines: [
-            '大部分污染已经被成功清除。',
-            '沉睡的世界终于再次开始呼吸。',
-            '污染的生物已经不再威胁这个原本脆弱的星球，',
-            '万物复苏，萌芽出现。',
-            '一个更坚定的明天，已然近在眼前。',
+            '大部分污染已经被成功清除，沉睡的世界终于再次开始呼吸。',
+            '污染的生物已经不再威胁这个原本脆弱的星球。',
+            '万物复苏，萌芽出现。一个更坚定的明天，已然近在眼前。',
             '期待破土的声音，就像期待未来，',
-            '期待下一次冒险又将收获什么样的故事与新奇体验，',
-            '新的未来正在前方慢慢展开...'
+            '期待下一次冒险又将收获什么样的故事与新奇体验，新的未来正在前方慢慢展开...'
          ]
       }
    ];
@@ -308,16 +307,12 @@ function getHappyEndingEnglish() {
       {
          title: 'The End [Hope]',
          lines: [
-            'The planet shines with renewed life.',
-            'The mission brought back warmth, color, and movement.',
+            'The planet shines with renewed life. The mission brought back warmth, color, and movement.',
             'A new age of recovery has begun.',
-            'Pass it on! ',
-            'The spark of life continues to spread,',
+            'Pass it on! The spark of life continues to spread,',
             'Change is quietly happening in the distant universe,',
-            'Pass it on!',
-            'In the depths of the star sea, new coordinates are flickering.',
-            'The blue signal pierces through the long darkness,',
-            'Sending the answer here to even farther places.'
+            'Pass it on! In the depths of the star sea, new coordinates are flickering.',
+            'The blue signal pierces through the long darkness, sending the answer here to even farther places.'
          ]
       }
    ];
@@ -328,15 +323,12 @@ function getHappyEndingChinese() {
       {
          title: '达成【希望】结局',
          lines: [
-            '这颗星球重新闪耀出生命的光。',
-            '你的任务带回了温度、色彩与流动。',
+            '这颗星球重新闪耀出生命的光，你的任务带回了温度、色彩与流动。',
             '一个崭新的复苏时代开始了。',
-            '传递下去吧！生命火种不断延续',
-            '在遥远的宇宙中，变化正悄然发生，',
-            '传递下去吧！',
-            '星海深处，新的坐标正在闪烁。',
-            '蓝色信号穿过漫长的黑暗，',
-            '把这里的答案，送往更远的地方。',
+            '传递下去吧！生命火种不断延续，',
+            '在遥远的宇宙中，变化正悄然发生。',
+            '传递下去吧！星海深处，新的坐标正在闪烁。',
+            '蓝色信号穿过漫长的黑暗，把这里的答案，送往更远的地方。',
          ]
       }
    ];
@@ -348,17 +340,14 @@ function getTrueEndingEnglish() {
       {
          title: 'The End [Dawn]',
          lines: [
-            'The final trace of pollution has disappeared.',
-            'The planet shines with the light of life again.',
+            'The final trace of pollution has disappeared. The planet shines with the light of life again.',
             'The wind blows across the fields, the water glitters again.',
-            'Birds fly across the clear sky, and young lives sleep in the branches.',
-            'In the depths of data, a new thought takes shape for the first time:',
+            'Birds fly across the clear sky, and young lives chirp among the branches.',
+            'Forests, rivers, air, nests and homecomings, are written into a gentler cognition.',
+            'In the depths of data, a new thought takes shape for the first time: ',
             'The subtle connections between life... gradually take on new meaning.',
-            'Forests, rivers, air, nests and homecomings,',
-            'are written into a gentler cognition.',
             'Let more sleeping programs learn to see the world again.',
-            'From now on, restoration is no longer just a command,',
-            'It is also the dawn that lights up the sky.'
+            'From now on, restoration is no longer just a command, it is also the dawn that lights up the sky.'
          ]
       },
    ];
@@ -369,17 +358,11 @@ function getTrueEndingChinese() {
       {
          title: '达成【曙光】结局',
          lines: [
-            '最后一丝污染已经彻底消失。',
-            '这颗星球重新亮起了生命的光。',
-            '风重新吹过原野，水流再次闪烁。',
-            '鸟群掠过晴空，幼小的生命在枝叶间安睡。',
-            '数据深处，某个新的念头第一次成形:',
-            '生命之间细小的关联...渐渐拥有了新的意义。',
-            '森林、河流、空气、幼巢与归途，',
-            '被写入一段更温柔的认知里。',
-            '让更多沉睡的程序，学会重新看见世界。',
-            '自此修复不再只是指令，',
-            '也是黎明亮起的曙光。'
+            '最后一丝污染已经彻底消失，这颗星球重新亮起了生命的光。',
+            '风重新吹过原野，水流再次闪烁。鸟群掠过晴空，幼小的生命在枝叶间叽喳作响。',
+            '森林、河流、空气、幼巢与归途；被写入一段更温柔的认知里。',
+            '数据深处，某个新的念头第一次成形:生命之间细小的关联...渐渐拥有了新的意义。',
+            '让更多沉睡的程序，学会重新看见世界。自此修复不再只是指令，也是黎明亮起的曙光。'
          ]
       },
    ];
@@ -467,14 +450,18 @@ class EndingSequence {
    }
 
    _ensureReplayButton() {
-      if (typeof document === 'undefined' || this.replayBtn) return;
+      if (typeof document === 'undefined') return;
+      if (this.replayBtn && !this.replayBtn.isConnected) {
+         this.replayBtn = null;
+      }
+      if (this.replayBtn) return;
 
       const btn = document.createElement('button');
       btn.id = 'ending-replay-btn';
       btn.style.cssText =
          'display:none;' +
-         'position:fixed; top:78px; left:140px;' +
-         'width:90px; height:30px; font-size:16px; font-weight:bold; color:white;' +
+         'position:fixed; top:calc(50% - 350px + 34px); left:calc(50% - 500px + 58px);' +
+         'width:124px; height:42px; font-size:22px; font-weight:bold; color:white;' +
          'font-family:var(--game-font-family), monospace;' +
          'background-image:url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png");' +
          'background-size:100% 100%;' +
@@ -511,13 +498,15 @@ class EndingSequence {
    _refreshReplayButtonLabel() {
       if (!this.replayBtn) return;
       this.replayBtn.textContent = getLanguage() === 'zh' ? '回看' : 'Replay';
-      this.replayBtn.style.fontSize = getLanguage() === 'zh' ? '18px' : '16px';
+      this.replayBtn.style.fontSize = getLanguage() === 'zh' ? '20px' : '24px';
    }
 
    _showReplayButton() {
-      if (this.replayBtn) {
-         this.replayBtn.style.display = 'block';
-      }
+      this._ensureReplayButton();
+      if (!this.replayBtn) return;
+      this.replayBtn.style.display = 'block';
+      this.replayBtn.style.visibility = 'visible';
+      this.replayBtn.style.pointerEvents = 'auto';
    }
 
    update() {
@@ -617,11 +606,12 @@ class EndingSequence {
 
    drawTitle() {
       const slide = this.slides[this.currentSlide];
+      const titleSize = getLanguage() === 'zh' ? 39 : 44;
       push();
       fill(255);
       noStroke();
       textAlign(CENTER, TOP);
-      textSize(42);
+      textSize(titleSize);
       text(slide.title, width / 2, 56);
       pop();
    }
@@ -646,11 +636,12 @@ class EndingSequence {
    drawCurrentLineText() {
       const slide = this.slides[this.currentSlide];
       const fullLine = slide.lines[this.currentLine];
-      const visibleText = fullLine.substring(0, this.currentChar);
       const box = this.textBox;
       const isChinese = getLanguage() === 'zh';
       const textOffsetY = isChinese ? 29 : 16;
-      const textSizeValue = isChinese ? 33 : 38;
+      const textSizeValue = isChinese ? 30 : 40;
+      const lineSpacing = isChinese ? 40 : 30;
+      const textBoxWidth = box.w - 48;
 
       push();
       fill(255);
@@ -658,23 +649,28 @@ class EndingSequence {
       textAlign(LEFT, TOP);
       textStyle(NORMAL);
       textSize(textSizeValue);
-      textLeading(30);
+      textLeading(lineSpacing);
+      const visibleText = fullLine.substring(0, this.currentChar);
+      const displayText = isChinese
+         ? wrapEndingTextByCharacters(visibleText, textBoxWidth)
+         : visibleText;
       text(
-         visibleText,
+         displayText,
          box.x + 24,
          box.y + textOffsetY,
-         box.w - 48,
+         textBoxWidth,
          box.h - 24
       );
       pop();
    }
 
    drawSkipHint() {
+      const hintSize = getLanguage() === 'zh' ? 24 : 26;
       push();
       fill(255);
       noStroke();
       textAlign(CENTER, CENTER);
-      textSize(24);
+      textSize(hintSize);
       text('Press ESC to return to the Menu', width / 2, height - 42);
       pop();
    }
@@ -687,9 +683,16 @@ function createEndingSequence(resources, endingOutcome) {
 function setEndingReplayButtonVisible(visible) {
    if (typeof document === 'undefined') return;
    const button = document.getElementById('ending-replay-btn');
-   if (button) {
-      button.style.display = visible ? 'block' : 'none';
+   if (!button) return;
+
+   if (visible) {
+      button.style.display = 'block';
+      button.style.visibility = 'visible';
+      button.style.pointerEvents = 'auto';
+      return;
    }
+
+   button.remove();
 }
 
 // ---------------------------------------------------------------------------
@@ -880,7 +883,9 @@ function patchMenuUIForEndingPreview() {
 
    const originalShowMenuPage = MenuUI.prototype.showMenuPage;
    MenuUI.prototype.showMenuPage = function (page) {
+      setEndingReplayButtonVisible(false);
       originalShowMenuPage.call(this, page);
+      setEndingReplayButtonVisible(false);
 
       const refs = this._endingPreviewRefs;
       if (!refs) return;
@@ -944,11 +949,35 @@ function patchAppControllerForEndingReplayButton() {
    return true;
 }
 
+function patchMenuUIForEndingReplayButton() {
+   if (typeof MenuUI === 'undefined' || MenuUI.prototype.__endingReplayVisibilityPatched) return false;
+
+   const originalShowMenu = MenuUI.prototype.showMenu;
+   MenuUI.prototype.showMenu = function (...args) {
+      setEndingReplayButtonVisible(false);
+      const result = originalShowMenu.apply(this, args);
+      setEndingReplayButtonVisible(false);
+      return result;
+   };
+
+   const originalHideMenu = MenuUI.prototype.hideMenu;
+   MenuUI.prototype.hideMenu = function (...args) {
+      const result = originalHideMenu.apply(this, args);
+      const showReplay = this.getGameManager?.()?.status === 'WIN' && !!this.getGameManager?.()?.endingSequence;
+      setEndingReplayButtonVisible(showReplay);
+      return result;
+   };
+
+   MenuUI.prototype.__endingReplayVisibilityPatched = true;
+   return true;
+}
+
 function installEndingPreviewHooks() {
    const menuReady = patchMenuUIForEndingPreview();
+   const replayMenuReady = patchMenuUIForEndingReplayButton();
    const audioReady = patchAudioManagerForEndingPreview();
-    const appReady = patchAppControllerForEndingReplayButton();
-   return menuReady && audioReady && appReady;
+   const appReady = patchAppControllerForEndingReplayButton();
+   return menuReady && replayMenuReady && audioReady && appReady;
 }
 
 function waitForEndingPreviewHooks() {
