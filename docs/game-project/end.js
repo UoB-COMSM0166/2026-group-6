@@ -1,10 +1,10 @@
 const ENDING_DEFINITIONS = [
    { key: 'true', minProgress: 100, label: 'True Ending', audioKey: 'true' },
-   { key: 'happy', minProgress: 95, label: 'Happy Ending', audioKey: 'happy' },
-   { key: 'better', minProgress: 90, label: 'Better Ending', audioKey: 'better' },
-   { key: 'normal', minProgress: 85, label: 'Normal Ending', audioKey: 'normal' },
-   { key: 'sad', minProgress: 80, label: 'Sad Ending', audioKey: 'sad' },
-   { key: 'bad', minProgress: 75, label: 'Bad Ending', audioKey: 'bad' }
+   { key: 'happy', minProgress: 90, label: 'Happy Ending', audioKey: 'happy' },
+   { key: 'better', minProgress: 80, label: 'Better Ending', audioKey: 'better' },
+   { key: 'normal', minProgress: 70, label: 'Normal Ending', audioKey: 'normal' },
+   { key: 'sad', minProgress: 60, label: 'Sad Ending', audioKey: 'sad' },
+   { key: 'bad', minProgress: 35, label: 'Bad Ending', audioKey: 'bad' }
 ];
 
 function normalizeEndingProgress(progress = 0) {
@@ -936,16 +936,25 @@ function patchAudioManagerForEndingPreview() {
 }
 
 function patchAppControllerForEndingReplayButton() {
-   if (typeof AppController === 'undefined' || AppController.prototype.__endingReplayPatched) return false;
+   if (typeof window === 'undefined' || window.__endingReplayDrawPatched) return false;
+   if (typeof window.draw !== 'function') return false;
 
-   const originalDraw = AppController.prototype.draw;
-   AppController.prototype.draw = function (...args) {
-      const showReplay = this.appState === 'PLAYING' && this.gm?.status === 'WIN' && !!this.gm?.endingSequence;
-      setEndingReplayButtonVisible(showReplay);
-      return originalDraw.apply(this, args);
+   const originalDraw = window.draw;
+   window.draw = function (...args) {
+      const result = originalDraw.apply(this, args);
+      const playing = (typeof appState !== 'undefined' && appState === 'PLAYING');
+      const showReplay =
+         playing &&
+         typeof gm !== 'undefined' && gm &&
+         gm.status === 'WIN' &&
+         !!gm.endingSequence;
+      if (!showReplay) {
+         setEndingReplayButtonVisible(false);
+      }
+      return result;
    };
 
-   AppController.prototype.__endingReplayPatched = true;
+   window.__endingReplayDrawPatched = true;
    return true;
 }
 
@@ -963,8 +972,7 @@ function patchMenuUIForEndingReplayButton() {
    const originalHideMenu = MenuUI.prototype.hideMenu;
    MenuUI.prototype.hideMenu = function (...args) {
       const result = originalHideMenu.apply(this, args);
-      const showReplay = this.getGameManager?.()?.status === 'WIN' && !!this.getGameManager?.()?.endingSequence;
-      setEndingReplayButtonVisible(showReplay);
+      setEndingReplayButtonVisible(false);
       return result;
    };
 

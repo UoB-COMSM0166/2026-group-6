@@ -85,6 +85,26 @@ class ResourceManager {
          this.images.painting.paintings.push(loadImage(`resources/images/views/view${i}.jpg`));
       }
 
+      this.images.endings = {
+         bad: [
+            loadImage('resources/images/end/bad1.png'),
+            loadImage('resources/images/end/bad2.png')
+         ],
+         good: [
+            loadImage('resources/images/end/good1.png'),
+            loadImage('resources/images/end/good2.png'),
+            loadImage('resources/images/end/good3.png'),
+            loadImage('resources/images/end/good4.png')
+         ],
+         best: [
+            loadImage('resources/images/end/best1.png'),
+            loadImage('resources/images/end/best2.png'),
+            loadImage('resources/images/end/best3.png'),
+            loadImage('resources/images/end/best4.png'),
+            loadImage('resources/images/end/best5.png')
+         ]
+      };
+
       //enemy monster
       this.images.enemy = this.images.enemy || {};
       this.images.enemy.slime = {
@@ -168,6 +188,17 @@ class ResourceManager {
       this.sounds.boss = loadSound('resources/audios/background/boss.mp3');
       this.sounds.alarm = loadSound('resources/audios/game_once/alarm.mp3');
 
+      this.sounds.endings = {
+         bad: loadSound('resources/audios/game_once/badend.mp3'),
+         sad: loadSound('resources/audios/game_once/sadend.mp3'),
+         normal: loadSound('resources/audios/game_once/normalend.mp3'),
+         better: loadSound('resources/audios/game_once/betterend.mp3'),
+         happy: loadSound('resources/audios/game_once/happyend.mp3'),
+         // Placeholder: replace null with
+         // loadSound('resources/audios/game_once/trueend.mp3')
+         // after the true ending track is added.
+         true: null
+      };
       // Post-Ending Audio (Currently disabled/reserved)
       // this.sounds.bad = loadSound('resources/audios/game_once/badend.mp3');
       // this.sounds.better = loadSound('resources/audios/game_once/betterend.mp3');

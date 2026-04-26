@@ -168,7 +168,11 @@ class UI {
       pop();
    }
 
-   static drawWinScreen() {
+   static drawWinScreen(gm) {
+      if (gm?.endingSequence?.display) {
+         gm.endingSequence.display();
+         return;
+      }
       background(0, 150);
       fill(255); textAlign(CENTER); textSize(40);
       textSize(30); text("Press ESC to return to the Menu", width / 2, height / 2 + 50);

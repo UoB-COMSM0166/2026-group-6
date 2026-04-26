@@ -14,6 +14,10 @@ class EndingButton extends Entity {
       else this._endding3(gm);
       if (keyIsDown(Keys.F)) {
          gm.addParticles(this.cx(), this.cy());
+         const outcome = resolveEndingOutcome(progress);
+         gm.endingSequence = createEndingSequence(gm.resources, outcome);
+         gm.endingOutcome = outcome;
+         gm.endingAudio = playEndingAudio(gm.resources, outcome);
          gm.status = "WIN";
       }
    }

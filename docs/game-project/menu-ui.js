@@ -195,6 +195,8 @@ class MenuUI {
          }
 
          this.resources.sounds.story?.stop();
+         stopEndingAudio(this.resources);
+         setEndingReplayButtonVisible(false);
          this.hideMenu();
          this.setGameManager(new GameManager(this.resources, this.selectedDifficulty));
 

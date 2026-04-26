@@ -22,6 +22,7 @@ class GameManager {
       this.mapPromptText = "";
       this.mapPromptStartTime;
       this.mapPromptDuration;
+      this.endingSequence = null;
       this.pendingTeleport = null;
       this._isPreloading;
       this.checkpoint = null; // { levelIndex, x, y }
@@ -77,7 +78,6 @@ class GameManager {
          this.setMapPrompt(ldtk.levels[this.levelIndex].identifier, 3000);
       }
    }
-
 
    _createEntities() {
       this.entities = [];
@@ -228,7 +228,7 @@ class GameManager {
 
       // UI
       UI.drawHUD(this.player, this.level, this);
-      if (this.status === "WIN") UI.drawWinScreen();
+      if (this.status === "WIN") UI.drawWinScreen(this);
       else if (this.status === "GAMEOVER") UI.drawGameOverScreen();
       let elapsed = millis() - this.mapPromptStartTime;
       if (elapsed < this.mapPromptDuration) {
