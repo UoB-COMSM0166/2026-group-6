@@ -177,7 +177,7 @@ class AudioManager {
       return;
     }
 
-    const boss = gm.entities?.find((entity) => entity instanceof Boss && entity.active && !entity.purified);
+    const boss = gm.getActiveBoss?.() || gm.entities?.find((entity) => entity instanceof Boss && entity.active && !entity.purified);
     if (boss) {
       this._enterBossAudioMode(boss);
       return;

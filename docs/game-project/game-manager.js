@@ -28,6 +28,8 @@ class GameManager {
       this.endingOutcome = null;
       this.endingAudio = null;
       this.endingSequence = null;
+      this.activeBoss = null;
+      this._backgroundLayerCache = new Map();
       this.purificationProgressCache = new Map();
       this.purificationProgressVersion = 0;
       this.preload();
@@ -291,15 +293,10 @@ class GameManager {
       const camAbsY = this.level.worldY + this.camera.y + viewH / 2;
 
       // Offset between the camera and the Area center
-      const dx = camAbsX - ab.cx;
-      const dy = camAbsY - ab.cy;
+       const dx = camAbsX - ab.cx;
+       const dy = camAbsY - ab.cy;
 
-      // --- Parallax factors for each layer: Far → Near ---
-      // factor = 0: Static (at infinity), does not move with camera
-      // factor = 1: Fully follows the camera (no parallax)
-      const factors = layers.map((_, i) =>
-         0.05 + i * (0.85 / Math.max(1, layers.length - 1))
-      );
+       const factors = this._getBackgroundLayerFactors(area, layers.length);
 
       // --- Viewport boundaries (Local level coordinates) ---
       const vl = this.camera.x;
@@ -399,6 +396,9 @@ class GameManager {
    }
 
    _updateEntities() {
+      this.activeBoss = null;
+      const ropes = [this.player.ropeL, this.player.ropeR];
+
       for (let i = this.entities.length - 1; i >= 0; i--) {
          let ent = this.entities[i];
          // Pass "this" (the GameManager itself) to entities so the Boss can access the player's coordinates
@@ -410,15 +410,18 @@ class GameManager {
             ent.updateWithGM(this);
          }
          if (ent.active === false) continue;
+         if (ent instanceof Boss && !ent.purified) {
+            this.activeBoss = ent;
+         }
 
          if (ent.isTouchingPlayer(this.player)) {
             ent.onPlayerContact(this.player, this);
          }
-         [this.player.ropeL, this.player.ropeR].forEach(rope => {
+         for (const rope of ropes) {
             if (ent.isTouchingRope(rope, this.player)) {
                ent.onRopeContact(rope, this.player, this);
             }
-         });
+         }
          if (ent.isDead) {
             this.entities.splice(i, 1);
             this.invalidatePurificationProgressCache();
@@ -583,6 +586,25 @@ class GameManager {
    invalidatePurificationProgressCache() {
       this.purificationProgressVersion++;
       this.purificationProgressCache.clear();
+   }
+
+   getActiveBoss() {
+      return this.activeBoss;
+   }
+
+   _getBackgroundLayerFactors(area, layerCount) {
+      const cacheKey = `${area}:${layerCount}`;
+      const cached = this._backgroundLayerCache.get(cacheKey);
+      if (cached) return cached;
+
+      const factors = [];
+      const step = 0.85 / Math.max(1, layerCount - 1);
+      for (let i = 0; i < layerCount; i++) {
+         factors.push(0.05 + i * step);
+      }
+
+      this._backgroundLayerCache.set(cacheKey, factors);
+      return factors;
    }
 
    getGlobalPurificationProgress() {

@@ -66,25 +66,10 @@ class AppController {
    draw() {
       applyGameTextFont(this.resources);
 
-      if (!this.storyStarted) {
-         background(0);
-         this.intro?.display();
-         return;
-      }
-
-      if (!this.storyFinished) {
-         background(0);
-         this.storyIntro?.update();
-         this.storyIntro?.display();
-         return;
-      }
-
-      if (this.appState === "VIDEO" || this.appState === "MENU") {
-         background(0);
-         return;
-      }
-
-      if (this.appState !== "PLAYING" || !this.gm) return;
+      if (this._drawIntroState()) return;
+      if (this._drawStoryState()) return;
+      if (this._drawMenuState()) return;
+      if (!this._canRunGameplay()) return;
 
       this.audioManager?.updateGameplayAudio(this.gm, this.appState);
       this.gm.update();
@@ -132,6 +117,31 @@ class AppController {
          this.gm.player.onMouseWheel_handleWinch(event.delta);
       }
       return false;
+   }
+
+   _drawIntroState() {
+      if (this.storyStarted) return false;
+      background(0);
+      this.intro?.display();
+      return true;
+   }
+
+   _drawStoryState() {
+      if (this.storyFinished) return false;
+      background(0);
+      this.storyIntro?.update();
+      this.storyIntro?.display();
+      return true;
+   }
+
+   _drawMenuState() {
+      if (this.appState !== "VIDEO" && this.appState !== "MENU") return false;
+      background(0);
+      return true;
+   }
+
+   _canRunGameplay() {
+      return this.appState === "PLAYING" && !!this.gm;
    }
 
    _injectGlobalFontStyle() {

@@ -111,9 +111,7 @@ class ResourceManager {
             loadImage('resources/images/end/best2.png'),
             loadImage('resources/images/end/best3.png'),
             loadImage('resources/images/end/best4.png'),
-            loadImage('resources/images/end/best5.png'),
-            loadImage('resources/images/end/best6.png'),
-            loadImage('resources/images/end/best7.png')
+            loadImage('resources/images/end/best5.png')
          ]
       };
 

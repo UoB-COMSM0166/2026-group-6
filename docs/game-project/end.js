@@ -34,18 +34,57 @@ function getEndingImageGroup(resources, endingKey) {
       return groups.good || [];
    }
 
-   if (endingKey === 'happy' || endingKey === 'true') {
-      return groups.best || [];
+   if (endingKey === 'happy') {
+      return [
+         groups.best?.[1],
+         groups.best?.[2],
+         groups.best?.[3],
+         groups.best?.[4]
+      ].filter(Boolean);
+   }
+
+   if (endingKey === 'true') {
+      return [
+         groups.best?.[0],
+         groups.best?.[2],
+         groups.best?.[3],
+         groups.best?.[4]
+      ].filter(Boolean);
    }
 
    return [];
 }
 
-function getEndingImageInterval(endingKey) {
-   if (endingKey === 'bad' || endingKey === 'sad') return 3600;
-   if (endingKey === 'normal' || endingKey === 'better') return 3000;
-   if (endingKey === 'happy' || endingKey === 'true') return 2400;
-   return 3000;
+function getEndingImageTotalDuration(endingKey) {
+   if (endingKey === 'bad' || endingKey === 'sad') return 7200;
+   if (endingKey === 'normal' || endingKey === 'better') return 12000;
+   if (endingKey === 'happy' || endingKey === 'true') return 16800;
+   return 12000;
+}
+
+function getEndingSequenceDuration(slides, charInterval, linePause, slidePause, fallbackEndingKey) {
+   if (!Array.isArray(slides) || slides.length === 0) {
+      return getEndingImageTotalDuration(fallbackEndingKey);
+   }
+
+   let duration = 0;
+   for (let slideIndex = 0; slideIndex < slides.length; slideIndex++) {
+      const slide = slides[slideIndex];
+      const lines = Array.isArray(slide?.lines) ? slide.lines : [];
+
+      for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+         duration += lines[lineIndex].length * charInterval;
+         if (lineIndex < lines.length - 1) {
+            duration += linePause;
+         }
+      }
+
+      if (slideIndex < slides.length - 1) {
+         duration += slidePause;
+      }
+   }
+
+   return Math.max(duration, getEndingImageTotalDuration(fallbackEndingKey));
 }
 
 function drawImageCover(img, dx, dy, dw, dh) {
@@ -114,7 +153,7 @@ function playEndingAudio(resources, endingOutcome) {
 
    targetAudio.setVolume?.(endingOutcome.key === 'true' ? 0.55 : targetAudio.getVolume?.() || 1);
    if (!targetAudio.isPlaying()) {
-      targetAudio.play();
+      targetAudio.loop();
    }
 
    return targetAudio;
@@ -131,7 +170,7 @@ function getBadEndingEnglish() {
             'The launch was succeeded, but the world below still remains scarred.',
             'Too much pollution was left behind.',
             'We came with hope, we leave with regret.',
-            'Mission failed.',
+            'Mission Failure detected.',
             'Initiating self-destruct sequence.'
          ]
       }
@@ -143,12 +182,12 @@ function getBadEndingChinese() {
       {
          title: '达成【遗憾】结局',
          lines: [
-            '能量不足,机体损毁严重,请立即返回机舱',
+            '能量不足,机体损毁严重,',
+            '请立即返回机舱！',
             '飞船顺利升空，但下方的世界依然伤痕累累。',
             '仍有太多污染被遗留在这颗星球上。',
             '怀着希望而来的我们,怀着遗憾离去，',
-            '任务失败。',
-            '销毁程序启动。'
+            '检测到【任务失败】,销毁程序已启动。'
          ]
       }
    ];
@@ -175,7 +214,7 @@ function getSadEndingEnglish() {
 function getSadEndingChinese() {
    return [
       {
-         title: 'The End [Pity]',
+         title: '达成【惋惜】结局',
          lines: [
             '星球承认你的努力与付出，',
             '这里的一部分得到了拯救。',
@@ -183,7 +222,7 @@ function getSadEndingChinese() {
             '复苏已经开始,未来却仍然脆弱。',
             '也许只差一点点？',
             '[再试一次吧!]',
-            '从远方飘来生命微弱的呼唤'
+            '从远方飘来生命微弱的呼唤。'
          ]
       }
    ];
@@ -216,11 +255,12 @@ function getNormalEndingChinese() {
             '生态已然出现复苏的迹象。',
             '水流更加清澈,空气更为清新。',
             '前路仍有任务等待，但未来已经被重新打开。',
-            '一点一点,沉默的种子正在期待发芽',
-            '感谢怀揣使命而来的你',
-            '在这个星球上留下了珍贵的足迹',
+            '一点一点,沉默的种子正在期待发芽...',
+            '感谢怀揣使命而来的你，',
+            '在这个星球上留下了珍贵的足迹，',
             '也许未来，也许不远，',
-            '期待我们再次相遇在枝繁叶茂的明天'
+            '期待我们的再次相遇,',
+            '在枝繁叶茂的明天。'
          ]
       }
    ];
@@ -252,11 +292,11 @@ function getBetterEndingChinese() {
             '大部分污染已经被成功清除。',
             '沉睡的世界终于再次开始呼吸。',
             '污染的生物已经不再威胁这个原本脆弱的星球，',
-            '万物复苏，萌芽出现',
+            '万物复苏，萌芽出现。',
             '一个更坚定的明天，已然近在眼前。',
             '期待破土的声音，就像期待未来，',
             '期待下一次冒险又将收获什么样的故事与新奇体验，',
-            '新的未来正在前方慢慢展开'
+            '新的未来正在前方慢慢展开...'
          ]
       }
    ];
@@ -327,7 +367,7 @@ function getTrueEndingEnglish() {
 function getTrueEndingChinese() {
    return [
       {
-         title: '曙光',
+         title: '达成【曙光】结局',
          lines: [
             '最后一丝污染已经彻底消失。',
             '这颗星球重新亮起了生命的光。',
@@ -367,20 +407,21 @@ class EndingSequence {
       this.currentLine = 0;
       this.currentChar = 0;
       this.charInterval = 26;
-      this.linePause = 750;
-      this.slidePause = 1300;
+      this.linePause = 3250;
+      this.slidePause = 3800;
       this.lastCharTime = millis();
       this.linePauseStart = -1;
       this.slidePauseStart = -1;
+      this.sequenceStartTime = millis();
+      this.sequenceDuration = 0;
       this.imageIndex = 0;
-      this.lastImageSwitchTime = millis();
-      this.imageInterval = getEndingImageInterval(this.endingOutcome?.key);
       this.skipBtn = {
          x: width - 110,
          y: 28,
          w: 78,
          h: 38
       };
+      this.replayBtn = null;
       this.textBox = {
          x: 115,
          y: 520,
@@ -388,8 +429,12 @@ class EndingSequence {
          h: 126
       };
       this.refreshLanguage();
+      this._ensureReplayButton();
       if (typeof onLanguageChanged === 'function') {
-         onLanguageChanged(() => this.refreshLanguage());
+         onLanguageChanged(() => {
+            this.refreshLanguage();
+            this._refreshReplayButtonLabel();
+         });
       }
    }
 
@@ -397,9 +442,82 @@ class EndingSequence {
       const language = typeof getLanguage === 'function' ? getLanguage() : 'en';
       this.slides = getEndingSlidesForLanguage(this.endingOutcome?.key, language);
       if (!this.slides.length) this.slides = getTrueEndingEnglish();
+      this.sequenceDuration = getEndingSequenceDuration(
+         this.slides,
+         this.charInterval,
+         this.linePause,
+         this.slidePause,
+         this.endingOutcome?.key
+      );
       this.currentSlide = Math.min(this.currentSlide, this.slides.length - 1);
       this.currentLine = Math.min(this.currentLine, this.slides[this.currentSlide].lines.length - 1);
       this.currentChar = Math.min(this.currentChar, this.slides[this.currentSlide].lines[this.currentLine].length);
+   }
+
+   resetPlayback() {
+      this.currentSlide = 0;
+      this.currentLine = 0;
+      this.currentChar = 0;
+      this.linePauseStart = -1;
+      this.slidePauseStart = -1;
+      this.sequenceStartTime = millis();
+      this.lastCharTime = millis();
+      this.lastImageSwitchTime = millis();
+      this.imageIndex = 0;
+   }
+
+   _ensureReplayButton() {
+      if (typeof document === 'undefined' || this.replayBtn) return;
+
+      const btn = document.createElement('button');
+      btn.id = 'ending-replay-btn';
+      btn.style.cssText =
+         'display:none;' +
+         'position:fixed; top:78px; left:140px;' +
+         'width:90px; height:30px; font-size:16px; font-weight:bold; color:white;' +
+         'font-family:var(--game-font-family), monospace;' +
+         'background-image:url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png");' +
+         'background-size:100% 100%;' +
+         'background-repeat:no-repeat;' +
+         'background-position:center;' +
+         'background-color:transparent;' +
+         'border:none; cursor:pointer;' +
+         'transition:all 0.2s;' +
+         'z-index:120;';
+
+      btn.onmouseenter = () => {
+         btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png")';
+      };
+      btn.onmouseleave = () => {
+         btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Normal.png")';
+      };
+      btn.onmousedown = () => {
+         btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Active.png")';
+      };
+      btn.onmouseup = () => {
+         btn.style.backgroundImage = 'url("resources/images/UI_resources/1. Free Hologram Interface Wenrexa/Button 1/Button Hover.png")';
+      };
+      btn.onclick = (event) => {
+         event.preventDefault();
+         event.stopPropagation();
+         this.resetPlayback();
+      };
+
+      document.body.appendChild(btn);
+      this.replayBtn = btn;
+      this._refreshReplayButtonLabel();
+   }
+
+   _refreshReplayButtonLabel() {
+      if (!this.replayBtn) return;
+      this.replayBtn.textContent = getLanguage() === 'zh' ? '回看' : 'Replay';
+      this.replayBtn.style.fontSize = getLanguage() === 'zh' ? '18px' : '16px';
+   }
+
+   _showReplayButton() {
+      if (this.replayBtn) {
+         this.replayBtn.style.display = 'block';
+      }
    }
 
    update() {
@@ -456,17 +574,18 @@ class EndingSequence {
    _updateImageFrame() {
       const frames = getEndingImageGroup(this.resources, this.endingOutcome?.key);
       if (frames.length <= 1) return;
-      if (this.imageIndex >= frames.length - 1) return;
 
-      const now = millis();
-      if (now - this.lastImageSwitchTime < this.imageInterval) return;
-
-      this.imageIndex = Math.min(this.imageIndex + 1, frames.length - 1);
-      this.lastImageSwitchTime = now;
+      const elapsed = Math.max(0, millis() - this.sequenceStartTime);
+      const progress = Math.min(1, elapsed / Math.max(1, this.sequenceDuration));
+      this.imageIndex = Math.min(
+         Math.floor(progress * frames.length),
+         frames.length - 1
+      );
    }
 
    display() {
       this.update();
+      this._showReplayButton();
 
       background(0);
       this.drawBackground();
@@ -529,14 +648,16 @@ class EndingSequence {
       const fullLine = slide.lines[this.currentLine];
       const visibleText = fullLine.substring(0, this.currentChar);
       const box = this.textBox;
-      const textOffsetY = getLanguage() === 'zh' ? 28 : 18;
+      const isChinese = getLanguage() === 'zh';
+      const textOffsetY = isChinese ? 29 : 16;
+      const textSizeValue = isChinese ? 33 : 38;
 
       push();
       fill(255);
       noStroke();
       textAlign(LEFT, TOP);
       textStyle(NORMAL);
-      textSize(35);
+      textSize(textSizeValue);
       textLeading(30);
       text(
          visibleText,
@@ -562,3 +683,278 @@ class EndingSequence {
 function createEndingSequence(resources, endingOutcome) {
    return new EndingSequence(resources, endingOutcome);
 }
+
+function setEndingReplayButtonVisible(visible) {
+   if (typeof document === 'undefined') return;
+   const button = document.getElementById('ending-replay-btn');
+   if (button) {
+      button.style.display = visible ? 'block' : 'none';
+   }
+}
+
+// ---------------------------------------------------------------------------
+// Extra ending preview menu hooks
+// This section is intentionally isolated so it can be removed later without
+// touching the existing menu / ending implementation above.
+// ---------------------------------------------------------------------------
+
+function getEndingPreviewLabels() {
+   if (typeof getLanguage === 'function' && getLanguage() === 'zh') {
+      return {
+         entry: '结局预览',
+         title: '所有结局预览',
+         backHint: '按 ESC 返回菜单',
+         bad: '遗憾',
+         sad: '怜惜',
+         normal: '确幸',
+         better: '未来',
+         happy: '希望',
+         true: '曙光'
+      };
+   }
+
+   return {
+      entry: 'Ending Preview',
+      title: 'All Endings Preview',
+      backHint: 'Press ESC to return to the Menu',
+      bad: 'Regret',
+      sad: 'Pity',
+      normal: 'Serendipity',
+      better: 'Future',
+      happy: 'Hope',
+      true: 'Dawn'
+   };
+}
+
+class EndingPreviewGameManager {
+   constructor(resources, endingOutcome) {
+      this.__endingPreview = true;
+      this.resources = resources;
+      this.status = 'WIN';
+      this.endingOutcome = endingOutcome;
+      this.endingAudio = playEndingAudio(resources, endingOutcome);
+      this.endingSequence = createEndingSequence(resources, endingOutcome);
+   }
+
+   update() { }
+
+   render() {
+      UI.drawWinScreen(this);
+   }
+
+   getEndingOutcome() {
+      return this.endingOutcome;
+   }
+
+   onKeyPressed() { }
+
+   onMousePressed() { }
+}
+
+function createEndingPreviewButton(menuUI, label, onClick, width = 220) {
+   const btn = document.createElement('button');
+   btn.textContent = label;
+   btn.style.cssText =
+      `width:${width}px; height:62px; font-size:${getLanguage() === 'zh' ? '28px' : '26px'}; font-weight:bold; color:white;` +
+      'font-family:var(--game-font-family), monospace;' +
+      `background-image:url("${menuUI.BTN_NORMAL}");` +
+      'background-size:100% 100%;' +
+      'background-repeat:no-repeat;' +
+      'background-position:center;' +
+      'background-color:transparent;' +
+      'border:none; cursor:pointer;' +
+      'transition: all 0.2s;';
+
+   btn.onmouseenter = () => {
+      btn.style.backgroundImage = `url("${menuUI.BTN_HOVER}")`;
+   };
+   btn.onmouseleave = () => {
+      btn.style.backgroundImage = `url("${menuUI.BTN_NORMAL}")`;
+   };
+   btn.onmousedown = () => {
+      btn.style.backgroundImage = `url("${menuUI.BTN_ACTIVE}")`;
+   };
+   btn.onmouseup = () => {
+      btn.style.backgroundImage = `url("${menuUI.BTN_HOVER}")`;
+   };
+   btn.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onClick(event);
+   };
+
+   return btn;
+}
+
+function launchEndingPreview(menuUI, endingKey) {
+   const matchedEnding = ENDING_DEFINITIONS.find((ending) => ending.key === endingKey);
+   if (!matchedEnding) return;
+
+   menuUI._playClickSound?.();
+   menuUI.audioManager?.stopGameplayBgmCycle?.();
+
+   const previewManager = new EndingPreviewGameManager(menuUI.resources, {
+      ...matchedEnding,
+      progress: matchedEnding.minProgress
+   });
+
+   menuUI.setGameManager(previewManager);
+   if (menuUI.menuDiv) {
+      menuUI.menuDiv.style.display = 'none';
+   }
+   menuUI.setAppState('PLAYING');
+}
+
+function attachEndingPreviewMenu(menuUI) {
+   if (!menuUI?.menuDiv || menuUI._endingPreviewRefs) return;
+
+   const labels = getEndingPreviewLabels();
+   const mainPanel = document.getElementById('menu-main-panel');
+   if (!mainPanel) return;
+
+   const entryBtn = menuUI._makeBtn(labels.entry, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      menuUI._playClickSound?.();
+      menuUI.showMenuPage('ending-preview');
+   });
+
+   const previewPanel = document.createElement('div');
+   previewPanel.id = 'menu-ending-preview-panel';
+   previewPanel.style.cssText =
+      'display:none;' +
+      'flex-direction:column; align-items:center; justify-content:center; gap:18px; width:100%;';
+
+   const previewTitle = document.createElement('div');
+   previewTitle.textContent = labels.title;
+   previewTitle.style.cssText =
+      'font-size:36px; font-weight:bold; color:#fff; margin-bottom:10px;' +
+      'font-family:var(--game-font-family), monospace;';
+
+   const previewGrid = document.createElement('div');
+   previewGrid.style.cssText =
+      'display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:18px 20px; width:520px;';
+
+   const endingKeys = ['bad', 'sad', 'normal', 'better', 'happy', 'true'];
+   const previewButtons = {};
+   endingKeys.forEach((endingKey) => {
+      const btn = createEndingPreviewButton(menuUI, labels[endingKey], () => {
+         launchEndingPreview(menuUI, endingKey);
+      }, 240);
+      btn.dataset.endingPreviewKey = endingKey;
+      previewButtons[endingKey] = btn;
+      previewGrid.appendChild(btn);
+   });
+
+   const previewHint = document.createElement('div');
+   previewHint.textContent = labels.backHint;
+   previewHint.style.cssText =
+      'margin-top:6px; color:rgba(255,255,255,0.9); font-size:22px;' +
+      'font-family:var(--game-font-family), monospace;';
+
+   previewPanel.appendChild(previewTitle);
+   previewPanel.appendChild(previewGrid);
+   previewPanel.appendChild(previewHint);
+
+   mainPanel.appendChild(entryBtn);
+   menuUI.menuDiv.appendChild(previewPanel);
+
+   menuUI._endingPreviewRefs = {
+      entryBtn,
+      previewPanel,
+      previewTitle,
+      previewHint,
+      previewButtons
+   };
+}
+
+function patchMenuUIForEndingPreview() {
+   if (typeof MenuUI === 'undefined' || MenuUI.prototype.__endingPreviewPatched) return false;
+
+   const originalCreateMenu = MenuUI.prototype.createMenu;
+   MenuUI.prototype.createMenu = function (...args) {
+      const result = originalCreateMenu.apply(this, args);
+      attachEndingPreviewMenu(this);
+      return result;
+   };
+
+   const originalShowMenuPage = MenuUI.prototype.showMenuPage;
+   MenuUI.prototype.showMenuPage = function (page) {
+      originalShowMenuPage.call(this, page);
+
+      const refs = this._endingPreviewRefs;
+      if (!refs) return;
+
+      const backBtn = document.getElementById('menu-back-btn');
+      if (page === 'ending-preview') {
+         document.getElementById('menu-main-panel')?.style.setProperty('display', 'none');
+         refs.previewPanel.style.display = 'flex';
+         if (backBtn) backBtn.style.display = 'block';
+      } else {
+         refs.previewPanel.style.display = 'none';
+      }
+   };
+
+   const originalRefreshLanguage = MenuUI.prototype.refreshLanguage;
+   MenuUI.prototype.refreshLanguage = function (...args) {
+      const result = originalRefreshLanguage.apply(this, args);
+      const refs = this._endingPreviewRefs;
+      if (!refs) return result;
+
+      const labels = getEndingPreviewLabels();
+      refs.entryBtn.textContent = labels.entry;
+      refs.previewTitle.textContent = labels.title;
+      refs.previewHint.textContent = labels.backHint;
+      Object.entries(refs.previewButtons).forEach(([endingKey, button]) => {
+         button.textContent = labels[endingKey];
+      });
+      return result;
+   };
+
+   MenuUI.prototype.__endingPreviewPatched = true;
+   return true;
+}
+
+function patchAudioManagerForEndingPreview() {
+   if (typeof AudioManager === 'undefined' || AudioManager.prototype.__endingPreviewPatched) return false;
+
+   const originalUpdateGameplayAudio = AudioManager.prototype.updateGameplayAudio;
+   AudioManager.prototype.updateGameplayAudio = function (gm, appState) {
+      if (gm?.__endingPreview) {
+         return;
+      }
+      return originalUpdateGameplayAudio.call(this, gm, appState);
+   };
+
+   AudioManager.prototype.__endingPreviewPatched = true;
+   return true;
+}
+
+function patchAppControllerForEndingReplayButton() {
+   if (typeof AppController === 'undefined' || AppController.prototype.__endingReplayPatched) return false;
+
+   const originalDraw = AppController.prototype.draw;
+   AppController.prototype.draw = function (...args) {
+      const showReplay = this.appState === 'PLAYING' && this.gm?.status === 'WIN' && !!this.gm?.endingSequence;
+      setEndingReplayButtonVisible(showReplay);
+      return originalDraw.apply(this, args);
+   };
+
+   AppController.prototype.__endingReplayPatched = true;
+   return true;
+}
+
+function installEndingPreviewHooks() {
+   const menuReady = patchMenuUIForEndingPreview();
+   const audioReady = patchAudioManagerForEndingPreview();
+    const appReady = patchAppControllerForEndingReplayButton();
+   return menuReady && audioReady && appReady;
+}
+
+function waitForEndingPreviewHooks() {
+   if (installEndingPreviewHooks()) return;
+   if (typeof requestAnimationFrame !== 'function') return;
+   requestAnimationFrame(waitForEndingPreviewHooks);
+}
+
+waitForEndingPreviewHooks();
