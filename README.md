@@ -292,7 +292,7 @@ During the process of writing user stories, our team began to redesign the requi
 In order to understand the players' behaviors in the game and the interaction between them and the system, we use UML use case diagrams to analyze the main functions of the game. This diagram focuses on the players as the main participants and incorporates several core activities within the game, such as exploring the map, purifying pollution sources, and advancing the game progress, etc. In this way, our team can have a more intuitive understanding of the overall structure of the game system and the relationships between different functions. At the same time, this also provides a reference for the team members during the development process, which helps everyone to have a clearer discussion on the system design. For more detailed explanations of each use case, we have provided further information in the [Appendix](#11-appendix).
 
 <p align="center">
-  <img src="resources/images/usecase_model.png" width="600">
+  <img src="resources/images/usecasemodel.png" width="600">
 </p>
 
 <p align="center">
