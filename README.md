@@ -973,9 +973,9 @@ From a technical perspective, the game incorporates systems that support these s
 
 ## Ethics and Accessibility
 
-From an ethical perspective, our game design ensures that players do not resort to violent destruction of creatures just for the sake of rewards. Instead, it chose to target the sources of pollution and the core of the problem. This aligns with the core concept of the game, which is "repairing" rather than "violence". This design also aligns the players' actions with the theme of ecological restoration. At the same time, in the process of designing the game, we also avoided treating the restoration of the environment as a simple problem that could be solved with just one action. The closure of the route and the difficulties encountered in purifying the pollution sources all indicate that environmental restoration is a gradual process that depends on continuous efforts.
+From an ethical perspective, our game design ensures that players do not resort to violent destruction of creatures just for the sake of rewards. Instead, it chose to target the sources of pollution and the core of the problem. This aligns with the core concept of the game, which is "repairing" rather than "violence". At the same time, in the process of designing the game, we also avoided treating the restoration of the environment as a simple problem that could be solved with just one action. The closure of the route and the difficulties encountered in purifying the pollution sources all indicate that environmental restoration is a gradual process that depends on continuous efforts.
 
-In terms of accessibility, our current implementation already includes several features. difficulty selection, language switching, as well as control over background music and sound effects. These choices have lowered the entry barrier for new players and are suitable for various types of players.However, there are still areas where the accessibility of our game needs improvement. Some of the core mechanisms in the game, such as rope control and combat, require the simultaneous use of a mouse and keyboard. This might cause difficulties for players who are not familiar with platform games to operate the game. In the future, we will add clearer text labels, more simplified teaching procedures and re-mappable keys. Since accessibility is also a part of ethical software design, we hope that more people will be able to come into contact with and experience this game.
+In terms of accessibility, our current implementation already includes several features. difficulty selection, language switching, as well as control over background music and sound effects. These choices have lowered the entry barrier for new players and are suitable for various types of players.However, there are still areas where the accessibility of our game needs improvement. Some of the core mechanisms in the game, such as rope control and combat, require the simultaneous use of a mouse and keyboard. This might cause difficulties for players who are not familiar with platform games to operate the game. In the future, we will add clearer text labels, more simplified teaching procedures and re-mappable keys.
 
 ## Green Software Foundation Patterns
 **• Avoid tracking unnecessary data:** 
@@ -1055,7 +1055,6 @@ Allow the player to explore interconnected areas of the game world and discover 
 2. The character returns to the accessible platform.
 3. The player continues to explore.
 
-
 ### **UC-02: Purify Pollution Entities**
 
 **Goal**  
@@ -1090,7 +1089,7 @@ Allow players to eliminate enemies and purify purification cores to improve the 
 
 Alexander, I. F. (2005). *A taxonomy of stakeholders: Human roles in system development*. International Journal of Technology and Human Interaction, 1(1), 23–59.
 
-Becker, C., Chitchyan, R., Duboc, L., Easterbrook, S., Penzenstadler, B., Seyff, N., & Venters, C. C. (2015, May). Sustainability design and software: The karlskrona manifesto. In 2015 IEEE/ACM 37th IEEE International Conference on Software Engineering (Vol. 2, pp. 467-476). IEEE.
+Becker, C., Chitchyan, R., Duboc, L., Easterbrook, S., Penzenstadler, B., Seyff, N., & Venters, C. (2015). Sustainability Design and Software: The Karlskrona manifesto.
 
 Nielsen, J. and Molich, R. (1990). *Heuristic evaluation of user interfaces*. Proceedings of the SIGCHI Conference on Human Factors in Computing Systems.
 
