@@ -450,7 +450,7 @@ class GameManager {
 
       const progress = this.getAreaProgress();
 
-      if (progress > GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
+      if (progress >= GameConfig.World.PURIFY_CHANGE_THRESHOLD && this.environmentChanged == false) {
          if (!resources.sounds.upgrade.isPlaying()) resources.sounds.upgrade.play();
          this.setMapPrompt(t('prompts.environmentChanged'), 3000);
          this.environmentChanged = true;
