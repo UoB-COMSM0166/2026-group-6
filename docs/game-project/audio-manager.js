@@ -1,10 +1,10 @@
 class AudioManager {
   constructor(resources) {
-    this.resources = resources; 
+    this.resources = resources;
     // primary status
     this.state = {
-      bgm: { volume: 0.6, isMuted: false },    
-      sfx: { volume: 1.0, isMuted: false }     
+      bgm: { volume: 0.6, isMuted: false },
+      sfx: { volume: 1.0, isMuted: false }
     };
     // init audiovolumes
     this.initAudioVolumes();
@@ -22,10 +22,10 @@ class AudioManager {
 
     // Sound Effects
     const sfxKeys = Object.keys(this.resources.sounds).filter(key => {
-      return !bgmSounds.includes(key) && 
-             (typeof this.resources.sounds[key] === 'object' ? 
-               Object.keys(this.resources.sounds[key]).length > 0 : 
-               this.resources.sounds[key] instanceof p5.SoundFile);
+      return !bgmSounds.includes(key) &&
+        (typeof this.resources.sounds[key] === 'object' ?
+          Object.keys(this.resources.sounds[key]).length > 0 :
+          this.resources.sounds[key] instanceof p5.SoundFile);
     });
 
     // Batch modification lots of sounds
@@ -38,9 +38,9 @@ class AudioManager {
     const bgmSounds = ['bgm', 'story'];
     return Object.keys(this.resources.sounds).filter(key => {
       return !bgmSounds.includes(key) &&
-             (typeof this.resources.sounds[key] === 'object' ?
-               Object.keys(this.resources.sounds[key]).length > 0 :
-               this.resources.sounds[key] instanceof p5.SoundFile);
+        (typeof this.resources.sounds[key] === 'object' ?
+          Object.keys(this.resources.sounds[key]).length > 0 :
+          this.resources.sounds[key] instanceof p5.SoundFile);
     });
   }
 
@@ -98,7 +98,7 @@ class AudioManager {
   toggleBgmMute() {
     this.state.bgm.isMuted = !this.state.bgm.isMuted;
     const targetVolume = this.state.bgm.isMuted ? 0 : this.state.bgm.volume;
-    
+
     if (this.resources.sounds.bgm) {
       this.resources.sounds.bgm.setVolume(this.state.bgm.isMuted ? 0 : this.state.bgm.volume);
     }
@@ -118,13 +118,13 @@ class AudioManager {
     }
     // silent
     const muteAllSfx = (obj) => {
+      if (!obj || typeof obj !== 'object') return;
       Object.keys(obj).forEach(key => {
-        //all
-        if (obj[key] instanceof p5.SoundFile) {
-          // If muted, set volume to 0; otherwise, restore to stored SFX volume
-          obj[key].setVolume(this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
-        } else if (typeof obj[key] === 'object') {
-          muteAllSfx(obj[key]);
+        const val = obj[key];
+        if (val instanceof p5.SoundFile) {
+          val.setVolume(this.state.sfx.isMuted ? 0 : this.state.sfx.volume);
+        } else if (val && typeof val === 'object') {
+          muteAllSfx(val);
         }
       });
     };
