@@ -1,4 +1,4 @@
- # 2026-group-6
+# 2026-group-6
 2026 COMSM0166 group 6
 
 # KanBan Link
@@ -387,7 +387,7 @@ This design brings two major advantages. First, it ensures that the `player` can
 Second, predicting the `player`'s upcoming position through `vx` and `vy` simplifies collision detection. If the calculated next position of the `player` is inside a wall, the coordinates can be easily adjusted outward based on the movement direction, thereby achieving realistic collision effects.
 
 <p align="center">
-  <img src="resources/images/buoyancy.png" alt="challenge1" width="600"/>
+  <img src="resources/images/buoyancy.png" alt="challenge1" width="500"/>
 </p>
 <p align="center">
   <b>Figure 10.</b> player move in game world
@@ -840,7 +840,7 @@ During the game development process, we conducted continuous testing on various 
 
 In **black-box testing**, we utilized automatic testing tools to confirm user interaction processes and interface functions, for example entering the main menu, clicking "Start Game", altering the difficulty degree, unfolding the resource panel, and changing among different interfaces. However, as for modules that include continuous changes, for example player moving, jumping and rope launching, hence it is very difficult to judge their correctness only according to frame-by-frame output. Hence, we also depend on visual and interactive assessments to watch if the movement velocity is reasonable, if jumping and falling accord with basic physical intuition, and if the rope movement shows a natural dynamic effect.
 
-On another hand, **white-box testing** concentrates on checking the program's inside logic, judging the rightness of the realization through observing alterations in values and states in particular game situations. For instance, we have carried out tests on the underlying logic of player health (HP) changes, clean energy consumption, and the triggering of invincibility states. In the testing phase, we have designed many kinds of input situations to get the function's returning outcomes, and at the same time we process and check inputs that may have no validity. Below is one of examples of the test code (Figure 13).
+On another hand, **white-box testing** concentrates on checking the program's inside logic, judging the rightness of the realization through observing alterations in values and states in particular game situations. For instance, we have carried out tests on the underlying logic of player health (HP) changes, clean energy consumption, and the triggering of invincibility states. In the testing phase, we have designed many kinds of input situations to get the function's returning outcomes, and at the same time we process and check inputs that may have no validity. Below is one of examples of the test code (Figure 15).
 
 **Example -- Player Damage and Invulnerability Logic**
 <p align="center">
