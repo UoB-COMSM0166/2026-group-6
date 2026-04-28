@@ -69,8 +69,8 @@ class Player {
             rope.changeLength(-cs);
             if (rope.state === "SWINGING") {
                let a = atan2(rope.tip.y - this.cy(), rope.tip.x - this.cx());
-               this.vx += cos(a) * wf / count;
-               this.vy += sin(a) * wf / count;
+               this.vx += cos(a) * wf * 1.5 / count;
+               this.vy += sin(a) * wf * 1.5 / count;
             }
          }
          if (keyIsDown(Keys.E)) rope.changeLength(cs);
