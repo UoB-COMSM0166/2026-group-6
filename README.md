@@ -133,7 +133,7 @@ Under this system, players do not need to completely remove pollution. When the 
 
 <tr>
 <td>EndingButton</td>
-<td><img src="resources/images/Endingbutton.png" width="64"></td>
+<td><img src="resources/images/endingbutton.png" width="64"></td>
 <td>After the player presses it, different endings will be triggered according to different total area purification progress.</td>
 </tr>
 
