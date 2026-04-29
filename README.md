@@ -374,7 +374,7 @@ The`GameManager` calls player's `update()` method to refresh the player's state 
 # 5. Implementation
 
 ## Challenge 1: Physical World System
-One of the challenges we faced was to integrate rope gameplay deeply and naturally into the game world, which serves as the core mechanic of the game. At the initial stage of game design, we created two forms of ropes (soft and hard) as well as rope heads made of different materials, such as balloons, iron balls, and water balls. To facilitate the use of ropes in puzzle mechanics, real-world physical forces are integrated into the design. Furthermore, to deliver smoother `player` movement and more in-depth interaction with the game world, the design of a realistic physics system was indispensable. To address this challenge, we integrated all fundamental physical forces into the game world, including gravity, air resistance, ground friction, water buoyancy and so on.
+One of the challenges we faced was to integrate rope gameplay deeply and naturally into the game world, which serves as the core mechanic of the game. At the initial stage of game design, we created two forms of ropes (soft and hard) as well as rope heads made of different materials, such as balloons, iron balls, and water balls. To facilitate the use of ropes in puzzle mechanics, real-world physical forces are integrated into the design. Furthermore, to deliver smoother `player` movement and more in-depth interaction with the game world, the design of a realistic physics system was indispensable. To address this challenge, we integrated all fundamental physical forces into the game world, including gravity, forces of ropes , air resistance, ground friction, water buoyancy and so on.
 
 To achieve the simultaneous effects of multiple forces, we must calculate how all forces affect every entity in the game world each frame, with primary forces acting mainly on the `player` and `ropes`. The `draw` method in `main.js` runs once per frame, within which the `update` method from `game-manager.js` is called to trigger the `update` functions of all objects in the game world. Each object's update method refreshes all forces and their resulting effects.
 
@@ -387,10 +387,10 @@ This design brings two major advantages. First, it ensures that the `player` can
 Second, predicting the `player`'s upcoming position through `vx` and `vy` simplifies collision detection. If the calculated next position of the `player` is inside a wall, the coordinates can be easily adjusted outward based on the movement direction, thereby achieving realistic collision effects.
 
 <p align="center">
-  <img src="resources/images/buoyancy.png" alt="challenge1" width="500"/>
+  <img src="resources/gifs/challenge1.gif" alt="challenge1" width="500"/>
 </p>
 <p align="center">
-  <b>Figure 10.</b> player move in game world
+  <b>Figure 10.</b> player move in game world with various forces
 </p>
 
 ## Challenge 2:  Rope Mechanic Implementation
@@ -437,6 +437,12 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
 </p>
 <p align="center">
   <b>Figure 11.</b> Rope anchored to geometry
+</p>
+<p align="center">
+  <img src="resources/gifs/challenge2.gif" alt="challenge1" width="500"/>
+</p>
+<p align="center">
+  <b>Figure 11.</b> Rope usage example
 </p>
 
 # 6. Evaluation
