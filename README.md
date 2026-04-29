@@ -119,7 +119,7 @@ Under this system, players do not need to completely remove pollution. When the 
 </tr>
 
 <tr>
-<td rowspan="2">Interactable</td>
+<td rowspan="3">Interactable</td>
 <td>Energy Pillar</td>
 <td><img src="resources/images/cleaningenergy.png" width="64"></td>
 <td>Players can obtain purification energy here.</td>
@@ -129,6 +129,12 @@ Under this system, players do not need to completely remove pollution. When the 
 <td>Button</td>
 <td><img src="resources/images/button.png" width="64"></td>
 <td>The button can open the mechanism door.</td>
+</tr>
+
+<tr>
+<td>EndingButton</td>
+<td><img src="resources/images/Endingbutton.png" width="64"></td>
+<td>After the player presses it, different endings will be triggered according to different total area purification progress.</td>
 </tr>
 
 <tr>
