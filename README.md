@@ -1042,7 +1042,7 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 # 11. AI statement
 
-We used AI to create the game's cover and the opening still animation picture.
+We used AI to create the game's cover and the opening and ending still animation picture.
 
 Use AI to fill in pixel values when quickly completing the initial layout of controls on pages such as the settings page, so as to reduce the time spent adjusting data such as the relative positions, spacing, and sizes of controls.
 
