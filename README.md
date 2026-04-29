@@ -24,7 +24,7 @@
 <p align="center">
   <img src="resources/images/reset.png" width="50" style="vertical-align: middle;">
 
-  <a href="https://uob-comsm0166.github.io/2026-group-6/" style="font-size:18px; margin: 0 10px;">
+  <a href="https://uob-comsm0166..io/2026-group-6/" style="font-size:18px; margin: 0 10px;">
     Start Game
   </a>
 
@@ -927,9 +927,13 @@ Since face-to-face communication is not possible during vacation, we use Tecent 
   <b>Figure 19.</b> Online Stand-up Meeting Via Tencent Meeting 
 </p>
 
-- **GitHub**
+- **GitHub and Git**
 
-Used for version control.
+Used for version control. The main tool used for code division and collaboration.
+
+- **Visual Studio Code**
+
+The platform for code development.
 
 - **LDTK**
 
