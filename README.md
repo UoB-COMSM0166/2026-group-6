@@ -2,15 +2,21 @@
 2026 COMSM0166 group 6
 
 # KanBan Link
-https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1
+[Our KanBan](https://comsm0166-group6.atlassian.net/jira/software/projects/KAN/boards/1)
 
 # Echoes of Purity
-
 
 <p align="center">
   <img src="docs/resources/images/map_image/cover.png" width="600">
 </p>
 
+<p align="center">
+  <strong>
+    <a href="https://youtu.be/0P7ryCOJrmw">
+      👉 Click here to watch our video!
+    </a>
+  </strong>
+</p>
 
 
 ## TRY TO START GAME
