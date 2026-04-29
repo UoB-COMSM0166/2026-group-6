@@ -182,7 +182,7 @@ Under this system, players do not need to completely remove pollution. When the 
 <td>Collectible</td>
 <td>Energy Crystal</td>
 <td><img src="resources/images/tools.png" width="64"></td>
-<td>Scattered crystals that restore the player's purification energy.</td>
+<td>Scattered crystals, the blue ones can restore the player's purification energy. There are five colors of crystals in total, each with different effects when picked up.</td>
 </tr>
 
 </table>
