@@ -56,12 +56,12 @@
 
 | Name | Github-Username | Email | Role |
 |------|----------|-------|------|
-| Qizhou Lu | qizhoul888-crypto | ah25177@bristol.ac.uk | Backend method implementation, mechanism implementation |
-| Yifei Niu | yifeiniu0925 | sa25269@bristol.ac.uk | Game content design and requirement analysis, project manager |
-| Mengzhou Gao | mengzhou168 | ti25314@bristol.ac.uk | Map and Level Design, Game detail design|
-| Ruomu Lu | n-wind-ddd | co25180@bristol.ac.uk | Architecture, integrating front-end and back-end, core code development |
-| Hang Su | chaofengming123 | fy25078@bristol.ac.uk | Front-end development, tester, analysis and planning of project progress |
-| Jiaying Wang | jiaying2000wang | zb25795@bristol.ac.uk | UI design, feedback, experience, sound effects, summary meeting |
+| Qizhou Lu | qizhoul888-crypto | ah25177@bristol.ac.uk | Backend Method Implementation, Mechanism Implementation |
+| Yifei Niu | yifeiniu0925 | sa25269@bristol.ac.uk | Game Content Design and Requirement Analysis, Project Manager |
+| Mengzhou Gao | mengzhou168 | ti25314@bristol.ac.uk | Map and Level Design, Game Detail Design|
+| Ruomu Lu | n-wind-ddd | co25180@bristol.ac.uk | Architecture, Integrating Front-end and Back-end, Core Code Development |
+| Hang Su | chaofengming123 | fy25078@bristol.ac.uk | Front-end Development, Tester, Analysis and Planning of Project Progress |
+| Jiaying Wang | jiaying2000wang | zb25795@bristol.ac.uk | UI Design, Feedback, Experience, Sound Effects, Summary Meeting |
 
 
 # Project Report
@@ -91,7 +91,7 @@ Under this system, players do not need to completely remove pollution. When the 
   <img src="resources/images/intro.jpg"/>
 </p>
 <p align="center">
-  <b>Figure 1.</b> Ecological restoration after reaching 75% purification (left: before, right: after)
+  <b>Figure 1.</b> Ecological Restoration After Reaching 75% Purification (Left: Before, Right: After)
 </p>
 
 # 2. Game Content
@@ -197,7 +197,7 @@ Under this system, players do not need to completely remove pollution. When the 
 </p>
 
 <p align="center">
-<b>Figure 2.</b> Ideation process for the design of <i>Echoes of Purity</i>
+<b>Figure 2.</b> Ideation Process for the Design of <i>Echoes of Purity</i>
 </p>
 
 In the early stage of the project, we explored game ideas through team brainstorming sessions. Each member first independently proposed a game concept, and then organized these initial ideas in the *gamelist* file of the project repository. This file was used to record different game types, core mechanisms, and potential design directions. By discussing and comparing these ideas, we found that the team members' interests mainly focused on game types that were more exploratory and had a non-linear structure, such as **Metroidvania**. Therefore, during the team discussions in the second and third weeks, we gradually narrowed down the creative direction. We decided to position the project as a non-linear 2D side-scrolling platform game. Players can freely explore different areas and advance the game by gradually unlocking paths.
@@ -228,6 +228,10 @@ In order to better identify the stakeholders involved or affected by the game, w
 </p>
 
 To structure our game requirements, we organised them using **epics, user stories, and acceptance criteria**, following the agile requirements format introduced in the lab and lecture.
+
+<p align="center">
+<strong>Table 1.</strong> Epics, User Stories and Acceptance Criteria Used in <em>Echoes of Purity</em> Development
+</p>
 
 <table>
 <tr>
@@ -282,9 +286,6 @@ To structure our game requirements, we organised them using **epics, user storie
 
 </table>
 
-<p align="center">
-<strong>Table 1.</strong> Epics, user stories and acceptance criteria used in <em>Echoes of Purity</em> development
-</p>
 
 
 ## Reflection
@@ -311,7 +312,7 @@ In order to understand the players' behaviors in the game and the interaction be
 We employs a modular, object-oriented architecture centred around the `GameManager`, which coordinates interactions between sub-systems during the game process. The overall architecture divides game logic into several independent modules. The `GameManager` is responsible for maintaining the overall game state and scheduling module execution within each frame's update loop. The `LevelManager` maintains the level structure and objects, while resource loading is centrally handled by the `ResourceManager`. By separating these functional modules from the control logic, the system gains greater flexibility.
 
 ## 4.2 Initial Class Diagram
-We defined the core user requirements and designed the initial class diagram of the system (Figure 5).
+We defined the core user requirements and designed the initial class diagram of the system (Figure 6).
 <p align="center">
   <img src="resources/images/Class_0221.png" width="65%"/>
 </p>
@@ -319,7 +320,8 @@ We defined the core user requirements and designed the initial class diagram of 
   <b>Figure 6.</b> Initial Class Diagram
 </p>
 
-Table 2 summarizes the main classes in the system and their responsibilities.
+Table 2 below summarizes the main classes in the system and their responsibilities.
+
 <p align="center">
   <b>Table 2.</b> Core Class Responsibilities
 </p>
@@ -336,7 +338,7 @@ Table 2 summarizes the main classes in the system and their responsibilities.
 | **Camera** | Game view controller | Controls the visible area and follows the player |
 
 ## 4.3 Final Class Diagram
-As game development progressed, we gradually added more features. To support these new features, the system architecture was also adjusted accordingly. Figure 6 represents our final class diagram.
+As game development progressed, we gradually added more features. To support these new features, the system architecture was also adjusted accordingly. Figure 7 represents our final class diagram.
 
 <p align="center">
   <img src="resources/images/Class_0305.png" width="80%"/>
@@ -396,7 +398,7 @@ Second, predicting the `player`'s upcoming position through `vx` and `vy` simpli
   <img src="resources/gifs/challenge1.gif" alt="challenge1" width="500"/>
 </p>
 <p align="center">
-  <b>Figure 10.</b> player move in game world with various forces
+  <b>Figure 10.</b> Player Move in Game World with Various Forces
 </p>
 
 ## Challenge 2:  Rope Mechanic Implementation
@@ -442,13 +444,13 @@ The game also offers two different types of ropes: soft ropes and hard ropes. Th
   <img src="resources/gifs/figure10.gif" width="500">
 </p>
 <p align="center">
-  <b>Figure 11.</b> Rope anchored to geometry
+  <b>Figure 11.</b> Rope Anchored to Geometry
 </p>
 <p align="center">
   <img src="resources/gifs/challenge2.gif" alt="challenge1" width="500"/>
 </p>
 <p align="center">
-  <b>Figure 11.</b> Rope usage example
+  <b>Figure 12.</b> Rope Usage Example
 </p>
 
 # 6. Evaluation
@@ -557,7 +559,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 ### GAME EASY LEVEL
 ### NASA TLX
 <p align="center">
-<b>Table 4. </b>NASA TLX workload scores for the Easy difficulty level.
+<b>Table 4. </b>NASA TLX Workload Scores for the Easy Difficulty Level
 </p>
 
 <table>
@@ -587,7 +589,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 
 ### System Usability Scale
 <p align="center">
-<b>Table 5. </b>SUS scores for the Easy difficulty level.
+<b>Table 5. </b>SUS Scores for the Easy Difficulty Level
 </p>
 <table>
 <tr>
@@ -673,7 +675,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 ### GAME HARD LEVEL
 ### NASA TLX
 <p align="center">
-<b>Table 6. </b>NASA TLX workload scores for the Hard difficulty level.
+<b>Table 6. </b>NASA TLX Workload Scores for the Hard Difficulty Level
 </p>
 <table>
 <tr>
@@ -702,7 +704,7 @@ A total of 10 participants took part in the evaluation. Each participant played 
 
 ### System Usability Scale
 <p align="center">
-<b>Table 7. </b>SUS scores for the Hard difficulty level.
+<b>Table 7. </b>SUS Scores for the Hard Difficulty Level
 </p>
 <table>
 <tr>
@@ -790,21 +792,21 @@ A total of 10 participants took part in the evaluation. Each participant played 
   <img src="resources/images/NASA TLX.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure 12.</b> Mean NASA TLX workload scores for the Easy and Hard difficulty levels
+  <b>Figure 13.</b> Mean NASA TLX Workload Scores for the Easy and Hard Difficulty Levels
 </p>
 
 <p align="center">
   <img src="resources/images/SUS.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure 13.</b> Mean SUS scores for the Easy and Hard difficulty levels
+  <b>Figure 14.</b> Mean SUS Scores for the Easy and Hard Difficulty Levels
 </p>
 
-According to firgue 12, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard (Figure 13), suggesting slightly better usability for the Easy level.
+According to firgue 13, the mean NASA-TLX workload score was **4.57** for the Easy level and **5.30** for the Hard level, indicating slightly higher perceived workload at the Hard difficulty. The mean **SUS score** was **64.25** for Easy and **54.75** for Hard (Figure 14), suggesting slightly better usability for the Easy level.
 
 ### Statistical Analysis
 <p>
-<b>Table 8. </b>Wilcoxon Signed-Rank Test results comparing difficulty levels
+<b>Table 8. </b>Wilcoxon Signed-Rank Test Results Comparing Difficulty Levels
 </p>
 
 <table>
@@ -837,13 +839,13 @@ According to firgue 12, the mean NASA-TLX workload score was **4.57** for the Ea
 The Wilcoxon Signed-Rank Test results (Table 8) indicate that there was no statistically significant difference in perceived workload or usability between the Easy and Hard difficulty levels. One tied pair in the NASA TLX data resulted in n=9 for the workload analysis.
 
 ### Findings
-According to the results of NASA-TLX, SUS, and Wilcoxon Signed-Rank Tests, we found that the difference between easy and hard difficulty levels is small, and the Wilcoxon test also showed no significant difference between the two. This indicates that the player experience in both difficulty modes is relatively similar, and the difficulty distinction is not obvious. Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps. Now, easy mode reduced difficulty by removing more difficult maps. We have designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. We add a resource panel to view the player state (Figure 14). In easy mode, Player can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
+The above result shows that there is not enough evidence to support the obvious differences in workload and availability of the two modes, and players may not be able to clearly perceive the differences between different difficulties. Therefore, we have made corresponding adjustments to the game to make the difference between different difficulties more obvious.Furthermore, even in easy mode, the workload for players is still not low, while SUS scores are at a moderate level. Based on these quantitative analysis results, we made adjustments to the game. First, we redesigned the map structure. Previously, the main difference between easy and hard modes was the number of maps. Now, easy mode reduced difficulty by removing more difficult maps. We have designed different maps for each difficulty level. The paths in easy mode are clearer, and the use of rope mechanics is reduced, making it easier for players to purify the pollution core, thus better differentiating the difficulty levels visually and in terms of gameplay. Second, we adjusted player attributes. We add a resource panel to view the player state (Figure 15). In easy mode, Player can more easily get ability upgrades, such as jump ability, rope length, and attack power. These adjustments make the differences between the different modes more clearly.
 
 <p align="center">
   <img src="resources/images/resourcepanel.png" width=45%>
 </p>
 <p align="center">
-  <b>Figure 14.</b> Resource Panel
+  <b>Figure 15.</b> Resource Panel
 </p>
 
 
@@ -852,14 +854,14 @@ During the game development process, we conducted continuous testing on various 
 
 In **black-box testing**, we utilized automatic testing tools to confirm user interaction processes and interface functions, for example entering the main menu, clicking "Start Game", altering the difficulty degree, unfolding the resource panel, and changing among different interfaces. However, as for modules that include continuous changes, for example player moving, jumping and rope launching, hence it is very difficult to judge their correctness only according to frame-by-frame output. Hence, we also depend on visual and interactive assessments to watch if the movement velocity is reasonable, if jumping and falling accord with basic physical intuition, and if the rope movement shows a natural dynamic effect.
 
-On another hand, **white-box testing** concentrates on checking the program's inside logic, judging the rightness of the realization through observing alterations in values and states in particular game situations. For instance, we have carried out tests on the underlying logic of player health (HP) changes, clean energy consumption, and the triggering of invincibility states. In the testing phase, we have designed many kinds of input situations to get the function's returning outcomes, and at the same time we process and check inputs that may have no validity. Below is one of examples of the test code (Figure 15).
+On another hand, **white-box testing** concentrates on checking the program's inside logic, judging the rightness of the realization through observing alterations in values and states in particular game situations. For instance, we have carried out tests on the underlying logic of player health (HP) changes, clean energy consumption, and the triggering of invincibility states. In the testing phase, we have designed many kinds of input situations to get the function's returning outcomes, and at the same time we process and check inputs that may have no validity. Below is one of examples of the test code (Figure 16).
 
 **Example -- Player Damage and Invulnerability Logic**
 <p align="center">
   <img src="resources/images/ExampleTest.png" width="100%"/>
 </p>
 <p align="center">
-  <b>Figure 15.</b> Player Damage and Invulnerability Logic
+  <b>Figure 16.</b> Player Damage and Invulnerability Logic
 </p>
 
 In terms of tools, we used **VS Code** to run the project code based on p5.js, and combined it with testing tools such as **Jest** and **Cypress** to further verify specific functions. Through black-box testing and white-box testing, we are able to ensure a smooth game experience and the correctness of the code logic.
@@ -874,7 +876,7 @@ We adopt an iterative and incremental development based on Kanban and Scrum in A
   <img src="resources/gifs/GIF_20260416123949508.gif" width="25%"/>
 </p>
 <p align="center">
-  <b>Figure 16.</b> Stand-up Meeting in MVB
+  <b>Figure 17.</b> Stand-up Meeting in MVB
 </p>
 
 <p>
@@ -901,7 +903,7 @@ We use it as a Kanban board to manage tasks, it allows us to organise work into 
   <img src="resources/images/process_jira2.png" width="90%"/>
 </p>
 <p align="center">
-  <b>Figure 17.</b> Jira Kanban Board
+  <b>Figure 18.</b> Jira Kanban Board
 </p>
 
 - **Wechat**
@@ -916,7 +918,7 @@ Since face-to-face communication is not possible during vacation, we use Tecent 
   <img src="resources/images/process-meeting.jpg" width="40%"/>
 </p>
 <p align="center">
-  <b>Figure 18.</b> Online stand-up meeting via Tencent Meeting 
+  <b>Figure 19.</b> Online Stand-up Meeting Via Tencent Meeting 
 </p>
 
 - **GitHub**
@@ -931,7 +933,7 @@ LDtk is used for map design. The reason why we use it is not only because it exc
   <img src="resources/images/process-ldtk.png" width="65%"/>
 </p>
 <p align="center">
-  <b>Figure 19.</b> LDtk Map Design Interface 
+  <b>Figure 20.</b> LDtk Map Design Interface 
 </p>
 
 
@@ -953,7 +955,7 @@ During the early stage, merge conflicts several times, mainly because we had sev
   <img src="resources/gifs/process-network.gif" width="85%"/>
 </p>
 <p align="center">
-  <b>Figure 20.</b> GitHub Network Graph Showing Branching and Merging During Development 
+  <b>Figure 21.</b> GitHub Network Graph Showing Branching and Merging During Development 
 </p>
 
 
@@ -979,7 +981,7 @@ From a technical perspective, the game incorporates systems that support these s
 </p>
 
 <p align="center">
-  <b>Figure 21.</b> Sustainability Awareness Framework
+  <b>Figure 22.</b> Sustainability Awareness Framework
 </p>
 
 
