@@ -215,7 +215,7 @@ Based on the determination of the game type, we then delved into the themes that
 </p>
 
 <p align="center">
-  <b>Figure 3.</b> Paper Prototypin
+  <b>Figure 3.</b> Paper Prototype
 </p>
 
 In the third-week lab session, we further explored and evaluated our concept by creating a paper prototype of the game. This method enables us to gather some feedback before the idea is implemented, and it can also further assist us in improving the design of the game. Through this prototype, we can gain a clear and intuitive understanding of the core gameplay process of the game, thereby deepening our comprehension of the player interaction process. This was helpful in guiding the subsequent design and development phases.
