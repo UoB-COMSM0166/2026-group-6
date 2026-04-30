@@ -24,7 +24,7 @@
 <p align="center">
   <img src="resources/images/reset.png" width="50" style="vertical-align: middle;">
 
-  <a href="https://uob-comsm0166..io/2026-group-6/" style="font-size:18px; margin: 0 10px;">
+  <a href="https://uob-comsm0166.github.io/2026-group-6/" style="font-size:18px; margin: 0 10px;">
     Start Game
   </a>
 
