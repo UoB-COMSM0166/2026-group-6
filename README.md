@@ -1013,6 +1013,8 @@ We use MP4 video to replace traditional GIF animation. Compared with GIF, MP4 ha
 
 # 9. Conclusion
 
+## 9.1 Lessons Learned 
+
 In this group assignment, we not only completed a functional game, but also gained a more detailed understanding of all the processes of software engineering. Starting from the initial requirement analysis, to the subsequent design, implementation and testing, we gradually realized that software development is not merely about writing code. Instead, it is a continuous iterative process centered around "problem - requirement - solution".Through the workshops in the third and fourth weeks, we learned to think about issues from the perspectives of different stakeholders, such as players, developers, and course evaluators, etc. Furthermore, during the process of writing epics, user stories, and acceptance criteria, we are able to define the functional goals more clearly and reduce the disagreements that arise during the implementation process. 
 
 Then, during the development process, we adopted an agile approach for iterative development. This approach enables us to identify and address issues in the game more quickly and make adjustments, but it also exposes some challenges in team collaboration, such as unclear code structure and some files bearing too many responsibilities and functions. These issues have made us realize the significance of a good modular design and code organization for long-term maintenance.
@@ -1024,6 +1026,10 @@ Also, we have also begun to understand the sustainability issues in software eng
 At the same time, we will also further enhance the user experience, such as improving the UI and the game feedback mechanism.If there is an opportunity to develop a sequel, we hope to incorporate more complex game mechanics, such as a richer map system, dynamic environmental changes, and deeper narrative content. At the same time, we will plan at the architectural level in advance to support a larger system scale, rather than having to restructure passively later on.
 
 Overall, this game project has enabled us to shift from simply "writing code" to "conducting a software engineering project", and has also allowed us to truly understand the significance of design, collaboration, and long-term thinking.
+
+## 9.2 Future Work
+
+
 
 
 
