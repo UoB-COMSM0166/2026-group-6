@@ -1032,10 +1032,7 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 ## 9.2 Future Work
 
-
-
-
-
+This is not the final version of our game. In the future, we plan to implement more features. For example, we aim to further develop our rope mechanics, allowing players to use the rope head to grab objects and interact with the environment. In addition, we plan to improve accessibility by optimizing the interface for users with visual impairments and ADHD, especially in terms of text color and visual clarity, to ensure more players can use and enjoy our game.
 
 # 10. Contribution Statement
 
