@@ -1032,7 +1032,13 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 ## 9.2 Future Work
 
-This is not the final version of our game. In the future, we plan to implement more features. For example, we aim to further develop our rope mechanics, allowing players to use the rope head to grab objects and interact with the environment. In addition, we plan to improve accessibility by optimizing the interface for users with visual impairments and ADHD, especially in terms of text color and visual clarity, to ensure more players can use and enjoy our game.
+In the future, we plan to implement more features apart from visual experience elements such as UI. 
+
+### Rope Head
+We aim to further develop our rope mechanics, allowing players to use various types of rope heads deeply interact with the environment under physical system. This will add an extra dimension to the gameplay and content of the game because player already can transfer energy through ropes to purify objects touched by the rope head. For example, our primary design for the rope heads is as follows: `Balloon`: It can lift the rope by buoyancy. `Water Ball`: It can float on the water. `Iron Ball`: It can break through certain obstacles. `Claw`: It can grab objects and pull them close. These rope heads can be combined with the map to create more interesting puzzle levels and deliver a more in-depth gaming experience.
+
+### Multiple Player
+We design to let more players play together and they can use rope to interact with each other rather than only the wolrd. Players can also cooperate to solve more interesting  challenges in the world.
 
 # 10. Contribution Statement
 
