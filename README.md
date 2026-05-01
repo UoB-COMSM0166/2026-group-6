@@ -893,7 +893,7 @@ We adopt an iterative and incremental development based on Kanban and Scrum in A
 |---------|------------|------|  -------- |
 | Sprint 1 | Week 3–6  | Generate the first version of the demo (one difficulty level) |<p align="center"> <img src="resources/images/week4-snapshot.png" width="50%"/></p>|
 | Sprint 2 | Week 7–8  | Add two difficulty levels and expand functionality |<p align="center"><img src="resources/images/week7-snapshot.png" width="50%"/></p>|
-| Sprint 3 | Week 9–10 | Improve the UI system and enhance user experience |<p align="center"><img src="resources/images/week-end-snapshot.png" width="50%"/></p>|
+| Sprint 3 | Week 9–10 | Improve the UI system and enhance user experience |<p align="center"><img src="resources/images/week-end-snapshot.png" width="75%"/></p>|
 
 We divided the development process into three sprint phases based on the course schedule. During the sprint review, we check if the functions meet their Acceptance Criteria. If there exist functions that need to be improved, we add them to the Product Backlog and continue to refine it in the next sprint. After that, we reflect on our workflow during the sprint retrospective. In the later stage of development, we no longer strictly obey the initial division of responsibilities in the development field. This is mainly because we want to make sure everyone participates in programming as much as possible.
 
