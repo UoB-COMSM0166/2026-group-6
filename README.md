@@ -1040,6 +1040,14 @@ We aim to further develop our rope mechanics, allowing players to use various ty
 ### Multiple Player
 We design to let more players play together and they can use rope to interact with each other rather than only the wolrd. Players can also cooperate to solve more interesting  challenges in the world.
 
+<p align="center">
+  <img src="resources/images/future.png" width="65%"/>
+</p>
+
+<p align="center">
+  <b>Figure 23.</b> Future Plan of Echoes of Purity
+</p>
+
 # 10. Contribution Statement
 
 | Contributor  | Contribution |
