@@ -950,9 +950,9 @@ Following is our maps of three difficulty levels
 
 | difficulty  | map       | 
 |---------|------------|
-| easy | <img src="resources/images/ldtk-easy.png" width="50%"/>|
-| normal | <img src="resources/images/ldtk-normal.png" width="50%"/>|
-| hard | <img src="resources/images/ldtk-3.png" width="50%"/>|
+| easy |<p align="center"> <img src="resources/images/ldtk-easy.png" width="70%"/></p>|
+| normal |<p align="center"> <img src="resources/images/ldtk-normal.png" width="70%"/></p>|
+| hard |<p align="center"> <img src="resources/images/ldtk-3.png" width="70%"/></p>|
 
 ## Reflection
 
