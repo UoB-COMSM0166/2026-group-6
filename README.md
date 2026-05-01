@@ -937,7 +937,7 @@ The platform for code development.
 
 - **LDTK**
 
-LDtk is used for map design. The reason why we use it is not only because it exchanges map and level as a JSON file, but also since the visual editor totally improves our efficiency. Additionally, we defined entities with specific attributes(such as pollution core and door) within LDtk.
+LDtk is used for map design. The reason why we use it is not only because it exchanges map and level as a JSON file, but also since the visual editor totally improves our efficiency. Additionally, we defined entities with specific attributes(such as pollution core, enemy hp and corresponding button to trigger the door opening) within LDtk and automatically obtain and use these properties in the code. Then we can quilkly edit and create any map we want without changing code.
 
 <p align="center">
   <img src="resources/images/process-ldtk.png" width="65%"/>
@@ -946,6 +946,13 @@ LDtk is used for map design. The reason why we use it is not only because it exc
   <b>Figure 20.</b> LDtk Map Design Interface 
 </p>
 
+Following is our maps of three difficulty levels
+
+| difficulty  | map       | 
+|---------|------------|
+| easy | <img src="resources/images/ldtk-easy.png" width="50%"/>|
+| normal | <img src="resources/images/ldtk-normal.png" width="50%"/>|
+| hard | <img src="resources/images/ldtk-3.png" width="50%"/>|
 
 ## Reflection
 
