@@ -1034,6 +1034,14 @@ Overall, this game project has enabled us to shift from simply "writing code" to
 
 This is not the final version of our game. In the future, we plan to implement more features. For example, we aim to further develop our rope mechanics, allowing players to use the rope head to grab objects and interact with the environment. In addition, we plan to improve accessibility by optimizing the interface for users with visual impairments and ADHD, especially in terms of text color and visual clarity, to ensure more players can use and enjoy our game.
 
+<p align="center">
+  <img src="resources/images/future.png" width="65%"/>
+</p>
+
+<p align="center">
+  <b>Figure 23.</b> Future Plan of Echoes of Purity
+</p>
+
 # 10. Contribution Statement
 
 | Contributor  | Contribution |
